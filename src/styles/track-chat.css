@@ -1,0 +1,1192 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── CSS Variables ──────────────────────────────────────────────────────────── */
+:root {
+  --blue: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
+  --blue-dark: #1648c0;
+  --blue-light: #eff6ff;
+  --blue-mid: #dbeafe;
+  --green: #16a34a;
+  --green-light: #f0fdf4;
+  --green-mid: #dcfce7;
+  --red: #dc2626;
+  --red-light: #fef2f2;
+  --red-mid: #fecaca;
+  --bg: #f8fafc;
+  --white: #ffffff;
+  --text: #1e293b;
+  --text-2: #374151;
+  --text-3: #64748b;
+  --text-4: #94a3b8;
+  --border: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.14);
+  --radius: 14px;
+  --radius-sm: 10px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   TRACKCHAT.JSX — Page Shell & Layout
+══════════════════════════════════════════════════════════════════════════════ */
+
+.tc-page {
+  background: var(--bg);
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  position: relative;
+}
+
+.tc-wrapper {
+  display: grid;
+  font-family: sans-serif;
+  grid-template-columns: 70% 30%;
+  height: 100%;
+  overflow: hidden;
+  transition: grid-template-columns 0.3s ease;
+}
+
+.tc-fullscreen {
+  grid-template-columns: 1fr;
+}
+
+/* Map column */
+.tc-map-col {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Right details column */
+.tc-right-col {
+  border-left: 1px solid var(--border);
+  background: var(--bg);
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.tc-right-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tc-right-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.tc-right-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tc-right-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SHARED CARD STYLES — used by all 5 right-panel card components
+══════════════════════════════════════════════════════════════════════════════ */
+
+.chatpanel-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  font-family: "Vollkorn", serif;
+}
+
+/* Badges */
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+}
+
+.badge-blue {
+  background: var(--blue-light);
+  color: var(--blue);
+}
+.badge-green {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+/* Shared meta label */
+.meta-label {
+  font-size: 10px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RIDEDETAILSCARD.JSX
+══════════════════════════════════════════════════════════════════════════════ */
+
+/* Booking ID row */
+.ride-id-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.booking-id {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.copy-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.copy-btn:hover {
+  opacity: 1;
+}
+
+.amount-paid {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+/* Route section */
+.route-section {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+}
+
+.route-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.route-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.route-dot-green {
+  background: var(--green);
+}
+.route-dot-red {
+  background: var(--red);
+}
+
+.route-line-v {
+  width: 2px;
+  height: 14px;
+  background: var(--border);
+  margin: 4px 0 4px 4px;
+}
+
+.route-label {
+  font-size: 11px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 2px;
+}
+
+.route-address {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.route-time {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex;
+  align-items: center;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.stat-item {
+  flex: 1;
+  padding: 10px 12px;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 7px;
+}
+
+.stat-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   DRIVERDETAILSCARD.JSX
+══════════════════════════════════════════════════════════════════════════════ */
+
+.driver-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+
+.driver-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+.driver-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.driver-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.driver-rating {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-bottom: 3px;
+}
+
+.driver-vehicle-info {
+  font-size: 12px;
+  color: var(--text-2);
+  line-height: 1.5;
+}
+
+.driver-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.chat-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.action-btn-blue {
+  background: var(--blue);
+  color: var(--white);
+}
+
+.action-btn-outline {
+  background: var(--white);
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+.action-btn-outline:hover {
+  background: var(--bg);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   RIDESTATUSCARD.JSX — Horizontal Stepper
+══════════════════════════════════════════════════════════════════════════════ */
+
+.stepper {
+  display: flex;
+  align-items: flex-start;
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.step-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.step-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s;
+  position: relative;
+  z-index: 1;
+}
+
+.step-active {
+  background: var(--blue);
+  box-shadow: 0 0 0 4px var(--blue-mid);
+}
+.step-done {
+  background: var(--green);
+}
+.step-pending {
+  background: var(--bg);
+  border: 2px solid var(--border);
+}
+
+.step-label {
+  font-size: 10px;
+  color: var(--text-4);
+  margin-top: 8px;
+  text-align: center;
+  line-height: 1.3;
+  padding: 0 2px;
+}
+
+.step-label-active {
+  color: var(--blue);
+  font-weight: 700;
+}
+.step-label-done {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.support-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.support-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  flex: 1;
+  white-space: nowrap;
+}
+
+.support-btn-outline {
+  background: var(--bg);
+
+  color: var(--text-2);
+  border: 1px solid var(--border);
+}
+
+.support-btn-danger {
+  background: var(--white);
+  color: var(--red);
+  border: 1px solid var(--red-mid);
+}
+.support-btn-danger:hover {
+  background: var(--red-light);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   MAPPANEL.JSX
+══════════════════════════════════════════════════════════════════════════════ */
+
+.ms-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.ms-map {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Status badge */
+.ms-status-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--white);
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+}
+
+.ms-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.3);
+  }
+}
+
+.ms-status-sep {
+  color: var(--text-4);
+  font-weight: 400;
+}
+
+.ms-status-sub {
+  color: var(--text-3);
+  font-weight: 400;
+  font-size: 11px;
+}
+
+/* Fullscreen/expand button */
+.ms-expand-btn {
+  position: absolute;
+  top: 80px;
+  right: 10px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  background: var(--white);
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  color: var(--text-2);
+  transition:
+    background 0.2s,
+    transform 0.15s;
+}
+.ms-expand-btn:hover {
+  background: var(--bg);
+  transform: scale(1.05);
+}
+
+/* Tracking disabled overlay */
+.ms-tracking-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  background: rgba(248, 250, 252, 0.82);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ms-tracking-msg {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 28px 32px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  max-width: 300px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.ms-tracking-icon {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.ms-tracking-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.ms-tracking-sub {
+  font-size: 13px;
+  color: var(--text-3);
+  line-height: 1.5;
+}
+
+/* Floating driver card (bottom of map) */
+.ms-driver-card {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: var(--white);
+  border-radius: 16px;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-lg);
+  min-width: 280px;
+  max-width: 90%;
+  border: 1px solid var(--border);
+}
+
+.ms-driver-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ms-driver-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.ms-driver-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.ms-driver-status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--green);
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.ms-online-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.ms-driver-vehicle {
+  font-size: 12px;
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ms-eta-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.ms-eta-label {
+  font-size: 10px;
+  color: var(--text-4);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ms-eta-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--blue);
+  line-height: 1.1;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   CHATPANEL.JSX — Floating FAB + Slide-in Panel
+══════════════════════════════════════════════════════════════════════════════ */
+
+/* Shell that wraps panel + overlay */
+.chat-panel-shell {
+  position: relative;
+}
+
+/* The actual chat panel — hidden on desktop until opened */
+.cp-container {
+  display: none;
+  flex-direction: column;
+  background: var(--white);
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* When open on desktop — fixed floating card */
+.cp-container.cp-open {
+  display: flex;
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 380px;
+  height: 520px;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+  z-index: 10001;
+  border: 1px solid var(--border);
+  transform: translateY(20px);
+  opacity: 0;
+  transition:
+    transform 0.28s ease,
+    opacity 0.28s ease;
+}
+
+.cp-container.cp-open.cp-open--active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.cp-container.cp-open.cp-open--hidden {
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+/* Dark backdrop */
+.chat-panel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(15, 23, 42, 0.2);
+}
+
+/* ── Chat Header ── */
+.cp-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  border-radius: 18px 18px 0 0;
+}
+
+.cp-driver-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+.cp-driver-meta {
+  flex: 1;
+}
+
+.cp-driver-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.cp-online-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cp-online-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+
+.cp-online-text {
+  font-size: 11px;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.cp-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cp-call-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--blue);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.cp-call-btn:hover {
+  background: var(--blue-mid);
+}
+
+.chat-close-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chat-close-btn:hover {
+  background: var(--border);
+}
+
+/* ── Messages area ── */
+.cp-messages {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg);
+}
+
+.cp-messages::-webkit-scrollbar {
+  width: 3px;
+}
+.cp-messages::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+.cp-msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.cp-msg-left {
+  justify-content: flex-start;
+}
+.cp-msg-right {
+  justify-content: flex-end;
+}
+
+.cp-msg-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.cp-bubble {
+  max-width: 72%;
+  padding: 10px 13px;
+  border-radius: 16px;
+}
+
+.cp-bubble-driver {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+}
+
+.cp-bubble-passenger {
+  background: var(--blue);
+  border-bottom-right-radius: 4px;
+}
+
+.cp-bubble-text {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.cp-bubble-driver .cp-bubble-text {
+  color: var(--text);
+}
+.cp-bubble-passenger .cp-bubble-text {
+  color: var(--white);
+}
+
+.cp-bubble-time {
+  font-size: 10px;
+  display: block;
+  text-align: right;
+}
+
+.cp-bubble-driver .cp-bubble-time {
+  color: var(--text-4);
+}
+.cp-bubble-passenger .cp-bubble-time {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ── Input bar ── */
+.cp-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.cp-input {
+  flex: 1;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0 16px;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+
+.cp-input:focus {
+  border-color: var(--blue);
+  background: var(--white);
+}
+
+.cp-send-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--border);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-4);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.cp-send-btn.active {
+  background: var(--text);
+  color: var(--white);
+}
+
+
+/* ── Floating Chat FAB ── */
+.chat-bar-showup {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 9999;
+  background: #ffffff;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+  transition:
+    transform 0.18s,
+    box-shadow 0.18s;
+  animation: chat-float 3.2s ease-in-out infinite;
+}
+
+.chat-bar-showup img {
+  width: 36px;
+  height: 36px;
+  display: block;
+}
+
+.chat-bar-showup:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
+}
+
+@keyframes chat-float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.chat-badge {
+  position: absolute;
+  top: -5px;
+  right: 3px;
+  min-width: 18px;
+  height: 20px;
+  padding: 0 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fb0000;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 999px;
+  box-shadow: 0 3px 8px rgba(25, 118, 210, 0.28);
+}
+/* ══════════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1100px) {
+  .tc-wrapper {
+    grid-template-columns: 65% 35%;
+  }
+  .ms-status-sub {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .tc-wrapper {
+    grid-template-columns: 60% 40%;
+  }
+  .driver-actions {
+    flex-direction: row;
+  }
+  .support-btns {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Page becomes scrollable on mobile */
+  .tc-page {
+    height: auto;
+    overflow: auto;
+  }
+
+  .tc-wrapper {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    height: auto;
+  }
+
+  .tc-map-col {
+    height: 55vw;
+    min-height: 300px;
+    max-height: 420px;
+  }
+
+  .tc-right-col {
+    border-left: none;
+    border-top: 1px solid var(--border);
+    height: auto;
+    overflow: visible;
+  }
+
+  .tc-right-scroll {
+    overflow: visible;
+    height: auto;
+    padding: 12px;
+  }
+
+  /* Map panel */
+  .ms-status-sub {
+    display: none;
+  }
+  .ms-driver-card {
+    bottom: 10px;
+    min-width: 240px;
+    padding: 10px 14px;
+  }
+  .ms-eta-value {
+    font-size: 18px;
+  }
+
+  /* Cards */
+  .driver-actions {
+    flex-direction: row;
+  }
+  .support-btns {
+    flex-wrap: wrap;
+  }
+  .support-btn {
+    flex: 1;
+    min-width: 100px;
+  }
+  .stepper {
+    gap: 0;
+  }
+  .step-circle {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Chat panel — becomes bottom sheet on mobile */
+  .cp-container.cp-open {
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 90vh;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
+  }
+
+  .cp-container.cp-open.cp-open--active {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .cp-container.cp-open.cp-open--hidden {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  /* FAB */
+  .chat-bar-showup {
+    bottom: 20px;
+    right: 16px;
+    width: 52px;
+    height: 52px;
+  }
+}
+
+@media (max-width: 400px) {
+  .tc-map-col {
+    height: 50vw;
+    min-height: 260px;
+  }
+  .ms-driver-card {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .ms-eta-block {
+    flex-direction: row;
+    gap: 6px;
+    width: 100%;
+    justify-content: center;
+  }
+  .stats-row {
+    flex-wrap: wrap;
+  }
+  .stat-item {
+    min-width: 30%;
+  }
+}
