@@ -1,8 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   devIndicators: false,
-  /* config options here */
   reactCompiler: true,
+  basePath: "/carpooling",
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "dev.maastrixdemo.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

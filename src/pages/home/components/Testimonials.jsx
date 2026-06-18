@@ -145,7 +145,7 @@ const Testimonials = () => {
                             <Image
                               src={item.avatar}
                               alt={item.name}
-                              fill
+                             
                               style={{
                                 objectFit: "cover",
                                 borderRadius: "50%",

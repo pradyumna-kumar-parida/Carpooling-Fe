@@ -41,6 +41,8 @@ import { useAuth } from "@/context/AuthContext";
 import NotificationPanel from "./Notification";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "@/redux/slices/authSlice";
 
 const getNavLinks = (role, isLoggedIn) => [
   ...(role === "driver" || !isLoggedIn
@@ -70,15 +72,15 @@ const getAccountLinks = (role) => [
 ];
 
 const Header = () => {
-  const router = useRouter();
-  const { user, setUser } = useAuth();
+  const dispatch = useDispatch();
 
+  const router = useRouter();
+  const user = useSelector((state) => state.auth.user);
+   
   const isLoggedIn = !!user;
   const role = user?.role;
   const firstName = user?.name ? user.name.split(" ")[0] : "";
 
-  // next/image needs a string/StaticImageData src, never a JSX element.
-  // Fall back to a flag instead and render the icon component separately.
   const profilePicture = user?.user_details?.profile_picture || null;
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -144,7 +146,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    setUser(null);
+    dispatch(logoutUser());
     setAnchorEl(null);
     setDrawerOpen(false);
 
@@ -162,9 +164,14 @@ const Header = () => {
 
   const ProfileAvatar = () =>
     profilePicture ? (
-      <Image src={profilePicture} alt="user" fill sizes="40px" priority />
+      <Image
+        src={profilePicture}
+        alt="user"
+       fill
+        unoptimized
+      />
     ) : (
-      <FaUserCircle size={28} />
+      <FaUserCircle size={51} />
     );
 
   const DrawerContent = (
@@ -334,7 +341,7 @@ const Header = () => {
                 onClose={() => setAnchorEl(null)}
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 transformOrigin={{ vertical: "top", horizontal: "right" }}
-                PaperProps={{
+                slotProps={{
                   style: {
                     minWidth: "250px",
                     width: "250px",

@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-// import SearchRide from "../Rides/find-ride/SearchRide";
-import { useAuth } from "@/context/AuthContext";
+import SearchRide from "../../components/SearchRide";
+
 import Hero from "./components/Hero";
 import DetailedCards from "./components/DetailedCards";
 import WhyChoose from "./components/WhyChoose";
@@ -13,8 +13,7 @@ function Landingpage() {
   useEffect(() => {
     setRole(localStorage.getItem("role"));
   }, []);
-  const { user } = useAuth();
-  console.log("User in landing page:", user);
+
   return (
     <div className="App">
       <Hero />
@@ -23,7 +22,7 @@ function Landingpage() {
           role !== "driver" ? "landingpage-search" : "search-disappear"
         }
       >
-        {/* {role !== "driver" && <SearchRide />} */}
+        {role !== "driver" && <SearchRide />}
       </div>
       <div className="container" id="find">
         <DetailedCards />

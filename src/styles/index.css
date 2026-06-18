@@ -2122,7 +2122,7 @@ footer {
 }
 
 .login-tab--active {
-  background: var(--fr-primary);
+  background: var(--custom-one);
   color: #ffffff;
   box-shadow: 0 2px 10px rgba(0, 51, 161, 0.22);
 }
