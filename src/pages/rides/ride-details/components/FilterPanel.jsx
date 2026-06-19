@@ -74,7 +74,7 @@ export default function FilterPanel({
           {!mobile && (
             <div className="ridetail-check-right">
               <span className="ridetail-verified-badge">
-                <img src={varifiedBedge} alt="verified" loading="lazy" />
+                <img src={varifiedBedge} alt="verified"  />
               </span>
             </div>
           )}

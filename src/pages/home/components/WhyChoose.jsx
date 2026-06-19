@@ -47,7 +47,7 @@ const WhyChoose = () => {
               <Image
                 src={reason.icon}
                 alt={`${reason.title} icon`}
-                loading="lazy"
+       
               />
             </div>
 

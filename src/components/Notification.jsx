@@ -14,7 +14,7 @@ export default function NotificationPanel({
     <Dialog
       open={open}
       onClose={onClose}
-      BackdropProps={{ invisible: true }}
+      slotProps={{ invisible: true }}
       PaperProps={{
         className: "notification-dialog-paper",
       }}

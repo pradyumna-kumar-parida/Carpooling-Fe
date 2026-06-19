@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import testimonialImg1 from "../../../assets/images/testimonial-Img1.jpg";
-import testimonialImg2 from "../../../assets/images/testimonial-Img2.avif";
+import testimonialImg2 from "../../../assets/images/testimonial-Img2.jpg";
 import testimonialImg3 from "../../../assets/images/testimonial-Img3.jpg";
 import quotation from "../../../assets/images/quotation.png";
 import { FaAngleDoubleLeft, FaAngleDoubleRight } from "react-icons/fa";
@@ -130,7 +130,7 @@ const Testimonials = () => {
                         <Image
                           src={quotation}
                           alt="quote"
-                          loading="lazy"
+                
                           width={15}
                         />
                       </div>

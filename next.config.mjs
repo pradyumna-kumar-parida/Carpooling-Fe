@@ -2,7 +2,6 @@
 const nextConfig = {
   devIndicators: false,
   reactCompiler: true,
-  basePath: "/carpooling",
 
   images: {
     remotePatterns: [

@@ -5,7 +5,7 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import ArcLoader from "../../../components/Loader";
-
+import Link from "next/link";
 import { useSignupForm } from "./hooks/useSignupForm";
 import {
   DRIVER_STEPS,
@@ -19,7 +19,6 @@ import FieldInput from "./components/FieldInput";
 import PasswordField from "./components/PasswordField";
 import FieldSelect from "./components/FieldSelect";
 import FileField from "./components/FileField";
-import Link from "next/link";
 
 // ── Full-screen loader ────────────────────────────────────────────────────
 function PageLoader() {
@@ -287,9 +286,9 @@ export default function Signup() {
                     />
                     <span className="checkbox-text">
                       I agree to the{" "}
-                      <a href="#terms" className="terms-link">
+                      <Link href="#terms" className="terms-link">
                         Terms &amp; Conditions
-                      </a>
+                      </Link>
                     </span>
                   </label>
                 </div>

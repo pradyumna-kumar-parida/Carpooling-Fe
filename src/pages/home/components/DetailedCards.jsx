@@ -144,7 +144,7 @@ const DetailedCards = () => {
             src={card.image}
             alt=""
             className="card-image"
-            loading="lazy"
+   
           />
         </div>
       ))}

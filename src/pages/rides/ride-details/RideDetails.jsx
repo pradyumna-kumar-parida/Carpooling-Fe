@@ -82,7 +82,7 @@ export default function RideDetails() {
     if (groups.length === 0) {
       return (
         <div className="notfoundride">
-          <img src={rideNotFound} alt="No rides available" loading="lazy" />
+          <img src={rideNotFound} alt="No rides available"  />
         </div>
       );
     }

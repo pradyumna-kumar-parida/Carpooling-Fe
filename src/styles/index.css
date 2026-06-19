@@ -1796,6 +1796,8 @@ footer {
 
 .tab-icon {
   font-size: 1.125rem;
+  display: flex;
+  align-items: center;
 }
 .tab-label {
   font-weight: 600;
