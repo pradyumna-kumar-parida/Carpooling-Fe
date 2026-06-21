@@ -2861,7 +2861,7 @@
 }
 
 .vehicledetails-stepper {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem !important;
 }
 
 .vehicledetails-progress {

@@ -20,7 +20,7 @@ const PhotoGrid = ({ vehicle }) => {
     <div className="vehicle-detl-photo-grid">
       {photos.map(({ label, src }) => (
         <div key={label} className="vehicle-detl-photo-item">
-          <Image src={src} alt={label} />
+          <Image src={src} alt={label} fill/>
           <span className="vehicle-detl-photo-label">{label}</span>
         </div>
       ))}

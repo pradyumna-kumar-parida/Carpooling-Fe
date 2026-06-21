@@ -9,16 +9,16 @@ import {
   Snackbar,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
+import "../../../styles/find-ride.css"
+import ArcLoader from "../../../components/Loader";
+import { STEPS } from "./constants/vehicleConstants";
+import { useVehicleForm } from "./hooks/useVehicleForm";
 
-import ArcLoader from "../../components/Loader";
-import { STEPS } from "./vehicle-registration/constants/vehicleConstants";
-import { useVehicleForm } from "./vehicle-registration/hooks/useVehicleForm";
-
-import SuccessScreen from "./vehicle-registration/components/SuccessScreen";
-import StepBasicInfo from "./vehicle-registration/components/StepBasicInfo";
-import StepDocuments from "./vehicle-registration/components/StepDocuments";
-import StepInsurance from "./vehicle-registration/components/StepInsurance";
-import StepFeaturesPhotos from "./vehicle-registration/components/StepFeaturesPhotos";
+import SuccessScreen from "./components/SuccessScreen";
+import StepBasicInfo from "./components/StepBasicInfo";
+import StepDocuments from "./components/StepDocuments";
+import StepInsurance from "./components/StepInsurance";
+import StepFeaturesPhotos from "./components/StepFeaturesPhotos";
 import { useRouter } from "next/navigation";
 
 // ── Maps step index to its component ──────────────────────────────────────

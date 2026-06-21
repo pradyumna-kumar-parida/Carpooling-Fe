@@ -22,8 +22,8 @@ export default function SuccessScreen({ onViewDetails, onGoHome }) {
         <Image
           src={sucessBedge}
           alt="success-badge"
-          width={300}
-          height={300}
+          width={100}
+          height={100}
           className="success-badge-image"
         />
       </div>

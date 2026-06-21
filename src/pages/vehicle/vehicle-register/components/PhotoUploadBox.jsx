@@ -18,7 +18,7 @@ export default function PhotoUploadBox({
       <div className="vehicledetails-photo-item">
         <FormLabel className="vehicledetails-label">{label} *</FormLabel>
         <div className="vehicledetails-photo-preview">
-          <Image src={preview} alt={label} />
+          <Image src={preview} alt={label} fill />
           <button
             className="vehicledetails-photo-remove"
             onClick={() => onRemove(fieldKey)}

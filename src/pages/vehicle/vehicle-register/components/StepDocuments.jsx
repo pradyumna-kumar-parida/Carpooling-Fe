@@ -23,10 +23,20 @@ export default function StepDocuments({
           className="vehicledetails-input"
         />
         <TextField
-          fullWidth type="date" label="RC Expiry Date *" name="rcExpiryDate"
-          value={vehicleData.rcExpiryDate} onChange={onChange}
-          error={!!errors.rcExpiryDate} helperText={errors.rcExpiryDate}
-          className="vehicledetails-input" InputLabelProps={{ shrink: true }}
+          fullWidth
+          type="date"
+          label="RC Expiry Date *"
+          name="rcExpiryDate"
+          value={vehicleData.rcExpiryDate}
+          onChange={onChange}
+          error={!!errors.rcExpiryDate}
+          helperText={errors.rcExpiryDate}
+          className="vehicledetails-input"
+          slotProps={{
+            inputLabel: {
+              shrink: true,
+            },
+          }}
         />
       </div>
 
@@ -36,7 +46,7 @@ export default function StepDocuments({
           fieldName="rcDocument"
           file={vehicleData.rcDocument} preview={filePreview.rcDocument}
           error={errors.rcDocument} accept="image/*,.pdf"
-         onChange={onFileChange} onRemove={onFileRemove}
+          onChange={onFileChange} onRemove={onFileRemove}
         />
         {errors.rcDocument && <span className="vehicledetails-error">{errors.rcDocument}</span>}
       </div>

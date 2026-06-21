@@ -1,6 +1,5 @@
 "use client";
 
-import { AuthProvider } from "@/context/AuthContext";
 import { store } from "@/redux/store";
 import { Provider } from "react-redux";
 

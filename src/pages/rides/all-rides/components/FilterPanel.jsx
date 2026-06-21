@@ -1,7 +1,10 @@
-// src/pages/Rides/find-ride/components/FilterPanel.jsx
+"use client";
 
-import varifiedBedge from "../../../../assets/Images/verifiedBedge.png";
-import FilterSection  from "./FilterSection";
+import Image from "next/image";
+import varifiedBedge from "../../../../assets/images/verifiedBedge.png";
+
+import FilterSection from "./FilterSection";
+
 import {
   SORT_OPTIONS,
   DEPART_SLOTS,
@@ -22,7 +25,7 @@ export default function FilterPanel({
 }) {
   return (
     <>
-      {/* ── Sort ── */}
+      {/* Sort */}
       <FilterSection title="Sort by">
         {SORT_OPTIONS.map((s) => (
           <label key={s.id} className="ridetail-radio-row">
@@ -40,7 +43,7 @@ export default function FilterPanel({
         ))}
       </FilterSection>
 
-      {/* ── Departure time ── */}
+      {/* Departure Time */}
       <FilterSection title="Departure time">
         {DEPART_SLOTS.map((d) => (
           <div key={d.id} className="ridetail-check-row">
@@ -58,7 +61,7 @@ export default function FilterPanel({
         ))}
       </FilterSection>
 
-      {/* ── Trust & Safety ── */}
+      {/* Trust & Safety */}
       <FilterSection title="Trust & Safety">
         <div className="ridetail-check-row">
           <label className="ridetail-check-left">
@@ -68,20 +71,27 @@ export default function FilterPanel({
               checked={verifiedOnly}
               onChange={setVerifiedOnly}
             />
-            <span className="ridetail-check-label">Verified Profile</span>
+            <span className="ridetail-check-label">
+              Verified Profile
+            </span>
           </label>
 
           {!mobile && (
             <div className="ridetail-check-right">
               <span className="ridetail-verified-badge">
-                <img src={varifiedBedge} alt="verified"  />
+                <Image
+                  src={varifiedBedge}
+                  alt="verified"
+                  width={24}
+                  height={24}
+                />
               </span>
             </div>
           )}
         </div>
       </FilterSection>
 
-      {/* ── Amenities ── */}
+      {/* Amenities */}
       <FilterSection title="Amenities">
         {AMENITIES.map((a) => (
           <div key={a.id} className="ridetail-check-row">
@@ -91,10 +101,15 @@ export default function FilterPanel({
                 className="ridetail-checkbox"
                 checked={!!amenityChecks[a.id]}
                 onChange={() =>
-                  setAmenityChecks((p) => ({ ...p, [a.id]: !p[a.id] }))
+                  setAmenityChecks((prev) => ({
+                    ...prev,
+                    [a.id]: !prev[a.id],
+                  }))
                 }
               />
-              <span className="ridetail-check-label">{a.label}</span>
+              <span className="ridetail-check-label">
+                {a.label}
+              </span>
             </label>
           </div>
         ))}

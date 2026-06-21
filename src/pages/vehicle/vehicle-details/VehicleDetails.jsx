@@ -1,15 +1,14 @@
-// src/pages/Vehicle/VehicleDetails.jsx
-
-import { useNavigate } from "react-router-dom";
+"use client"
+import "../../../styles/find-ride.css"
 import { Alert, Snackbar } from "@mui/material";
-
-import { useVehicleDetails } from "./vehicle-details/hooks/useVehicleDetails";
-import VehicleCard from "./vehicle-details/components/VehicleCard";
-import VehicleDetailPanel from "./vehicle-details/components/VehicleDetailPanel";
-import VehicleEditModal from "./vehicle-details/components/VehicleEditModal";
-import EmptyState from "./vehicle-details/components/EmptyState";
-import { useVehicleList } from "../../context/VehicleContext";
+import { useVehicleDetails } from "./hooks/useVehicleDetails";
+import VehicleCard from "./components/VehicleCard";
+import VehicleDetailPanel from "./components/VehicleDetailPanel";
+import VehicleEditModal from "./components/VehicleEditModal";
+import EmptyState from "./components/EmptyState";
+// import { useVehicleList } from "../../context/VehicleContext";
 import { FiPlus } from "react-icons/fi";
+import { useRouter } from "next/navigation";
 function PageLoader() {
   return (
     <div className="vehicle-detl-loader">
@@ -19,7 +18,7 @@ function PageLoader() {
 }
 
 export default function VehicleDetails() {
-  const navigate = useNavigate();
+  const router = useRouter()
   const {
     vehicles,
     selected,
@@ -37,7 +36,7 @@ export default function VehicleDetails() {
     closeToast,
   } = useVehicleDetails();
 
-  const { vehicleList } = useVehicleList();
+  // const { vehicleList } = useVehicleList();
   return (
     <>
       {/* ── Toast ── */}
@@ -77,14 +76,14 @@ export default function VehicleDetails() {
               Manage your registered vehicles
             </p>
           </div>
-          {vehicleList.length > 0 && (
-            <button
-              className="vehicle-detl-add-btn"
-              onClick={() => navigate("/vehicle-registration")}
-            >
-              <FiPlus size={16} /> Add New Vehicle
-            </button>
-          )}
+          {/* {vehicleList.length > 0 && ( */}
+          <button
+            className="vehicle-detl-add-btn"
+            onClick={() => router.push("/vehicle-registration")}
+          >
+            <FiPlus size={16} /> Add New Vehicle
+          </button>
+          {/* )} */}
         </div>
 
         {loading && <PageLoader />}

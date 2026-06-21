@@ -19,11 +19,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-
 let _scriptLoading = false;
 const _scriptCallbacks = [];
 
 function loadGoogleScript() {
+  console.log("google api", GOOGLE_API_KEY);
+
   return new Promise((resolve, reject) => {
     if (window.google?.maps?.places) return resolve();
     if (_scriptLoading) {
@@ -360,7 +361,7 @@ const PRHero = () => {
       setPrice(saved.price ?? "");
       setSelectedVehicle(saved.selectedVehicle ?? "");
       setPrefs(saved.prefs ?? DEFAULT_PREFS);
-     
+
     } catch (err) {
       console.error("Failed to restore saved ride form:", err);
     } finally {
@@ -446,8 +447,8 @@ const PRHero = () => {
       showAlert(
         "error",
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong.",
+        error?.message ||
+        "Something went wrong.",
       );
     } finally {
       setLoading(false);

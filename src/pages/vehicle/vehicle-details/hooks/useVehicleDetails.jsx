@@ -2,12 +2,17 @@
 // src/pages/Vehicle/vehicle-details/hooks/useVehicleDetails.js
 
 import { useState, useEffect } from "react";
-import { vehicleDetailUpadateApi } from "../../../../services/vehicleService";
-import { useVehicleList } from "../../../../context/VehicleContext";
+import { vehicleDetailUpdateApi } from "../../../../services/vehicleService";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchVehicleList } from "@/redux/slices/vehicleSlice";
+// import { useVehicleList } from "../../../../context/VehicleContext";
 
 export function useVehicleDetails() {
-  const { vehicleList } = useVehicleList();
-
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchVehicleList())
+  }, [])
+  const vehicleList = useSelector((state) => state.vehicle.vehicleList)
   const [selected, setSelected] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [editData, setEditData] = useState({});
@@ -63,7 +68,7 @@ export function useVehicleDetails() {
       payload.append("policy_number", editData.policy_number || "");
       payload.append("insurance_expiry", editData.insurance_expiry || "");
 
-      const response = await vehicleDetailUpadateApi(payload);
+      const response = await vehicleDetailUpdateApi(payload);
 
       if (
         response.data?.status === "success" ||

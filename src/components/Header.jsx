@@ -37,7 +37,6 @@ import {
 import { CgMenuRightAlt } from "react-icons/cg";
 import Link from "next/link";
 
-import { useAuth } from "@/context/AuthContext";
 import NotificationPanel from "./Notification";
 import { useRouter } from "next/navigation";
 import Image from "next/image";

@@ -13,7 +13,7 @@ const NotFound = () => {
     <div
       style={{
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "center", 
         alignItems: "center",
         height: "100vh",
         flexDirection: "column",

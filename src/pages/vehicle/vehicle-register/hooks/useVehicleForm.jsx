@@ -1,14 +1,12 @@
 "use client";
 import { useState } from "react";
-import axios from "axios";
 import { vehicleRegistrationApi } from "../../../../services/vehicleService";
-import { useAuth } from "../../../../context/AuthContext";
 import { INITIAL_VEHICLE_DATA } from "../constants/vehicleConstants";
 import { validateStep, buildVehiclePayload } from "../utils/vehicleHelpers";
-import { useVehicleList } from "../../../../context/VehicleContext";
+import { useSelector } from "react-redux";
 
 export function useVehicleForm() {
-  const { fetchVehicleList } = useVehicleList();
+  // const { fetchVehicleList } = useVehicleList();
   // ── Stepper ───────────────────────────────────────────────────────────
   const [activeStep, setActiveStep] = useState(0);
   const [completedSteps, setCompletedSteps] = useState([]);
@@ -90,7 +88,7 @@ export function useVehicleForm() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const { user } = useAuth();
+  const user = useSelector((state) => state.auth.user)
 
   // ── Submit ────────────────────────────────────────────────────────────
   const handleSubmit = async () => {
@@ -112,7 +110,7 @@ export function useVehicleForm() {
       const response = await vehicleRegistrationApi(payload);
       if ([200, 201].includes(response.status)) {
         setIsSuccess(true);
-        await fetchVehicleList();
+        // await fetchVehicleList();
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         showToast(
@@ -123,9 +121,9 @@ export function useVehicleForm() {
       console.log("422 details →", err?.response?.data);
       showToast(
         err?.response?.data?.message ||
-          err?.response?.data?.error ||
-          err?.message ||
-          "Something went wrong. Please try again.",
+        err?.response?.data?.error ||
+        err?.message ||
+        "Something went wrong. Please try again.",
       );
     } finally {
       setLoading(false);

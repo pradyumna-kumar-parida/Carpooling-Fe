@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from "react";
 import FilterPanel from "./FilterPanel";
 
@@ -43,6 +45,7 @@ export default function MobileFilterDrawer({
             }}
           >
             <button
+              type="button"
               className="ridetail-clear-btn"
               onClick={() => {
                 clearAll();
@@ -53,6 +56,7 @@ export default function MobileFilterDrawer({
             </button>
 
             <button
+              type="button"
               className="ridetail-mobile-close"
               onClick={() => setOpen(false)}
             />

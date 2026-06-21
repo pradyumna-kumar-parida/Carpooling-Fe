@@ -1,8 +1,8 @@
 // src/pages/Vehicle/vehicle-registration/components/StepBasicInfo.jsx
 
 import { TextField, MenuItem } from "@mui/material";
-import { FaCar }               from "react-icons/fa";
-import { CAR_BRANDS, COLORS }  from "../constants/vehicleConstants";
+import { FaCar } from "react-icons/fa";
+import { CAR_BRANDS, COLORS } from "../constants/vehicleConstants";
 
 export default function StepBasicInfo({ vehicleData, errors, onChange }) {
   return (
@@ -46,7 +46,13 @@ export default function StepBasicInfo({ vehicleData, errors, onChange }) {
           placeholder="e.g., TS09EA1234"
           error={!!errors.registrationNumber} helperText={errors.registrationNumber}
           className="vehicledetails-input"
-          inputProps={{ style: { textTransform: "uppercase" } }}
+          slotProps={{
+            htmlInput: {
+              style: {
+                textTransform: "uppercase",
+              },
+            },
+          }}
         />
       </div>
     </div>

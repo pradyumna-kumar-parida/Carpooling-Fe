@@ -1,5 +1,4 @@
-// src/pages/Rides/find-ride/utils/rideHelpers.js
-
+"use client"
 const AVATAR_COLORS = [
   ["#dbeafe", "#1e40af"],
   ["#dcfce7", "#166534"],

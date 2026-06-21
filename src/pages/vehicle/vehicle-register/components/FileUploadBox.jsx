@@ -21,6 +21,8 @@ export default function FileUploadBox({
             src={preview}
             alt={fieldName}
             className="vehicledetails-preview-image"
+            width={200}
+            height={120}
           />
         ) : (
           <div className="vehicledetails-file-info">

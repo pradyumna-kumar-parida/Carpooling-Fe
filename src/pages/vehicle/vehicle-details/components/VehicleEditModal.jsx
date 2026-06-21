@@ -60,7 +60,11 @@ export default function VehicleEditModal({
       onClose={onClose}
       maxWidth="md"
       fullWidth
-      slotProps={{ className: "vehicle-detl-modal" }}
+      slotProps={{
+        paper: {
+          className: "vehicle-detl-modal",
+        },
+      }}
     >
       <DialogContent className="vehicle-detl-modal-content">
         <div className="vehicle-detl-modal-header">

@@ -2,7 +2,7 @@
 
 import { TextField, MenuItem, FormLabel } from "@mui/material";
 import { MANUFACTURE_YEARS } from "../constants/vehicleConstants";
-import FileUploadBox          from "./FileUploadBox";
+import FileUploadBox from "./FileUploadBox";
 
 export default function StepInsurance({
   vehicleData, filePreview, errors, onChange, onFileChange, onFileRemove,
@@ -33,7 +33,11 @@ export default function StepInsurance({
           fullWidth type="date" label="Insurance Expiry Date *" name="insuranceExpiryDate"
           value={vehicleData.insuranceExpiryDate} onChange={onChange}
           error={!!errors.insuranceExpiryDate} helperText={errors.insuranceExpiryDate}
-          className="vehicledetails-input" InputLabelProps={{ shrink: true }}
+          className="vehicledetails-input" slotProps={{
+            inputLabel: {
+              shrink: true,
+            },
+          }}
         />
         <TextField
           select fullWidth label="Vehicle Manufacture Year *" name="manufacturyDate"
