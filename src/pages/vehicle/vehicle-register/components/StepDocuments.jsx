@@ -4,11 +4,18 @@ import { TextField, FormLabel, Alert } from "@mui/material";
 import FileUploadBox from "./FileUploadBox";
 
 export default function StepDocuments({
-  vehicleData, filePreview, errors, onChange, onFileChange, onFileRemove,
+  vehicleData,
+  filePreview,
+  errors,
+  onChange,
+  onFileChange,
+  onFileRemove,
 }) {
   return (
     <div className="vehicledetails-section">
-      <h2 className="vehicledetails-section-title">Registration &amp; Documents</h2>
+      <h2 className="vehicledetails-section-title">
+        Registration &amp; Documents
+      </h2>
 
       <Alert severity="info" className="vehicledetails-alert">
         Please ensure all documents are clear and valid. Maximum file size: 5MB
@@ -16,10 +23,14 @@ export default function StepDocuments({
 
       <div className="vehicledetails-grid-2">
         <TextField
-          fullWidth label="RC Number *" name="rcNumber"
-          value={vehicleData.rcNumber} onChange={onChange}
+          fullWidth
+          label="RC Number *"
+          name="rcNumber"
+          value={vehicleData.rcNumber}
+          onChange={onChange}
           placeholder="e.g., TS09EA1234567890"
-          error={!!errors.rcNumber} helperText={errors.rcNumber}
+          error={!!errors.rcNumber}
+          helperText={errors.rcNumber}
           className="vehicledetails-input"
         />
         <TextField
@@ -32,23 +43,28 @@ export default function StepDocuments({
           error={!!errors.rcExpiryDate}
           helperText={errors.rcExpiryDate}
           className="vehicledetails-input"
-          slotProps={{
-            inputLabel: {
-              shrink: true,
-            },
+          InputLabelProps={{
+            shrink: true,
           }}
         />
       </div>
 
       <div className="vehicledetails-upload-section">
-        <FormLabel className="vehicledetails-label">Upload RC Document *</FormLabel>
+        <FormLabel className="vehicledetails-label">
+          Upload RC Document *
+        </FormLabel>
         <FileUploadBox
           fieldName="rcDocument"
-          file={vehicleData.rcDocument} preview={filePreview.rcDocument}
-          error={errors.rcDocument} accept="image/*,.pdf"
-          onChange={onFileChange} onRemove={onFileRemove}
+          file={vehicleData.rcDocument}
+          preview={filePreview.rcDocument}
+          error={errors.rcDocument}
+          accept="image/*,.pdf"
+          onChange={onFileChange}
+          onRemove={onFileRemove}
         />
-        {errors.rcDocument && <span className="vehicledetails-error">{errors.rcDocument}</span>}
+        {errors.rcDocument && (
+          <span className="vehicledetails-error">{errors.rcDocument}</span>
+        )}
       </div>
     </div>
   );
