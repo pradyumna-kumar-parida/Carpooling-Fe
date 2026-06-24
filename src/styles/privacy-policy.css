@@ -1,0 +1,199 @@
+.page {
+  --btn-bg: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
+  --section-cardBg: #f7f9fb;
+  --heading: "Vollkorn", serif;
+  --custom-one: #1e40af;
+  --black: #000000;
+  --desc: #666;
+  --radius: 10px;
+  --fr-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  background: #ffffff;
+  color: var(--black);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  background: var(--btn-bg);
+  padding: 72px 0 56px;
+  color: #fff;
+}
+
+.heroChip {
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #fff !important;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.heroTitle {
+  font-family: var(--heading);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  margin: 0 0 14px;
+  letter-spacing: -0.01em;
+}
+
+.heroSubtitle {
+  font-size: 1.05rem;
+  max-width: 560px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
+  margin: 0 0 18px;
+}
+
+.heroMeta {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+/* ---------- Content ---------- */
+.content {
+  padding: 56px 0 80px;
+}
+
+.intro {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--desc);
+  max-width: 640px;
+  margin: 0 0 36px;
+}
+
+/* Table of contents */
+.toc {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  background: var(--section-cardBg);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 48px;
+}
+
+.tocLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: var(--black);
+  text-decoration: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.tocLink:hover {
+  background: #ffffff;
+  color: var(--custom-one);
+}
+
+.tocIndex {
+  font-family: var(--heading);
+  font-weight: 700;
+  color: var(--custom-one);
+  font-size: 0.85rem;
+  min-width: 22px;
+}
+
+/* Section cards */
+.sectionList {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.card {
+  background: var(--section-cardBg);
+  border-radius: var(--radius);
+  box-shadow: var(--fr-shadow);
+  padding: 28px 30px;
+  scroll-margin-top: 90px;
+}
+
+.cardHead {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.cardIndex {
+  font-family: var(--heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--custom-one);
+}
+
+.cardTitle {
+  font-family: var(--heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--black);
+}
+
+.cardBody p {
+  font-size: 0.97rem;
+  line-height: 1.7;
+  color: var(--desc);
+  margin: 0 0 10px;
+}
+
+.cardBody p:last-child {
+  margin-bottom: 0;
+}
+
+/* Contact box */
+.contactBox {
+  margin-top: 48px;
+  background: var(--btn-bg);
+  border-radius: var(--radius);
+  padding: 36px;
+  text-align: center;
+  color: #fff;
+}
+
+.contactTitle {
+  font-family: var(--heading);
+  font-size: 1.4rem;
+  margin: 0 0 8px;
+}
+
+.contactText {
+  margin: 0 0 18px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.contactBtn {
+  display: inline-block;
+  background: #fff;
+  color: var(--custom-one);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  transition: transform 0.15s ease;
+}
+
+.contactBtn:hover {
+  transform: translateY(-1px);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .toc {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 22px 20px;
+  }
+
+  .hero {
+    padding: 56px 0 40px;
+  }
+}

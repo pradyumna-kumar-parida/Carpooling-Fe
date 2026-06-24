@@ -51,7 +51,7 @@ const getNavLinks = (role, isLoggedIn) => [
     ? [{ label: "Book a Ride", path: "/find-ride", icon: <FaSearchLocation /> }]
     : []),
   { label: "About", path: "/about", icon: <FiInfo /> },
-  { label: "Help", path: "/help", icon: <FiHelpCircle /> },
+  { label: "Help", path: "/help-support", icon: <FiHelpCircle /> },
 ];
 
 const getAccountLinks = (role) => [

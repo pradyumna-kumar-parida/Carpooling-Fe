@@ -12,7 +12,7 @@ const links = [
   { text: "Help", href: "/help" },
   { text: "Contact", href: "/contact" },
   { text: "Terms", href: "/terms" },
-  { text: "Privacy", href: "/privacy" },
+  { text: "Privacy", href: "/privacy-policy" },
 ];
 
 const socialMedia = [

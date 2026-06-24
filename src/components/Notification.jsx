@@ -1,27 +1,22 @@
-
 import * as React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import "../styles/index.css"
+import "../styles/index.css";
 export default function NotificationPanel({
   open = false,
-  onClose = () => { },
+  onClose = () => {},
   notifications = [],
 }) {
   return (
     <Dialog
       open={open}
       onClose={onClose}
-      slotProps={{
-        paper: {
-          className: "notification-dialog-paper",
-        },
-        backdrop: {
-          invisible: true,
-        },
+      BackdropProps={{ invisible: true }}
+      PaperProps={{
+        className: "notification-dialog-paper",
       }}
     >
       <DialogTitle className="notification-dialog-title">
