@@ -286,7 +286,7 @@ export default function Signup() {
                     />
                     <span className="checkbox-text">
                       I agree to the{" "}
-                      <Link href="#terms" className="terms-link">
+                      <Link href="/term-conditions" className="terms-link">
                         Terms &amp; Conditions
                       </Link>
                     </span>

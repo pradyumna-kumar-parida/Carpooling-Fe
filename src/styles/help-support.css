@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────
-   HelpSupport.module.css
+   help-support.css
    Carpooling India — Help & Support Page
    ───────────────────────────────────────── */
 
@@ -15,19 +15,19 @@
 }
 
 /* ── BASE ─────────────────────────────── */
-.page {
+.help-page {
   font-family: "Inter", sans-serif;
   color: #1a1a2e;
   background: #fff;
 }
 
-.container {
+.help-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-.sectionLabel {
+.help-section-label {
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.12em;
@@ -37,7 +37,7 @@
 }
 
 /* ── HERO ─────────────────────────────── */
-.hero {
+.help-hero {
   position: relative;
   min-height: 380px;
   display: flex;
@@ -46,7 +46,7 @@
   background: #0f1c3f;
 }
 
-.heroBg {
+.help-hero-bg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -56,14 +56,18 @@
   object-position: center 60%;
 }
 
-.heroInner {
+.help-hero-inner {
   position: relative;
   z-index: 2;
   max-width: 620px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 72px 48px;
 }
 
-.heroEyebrow {
+.help-hero-eyebrow {
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -72,7 +76,7 @@
   margin-bottom: 14px;
 }
 
-.heroHeading {
+.help-hero-heading {
   font-family: var(--heading);
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
@@ -81,84 +85,20 @@
   margin: 0 0 16px;
 }
 
-.heroAccent {
+.help-hero-accent {
   color: #60a5fa;
 }
 
-.heroSub {
+.help-hero-sub {
+  text-align: center;
   font-size: 1rem;
   color: #cbd5e1;
   margin: 0 0 32px;
   line-height: 1.7;
 }
 
-.searchForm {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: 50px;
-  padding: 6px 6px 6px 20px;
-  max-width: 540px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  gap: 8px;
-}
-
-.searchIcon {
-  color: #94a3b8;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.searchInput {
-  flex: 1;
-  border: none;
-  outline: none;
-  font-size: 0.94rem;
-  font-family: "Inter", sans-serif;
-  color: #1a1a2e;
-  background: transparent;
-  padding: 4px 0;
-}
-
-.searchInput::placeholder {
-  color: #94a3b8;
-}
-
-.searchBtn {
-  background: var(--btn-bg);
-  color: #fff;
-  border: none;
-  border-radius: 50px;
-  padding: 10px 24px;
-  font-size: 0.88rem;
-  font-weight: 600;
-  font-family: "Inter", sans-serif;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: opacity 0.18s;
-}
-
-.searchBtn:hover {
-  opacity: 0.9;
-}
-
-/* ── QUICK CHIPS ──────────────────────── */
-.quickSection {
-  background: var(--section-cardBg);
-  padding: 28px 0;
-  border-bottom: 1px solid #e5eaf2;
-}
-
-.chipRow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
 /* MUI Chip override */
-.chip {
+.help-chip {
   border-color: #bfcfef !important;
   color: var(--custom-one) !important;
   font-family: "Inter", sans-serif !important;
@@ -168,24 +108,24 @@
     border-color 0.15s !important;
 }
 
-.chip:hover {
+.help-chip:hover {
   background: #eff3ff !important;
   border-color: var(--custom-one) !important;
 }
 
 /* ── HOW IT WORKS ─────────────────────── */
-.howSection {
+.help-how-section {
   padding: 80px 0;
 }
 
-.howGrid {
+.help-how-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
   align-items: center;
 }
 
-.howHeading {
+.help-how-heading {
   font-family: var(--heading);
   font-size: clamp(1.6rem, 2.5vw, 2.2rem);
   font-weight: 700;
@@ -193,14 +133,14 @@
   margin: 0 0 16px;
 }
 
-.howDesc {
-  font-size: 0.95rem;
+.help-how-desc {
+  font-size: 1rem;
   color: var(--desc);
   line-height: 1.75;
   margin: 0 0 24px;
 }
 
-.howList {
+.help-how-list {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -209,16 +149,16 @@
   gap: 12px;
 }
 
-.howList li {
+.help-how-list li {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-size: 0.93rem;
+  font-size: 0.97rem;
   color: #333;
   line-height: 1.6;
 }
 
-.dot {
+.help-dot {
   flex-shrink: 0;
   width: 8px;
   height: 8px;
@@ -227,13 +167,13 @@
   margin-top: 6px;
 }
 
-.howImageWrap {
+.help-how-image-wrap {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 12px 40px rgba(30, 64, 175, 0.13);
 }
 
-.howImage {
+.help-how-image {
   width: 100%;
   height: 340px;
   object-fit: cover;
@@ -241,35 +181,37 @@
 }
 
 /* ── FAQ SECTION ──────────────────────── */
-.faqSection {
+.help-faq-section {
   background: var(--section-cardBg);
   padding: 80px 0;
 }
 
-.faqLayout {
+.help-faq-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
   gap: 48px;
   align-items: flex-start;
 }
 
-.sidebar {
+.help-sidebar {
   position: sticky;
   top: 100px;
 }
 
-.catNav {
+.help-cat-nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: 10px;
+  justify-self: start;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.catBtn {
+.help-cat-btn {
   display: flex;
   align-items: center;
   gap: 12px;
   text-align: left;
+  min-width: 220px;
   background: #fff;
   border: 1px solid #e5eaf2;
   border-radius: var(--radius);
@@ -282,35 +224,35 @@
   transition: all 0.18s;
 }
 
-.catBtn:hover {
+.help-cat-btn:hover {
   border-color: var(--custom-one);
   color: var(--custom-one);
   background: #eff3ff;
 }
 
-.catBtnActive {
+.help-cat-btn-active {
   background: #eff3ff !important;
   border-color: var(--custom-one) !important;
   color: var(--custom-one) !important;
   font-weight: 600 !important;
 }
 
-.catIcon {
+.help-cat-icon {
   display: flex;
   align-items: center;
   font-size: 1.1rem;
   color: inherit;
 }
 
-.catIcon svg {
+.help-cat-icon svg {
   font-size: 1.15rem !important;
 }
 
-.faqPanel {
+.help-faq-panel {
   min-height: 400px;
 }
 
-.faqHeading {
+.help-faq-heading {
   font-family: var(--heading);
   font-size: 1.6rem;
   font-weight: 700;
@@ -318,37 +260,37 @@
   margin: 0 0 24px;
 }
 
-.searchResultMeta {
+.help-search-result-meta {
   font-size: 0.88rem;
   color: var(--desc);
   margin-bottom: 20px;
 }
 
-.accordionList {
+.help-accordion-list {
   display: flex;
   flex-direction: column;
 }
 
 /* ── SAFETY SECTION ──────────────────── */
-.safetySection {
+.help-safety-section {
   padding: 80px 0;
   background: #fff;
 }
 
-.safetyGrid {
+.help-safety-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
   align-items: center;
 }
 
-.safetyImageWrap {
+.help-safety-image-wrap {
   position: relative;
   border-radius: 16px;
   overflow: visible;
 }
 
-.safetyImage {
+.help-safety-image {
   width: 100%;
   height: 400px;
   object-fit: cover;
@@ -357,7 +299,7 @@
   box-shadow: 0 12px 40px rgba(30, 64, 175, 0.12);
 }
 
-.safetyBadge {
+.help-safety-badge {
   position: absolute;
   bottom: -18px;
   left: 24px;
@@ -374,7 +316,7 @@
   box-shadow: 0 4px 16px rgba(30, 64, 175, 0.12);
 }
 
-.safetyHeading {
+.help-safety-heading {
   font-family: var(--heading);
   font-size: clamp(1.5rem, 2.2vw, 2.1rem);
   font-weight: 700;
@@ -382,27 +324,27 @@
   margin: 0 0 16px;
 }
 
-.safetyDesc {
-  font-size: 0.95rem;
+.help-safety-desc {
+  font-size: 1rem;
   color: var(--desc);
   line-height: 1.75;
   margin: 0 0 32px;
 }
 
-.safetyCols {
+.help-safety-cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
-.safetyItem {
+.help-safety-item {
   background: var(--section-cardBg);
   border-radius: var(--radius);
   padding: 18px 20px;
   border: 1px solid #e5eaf2;
 }
 
-.safetyItem strong {
+.help-safety-item strong {
   display: block;
   font-size: 0.9rem;
   font-weight: 600;
@@ -410,7 +352,7 @@
   margin-bottom: 6px;
 }
 
-.safetyItem p {
+.help-safety-item p {
   font-size: 0.84rem;
   color: var(--desc);
   margin: 0;
@@ -418,12 +360,12 @@
 }
 
 /* ── CONTACT SECTION ─────────────────── */
-.contactSection {
+.help-contact-section {
   background: var(--section-cardBg);
   padding: 80px 0;
 }
 
-.contactHeading {
+.help-contact-heading {
   font-family: var(--heading);
   font-size: clamp(1.6rem, 2.5vw, 2.2rem);
   font-weight: 700;
@@ -432,7 +374,7 @@
   margin: 0 0 12px;
 }
 
-.contactSub {
+.help-contact-sub {
   text-align: center;
   font-size: 0.95rem;
   color: var(--desc);
@@ -440,13 +382,13 @@
   max-width: 480px;
 }
 
-.contactGrid {
+.help-contact-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
-.contactCard {
+.help-contact-card {
   background: #fff;
   border: 1px solid #e5eaf2;
   border-radius: 14px;
@@ -460,12 +402,12 @@
     transform 0.2s;
 }
 
-.contactCard:hover {
+.help-contact-card:hover {
   box-shadow: 0 8px 28px rgba(30, 64, 175, 0.12);
   transform: translateY(-3px);
 }
 
-.contactIconWrap {
+.help-contact-icon-wrap {
   width: 56px;
   height: 56px;
   border-radius: 14px;
@@ -477,7 +419,7 @@
   color: var(--custom-one);
 }
 
-.contactCardTitle {
+.help-contact-card-title {
   font-family: var(--heading);
   font-size: 1.1rem;
   font-weight: 700;
@@ -485,21 +427,21 @@
   margin: 0 0 8px;
 }
 
-.contactCardDesc {
+.help-contact-card-desc {
   font-size: 0.9rem;
   color: var(--desc);
   margin: 0 0 6px;
   line-height: 1.6;
 }
 
-.contactCardDetail {
+.help-contact-card-detail {
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--custom-one);
   margin: 0 0 24px;
 }
 
-.contactCta {
+.help-contact-cta {
   display: inline-block;
   margin-top: auto;
   background: var(--btn-bg);
@@ -512,64 +454,64 @@
   transition: opacity 0.18s;
 }
 
-.contactCta:hover {
+.help-contact-cta:hover {
   opacity: 0.88;
 }
 
 /* ── RESPONSIVE ─────────────────────── */
 @media (max-width: 900px) {
-  .howGrid,
-  .safetyGrid {
+  .help-how-grid,
+  .help-safety-grid {
     grid-template-columns: 1fr;
   }
 
-  .howImageWrap {
+  .help-how-image-wrap {
     order: -1;
   }
 
-  .faqLayout {
+  .help-faq-layout {
     grid-template-columns: 1fr;
   }
 
-  .sidebar {
+  .help-sidebar {
     position: static;
   }
 
-  .catNav {
+  .help-cat-nav {
     flex-direction: row;
     flex-wrap: wrap;
   }
 
-  .catBtn {
+  .help-cat-btn {
     flex: none;
     font-size: 0.82rem;
     padding: 9px 12px;
   }
 
-  .contactGrid {
+  .help-contact-grid {
     grid-template-columns: 1fr;
   }
 
-  .safetyCols {
+  .help-safety-cols {
     grid-template-columns: 1fr;
   }
 
-  .heroInner {
+  .help-hero-inner {
     padding: 48px 24px;
   }
 }
 
 @media (max-width: 600px) {
-  .bannerInner {
+  .help-banner-inner {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .bannerBtn {
+  .help-banner-btn {
     margin-left: 0;
   }
 
-  .hero {
+  .help-hero {
     min-height: 320px;
   }
 }

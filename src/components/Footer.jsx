@@ -11,7 +11,7 @@ const links = [
   { text: "How It Works", href: "/how-it-works" },
   { text: "Help", href: "/help" },
   { text: "Contact", href: "/contact" },
-  { text: "Terms", href: "/terms" },
+  { text: "Terms", href: "/term-conditions" },
   { text: "Privacy", href: "/privacy-policy" },
 ];
 

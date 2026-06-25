@@ -9,6 +9,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "dev.maastrixdemo.com",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.pixabay.com",
+      },
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com",
+      },
     ],
   },
 };

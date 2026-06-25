@@ -3,6 +3,7 @@
 import { Box, Container, Chip } from "@mui/material";
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 import "../../styles/privacy-policy.css";
+import Link from "next/link";
 
 const sections = [
   {
@@ -87,52 +88,41 @@ const sections = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="page">
-      <section className="hero">
-        <Container maxWidth="md">
+    <main className="privacy-page">
+      <section className="privacy-hero">
+        <Container maxWidth={false} className="privacy-hero-container">
           <Chip
             icon={
-              <VerifiedUserOutlinedIcon
-                sx={{ color: "var(--custom-one) !important" }}
-              />
+              <VerifiedUserOutlinedIcon fontSize="small" sx={{ color: "#fff !important" }} />
             }
             label="Trust & safety"
-            className="heroChip"
+            className="privacy-hero-chip"
           />
-          <h1 className="heroTitle">Privacy Policy</h1>
-          <p className="heroSubtitle">
+          <h1 className="privacy-hero-title">Privacy Policy</h1>
+          <p className="privacy-hero-subtitle">
             How Carpooling collects, uses and protects your information —
             written in plain language, for drivers and passengers alike.
           </p>
-          <p className="heroMeta">Last updated: June 2026</p>
+          <p className="privacy-hero-meta">Last updated: June 2026</p>
         </Container>
       </section>
 
-      <Container maxWidth="md" className="content">
-        <p className="intro">
+      <Container maxWidth={false} className="privacy-container privacy-content">
+        <p className="privacy-intro">
           Carpooling connects drivers with empty seats to passengers heading the
           same way. To make that possible — and safe — we need to collect a
           limited amount of personal information. This page explains exactly
           what we collect, why, and the choices you have.
         </p>
 
-        <nav className="toc" aria-label="Sections">
+        <div className="privacy-section-list">
           {sections.map((s) => (
-            <a key={s.id} href={`#section-${s.id}`} className="tocLink">
-              <span className="tocIndex">{s.id}</span>
-              {s.title}
-            </a>
-          ))}
-        </nav>
-
-        <div className="sectionList">
-          {sections.map((s) => (
-            <article key={s.id} id={`section-${s.id}`} className="card">
-              <div className="cardHead">
-                <span className="cardIndex">{s.id}</span>
-                <h2 className="cardTitle">{s.title}</h2>
+            <article key={s.id} id={`section-${s.id}`} className="privacy-card">
+              <div className="privacy-card-head">
+                <span className="privacy-card-index">{s.id}</span>
+                <h2 className="privacy-card-title">{s.title}</h2>
               </div>
-              <div className="cardBody">
+              <div className="privacy-card-body">
                 {s.body.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
@@ -141,14 +131,17 @@ export default function PrivacyPolicyPage() {
           ))}
         </div>
 
-        <Box className="contactBox">
-          <h2 className="contactTitle">Questions about your data?</h2>
-          <p className="contactText">
+        <Box className="privacy-contact-box">
+          <h2 className="privacy-contact-title">Questions about your data?</h2>
+          <p className="privacy-contact-text">
             Reach our trust &amp; safety team and we'll respond within 48 hours.
           </p>
-          <a href="mailto:privacy@carpooling.in" className="contactBtn">
+          <Link
+            href="mailto:privacy@carpooling.in"
+            className="privacy-contact-btn"
+          >
             Contact privacy team
-          </a>
+          </Link>
         </Box>
       </Container>
     </main>

@@ -20,6 +20,7 @@ import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
 import "../../styles/about.css";
 import rideImg from "../../assets/images/about-ride-img.jpg";
 import safeDrive from "../../assets/images/safeDrive.jpg";
+import Link from "next/link";
 /* ─── Data ─────────────────────────────────────────────── */
 
 const stats = [
@@ -426,12 +427,12 @@ export default function AboutPage() {
             to move.
           </Typography>
           <Box className="about-cta__btns">
-            <a href="/offer-ride" className="about-btn about-btn--primary">
+            <Link href="/offer-ride" className="about-btn about-btn--primary">
               Offer a Ride
-            </a>
-            <a href="/search" className="about-btn about-btn--outline">
+            </Link>
+            <Link href="/find-ride" className="about-btn about-btn--outline">
               Find a Ride
-            </a>
+            </Link>
           </Box>
         </Container>
       </Box>

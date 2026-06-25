@@ -1,13 +1,13 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-import TrackChat from "@/pages/tracking/TrackChat";
+import ContactUs from "@/pages/contact/ContactUs";
 import React from "react";
 
 const page = () => {
   return (
     <>
       <Header />
-      <TrackChat />
+      <ContactUs />
       <Footer />
     </>
   );

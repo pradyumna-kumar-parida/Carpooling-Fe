@@ -119,7 +119,7 @@
 
 .about-section-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 20px;
 }
 
 .about-section-eyebrow {
@@ -211,7 +211,7 @@
   height: 100%;
   transition:
     transform 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease !important;
   border: 1px solid #e8edf4 !important;
   background: #fff !important;
 }
@@ -280,6 +280,8 @@
 /* ── Timeline ─────────────────────────────────────────────────── */
 .about-timeline {
   margin-top: 40px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .about-timeline__row {
@@ -343,7 +345,7 @@
   border-radius: 14px !important;
   box-shadow: var(--fr-shadow) !important;
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease !important;
   border: 1px solid #e8edf4 !important;
 }
 

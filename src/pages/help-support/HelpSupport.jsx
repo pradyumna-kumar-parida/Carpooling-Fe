@@ -21,6 +21,7 @@ import StarIcon from "@mui/icons-material/Star";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import ChatIcon from "@mui/icons-material/Chat";
+import Link from "next/link";
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -194,27 +195,6 @@ export default function HelpSupport() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState(null);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) {
-      setSearchResults(null);
-      return;
-    }
-    const q = searchQuery.toLowerCase();
-    const results = [];
-    Object.entries(faqs).forEach(([cat, items]) => {
-      items.forEach((item) => {
-        if (
-          item.q.toLowerCase().includes(q) ||
-          item.a.toLowerCase().includes(q)
-        ) {
-          results.push({ ...item, cat });
-        }
-      });
-    });
-    setSearchResults(results);
-  };
-
   const currentFaqs =
     searchResults !== null ? searchResults : faqs[activeCategory] || [];
 
@@ -228,114 +208,59 @@ export default function HelpSupport() {
         />
       </Head>
 
-      <main className="page">
+      <main className="help-page">
         {/* ── HERO ── */}
-        <section className="hero">
-          <div className="heroInner">
-            <p className="heroEyebrow">Help Centre</p>
-            <h1 className="heroHeading">
-              How can we <span className="heroAccent">help you?</span>
+        <section className="help-hero">
+          <div className="help-hero-inner">
+            <p className="help-hero-eyebrow">Help Centre</p>
+            <h1 className="help-hero-heading">
+              How can we <span className="help-hero-accent">help you?</span>
             </h1>
-            <p className="heroSub">
+            <p className="help-hero-sub">
               Search our guides or browse topics below — most answers are just a
               click away.
             </p>
-            <form className="searchForm" onSubmit={handleSearch}>
-              <span className="searchIcon">
-                <SearchIcon />
-              </span>
-              <input
-                className="searchInput"
-                type="text"
-                placeholder="e.g. how do I cancel a booking?"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  if (!e.target.value.trim()) setSearchResults(null);
-                }}
-              />
-              <button className="searchBtn" type="submit">
-                Search
-              </button>
-            </form>
           </div>
           <img
             src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=900&auto=format&fit=crop&q=70"
             alt="People travelling together in a car"
-            className="heroBg"
+            className="help-hero-bg"
           />
         </section>
 
-        {/* ── QUICK CHIPS ── */}
-        <section className="quickSection">
-          <div className="container">
-            <p className="sectionLabel">Popular topics</p>
-            <div className="chipRow">
-              {[
-                "Cancel a booking",
-                "Get a refund",
-                "Verify my ID",
-                "Post my first ride",
-                "Contact driver",
-                "Wallet withdrawal",
-              ].map((label) => (
-                <Chip
-                  key={label}
-                  label={label}
-                  onClick={() => {
-                    setSearchQuery(label);
-                    setSearchResults(null);
-                    // map chips to relevant category
-                    const map = {
-                      "Cancel a booking": "cancellation",
-                      "Get a refund": "payments",
-                      "Verify my ID": "safety",
-                      "Post my first ride": "offering",
-                      "Contact driver": "booking",
-                      "Wallet withdrawal": "payments",
-                    };
-                    setActiveCategory(map[label] || "booking");
-                  }}
-                  variant="outlined"
-                  className="chip"
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* ── HOW IT WORKS BANNER ── */}
-        <section className="howSection">
-          <div className="container">
-            <div className="howGrid">
-              <div className="howText">
-                <p className="sectionLabel">Before you ask</p>
-                <h2 className="howHeading">New to Carpooling?</h2>
-                <p className="howDesc">
+        <section className="help-how-section">
+          <div className="help-container">
+            <div className="help-how-grid">
+              <div className="help-how-text">
+                <p className="help-section-label">Before you ask</p>
+                <h2 className="help-how-heading">New to Carpooling?</h2>
+                <p className="help-how-desc">
                   Carpooling India is a peer-to-peer ride marketplace. Drivers
                   heading somewhere offer empty seats, passengers riding the
                   same route book them — splitting the fuel cost fairly. No
                   commercial taxis, no surge pricing.
                 </p>
-                <ul className="howList">
+                <ul className="help-how-list">
                   <li>
-                    <span className="dot" /> Search a route and pick a verified
-                    driver
+                    <span className="help-dot" /> Search a route and pick a
+                    verified driver
                   </li>
                   <li>
-                    <span className="dot" /> Pay securely — funds held in escrow
-                    until the trip is complete
+                    <span className="help-dot" /> Pay securely — funds held in
+                    escrow until the trip is complete
                   </li>
                   <li>
-                    <span className="dot" /> Travel, arrive, and rate each other
+                    <span className="help-dot" /> Travel, arrive, and rate each
+                    other
                   </li>
                 </ul>
               </div>
-              <div className="howImageWrap">
+              <div className="help-how-image-wrap">
                 <img
                   src={needHelp.src}
                   alt="Inside a carpooling vehicle"
-                  className="howImage"
+                  className="help-how-image"
                 />
               </div>
             </div>
@@ -343,24 +268,24 @@ export default function HelpSupport() {
         </section>
 
         {/* ── FAQ SECTION ── */}
-        <section className="faqSection">
-          <div className="container">
-            <div className="faqLayout">
+        <section className="help-faq-section">
+          <div className="help-container">
+            <div className="help-faq-layout">
               {/* Category sidebar */}
-              <aside className="sidebar">
-                <p className="sectionLabel">Browse by topic</p>
-                <nav className="catNav">
+              <aside className="help-sidebar">
+                <p className="help-section-label">Browse by topic</p>
+                <nav className="help-cat-nav">
                   {categories.map((cat) => (
                     <button
                       key={cat.id}
-                      className={`catBtn ${activeCategory === cat.id && !searchResults ? "catBtnActive" : ""}`}
+                      className={`help-cat-btn ${activeCategory === cat.id && !searchResults ? "help-cat-btn-active" : ""}`}
                       onClick={() => {
                         setActiveCategory(cat.id);
                         setSearchResults(null);
                         setSearchQuery("");
                       }}
                     >
-                      <span className="catIcon">{cat.icon}</span>
+                      <span className="help-cat-icon">{cat.icon}</span>
                       {cat.label}
                     </button>
                   ))}
@@ -368,9 +293,9 @@ export default function HelpSupport() {
               </aside>
 
               {/* Accordion panel */}
-              <div className="faqPanel">
+              <div className="help-faq-panel">
                 {searchResults !== null && (
-                  <p className="searchResultMeta">
+                  <p className="help-search-result-meta">
                     {searchResults.length === 0
                       ? "No results found. Try a different keyword or browse a topic from the left."
                       : `${searchResults.length} result${searchResults.length !== 1 ? "s" : ""} for "${searchQuery}"`}
@@ -378,18 +303,18 @@ export default function HelpSupport() {
                 )}
 
                 {searchResults === null && (
-                  <h2 className="faqHeading">
+                  <h2 className="help-faq-heading">
                     {categories.find((c) => c.id === activeCategory)?.label}
                   </h2>
                 )}
 
-                <div className="accordionList">
+                <div className="help-accordion-list">
                   {currentFaqs.map((item, i) => (
                     <Accordion
                       key={i}
                       disableGutters
                       elevation={0}
-                      className="accordion"
+                      className="help-accordion"
                       sx={{
                         "&:before": { display: "none" },
                         borderRadius: "10px !important",
@@ -442,57 +367,57 @@ export default function HelpSupport() {
         </section>
 
         {/* ── SAFETY HIGHLIGHT ── */}
-        <section className="safetySection">
-          <div className="container">
-            <div className="safetyGrid">
-              <div className="safetyImageWrap">
+        <section className="help-safety-section">
+          <div className="help-container">
+            <div className="help-safety-grid">
+              <div className="help-safety-image-wrap">
                 <img
                   src={driverVerify.src}
                   alt="Driver showing verified ID badge"
-                  className="safetyImage"
+                  className="help-safety-image"
                 />
-                <div className="safetyBadge">
+                <div className="help-safety-badge">
                   <VerifiedUserIcon
                     style={{ color: "#1e40af", fontSize: 22 }}
                   />
                   <span>ID-Verified Driver</span>
                 </div>
               </div>
-              <div className="safetyText">
-                <p className="sectionLabel">Your safety, always</p>
-                <h2 className="safetyHeading">
+              <div className="help-safety-text">
+                <p className="help-section-label">Your safety, always</p>
+                <h2 className="help-safety-heading">
                   Built for trust on every journey
                 </h2>
-                <p className="safetyDesc">
+                <p className="help-safety-desc">
                   Every driver completes government ID verification before
                   posting a single ride. Passenger identities are confirmed via
                   mobile OTP. Ratings are permanent, payment is handled in
                   secure escrow, and a 24/7 SOS button is one tap away
                   throughout your trip.
                 </p>
-                <div className="safetyCols">
-                  <div className="safetyItem">
+                <div className="help-safety-cols">
+                  <div className="help-safety-item">
                     <strong>Govt ID Check</strong>
                     <p>
                       Aadhaar, PAN, or Driving Licence verified before first
                       ride.
                     </p>
                   </div>
-                  <div className="safetyItem">
+                  <div className="help-safety-item">
                     <strong>Secure Escrow</strong>
                     <p>
                       Your payment is only released to the driver after you
                       arrive safely.
                     </p>
                   </div>
-                  <div className="safetyItem">
+                  <div className="help-safety-item">
                     <strong>SOS Button</strong>
                     <p>
                       Shares your live location with emergency contacts
                       instantly.
                     </p>
                   </div>
-                  <div className="safetyItem">
+                  <div className="help-safety-item">
                     <strong>Permanent Ratings</strong>
                     <p>
                       Mutual reviews after every trip keep the community
@@ -506,26 +431,26 @@ export default function HelpSupport() {
         </section>
 
         {/* ── CONTACT ── */}
-        <section className="contactSection">
-          <div className="container">
-            <p className="sectionLabel" style={{ textAlign: "center" }}>
+        <section className="help-contact-section">
+          <div className="help-container">
+            <p className="help-section-label" style={{ textAlign: "center" }}>
               Still need help?
             </p>
-            <h2 className="contactHeading">Reach our support team</h2>
-            <p className="contactSub">
+            <h2 className="help-contact-heading">Reach our support team</h2>
+            <p className="help-contact-sub">
               Can't find the answer above? We're here for you — pick the channel
               that works best.
             </p>
-            <div className="contactGrid">
+            <div className="help-contact-grid">
               {contactOptions.map((opt) => (
-                <div className="contactCard" key={opt.title}>
-                  <div className="contactIconWrap">{opt.icon}</div>
-                  <h3 className="contactCardTitle">{opt.title}</h3>
-                  <p className="contactCardDesc">{opt.desc}</p>
-                  <p className="contactCardDetail">{opt.detail}</p>
-                  <a href={opt.href} className="contactCta">
+                <div className="help-contact-card" key={opt.title}>
+                  <div className="help-contact-icon-wrap">{opt.icon}</div>
+                  <h3 className="help-contact-card-title">{opt.title}</h3>
+                  <p className="help-contact-card-desc">{opt.desc}</p>
+                  <p className="help-contact-card-detail">{opt.detail}</p>
+                  <Link href={opt.href} className="help-contact-cta">
                     {opt.cta}
-                  </a>
+                  </Link>
                 </div>
               ))}
             </div>
