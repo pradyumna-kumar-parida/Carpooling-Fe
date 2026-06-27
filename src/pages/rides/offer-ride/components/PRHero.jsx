@@ -17,14 +17,13 @@ import { publishRideApi } from "../../../../services/rideService";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
+import { getToken } from "@/lib/cookie";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 let _scriptLoading = false;
 const _scriptCallbacks = [];
 
 function loadGoogleScript() {
-  console.log("google api", GOOGLE_API_KEY);
-
   return new Promise((resolve, reject) => {
     if (window.google?.maps?.places) return resolve();
     if (_scriptLoading) {
@@ -300,7 +299,6 @@ const PRHero = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const [token, setToken] = useState(null);
   const [from, setFrom] = useState(null);
   const [to, setTo] = useState(null);
   const [seats, setSeats] = useState(1);
@@ -341,11 +339,6 @@ const PRHero = () => {
     prefs,
   });
 
-  // ── Read token from localStorage on mount ────────────────────────────
-  useEffect(() => {
-    setToken(localStorage.getItem("token"));
-  }, []);
-
   // ── Restore saved form after returning from login/vehicle-registration ─
   useEffect(() => {
     const raw = sessionStorage.getItem(SAVED_FORM_KEY);
@@ -361,7 +354,6 @@ const PRHero = () => {
       setPrice(saved.price ?? "");
       setSelectedVehicle(saved.selectedVehicle ?? "");
       setPrefs(saved.prefs ?? DEFAULT_PREFS);
-
     } catch (err) {
       console.error("Failed to restore saved ride form:", err);
     } finally {
@@ -384,7 +376,7 @@ const PRHero = () => {
       : pathname;
     router.push(`${destination}?from=${encodeURIComponent(currentUrl)}`);
   };
-
+  const token = getToken();
   const handlePublish = async () => {
     if (!token) {
       showAlert("error", "Please login to publish a ride.");
@@ -447,8 +439,8 @@ const PRHero = () => {
       showAlert(
         "error",
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong.",
+          error?.message ||
+          "Something went wrong.",
       );
     } finally {
       setLoading(false);

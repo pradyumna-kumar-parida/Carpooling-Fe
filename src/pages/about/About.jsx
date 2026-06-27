@@ -118,8 +118,6 @@ const milestones = [
 /* ─── Component ─────────────────────────────────────────── */
 
 export default function AboutPage() {
-  console.log("img", rideImg);
-
   return (
     <Box className="about-root">
       {/* ── Hero ── */}

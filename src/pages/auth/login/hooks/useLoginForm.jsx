@@ -11,6 +11,7 @@ import {
   validateLoginForm,
   mapRole,
 } from "../utils/loginHelpers";
+import { setAuthCookies } from "@/lib/cookie";
 
 export function useLoginForm() {
   const dispatch = useDispatch();
@@ -78,10 +79,10 @@ export function useLoginForm() {
 
     dispatch(loginUser({ token, userData: userObj }));
 
-    if (token) localStorage.setItem("token", token);
-    if (role) localStorage.setItem("role", role);
-    else localStorage.removeItem("role");
-
+    // if (token) localStorage.setItem("token", token);
+    // if (role) localStorage.setItem("role", role);
+    // else localStorage.removeItem("role");
+    setAuthCookies(token, role);
     if (rememberMe) localStorage.setItem("rememberedUser", formData.identifier);
     else localStorage.removeItem("rememberedUser");
   };

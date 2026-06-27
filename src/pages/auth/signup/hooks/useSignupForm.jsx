@@ -6,19 +6,19 @@ import { INITIAL_FORM } from "../constants/signupConstants";
 import {
   isDriverRole,
   mapRole,
-  validateStep0,
+  validateStep,
   validateDriverStep,
   buildFormPayload,
 } from "../utils/signupHelpers";
 
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/redux/slices/authSlice";
+import { setAuthCookies } from "@/lib/cookie";
 
 export function useSignupForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+
   const dispatch = useDispatch();
-  const redirectTo = searchParams.get("from") || "/";
 
   const alertTimerRef = useRef(null);
 
@@ -136,7 +136,7 @@ export function useSignupForm() {
     e.preventDefault();
     const err =
       step === 0
-        ? validateStep0(formData)
+        ? validateStep(formData)
         : isDriver
           ? validateDriverStep(step - 1, formData)
           : null;
@@ -158,6 +158,12 @@ export function useSignupForm() {
     e.preventDefault();
     if (!isFinalStep) {
       handleNext(e);
+      return;
+    }
+
+    const baseErr = validateStep(formData);
+    if (baseErr) {
+      showAlert("error", baseErr);
       return;
     }
 
@@ -200,19 +206,13 @@ export function useSignupForm() {
           token: token || null,
         };
 
-        localStorage.setItem("authData", JSON.stringify(response.data));
-
-        if (token) localStorage.setItem("token", token);
-
-        if (role) localStorage.setItem("role", role);
-        else localStorage.removeItem("role");
-
+        setAuthCookies(token, role);
         setFormData(INITIAL_FORM);
         setStep(0);
 
         setTimeout(() => {
           dispatch(loginUser(userObj));
-          router.replace(redirectTo);
+          router.replace("/");
         }, 500);
       }
     } catch (err) {

@@ -1,6 +1,7 @@
 import Providers from "./providers";
 import "../styles/index.css";
 import { Vollkorn, Goblin_One } from "next/font/google";
+import PageTransition from "@/components/PageTransition";
 
 const vollkorn = Vollkorn({
   subsets: ["latin"],
@@ -22,11 +23,12 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  
   return (
     <html lang="en">
       <body className={`${vollkorn.variable} ${goblinOne.variable}`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <PageTransition>{children}</PageTransition>
+        </Providers>
       </body>
     </html>
   );

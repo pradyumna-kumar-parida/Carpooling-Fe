@@ -25,7 +25,21 @@ body {
   --radius: 10px;
   --fr-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
+.page-transition {
+  animation: pageFade 0.8s ease;
+}
 
+@keyframes pageFade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 /* Hide scrollbar */
 ::-webkit-scrollbar {
   display: none;
@@ -927,8 +941,6 @@ nav a:hover::after {
   margin-bottom: 8px;
 }
 
-
-
 .reviewer {
   display: flex;
   align-items: center;
@@ -949,7 +961,6 @@ nav a:hover::after {
   flex-shrink: 0;
   object-fit: contain;
 }
-
 
 .reviewer-info .name {
   font-size: 15px;

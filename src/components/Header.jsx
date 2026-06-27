@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logoImg from "../assets/images/logo-Img.png";
 import img1 from "../assets/images/offer-ride-profile-1.jpg";
 import img2 from "../assets/images/offer-ride-profile-2.jpg";
@@ -25,6 +25,8 @@ import {
   FaCar,
   FaSearchLocation,
 } from "react-icons/fa";
+import { MdOutlinePublishedWithChanges } from "react-icons/md";
+import { GiTakeMyMoney } from "react-icons/gi";
 import { FaUserPlus } from "react-icons/fa6";
 
 import {
@@ -42,6 +44,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/slices/authSlice";
+import { clearAuthCookies, getRole, getToken } from "@/lib/cookie";
 
 const getNavLinks = (role, isLoggedIn) => [
   ...(role === "driver" || !isLoggedIn
@@ -60,14 +63,25 @@ const getAccountLinks = (role) => [
   ...(role === "driver"
     ? [
         {
+          label: "Published Rides",
+          path: "/published-rides",
+          icon: <MdOutlinePublishedWithChanges size={20} />,
+        },
+        {
           label: "Vehicle Registration",
           path: "/vehicle-registration",
           icon: <FaCarSide />,
         },
         { label: "Vehicle Details", path: "/vehicle-details", icon: <FaCar /> },
+        {
+          label: "Earnings",
+          path: "/earnings",
+          icon: <GiTakeMyMoney size={22} />,
+        },
       ]
     : []),
-  { label: "Settings", path: "/settings", icon: <FiSettings /> },
+
+  // { label: "Settings", path: "/settings", icon: <FiSettings /> },
 ];
 
 const Header = () => {
@@ -75,9 +89,13 @@ const Header = () => {
 
   const router = useRouter();
   const user = useSelector((state) => state.auth.user);
-   
-  const isLoggedIn = !!user;
-  const role = user?.role;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(!!getToken());
+  }, []);
+
+  const role = getRole();
   const firstName = user?.name ? user.name.split(" ")[0] : "";
 
   const profilePicture = user?.user_details?.profile_picture || null;
@@ -88,7 +106,7 @@ const Header = () => {
     {
       id: 1,
       title: "New Booking Request",
-      body: "Pradyumna requested 2 seats for Mumbai → Pune.",
+      body: "Pradyumna requested 2 seats for Mumbai to Pune.",
       time: "2 min ago",
       img: img1,
       read: false,
@@ -144,8 +162,8 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
     dispatch(logoutUser());
+    clearAuthCookies();
     setAnchorEl(null);
     setDrawerOpen(false);
 
@@ -163,12 +181,7 @@ const Header = () => {
 
   const ProfileAvatar = () =>
     profilePicture ? (
-      <Image
-        src={profilePicture}
-        alt="user"
-       fill
-        unoptimized
-      />
+      <Image src={profilePicture} alt="user" fill unoptimized />
     ) : (
       <FaUserCircle size={51} />
     );
@@ -325,7 +338,7 @@ const Header = () => {
                 <div className="user-profile-box">
                   <div className="user-profile-text">
                     <span className="user-greeting">Hi,</span>
-                    <span className="user-role">{firstName}</span>
+                    <span className="user-role">{firstName || "Guest"}</span>
                   </div>
                   <div className="profile-img">
                     <ProfileAvatar />
