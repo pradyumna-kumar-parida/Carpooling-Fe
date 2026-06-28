@@ -17,7 +17,7 @@ function PageLoader() {
   );
 }
 
-export default function VehicleDetails() {
+export default function VehicleDetails({vehiclesFetch}) {
   const router = useRouter()
   const {
     vehicles,
@@ -34,7 +34,7 @@ export default function VehicleDetails() {
     handleEditSubmit,
     toast,
     closeToast,
-  } = useVehicleDetails();
+  } = useVehicleDetails(vehiclesFetch);
 
   // const { vehicleList } = useVehicleList();
   return (

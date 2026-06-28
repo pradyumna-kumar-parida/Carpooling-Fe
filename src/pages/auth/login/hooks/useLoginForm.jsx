@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 
-import { loginApi } from "../../../../services/authService";
+import { loginApi } from "../../../../services/client/authService";
 import { loginUser } from "@/redux/slices/authSlice";
 import {
   EMAIL_RE,

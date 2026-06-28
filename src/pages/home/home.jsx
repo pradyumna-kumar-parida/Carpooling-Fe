@@ -7,12 +7,10 @@ import Hero from "./components/Hero";
 import DetailedCards from "./components/DetailedCards";
 import WhyChoose from "./components/WhyChoose";
 import Testimonials from "./components/Testimonials";
+import { getRole } from "@/lib/cookie";
 
 function Landingpage() {
-  const [role, setRole] = useState("");
-  useEffect(() => {
-    setRole(localStorage.getItem("role"));
-  }, []);
+  const role = getRole()
 
   return (
     <div className="App">

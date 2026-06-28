@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { vehicleRegistrationApi } from "../../../../services/vehicleService";
+import { vehicleRegistrationApi } from "../../../../services/client/vehicleService";
 import { INITIAL_VEHICLE_DATA } from "../constants/vehicleConstants";
 import { validateStep, buildVehiclePayload } from "../utils/vehicleHelpers";
 import { useSelector } from "react-redux";

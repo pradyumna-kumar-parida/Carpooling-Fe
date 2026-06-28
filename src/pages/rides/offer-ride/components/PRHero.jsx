@@ -291,9 +291,9 @@ const DEFAULT_PREFS = {
 // ── Must match the key used in useLoginForm / useSignupForm ──────────────
 const SAVED_FORM_KEY = "offerRideSavedForm";
 
-const PRHero = () => {
+const PRHero = (vehicleList) => {
   const user = useSelector((state) => state.auth.user);
-  const vehicleList = useSelector((state) => state.vehicle.vehicleList);
+  const vehicleList = vehicleList;
 
   const router = useRouter();
   const pathname = usePathname();
@@ -439,8 +439,8 @@ const PRHero = () => {
       showAlert(
         "error",
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong.",
+        error?.message ||
+        "Something went wrong.",
       );
     } finally {
       setLoading(false);

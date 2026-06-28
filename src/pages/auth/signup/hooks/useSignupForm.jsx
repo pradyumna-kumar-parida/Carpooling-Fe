@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { getRolesApi, signupApi } from "../../../../services/authService";
+import { signupApi } from "../../../../services/client/authService";
 import { INITIAL_FORM } from "../constants/signupConstants";
 import {
   isDriverRole,
@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "@/redux/slices/authSlice";
 import { setAuthCookies } from "@/lib/cookie";
 
-export function useSignupForm() {
+export function useSignupForm(roles) {
   const router = useRouter();
 
   const dispatch = useDispatch();
@@ -25,8 +25,7 @@ export function useSignupForm() {
   // ── Form + stepper ────────────────────────────────────────────────────
   const [formData, setFormData] = useState(INITIAL_FORM);
   const [step, setStep] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [roles, setRoles] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   // ── Alert ─────────────────────────────────────────────────────────────
   const [openAlert, setOpenAlert] = useState(false);
@@ -45,13 +44,6 @@ export function useSignupForm() {
   const totalSteps = isDriver ? 1 + 3 : 1;
   const isFinalStep = step === totalSteps - 1;
 
-  // ── Fetch roles on mount ──────────────────────────────────────────────
-  useEffect(() => {
-    getRolesApi()
-      .then((res) => setRoles(res.data))
-      .catch((err) => console.error("Error fetching roles:", err));
-    return () => clearTimeout(alertTimerRef.current);
-  }, []);
 
   const roleOptions = roles.map((r) => ({
     value: String(r.id),
@@ -219,9 +211,9 @@ export function useSignupForm() {
       showAlert(
         err?.response?.data?.severity || "error",
         err?.response?.data?.message ||
-          err?.response?.data?.error ||
-          err?.message ||
-          "Something went wrong.",
+        err?.response?.data?.error ||
+        err?.message ||
+        "Something went wrong.",
       );
     } finally {
       setLoading(false);

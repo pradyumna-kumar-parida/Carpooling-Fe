@@ -160,7 +160,7 @@ const MapPanel = ({
       }
 
       moveIndexRef.current += 1;
-    }, 100);
+    }, 1000);
   };
 
   const fetchRouteAndDraw = async (map, L, srcLat, srcLng, dstLat, dstLng) => {

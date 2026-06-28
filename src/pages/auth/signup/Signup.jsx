@@ -153,7 +153,7 @@ function StepContent({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-export default function Signup() {
+export default function Signup({ roles }) {
   const {
     formData,
     handleChange,
@@ -178,7 +178,8 @@ export default function Signup() {
     setOtp,
     isVerified,
     handleVerifyOtp,
-  } = useSignupForm();
+
+  } = useSignupForm(roles);
 
   return (
     <>

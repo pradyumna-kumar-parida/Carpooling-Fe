@@ -1,4 +1,4 @@
-import axiosInstance from "@/lib/axios";
+import getClientAxios from "@/lib/axiosClient";
 
 export const bookRideApi = (data) =>
-  axiosInstance.post("/create-booking", data);
+  getClientAxios.post("/create-booking", data);

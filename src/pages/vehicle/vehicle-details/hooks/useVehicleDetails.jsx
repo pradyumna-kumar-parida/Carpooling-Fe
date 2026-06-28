@@ -1,18 +1,12 @@
 "use client";
+import { vehicleDetailUpdateApi } from "@/services/client/vehicleService";
 // src/pages/Vehicle/vehicle-details/hooks/useVehicleDetails.js
 
 import { useState, useEffect } from "react";
-import { vehicleDetailUpdateApi } from "../../../../services/vehicleService";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchVehicleList } from "@/redux/slices/vehicleSlice";
-// import { useVehicleList } from "../../../../context/VehicleContext";
 
-export function useVehicleDetails() {
-  const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(fetchVehicleList())
-  }, [])
-  const vehicleList = useSelector((state) => state.vehicle.vehicleList)
+
+export function useVehicleDetails(vehiclesFetch) {
+  const vehicleList = vehiclesFetch
   const [selected, setSelected] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [editData, setEditData] = useState({});
