@@ -148,17 +148,68 @@ const cancelledRides = [
     cancelReason: "Change of plans",
   },
 ];
+const requestRides = [
+  {
+    id: 101,
+    from: "Hyderabad",
+    to: "Vijayawada",
+    date: "July 5, 2026",
+    time: "08:30 AM",
+    duration: "5h 20m",
+    fromAddress: "Miyapur Metro Station, Hyderabad",
+    toAddress: "Benz Circle, Vijayawada",
+    driver: {
+      name: "Rakesh Verma",
+      avatar: "https://i.pravatar.cc/150?img=22",
+      rating: 4.7,
+      car: "Hyundai Creta - Black",
+      phone: "+91 9876543201",
+    },
+    price: 700,
+    passengers: 2,
+    status: "waiting for approval", // waiting | approved
+    requestedAt: "July 2, 2026 • 10:15 AM",
+  },
 
-export const RIDES_DATA = { upcomingRides, completedRides, cancelledRides };
+  {
+    id: 102,
+    from: "Chennai",
+    to: "Pondicherry",
+    date: "July 8, 2026",
+    time: "07:00 AM",
+    duration: "3h 15m",
+    fromAddress: "Guindy, Chennai",
+    toAddress: "Rock Beach, Pondicherry",
+    driver: {
+      name: "Ankit Sharma",
+      avatar: "https://i.pravatar.cc/150?img=51",
+      rating: 4.9,
+      car: "Toyota Glanza - White",
+      phone: "+91 9876543202",
+    },
+    price: 550,
+    passengers: 1,
+    status: "approved", // waiting | approved
+    requestedAt: "July 3, 2026 • 09:40 AM",
+  },
+];
+export const RIDES_DATA = {
+  requestRides,
+  upcomingRides,
+  completedRides,
+  cancelledRides,
+};
 
 export function getStatusColor(status) {
   switch (status) {
     case "confirmed":
-      return "#008257";
-    case "pending":
-      return "#f59e0b";
+      return "#008221";
+    case "waiting for approval":
+      return "#ff9d00";
+    case "approved":
+      return "#9500ff";
     case "completed":
-      return "#3b82f6";
+      return "#1b3dff";
     case "cancelled":
       return "#ef4444";
     default:
@@ -167,12 +218,14 @@ export function getStatusColor(status) {
 }
 
 export function useMyRides() {
-  const [activeTab, setActiveTab] = useState("upcoming");
+  const [activeTab, setActiveTab] = useState("requests");
   const [selectedRide, setSelectedRide] = useState(null);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
 
   const getRidesData = () => {
     switch (activeTab) {
+      case "requests":
+        return requestRides;
       case "upcoming":
         return upcomingRides;
       case "completed":
@@ -180,7 +233,7 @@ export function useMyRides() {
       case "cancelled":
         return cancelledRides;
       default:
-        return upcomingRides;
+        return requestRides;
     }
   };
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Chip } from "@mui/material";
 import { FaDownload, FaShare } from "react-icons/fa";
 import { TbRoute } from "react-icons/tb";
+import { FaHandPointLeft } from "react-icons/fa";
 
 const PaymentSummaryCard = ({
   rideDetails,
@@ -76,11 +77,11 @@ const PaymentSummaryCard = ({
           className="bookconf-btn-secondary"
           onClick={handleDownloadTicket}
         >
-          <FaDownload />
+          <FaDownload size={20}/>
           Download Ticket
         </button>
         <button className="bookconf-btn-secondary" onClick={handleShareBooking}>
-          <FaShare />
+          <FaShare size={20}/>
           Share Booking
         </button>
         <button
@@ -91,6 +92,7 @@ const PaymentSummaryCard = ({
           Track & Chat
         </button>
         <button className="bookconf-btn-primary" onClick={handleBackHome}>
+          <FaHandPointLeft size={20}/>
           Back to Home
         </button>
       </div>

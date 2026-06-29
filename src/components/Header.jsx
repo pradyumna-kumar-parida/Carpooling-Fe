@@ -14,6 +14,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
+import { LiaAngleRightSolid } from "react-icons/lia";
 
 import notification from "../assets/images/notification-icon.png";
 
@@ -28,16 +29,12 @@ import {
 import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { FaUserPlus } from "react-icons/fa6";
+import { VscGitPullRequestDone } from "react-icons/vsc";
 
-import {
-  FiUser,
-  FiSettings,
-  FiLogOut,
-  FiInfo,
-  FiHelpCircle,
-} from "react-icons/fi";
+import { FiUser, FiLogOut, FiInfo, FiHelpCircle } from "react-icons/fi";
 import { CgMenuRightAlt } from "react-icons/cg";
 import Link from "next/link";
+import { SiCardmarket } from "react-icons/si";
 
 import NotificationPanel from "./Notification";
 import { useRouter } from "next/navigation";
@@ -60,12 +57,32 @@ const getNavLinks = (role, isLoggedIn) => [
 const getAccountLinks = (role) => [
   { label: "Profile", path: "/profile", icon: <FiUser /> },
   { label: "My Rides", path: "/my-rides", icon: <FaRoute /> },
+
+  ...(role === "passenger"
+    ? [
+        {
+          label: "Find Ride",
+          path: "/find-ride",
+          icon: <FaSearchLocation size={16} />,
+        },
+      ]
+    : []),
   ...(role === "driver"
     ? [
         {
           label: "Published Rides",
           path: "/published-rides",
-          icon: <MdOutlinePublishedWithChanges size={20} />,
+          icon: <MdOutlinePublishedWithChanges size={18} />,
+        },
+        {
+          label: "Offer Ride",
+          path: "/offer-ride",
+          icon: <SiCardmarket size={17} />,
+        },
+        {
+          label: "Booking Requests",
+          path: "/booking-requests",
+          icon: <VscGitPullRequestDone size={18} />,
         },
         {
           label: "Vehicle Registration",
@@ -80,70 +97,79 @@ const getAccountLinks = (role) => [
         },
       ]
     : []),
+];
 
-  // { label: "Settings", path: "/settings", icon: <FiSettings /> },
+// Mock data — hoisted out of the component so it isn't re-declared on every
+// render (it's only ever used as the initial useState value anyway).
+const INITIAL_NOTIFICATIONS = [
+  {
+    id: 1,
+    title: "New Booking Request",
+    body: "Pradyumna requested 2 seats for Mumbai to Pune.",
+    time: "2 min ago",
+    img: img1,
+    read: false,
+  },
+  {
+    id: 2,
+    title: "Ride Confirmed",
+    body: "Your ride to Bangalore has been confirmed.",
+    time: "10 min ago",
+    read: false,
+    img: img2,
+  },
+  {
+    id: 3,
+    title: "Ride Confirmed",
+    body: "Your ride to Bangalore has been confirmed.",
+    time: "10 min ago",
+    read: false,
+    img: img2,
+  },
+  {
+    id: 4,
+    title: "Ride Confirmed",
+    body: "Your ride to Bangalore has been confirmed.",
+    time: "10 min ago",
+    read: false,
+    img: img2,
+  },
+  {
+    id: 5,
+    title: "Passenger Cancelled",
+    body: "Amit cancelled his booking request.",
+    time: "1 hour ago",
+    read: true,
+    img: img3,
+  },
 ];
 
 const Header = () => {
   const dispatch = useDispatch();
-
   const router = useRouter();
   const user = useSelector((state) => state.auth.user);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // isLoggedIn AND role both come from cookies, which only exist on the
+  // client. Keeping them in one piece of state — and only resolving them
+  // inside useEffect — guarantees the server-rendered markup and the first
+  // client render match exactly (both render as "logged out, no role").
+  // Resolving `role` separately/synchronously during render was the source
+  // of the hydration mismatch: it produced different nav/account links on
+  // the server vs. the client.
+  const [auth, setAuth] = useState({ isLoggedIn: false, role: null });
 
   useEffect(() => {
-    setIsLoggedIn(!!getToken());
+    setAuth({ isLoggedIn: !!getToken(), role: getRole() });
   }, []);
 
-  const role = getRole();
-  const firstName = user?.name ? user.name.split(" ")[0] : "";
+  const { isLoggedIn, role } = auth;
 
+  const firstName = user?.name ? user.name.split(" ")[0] : "";
   const profilePicture = user?.user_details?.profile_picture || null;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [panelOpen, setPanelOpen] = useState(false);
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      title: "New Booking Request",
-      body: "Pradyumna requested 2 seats for Mumbai to Pune.",
-      time: "2 min ago",
-      img: img1,
-      read: false,
-    },
-    {
-      id: 2,
-      title: "Ride Confirmed",
-      body: "Your ride to Bangalore has been confirmed.",
-      time: "10 min ago",
-      read: false,
-      img: img2,
-    },
-    {
-      id: 3,
-      title: "Ride Confirmed",
-      body: "Your ride to Bangalore has been confirmed.",
-      time: "10 min ago",
-      read: false,
-      img: img2,
-    },
-    {
-      id: 4,
-      title: "Ride Confirmed",
-      body: "Your ride to Bangalore has been confirmed.",
-      time: "10 min ago",
-      read: false,
-      img: img2,
-    },
-    {
-      id: 5,
-      title: "Passenger Cancelled",
-      body: "Amit cancelled his booking request.",
-      time: "1 hour ago",
-      read: true,
-      img: img3,
-    },
-  ]);
+  const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const menuOpen = Boolean(anchorEl);
 
@@ -166,7 +192,6 @@ const Header = () => {
     clearAuthCookies();
     setAnchorEl(null);
     setDrawerOpen(false);
-
     router.push("/login");
   };
 
@@ -195,7 +220,7 @@ const Header = () => {
               <div className="mob-logined-pic">
                 <div className="user-profile-text">
                   <span className="user-greeting">Hi,</span>
-                  <span className="user-role">{firstName}</span>
+                  <span className="user-role">{firstName || "Guest"}</span>
                 </div>
                 <div className="profile-img">
                   <ProfileAvatar />
@@ -216,7 +241,10 @@ const Header = () => {
                 onClick={() => navTo(item.path)}
               >
                 {item.icon}
-                <ListItemText primary={item.label} />
+
+                <ListItemText primary={item.label} sx={{ ml: 1 }} />
+
+                <LiaAngleRightSolid className="move-forward" />
               </ListItemButton>
             </ListItem>
             <Divider />
@@ -234,7 +262,8 @@ const Header = () => {
                   onClick={() => navTo(item.path)}
                 >
                   {item.icon}
-                  <ListItemText primary={item.label} />
+                  <ListItemText primary={item.label} sx={{ ml: 1 }} />
+                  <LiaAngleRightSolid className="move-forward" />
                 </ListItemButton>
               </ListItem>
               <Divider />
@@ -346,7 +375,7 @@ const Header = () => {
                 </div>
               </Button>
 
-              {/* FIX: PaperProps forces 230px width — overrides MUI's inline JS style */}
+              {/* FIX: PaperProps forces 250px width — overrides MUI's inline JS style */}
               <Menu
                 anchorEl={anchorEl}
                 open={menuOpen}
@@ -367,7 +396,13 @@ const Header = () => {
                       className="drawer-menus"
                       onClick={() => navTo(item.path)}
                     >
-                      {item.icon} {item.label}
+                      <div className="menu-lables">
+                        {item.icon}
+                        <span>{item.label}</span>
+                      </div>
+                      <div className="move-forward">
+                        <LiaAngleRightSolid />
+                      </div>
                     </MenuItem>
                     <Divider />
                   </div>

@@ -68,7 +68,7 @@
   overflow: visible;
   border: 1px solid #878787;
   position: relative;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   z-index: 0;
 }
 
@@ -645,7 +645,7 @@
   font-weight: 500;
   min-width: 20px;
   text-align: right;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .ridetail-check-icon {
@@ -686,7 +686,7 @@
   gap: 12px;
   margin-bottom: 12px;
   flex-wrap: wrap;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .ridetail-date-label {
@@ -758,7 +758,7 @@
 .ridetail-ride-time {
   font-size: 1.2rem;
   font-weight: 700;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: #0b1629;
   line-height: 1;
 }
@@ -809,7 +809,7 @@
   left: 50%;
   transform: translateX(-50%);
   font-size: 0.92rem;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 600;
   color: var(--fr-text-gray);
   white-space: nowrap;
@@ -834,7 +834,7 @@
   font-size: 1.4rem;
   font-weight: 900;
   color: var(--fr-text-dark);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   line-height: 1;
 }
 
@@ -883,7 +883,7 @@
 .ridetail-star-wrap {
   display: flex;
   align-items: center;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   gap: 3px;
   font-size: 0.9rem;
   color: #f59e0b;
@@ -942,7 +942,7 @@
   padding: 5px 10px;
   border-radius: 20px;
   letter-spacing: 0.01em;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .ridetail-status-pill--active {
@@ -987,7 +987,7 @@
 .ridetail-status-unavail {
   font-size: 11px;
   color: #9ca3af;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 /* Load more */
@@ -1237,7 +1237,7 @@
 .timeline-time {
   font-size: 1.2rem;
   font-weight: 600;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: var(--fr-text-dark);
   min-width: 50px;
 }
@@ -1247,7 +1247,7 @@
   color: var(--fr-text-light);
   min-width: 40px;
   position: absolute;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   top: 30%;
   left: 20px;
 }
@@ -1354,7 +1354,7 @@
   color: var(--fr-text-gray);
   font-weight: 400;
   line-height: 1.6;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 /* Passengers card */
@@ -1473,7 +1473,7 @@
   font-weight: 700;
   color: var(--fr-text-dark);
   margin: 0 0 1.5rem 0;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .summary-price {
@@ -1493,7 +1493,7 @@
   font-size: 20px;
   color: var(--fr-text-dark);
   font-weight: 900;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 /* ==========================================
@@ -1509,7 +1509,7 @@
 .ride-price-content {
   position: relative;
   padding: 28px 32px;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   background: #fff;
 }
 
@@ -1546,7 +1546,7 @@
 .ride-price-row span:last-child {
   color: var(--fr-text-dark);
   font-weight: 600;
-  font-family: sans-serif !important;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
 }
 
 .ride-price-divider {
@@ -1709,7 +1709,7 @@
   gap: 0.25rem;
 }
 
-.route-label {
+.route-label-head {
   font-size: 0.95rem;
   color: var(--fr-text-light);
   font-weight: 500;
@@ -1752,7 +1752,7 @@
   font-size: 0.845rem;
   color: var(--fr-text-dark);
   font-weight: 600;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .myride-card-footer {
@@ -1773,27 +1773,29 @@
 }
 
 .price-value {
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--fr-text-dark);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .myride-details-btn {
   padding: 10px 14px;
-  background: rgb(231 231 231 / 38%);
-  color: rgb(73, 68, 68);
+  background: #ffffff;
+  color: #000000;
+
   border: none;
   border-radius: var(--fr-radius);
-  font-size: 0.75rem;
+  font-size: 13px;
   display: flex;
   align-items: center;
   gap: 7px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-
+.myride-chat-btn:hover,
+.myride-track-btn:hover,
 .myride-details-btn:hover {
   opacity: 0.9;
   transform: translateY(-1px);
@@ -1901,7 +1903,7 @@
   font-size: 0.845rem;
   color: var(--fr-primary-light);
   font-weight: 600;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .myride-modal-info {
@@ -1943,7 +1945,7 @@
 .item-value {
   font-size: 0.9375rem;
   color: var(--fr-text-dark);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .myride-modal-driver,
@@ -1961,7 +1963,7 @@
 }
 
 .driver-details {
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   flex: 1;
 }
 
@@ -1996,10 +1998,6 @@
   color: var(--fr-text-gray);
 }
 
-.car-icon {
-  color: var(--fr-primary-light);
-}
-
 .passengers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -2030,7 +2028,7 @@
 .passenger-phone {
   font-size: 0.8125rem;
   color: var(--fr-text-gray);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .myride-modal-cancel {
@@ -2064,14 +2062,14 @@
   font-size: 1rem;
   font-weight: 600;
   color: var(--fr-text-dark);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .modal-price-value {
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--fr-text-dark);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .myride-modal-actions {
@@ -2191,7 +2189,7 @@
 .ridepay-info-value {
   font-size: 0.9375rem;
   color: var(--fr-text-dark);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .ridepay-driver-title {
@@ -2548,7 +2546,7 @@
   padding: 0.25rem 0.75rem;
   background: rgba(59, 130, 246, 0.1);
   border-radius: 12px;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .bookconf-info-grid {
@@ -2587,7 +2585,7 @@
 .bookconf-info-value {
   font-size: 0.9375rem;
   color: var(--fr-text-dark);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .bookconf-driver {
@@ -2623,7 +2621,7 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 0.5rem;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 0.9375rem;
 }
 
@@ -2637,7 +2635,7 @@
 }
 .bookconf-driver-phone {
   color: var(--fr-text-gray);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   padding-bottom: 5px;
   display: flex;
   gap: 4px;
@@ -2704,7 +2702,7 @@
   font-size: 1.2rem;
   font-weight: 600;
   color: var(--fr-text-dark);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .bookconf-price-row.total .bookconf-price-label {
@@ -2768,7 +2766,7 @@
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--fr-text-dark);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .bookconf-actions {
@@ -3481,7 +3479,7 @@
     font-weight: 600;
     cursor: pointer;
     flex-shrink: 0;
-    font-family: "Outfit", sans-serif;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   }
 
   .mobile-search-drawer {
@@ -3508,7 +3506,7 @@
     font-size: 1rem;
     font-weight: 700;
     color: #111827;
-    font-family: "Outfit", sans-serif;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   }
 
   .mobile-search-drawer-body {
@@ -4050,7 +4048,7 @@
 .dm-contact-value {
   font-size: 14px;
   color: #374151;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 /* ── Section (vehicle + preferences) ── */
@@ -4089,7 +4087,7 @@
   font-weight: 600;
   text-transform: capitalize;
   color: #1f2937;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   letter-spacing: 0.02rem;
 }
 
@@ -4201,7 +4199,7 @@
   font-size: 12px;
   font-weight: 600;
   color: var(--fr-text-light);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   margin: 0 0 12px;
@@ -4268,7 +4266,7 @@
 .vehicle-detl-card-reg {
   font-size: 12px;
   color: var(--fr-text-gray);
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   margin: 0 0 8px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -4280,7 +4278,7 @@
   font-size: 12px;
   color: var(--fr-text-light);
   flex-wrap: wrap;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 .vehicle-detl-dot {
   width: 3px;
@@ -4339,7 +4337,7 @@
 }
 .vehicle-detl-panel-reg {
   font-size: 13px;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: var(--fr-text-gray);
   margin: 0;
   text-transform: uppercase;
@@ -4474,7 +4472,7 @@
 .vehicle-detl-info-value {
   font-size: 14px;
   font-weight: 500;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   color: var(--fr-text-dark);
 }
 
@@ -4835,7 +4833,7 @@
 .ridepay-razorpay-desc {
   font-size: 15px;
   color: #64748b;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   padding-top: 7px;
   margin: 0;
 }
@@ -4847,7 +4845,7 @@
   align-items: center;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   border-radius: 10px;
   padding: 14px 18px;
   margin-bottom: 18px;
@@ -4870,7 +4868,7 @@
   text-align: center;
   font-size: 14px;
   color: #94a3b8;
-  font-family: sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   margin-top: 12px;
   display: flex;
   align-items: center;
@@ -4965,47 +4963,6 @@
   font-size: 24px;
   font-weight: 700;
   color: var(--fr-primary-light);
-}
-
-/* Action Buttons */
-.myride-modal-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #e2e8f0;
-}
-
-.action-btn {
-  padding: 12px 16px;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-transform: capitalize;
-}
-
-.chat-btn {
-  background: var(--fr-primary);
-  color: #fff;
-}
-
-.chat-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
-}
-
-.ticket-btn {
-  background: #f0f4f8;
-  color: var(--fr-primary-light);
-  border: 1.5px solid var(--fr-primary-light);
-}
-
-.ticket-btn:hover {
-  transform: translateY(-2px);
 }
 
 /* ── RESPONSIVE EXTRA CSS ────────────────────────────────────────────── */
@@ -5123,8 +5080,135 @@ body.modal-open {
 }
 .myride-status-chip {
   border-radius: 20px;
-  letter-spacing: 0.040rem;
+  letter-spacing: 0.04rem;
   font-size: 90%;
   padding: 3px 12px;
   color: white;
+}
+
+.approval-ride {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--fr-border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.approval-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .approval-image {
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 480px) {
+  .approval-image {
+    max-width: 320px;
+  }
+}
+.rating-modal-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  max-width: 90%;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.25);
+  padding: 32px;
+}
+
+.rating-modal-title {
+  font-weight: 600 !important;
+  font-family: "Vollkorn", serif !important;
+}
+
+.rating-modal-subtitle {
+  color: rgba(0, 0, 0, 0.6);
+  margin-top: 8px !important;
+  margin-bottom: 24px !important;
+}
+
+.rating-modal-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.rating-modal-stars {
+  margin-bottom: 24px;
+}
+
+.rating-modal-feedback {
+  width: 100%;
+}
+
+.rating-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+}
+.myride-card-actions {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: var(--fr-text-dark);
+  gap: 10px;
+  margin-top: 10px;
+  padding: 15px 10px;
+  border-radius: var(--fr-radius);
+  align-items: center;
+}
+
+/* Track Ride */
+.myride-track-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  border: none;
+  background: var(--fr-primary);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0px 0px 2px white inset;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* Chat */
+.myride-chat-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  background: green;
+  color: #ffffff;
+  display: flex;
+  box-shadow: 0px 0px 2px white inset;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.msg-count {
+  border-radius: 50%;
+  margin-left: 6px;
+  padding: 3px 6px;
+  font-style: normal;
+  font-size: 11px;
 }

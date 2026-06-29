@@ -1053,16 +1053,18 @@ footer {
   font-weight: 800;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 7px;
 }
 
-.footer-logo i {
-  font-size: 30px;
+.footer-logo-div {
+  display: flex;
+  align-items: center;
+  font-size: 25px;
 }
-
 .footer-copy {
   font-size: 13px;
   color: #ffffff;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 .footer-copys {
@@ -2145,22 +2147,36 @@ footer {
   color: #374151;
 }
 
-.mobile-menu-sidebar,
-.mobile-menu-sidebar > p,
-.logout,
-.drawer-menus {
+.mobile-menu-sidebar .drawer-menus {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+}
+
+.menu-lables {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.move-forward {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+.logout {
+  color: red !important;
+  font-weight: 400 !important;
   display: flex;
   gap: 7px;
   align-items: center;
 }
 
-.logout {
-  color: red !important;
-  font-weight: 400 !important;
-}
-
 .mobile-menu-sidebar {
   padding: 3px 15px;
+  display: flex;
+  gap: 7px;
+  align-items: center;
 }
 
 .section-menu-devider {
@@ -2182,8 +2198,10 @@ footer {
 .css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper,
 [role="presentation"] .MuiPaper-root.MuiMenu-paper,
 [role="presentation"] .MuiPaper-root.MuiPopover-paper {
-  min-width: 210px !important;
+  min-width: 250px !important;
   width: 210px !important;
+  /* top: 71px !important; */
+  border-radius: var(--fr-radius) !important;
 }
 
 /* Also target via data attribute that MUI adds */

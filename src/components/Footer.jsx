@@ -28,7 +28,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-left">
         <div className="footer-logo">
-          <div>
+          <div className="footer-logo-div">
             <FaCarAlt />
           </div>
           Carpooling

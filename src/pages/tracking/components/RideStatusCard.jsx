@@ -55,6 +55,7 @@ const RideStatusCard = ({ rideStatus = "scheduled" }) => {
   );
 
   const activeStep = currentStepIndex >= 0 ? currentStepIndex : 0;
+  console.log(" curr", currentStepIndex);
 
   return (
     <div className="chatpanel-card ride-status-card">

@@ -4,9 +4,11 @@ import { useMyRides, RIDES_DATA } from "../hooks/UseMyRides";
 import RideCard from "./RideCard";
 import RideDetailsModal from "./RideDetailsModal";
 
-const { upcomingRides, completedRides, cancelledRides } = RIDES_DATA;
+const { requestRides, upcomingRides, completedRides, cancelledRides } =
+  RIDES_DATA;
 
 const TABS = [
+  { id: "requests", label: "Requests", count: requestRides.length },
   { id: "upcoming", label: "Upcoming", count: upcomingRides.length },
   { id: "completed", label: "Completed", count: completedRides.length },
   { id: "cancelled", label: "Cancelled", count: cancelledRides.length },
@@ -44,7 +46,16 @@ export default function MyRides() {
               className={`myride-tab ${activeTab === tab.id ? "active" : ""}`}
               onClick={() => setActiveTab(tab.id)}
             >
-              {tab.label} ({tab.count})
+              {tab.label}
+              <i
+                className="msg-count"
+                style={{
+                  backgroundColor: activeTab === tab.id ? "#ffffff" : "#000000",
+                  color: activeTab === tab.id ? "#000000" : "#ffffff",
+                }}
+              >
+                {tab.count}
+              </i>
             </button>
           ))}
         </div>

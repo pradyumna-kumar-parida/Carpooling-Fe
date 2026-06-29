@@ -1,8 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import ChatHeader from "./components/ChatHeader";
 import ChatMessages from "./components/ChatMessages";
@@ -10,15 +6,10 @@ import ChatInput from "./components/ChatInput";
 import ChatToggleButton from "./components/ChatToggleButton";
 
 import { useChat } from "./hooks/useChat";
-
+import "../../styles/track-chat.css";
 const ChatPanel = ({ driver }) => {
-  const {
-    messages,
-    inputText,
-    setInputText,
-    handleSend,
-    handleKeyDown,
-  } = useChat();
+  const { messages, inputText, setInputText, handleSend, handleKeyDown } =
+    useChat();
 
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -49,23 +40,13 @@ const ChatPanel = ({ driver }) => {
 
   return (
     <>
-      <div
-        className={`chat-panel-shell${isVisible ? " chat-visible" : ""
-          }`}
-      >
+      <div className={`chat-panel-shell${isVisible ? " chat-visible" : ""}`}>
         <div
-          className={`cp-container${isVisible ? " cp-open" : ""
-            }${isOpen
-              ? " cp-open--active"
-              : isVisible
-                ? " cp-open--hidden"
-                : ""
-            }`}
+          className={`cp-container${isVisible ? " cp-open" : ""}${
+            isOpen ? " cp-open--active" : isVisible ? " cp-open--hidden" : ""
+          }`}
         >
-          <ChatHeader
-            driver={driver}
-            onClose={handleClose}
-          />
+          <ChatHeader driver={driver} onClose={handleClose} />
 
           <ChatMessages
             messages={messages}
@@ -82,18 +63,12 @@ const ChatPanel = ({ driver }) => {
         </div>
 
         {isVisible && (
-          <div
-            className="chat-panel-overlay"
-            onClick={handleClose}
-          />
+          <div className="chat-panel-overlay" onClick={handleClose} />
         )}
       </div>
 
       {!isVisible && (
-        <ChatToggleButton
-          count={messages.length}
-          onOpen={handleOpen}
-        />
+        <ChatToggleButton count={messages.length} onOpen={handleOpen} />
       )}
     </>
   );

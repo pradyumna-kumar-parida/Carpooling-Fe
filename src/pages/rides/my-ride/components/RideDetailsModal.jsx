@@ -184,10 +184,7 @@ export default function RideDetailsModal({ ride, onClose }) {
           </div>
 
           {/* Actions */}
-          <div className="myride-modal-actions">
-            <button className="action-btn chat-btn">Contact Driver</button>
-            <button className="action-btn ticket-btn">Download Ticket</button>
-          </div>
+        
         </div>
       </div>
     </div>

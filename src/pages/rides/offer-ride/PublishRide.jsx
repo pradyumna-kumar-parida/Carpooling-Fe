@@ -8,11 +8,11 @@ import PRHowItWorks from "./components/PRHowItWorks";
 import PRSupport from "./components/PRSupport";
 import PRFaq from "./components/PRFaq";
 
-const PublishRide = (vehicle) => {
+const PublishRide = ({vehiclesFetch}) => {
   return (
     <>
       <div className="pr-container">
-        <PRHero vehicleList={vehicle} />
+        <PRHero vehiclesFetch={vehiclesFetch} />
         <PRBenefits />
         <PRTestimonials />
         <PRHowItWorks />

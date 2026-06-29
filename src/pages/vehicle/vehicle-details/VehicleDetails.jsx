@@ -1,5 +1,5 @@
-"use client"
-import "../../../styles/find-ride.css"
+"use client";
+import "../../../styles/find-ride.css";
 import { Alert, Snackbar } from "@mui/material";
 import { useVehicleDetails } from "./hooks/useVehicleDetails";
 import VehicleCard from "./components/VehicleCard";
@@ -17,8 +17,8 @@ function PageLoader() {
   );
 }
 
-export default function VehicleDetails({vehiclesFetch}) {
-  const router = useRouter()
+export default function VehicleDetails({ vehiclesFetch }) {
+  const router = useRouter();
   const {
     vehicles,
     selected,

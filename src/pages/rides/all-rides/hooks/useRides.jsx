@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { findRidesApi } from "../../../../services/rideService";
+
 import { getDepartSlot, groupByDate } from "../utils/rideHelpers";
 import { DEFAULT_AMENITY_CHECKS } from "../constants/filterOptions";
+import { findRidesApi } from "@/services/rideService";
 
 export function useRides({ from, to, date, passengers }) {
   const [rides, setRides] = useState([]);
@@ -171,12 +172,10 @@ export function useRides({ from, to, date, passengers }) {
 
     isLoading:
       apiLoading || filterLoading,
-
     handleSetSortBy,
     handleSetDepartSlot,
     handleSetVerifiedOnly,
     handleSetAmenityChecks,
-
     clearAll,
     setVisibleCount,
   };

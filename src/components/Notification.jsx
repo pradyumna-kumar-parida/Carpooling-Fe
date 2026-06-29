@@ -5,6 +5,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import "../styles/index.css";
+import Image from "next/image";
 export default function NotificationPanel({
   open = false,
   onClose = () => {},
@@ -40,9 +41,9 @@ export default function NotificationPanel({
             <Box key={item.id} className="notification-item">
               <Box className="notification-item-wrapper">
                 <Box className="notification-avatar">
-                  <img
+                  <Image
                     src={item.img}
-                    alt=""
+                    alt="img"
                     className="notification-avatar-image"
                   />
                 </Box>

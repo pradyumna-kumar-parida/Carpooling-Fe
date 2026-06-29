@@ -21,10 +21,7 @@ export default function RideCard({ ride, noOfSIt }) {
   const router = useRouter();
 
   const [bg, textColor] = avatarColor(ride.driver_name);
-  const status = getRideStatus(
-    ride.ride_date,
-    ride.departure_time
-  );
+  const status = getRideStatus(ride.ride_date, ride.departure_time);
 
   const handleClick = () => {
     if (status.passed) return;
@@ -34,17 +31,14 @@ export default function RideCard({ ride, noOfSIt }) {
 
   return (
     <div
-      className={`ridetail-card-ride${status.passed
-        ? " ridetail-card-ride--passed"
-        : ""
-        }`}
+      className={`ridetail-card-ride${
+        status.passed ? " ridetail-card-ride--passed" : ""
+      }`}
       onClick={handleClick}
       role="button"
       tabIndex={status.passed ? -1 : 0}
       aria-disabled={status.passed}
-      onKeyDown={(e) =>
-        e.key === "Enter" && handleClick()
-      }
+      onKeyDown={(e) => e.key === "Enter" && handleClick()}
     >
       {/* Timeline + Price */}
       <div className="ridetail-ride-top">
@@ -64,9 +58,7 @@ export default function RideCard({ ride, noOfSIt }) {
 
             <div className="ridetail-ride-track">
               <span className="ridetail-ride-dur">
-                {secondsToHM(
-                  ride.duration_seconds
-                )}
+                {secondsToHM(ride.duration_seconds)}
               </span>
             </div>
 
@@ -75,9 +67,7 @@ export default function RideCard({ ride, noOfSIt }) {
 
           <div className="ridetail-ride-point ridetail-ride-point--right">
             <span className="ridetail-ride-time">
-              {formatTime(
-                ride.estimated_reach_time
-              )}
+              {formatTime(ride.estimated_reach_time)}
             </span>
 
             <span className="ridetail-ride-city">
@@ -87,14 +77,10 @@ export default function RideCard({ ride, noOfSIt }) {
         </div>
 
         <div className="ridetail-ride-price">
-          <span className="ridetail-price-sym">
-            ₹
-          </span>
+          <span className="ridetail-price-sym">₹</span>
 
           <span className="ridetail-price-main">
-            {Number(
-              ride.price_per_seat * noOfSIt
-            ).toFixed(2)}
+            {Number(ride.price_per_seat * noOfSIt).toFixed(2)}
           </span>
         </div>
       </div>
@@ -116,13 +102,9 @@ export default function RideCard({ ride, noOfSIt }) {
             {getInitials(ride.driver_name)}
           </div>
 
-          <span className="ridetail-driver-name">
-            {ride.driver_name}
-          </span>
+          <span className="ridetail-driver-name">{ride.driver_name}</span>
 
-          <StarRating
-            rating={ride.driver_rating || 0}
-          />
+          <StarRating rating={ride.driver_rating || 0} />
         </div>
 
         <div className="ridetail-badges">
@@ -159,19 +141,18 @@ export default function RideCard({ ride, noOfSIt }) {
       {/* Status */}
       <div className="ridetail-status-row">
         <span
-          className={`ridetail-status-pill${status.passed
-            ? " ridetail-status-pill--passed"
-            : " ridetail-status-pill--active"
-            }`}
+          className={`ridetail-status-pill${
+            status.passed
+              ? " ridetail-status-pill--passed"
+              : " ridetail-status-pill--active"
+          }`}
         >
           <span className="ridetail-status-dot" />
           {status.label}
         </span>
 
         {status.passed && (
-          <span className="ridetail-status-unavail">
-            Not available
-          </span>
+          <span className="ridetail-status-unavail">Not available</span>
         )}
       </div>
     </div>
