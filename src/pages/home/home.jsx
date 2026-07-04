@@ -10,17 +10,21 @@ import Testimonials from "./components/Testimonials";
 import { getRole } from "@/lib/cookie";
 
 function Landingpage() {
-  const role = getRole()
+  // Start as `null` on both server and first client render so the two
+  // trees match exactly — the real role is only known on the client.
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    setRole(getRole());
+  }, []);
+
+  const isDriver = role === "driver";
 
   return (
     <div className="App">
       <Hero />
-      <div
-        className={
-          role !== "driver" ? "landingpage-search" : "search-disappear"
-        }
-      >
-        {role !== "driver" && <SearchRide />}
+      <div className={isDriver ? "search-disappear" : "landingpage-search"}>
+        {!isDriver && <SearchRide />}
       </div>
       <div className="container" id="find">
         <DetailedCards />

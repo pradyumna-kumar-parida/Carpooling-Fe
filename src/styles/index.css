@@ -26,13 +26,13 @@ body {
   --fr-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 .page-transition {
-  animation: pageFade 0.8s ease;
+  animation: pageFade 0.2s ease-out;
 }
 
 @keyframes pageFade {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(4px);
   }
 
   to {
