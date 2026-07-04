@@ -6,6 +6,7 @@ import img1 from "../../../assets/images/empty-seat.jpg";
 import img2 from "../../../assets/images/need-ride.jpg";
 import img3 from "../../../assets/images/driver-image.jpg";
 import img4 from "../../../assets/images/passenger.webp";
+import { getRole, getToken } from "@/lib/cookie";
 
 const buildCards = (role, token) => [
   // DRIVER CARDS
@@ -96,7 +97,8 @@ const DetailedCards = () => {
   // mount. cards start empty and populate once we know the client-side
   // auth state, avoiding a hydration mismatch.
   const [authState, setAuthState] = useState({ role: null, token: null });
-
+  const userRole = getRole()
+  const loginToken = getToken()
   useEffect(() => {
     setAuthState({
       role: localStorage.getItem("role"),

@@ -66,3 +66,17 @@
     transform: rotate(360deg);
   }
 }
+.loader-wrapper {
+  position: fixed; /* covers full screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center; /* vertical center */
+
+  background: rgba(255, 255, 255, 0.6); /* optional overlay */
+  z-index: 9999; /* keep above everything */
+}
