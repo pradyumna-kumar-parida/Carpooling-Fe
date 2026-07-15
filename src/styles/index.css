@@ -2184,29 +2184,18 @@ footer {
 }
 
 /* ===========================
-   MUI OVERRIDES — FIX 2: dropdown width
-   Use robust attribute + class selectors instead
-   of fragile generated MUI class names
+   MUI OVERRIDES — FIX: stable menu styling
+   Use MUI class selectors that do not depend on generated hashes.
    =========================== */
-.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root,
-.css-1rju2q6-MuiButtonBase-root-MuiMenuItem-root,
-.css-10hburv-MuiTypography-root {
-  font-family: "Vollkorn", serif !important;
-}
-
-/* Profile dropdown: force a fixed min-width regardless of MUI version */
-.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper,
-[role="presentation"] .MuiPaper-root.MuiMenu-paper,
-[role="presentation"] .MuiPaper-root.MuiPopover-paper {
+.MuiMenu-paper {
   min-width: 250px !important;
-  width: 210px !important;
-  /* top: 71px !important; */
+  width: 250px !important;
   border-radius: var(--fr-radius) !important;
 }
 
-/* Also target via data attribute that MUI adds */
-.MuiMenu-paper {
-  min-width: 210px !important;
+.MuiMenuItem-root,
+.MuiTypography-root {
+  font-family: "Vollkorn", serif !important;
 }
 
 /* ===========================
@@ -2417,8 +2406,9 @@ footer {
         rgba(255, 255, 255, 0.35) 65%,
         rgba(255, 255, 255, 0.185) 100%
       ),
-      url("../assets/Images/bannerImg-carRide.png");
+      url("../assets/images/bannerImg-carRide.png");
 
+    background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
   }
@@ -3107,6 +3097,7 @@ footer {
   top: 70px;
   max-height: 400px !important;
   right: 20px;
+  font-family: Roboto, Helvetica, Arial, sans-serif ;
   margin: 0 !important;
   width: 380px;
   border-radius: 16px !important;

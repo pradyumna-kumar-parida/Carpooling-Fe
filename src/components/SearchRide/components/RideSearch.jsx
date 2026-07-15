@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import FRSearchBar from "../../SearchRide";
-import { findRidesApi } from "../../../services/rideService";
+import { findRidesApi } from "../../../services/client/rideService";
 
 export default function AllRidesPage() {
   const searchParams = useSearchParams();

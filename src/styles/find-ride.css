@@ -18,6 +18,7 @@
   --fr-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
   --fr-radius: 10px;
   --fr-radius-lg: 16px;
+  --font-family: Roboto, Helvetica, Arial, sans-serif;
 }
 
 /* ==========================================
@@ -130,7 +131,7 @@
 .fr-field-value {
   font-size: 16px;
   color: #0f172a;
-  font-weight: 500;
+
   white-space: nowrap;
 }
 
@@ -226,7 +227,7 @@
 
 .fr-loc-name {
   font-size: 0.95rem;
-  font-weight: 500;
+  font-weight: 400;
   color: #1f2937;
   flex: 1;
   letter-spacing: 0.3px;
@@ -599,8 +600,9 @@
 
 .ridetail-radio-label {
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 500;
   color: #374151;
+  font-family: var(--font-family);
 }
 
 /* Checkbox */
@@ -628,9 +630,10 @@
 }
 
 .ridetail-check-label {
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: 0.90rem;
+  font-weight: 500;
   color: var(--fr-text-gray);
+  font-family: var(--font-family);
 }
 
 .ridetail-check-right {
@@ -698,7 +701,7 @@
 
 .ridetail-date-route {
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 500;
   color: #94a3b8;
 }
 

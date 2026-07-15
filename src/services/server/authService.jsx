@@ -5,3 +5,7 @@ export const getRolesApi = async () => {
   return axios.get("/get-roles");
 };
 
+export const getMe = async () => {
+  const axios = await getServerAxios();
+  return axios.get("/get-me");
+};

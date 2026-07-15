@@ -12,9 +12,11 @@ export const clearAuthCookies = () => {
   Cookies.remove("role", { path: "/" });
 };
 export const getToken = () => {
+  if (typeof window === "undefined") return undefined;
   return Cookies.get("token");
 };
 
 export const getRole = () => {
+  if (typeof window === "undefined") return undefined;
   return Cookies.get("role");
 };

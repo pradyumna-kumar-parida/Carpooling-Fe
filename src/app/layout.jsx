@@ -2,6 +2,8 @@ import Providers from "./providers";
 import "../styles/index.css";
 import { Vollkorn, Goblin_One } from "next/font/google";
 import PageTransition from "@/components/PageTransition";
+import { getMe } from "@/services/server/authService";
+
 
 const vollkorn = Vollkorn({
   subsets: ["latin"],
@@ -22,11 +24,20 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  let userData = null;
+
+  try {
+    const response = await getMe();
+    userData = response?.data?.user || null;
+  } catch (error) {
+    userData = null;
+  }
+
   return (
     <html lang="en">
       <body className={`${vollkorn.variable} ${goblinOne.variable}`}>
-        <Providers>
+        <Providers userData={userData}>
           <PageTransition>{children}</PageTransition>
         </Providers>
       </body>

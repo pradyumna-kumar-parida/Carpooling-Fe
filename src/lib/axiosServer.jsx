@@ -6,6 +6,7 @@ const getServerAxios = async () => {
 
   const token = cookieStore.get("token")?.value;
 
+  
   const axiosInstance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     headers: {

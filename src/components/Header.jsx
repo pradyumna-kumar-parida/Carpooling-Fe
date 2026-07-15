@@ -1,9 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import logoImg from "../assets/images/logo-Img.png";
-import img1 from "../assets/images/offer-ride-profile-1.jpg";
-import img2 from "../assets/images/offer-ride-profile-2.jpg";
-import img3 from "../assets/images/offer-ride-profile-3.jpg";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,9 +12,8 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { LiaAngleRightSolid } from "react-icons/lia";
-
+import INITIAL_NOTIFICATIONS from "@/constant/notification";
 import notification from "../assets/images/notification-icon.png";
-
 import { RiLoginCircleLine } from "react-icons/ri";
 import {
   FaUserCircle,
@@ -30,18 +26,19 @@ import { MdOutlinePublishedWithChanges } from "react-icons/md";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { FaUserPlus } from "react-icons/fa6";
 import { VscGitPullRequestDone } from "react-icons/vsc";
-
 import { FiUser, FiLogOut, FiInfo, FiHelpCircle } from "react-icons/fi";
 import { CgMenuRightAlt } from "react-icons/cg";
 import Link from "next/link";
 import { SiCardmarket } from "react-icons/si";
-
 import NotificationPanel from "./Notification";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/slices/authSlice";
 import { clearAuthCookies, getRole, getToken } from "@/lib/cookie";
+
+
+
 
 const getNavLinks = (role, isLoggedIn) => [
   ...(role === "driver" || !isLoggedIn
@@ -55,11 +52,10 @@ const getNavLinks = (role, isLoggedIn) => [
 ];
 
 const getAccountLinks = (role) => [
-  { label: "Profile", path: "/profile", icon: <FiUser /> },
-  { label: "My Rides", path: "/my-rides", icon: <FaRoute /> },
-
   ...(role === "passenger"
     ? [
+        { label: "Profile", path: "/passenger/profile", icon: <FiUser /> },
+        { label: "My Rides", path: "/passenger/my-rides", icon: <FaRoute /> },
         {
           label: "Find Ride",
           path: "/find-ride",
@@ -69,9 +65,11 @@ const getAccountLinks = (role) => [
     : []),
   ...(role === "driver"
     ? [
+        { label: "Profile", path: "/driver/profile", icon: <FiUser /> },
+        { label: "My Rides", path: "/driver/my-rides", icon: <FaRoute /> },
         {
           label: "Published Rides",
-          path: "/published-rides",
+          path: "/driver/published-rides",
           icon: <MdOutlinePublishedWithChanges size={18} />,
         },
         {
@@ -81,81 +79,35 @@ const getAccountLinks = (role) => [
         },
         {
           label: "Booking Requests",
-          path: "/booking-requests",
+          path: "/driver/booking-requests",
           icon: <VscGitPullRequestDone size={18} />,
         },
         {
           label: "Vehicle Registration",
-          path: "/vehicle-registration",
+          path: "/driver/vehicle-registration",
           icon: <FaCarSide />,
         },
-        { label: "Vehicle Details", path: "/vehicle-details", icon: <FaCar /> },
+        {
+          label: "Vehicle Details",
+          path: "/driver/vehicle-details",
+          icon: <FaCar />,
+        },
         {
           label: "Earnings",
-          path: "/earnings",
+          path: "/driver/earnings",
           icon: <GiTakeMyMoney size={22} />,
         },
       ]
     : []),
 ];
 
-// Mock data — hoisted out of the component so it isn't re-declared on every
-// render (it's only ever used as the initial useState value anyway).
-const INITIAL_NOTIFICATIONS = [
-  {
-    id: 1,
-    title: "New Booking Request",
-    body: "Pradyumna requested 2 seats for Mumbai to Pune.",
-    time: "2 min ago",
-    img: img1,
-    read: false,
-  },
-  {
-    id: 2,
-    title: "Ride Confirmed",
-    body: "Your ride to Bangalore has been confirmed.",
-    time: "10 min ago",
-    read: false,
-    img: img2,
-  },
-  {
-    id: 3,
-    title: "Ride Confirmed",
-    body: "Your ride to Bangalore has been confirmed.",
-    time: "10 min ago",
-    read: false,
-    img: img2,
-  },
-  {
-    id: 4,
-    title: "Ride Confirmed",
-    body: "Your ride to Bangalore has been confirmed.",
-    time: "10 min ago",
-    read: false,
-    img: img2,
-  },
-  {
-    id: 5,
-    title: "Passenger Cancelled",
-    body: "Amit cancelled his booking request.",
-    time: "1 hour ago",
-    read: true,
-    img: img3,
-  },
-];
+
 
 const Header = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector((state) => state.auth.user);
 
-  // isLoggedIn AND role both come from cookies, which only exist on the
-  // client. Keeping them in one piece of state — and only resolving them
-  // inside useEffect — guarantees the server-rendered markup and the first
-  // client render match exactly (both render as "logged out, no role").
-  // Resolving `role` separately/synchronously during render was the source
-  // of the hydration mismatch: it produced different nav/account links on
-  // the server vs. the client.
   const [auth, setAuth] = useState({ isLoggedIn: false, role: null });
 
   useEffect(() => {
@@ -165,7 +117,8 @@ const Header = () => {
   const { isLoggedIn, role } = auth;
 
   const firstName = user?.name ? user.name.split(" ")[0] : "";
-  const profilePicture = user?.user_details?.profile_picture || null;
+  const profilePicture =
+    user?.user_details?.profile_picture || user?.profile_picture || null;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -382,10 +335,11 @@ const Header = () => {
                 onClose={() => setAnchorEl(null)}
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 transformOrigin={{ vertical: "top", horizontal: "right" }}
-                slotProps={{
-                  style: {
-                    minWidth: "250px",
-                    width: "250px",
+                PaperProps={{
+                  sx: {
+                    minWidth: 250,
+                    width: 250,
+                    borderRadius: "var(--fr-radius)",
                     fontFamily: "'Vollkorn', serif",
                   },
                 }}

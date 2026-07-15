@@ -1,7 +1,7 @@
-
 import { useRef, useState } from "react";
-import { searchLocationsApi } from "../../../services/rideService";
+
 import { normalizeSuggestion } from "../utils/Location";
+import { searchLocationsApi } from "@/services/client/rideService";
 
 export function useDebouncedLocationSearch(delay = 400) {
   const [suggestions, setSuggestions] = useState([]);

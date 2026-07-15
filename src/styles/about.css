@@ -3,6 +3,7 @@
   --btn-bg: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
   --section-cardBg: #f7f9fb;
   --heading: "Vollkorn", serif;
+  --description: Roboto, Helvetica, Arial, sans-serif;
   --custom-one: #1e40af;
   --black: #000000;
   --desc: #666;
@@ -12,7 +13,6 @@
 
 /* ── Root ─────────────────────────────────────────────────────── */
 .about-root {
-  font-family: "Inter", sans-serif;
   color: #1a1a2e;
 }
 
@@ -72,6 +72,7 @@
   font-size: 1.1rem;
   max-width: 600px;
   margin: 0 auto !important;
+  font-family: var(--description) !important;
   line-height: 1.75;
 }
 
@@ -81,6 +82,7 @@
   box-shadow: var(--fr-shadow);
   padding: 36px 0;
   border-bottom: 1px solid #e8edf4;
+  font-family: var(--description) !important;
 }
 
 .about-stat {
@@ -89,7 +91,6 @@
 }
 
 .about-stat__value {
-  font-family: var(--heading) !important;
   font-size: 2rem !important;
   font-weight: 700 !important;
   color: var(--custom-one) !important;
@@ -125,6 +126,7 @@
 .about-section-eyebrow {
   font-size: 0.72rem !important;
   letter-spacing: 2px !important;
+  font-family: var(--description) !important;
   text-transform: uppercase !important;
   color: var(--custom-one) !important;
   font-weight: 600 !important;
@@ -156,6 +158,7 @@
   color: var(--desc) !important;
   font-size: 1rem !important;
   line-height: 1.8 !important;
+  font-family: var(--description) !important;
 }
 
 /* ── Image block ──────────────────────────────────────────────── */
@@ -245,6 +248,7 @@
   font-size: 0.875rem !important;
   color: var(--desc) !important;
   line-height: 1.7 !important;
+  font-family: var(--description) !important;
 }
 
 /* ── Steps ────────────────────────────────────────────────────── */
@@ -275,6 +279,7 @@
   color: #374151 !important;
   padding-top: 2px;
   line-height: 1.6 !important;
+  font-family: var(--description) !important;
 }
 
 /* ── Timeline ─────────────────────────────────────────────────── */
@@ -338,6 +343,7 @@
   font-size: 0.95rem !important;
   color: #374151 !important;
   line-height: 1.65 !important;
+  font-family: var(--description) !important;
 }
 
 /* ── Team cards ───────────────────────────────────────────────── */
@@ -369,6 +375,7 @@
 
 .about-team-role {
   font-size: 0.78rem !important;
+    font-family: var(--description) !important;
   color: var(--custom-one) !important;
   font-weight: 600 !important;
   letter-spacing: 0.5px !important;
@@ -379,6 +386,7 @@
 .about-team-bio {
   font-size: 0.875rem !important;
   color: var(--desc) !important;
+     font-family: var(--description) !important;
   line-height: 1.65 !important;
 }
 
@@ -413,7 +421,8 @@
 
 .about-testi-name {
   font-size: 0.875rem !important;
-  font-weight: 600 !important;
+  font-weight: 400 !important;
+     font-family: var(--description) !important;  
   color: #fff !important;
 }
 
@@ -443,6 +452,7 @@
   font-size: 1rem !important;
   margin-bottom: 36px !important;
   line-height: 1.7 !important;
+     font-family: var(--description) !important;
 }
 
 .about-cta__btns {

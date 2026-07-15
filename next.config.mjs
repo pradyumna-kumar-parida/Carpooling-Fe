@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   devIndicators: false,
-  reactCompiler: true,
+  // reactCompiler: true,
 
   images: {
     remotePatterns: [
@@ -12,6 +12,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "cdn.pixabay.com",
+      },
+      {
+        protocol: "http",
+        hostname: "192.168.1.8",
+         port: "3000",
+        pathname: "/uploads/**",
       },
       {
         protocol: "https",
