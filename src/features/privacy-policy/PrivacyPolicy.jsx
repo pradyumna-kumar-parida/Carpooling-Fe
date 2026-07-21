@@ -93,7 +93,10 @@ export default function PrivacyPolicyPage() {
         <Container maxWidth={false} className="privacy-hero-container">
           <Chip
             icon={
-              <VerifiedUserOutlinedIcon fontSize="small" sx={{ color: "#fff !important" }} />
+              <VerifiedUserOutlinedIcon
+                fontSize="small"
+                sx={{ color: "#fff !important" }}
+              />
             }
             label="Trust & safety"
             className="privacy-hero-chip"
@@ -105,6 +108,7 @@ export default function PrivacyPolicyPage() {
           </p>
           <p className="privacy-hero-meta">Last updated: June 2026</p>
         </Container>
+        <div className="privacy-hero-overlay"></div>
       </section>
 
       <Container maxWidth={false} className="privacy-container privacy-content">

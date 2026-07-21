@@ -46,7 +46,7 @@ const PaymentCard = ({
             onClick={handlePayNow}
             disabled={processing || !razorpayLoaded}
           >
-            {processing ? "Opening Payment..." : `Pay ₹${totalAmount}`}
+            {processing ? "Opening Payment..." : `Pay  ₹${totalAmount}`}
           </button>
 
           <p className="ridepay-secure-note">

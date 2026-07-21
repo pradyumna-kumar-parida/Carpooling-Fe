@@ -28,12 +28,14 @@
 }
 
 .help-section-label {
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--custom-one);
-  margin-bottom: 10px;
+  display: block;
+  letter-spacing: 2px !important;
+  font-size: 0.72rem !important;
+  font-family: var(--description) !important;
+  text-transform: uppercase !important;
+  color: var(--custom-one) !important;
+  margin-bottom: 8px !important;
+  font-weight: 600 !important;
 }
 
 /* ── HERO ─────────────────────────────── */

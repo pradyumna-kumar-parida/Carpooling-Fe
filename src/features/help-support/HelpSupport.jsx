@@ -222,7 +222,7 @@ export default function HelpSupport() {
             </p>
           </div>
           <img
-            src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=900&auto=format&fit=crop&q=70"
+            src="https://images.squarespace-cdn.com/content/v1/5c2f57ad70e80283cbf8e2d1/1548241382394-M2MN38D8KWRK1DYWAZEG/woman-headset.jpg?format=2500w"
             alt="People travelling together in a car"
             className="help-hero-bg"
           />

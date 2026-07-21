@@ -2,6 +2,18 @@
 
 import { useState } from "react";
 import "../../../styles/booking-req.css";
+import { FaCar } from "react-icons/fa";
+import { IoLocationOutline } from "react-icons/io5";
+import { FaLocationDot } from "react-icons/fa6";
+import { VscGitPullRequestComment } from "react-icons/vsc";
+import { LiaUserCheckSolid } from "react-icons/lia";
+import { GrMoney } from "react-icons/gr";
+import { BsCheck2Circle } from "react-icons/bs";
+import { FaCaretUp } from "react-icons/fa6";
+import { LuMessageSquareMore } from "react-icons/lu";
+import { FaRegCheckCircle } from "react-icons/fa";
+
+import { FaCaretDown } from "react-icons/fa";
 
 /* ─── Mock Data ──────────────────────────────────────────── */
 
@@ -207,9 +219,10 @@ function RequestCard({ request, onApprove, onReject }) {
             <div className="booking-req-avatar">{passenger.avatar}</div>
             {passenger.verified && (
               <div className="booking-req-verified-badge">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+                <div>
+                  {" "}
+                  <FaRegCheckCircle />
+                </div>
               </div>
             )}
           </div>
@@ -247,14 +260,8 @@ function RequestCard({ request, onApprove, onReject }) {
 
       {/* ── Ride tag ── */}
       <div className="booking-req-ride-tag">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3m-3 9h8m-8 0a2 2 0 100 4 2 2 0 000-4zm8 0a2 2 0 100 4 2 2 0 000-4zm-5-3V9l3 3-3 3" />
-        </svg>
+        <FaCar />
+
         <span className="booking-req-ride-tag-text">
           Ride {ride.id} · {ride.from} → {ride.to}
         </span>
@@ -266,7 +273,7 @@ function RequestCard({ request, onApprove, onReject }) {
       {/* ── Route ── */}
       <div className="booking-req-route-block">
         <div className="booking-req-route-row">
-          <div className="booking-req-route-dot booking-req-route-dot-pickup" />
+          <IoLocationOutline  />
           <div className="booking-req-route-info">
             <span className="booking-req-route-label">Pickup</span>
             <span className="booking-req-route-place">{request.pickup}</span>
@@ -274,7 +281,7 @@ function RequestCard({ request, onApprove, onReject }) {
         </div>
         <div className="booking-req-route-connector" />
         <div className="booking-req-route-row">
-          <div className="booking-req-route-dot booking-req-route-dot-drop" />
+          <FaLocationDot  />
           <div className="booking-req-route-info">
             <span className="booking-req-route-label">Drop</span>
             <span className="booking-req-route-place">{request.drop}</span>
@@ -315,14 +322,8 @@ function RequestCard({ request, onApprove, onReject }) {
       {/* ── Passenger message ── */}
       {request.message && (
         <div className="booking-req-message-box">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-          </svg>
+          <LuMessageSquareMore />
+
           <p className="booking-req-message-text">"{request.message}"</p>
         </div>
       )}
@@ -332,7 +333,15 @@ function RequestCard({ request, onApprove, onReject }) {
         className="booking-req-expand-btn"
         onClick={() => setExpanded(!expanded)}
       >
-        {expanded ? "Hide details ▲" : "View passenger details ▼"}
+        {expanded ? (
+          <>
+            Hide details <FaCaretUp size={14} />
+          </>
+        ) : (
+          <>
+            View passenger details <FaCaretDown size={14} />
+          </>
+        )}
       </button>
 
       {expanded && (
@@ -357,10 +366,10 @@ function RequestCard({ request, onApprove, onReject }) {
             <span className="booking-req-expanded-label">Verification</span>
             <span className="booking-req-expanded-val">
               {passenger.verified ? (
-                <span className="booking-req-verified-text">✓ ID Verified</span>
+                <span className="booking-req-verified-text"> ID Verified</span>
               ) : (
                 <span className="booking-req-unverified-text">
-                  ✕ Not Verified
+                  Not Verified
                 </span>
               )}
             </span>
@@ -375,14 +384,6 @@ function RequestCard({ request, onApprove, onReject }) {
             className="booking-req-btn-reject"
             onClick={() => onReject(request.id)}
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <path d="M6 18L18 6M6 6l12 12" />
-            </svg>
             Reject
           </button>
           <button
@@ -390,14 +391,6 @@ function RequestCard({ request, onApprove, onReject }) {
             onClick={() => onApprove(request.id)}
             disabled={ride.availableSeats < request.requestedSeats}
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <path d="M5 13l4 4L19 7" />
-            </svg>
             {ride.availableSeats < request.requestedSeats
               ? "No Seats Left"
               : "Approve"}
@@ -407,14 +400,7 @@ function RequestCard({ request, onApprove, onReject }) {
 
       {status === "approved" && (
         <div className="booking-req-approved-footer">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
+          <BsCheck2Circle />
           Booking confirmed · Payment held in escrow
         </div>
       )}
@@ -516,14 +502,7 @@ export default function BookingRequests() {
         <div className="booking-req-summary-inner">
           <div className="booking-req-summary-card">
             <div className="booking-req-summary-icon booking-req-summary-icon-blue">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
+              <VscGitPullRequestComment />
             </div>
             <div className="booking-req-summary-text">
               <span className="booking-req-summary-val">{counts.All}</span>
@@ -551,14 +530,7 @@ export default function BookingRequests() {
 
           <div className="booking-req-summary-card">
             <div className="booking-req-summary-icon booking-req-summary-icon-green">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <LiaUserCheckSolid />
             </div>
             <div className="booking-req-summary-text">
               <span className="booking-req-summary-val">{counts.Approved}</span>
@@ -567,18 +539,11 @@ export default function BookingRequests() {
           </div>
 
           <div className="booking-req-summary-card">
-            <div className="booking-req-summary-icon booking-req-summary-icon-blue">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z" />
-              </svg>
+            <div className="booking-req-summary-icon booking-req-summary-icon-yellow">
+              <GrMoney />
             </div>
             <div className="booking-req-summary-text">
-              <span className="booking-req-summary-val booking-req-summary-val-green">
+              <span className="booking-req-summary-val ">
                 ₹{totalFareApproved.toLocaleString("en-IN")}
               </span>
               <span className="booking-req-summary-label">

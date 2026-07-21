@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import { IoLocationOutline } from "react-icons/io5";
-import { FaCar, FaCalendarAlt, FaClock, FaUser, FaStar } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
+import { FaCar, FaCalendarAlt, FaClock, FaUser, FaStar } from "react-icons/fa";
 import { MdOutlineCall, MdClose } from "react-icons/md";
 import { getStatusColor } from "../hooks/UseMyRides";
 import { useEffect } from "react";

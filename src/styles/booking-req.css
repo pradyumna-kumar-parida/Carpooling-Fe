@@ -5,7 +5,7 @@
   --booking-req-btn-bg: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
   --booking-req-card-bg: #f7f9fb;
   --booking-req-heading-font: "Vollkorn", serif;
-  --booking-req-body-font: "Inter", sans-serif;
+  --booking-req-body-font: "Roboto", "Helvetica", "Arial", sans-serif;
   --booking-req-desc: #64748b;
   --booking-req-radius: 14px;
   --booking-req-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
@@ -174,23 +174,28 @@
   background: #dcfce7;
   color: #15803d;
 }
+.booking-req-summary-icon-yellow {
+  background: #f0eec0;
+  color: #afad17;
+}
 
 .booking-req-summary-text {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 7px;
 }
 
 .booking-req-summary-val {
-  font-family: var(--booking-req-heading-font);
+  font-family:
+    Segoe UI,
+    Tahoma,
+    Geneva,
+    Verdana,
+    sans-serif;
   font-size: 1.6rem;
   font-weight: 700;
   color: #0f172a;
   line-height: 1;
-}
-
-.booking-req-summary-val-green {
-  color: #15803d;
 }
 
 .booking-req-summary-label {
@@ -353,9 +358,9 @@
   color: #fff;
 }
 
-.booking-req-verified-badge svg {
-  width: 10px;
-  height: 10px;
+.booking-req-verified-badge div {
+  width: 15px;
+  height: 15px;
 }
 
 /* passenger info */
@@ -524,21 +529,6 @@
   padding: 4px 0;
 }
 
-.booking-req-route-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-top: 4px;
-}
-
-.booking-req-route-dot-pickup {
-  background: var(--booking-req-blue);
-}
-.booking-req-route-dot-drop {
-  background: #0f172a;
-}
-
 .booking-req-route-connector {
   width: 1.5px;
   height: 16px;
@@ -643,6 +633,9 @@
   padding: 0;
   text-align: left;
   transition: opacity 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .booking-req-expand-btn:hover {

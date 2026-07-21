@@ -12,6 +12,7 @@
   --desc: #666;
   --radius: 10px;
   --fr-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --value-text: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* ─── Page Wrapper ─── */
@@ -68,7 +69,6 @@
 
 .earning-filter-btn:hover {
   border-color: var(--custom-one);
-
 }
 
 .earning-filter-btn--active {
@@ -143,7 +143,7 @@
   font-size: 1.45rem;
   font-weight: 700;
   color: var(--black);
-  font-family: var(--heading);
+  font-family: var(--value-text);
 }
 
 .earning-stat-badge {
@@ -222,7 +222,7 @@
 }
 
 .earning-bar-amount {
-  font-size: 0.7rem;
+  font-size:1.2rem;
   color: var(--desc);
   font-weight: 500;
 }
@@ -245,7 +245,7 @@
 }
 
 .earning-bar-day {
-  font-size: 0.78rem;
+  font-size: 1rem;
   color: var(--desc);
   font-weight: 600;
 }
@@ -290,7 +290,7 @@
 .earning-payout-amount {
   font-size: 2rem;
   font-weight: 700;
-  font-family: var(--heading);
+  font-family: var(--value-text);
   color: #fff;
 }
 
@@ -481,7 +481,7 @@
   font-size: 1rem;
   font-weight: 700;
   color: var(--custom-one);
-  font-family: var(--heading);
+  font-family: var(--value-text);
 }
 
 .earning-status-chip {

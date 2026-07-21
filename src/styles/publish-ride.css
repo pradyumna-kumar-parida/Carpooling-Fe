@@ -17,6 +17,7 @@
   --pr-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
   --pr-radius: 10px;
   --pr-radius-lg: 16px;
+  --heading: "Vollkorn", serif;
 }
 
 html {
@@ -518,6 +519,7 @@ html {
   font-weight: 900;
   line-height: 1.15;
   color: var(--pr-text-dark);
+  font-family: var(--heading);
   margin: 0;
   letter-spacing: -0.02em;
 }
@@ -543,7 +545,7 @@ html {
 }
 
 .prh-desc {
-  font-size: 1.05rem;
+  font-size: 1.2rem;
   line-height: 1.75;
   color: var(--pr-text-gray);
   margin: 0;
@@ -564,6 +566,7 @@ html {
   font-size: 1.6rem;
   font-weight: 900;
   color: var(--pr-primary);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1;
   letter-spacing: -0.02em;
 }
@@ -714,6 +717,7 @@ html {
   font-size: 2.2rem;
   font-weight: 800;
   text-align: center;
+  font-family: var(--heading);
   color: var(--pr-text-dark);
   margin-bottom: 60px;
 }
@@ -846,6 +850,7 @@ html {
   font-size: 1.3rem;
   line-height: 1.7;
   color: var(--pr-text-dark);
+  font-family: var(--heading);
   margin-bottom: 20px;
   font-style: italic;
 }
@@ -889,6 +894,7 @@ html {
   font-weight: 800;
   text-align: center;
   color: var(--pr-text-dark);
+  font-family: var(--heading);
   margin-bottom: 60px;
 }
 .pr-how-content {
@@ -977,6 +983,7 @@ html {
   font-size: 2.2rem;
   font-weight: 800;
   text-align: center;
+    font-family: var(--heading);
   color: var(--pr-text-dark);
   margin-bottom: 60px;
 }
@@ -1029,6 +1036,7 @@ html {
 }
 .pr-faq-title {
   font-size: 2.2rem;
+    font-family: var(--heading);
   font-weight: 800;
   text-align: center;
   color: var(--pr-text-dark);
@@ -1066,7 +1074,7 @@ html {
   align-items: center;
   gap: 20px;
   transition: all 0.3s ease;
-  font-family: "Vollkorn", serif;
+
 }
 .pr-faq-question.active {
   background: var(--pr-bg-light);

@@ -22,7 +22,7 @@
   min-height: 480px;
   display: flex;
   align-items: center;
-  background: url("https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1400&q=80")
+  background: url("../assets/images/about-page-banner.png")
     center / cover no-repeat;
 }
 
@@ -31,8 +31,8 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(30, 64, 175, 0.88) 0%,
-    rgba(3, 105, 161, 0.72) 100%
+    #0f1c3f54 0%,
+    #164564b6 100%
   );
 }
 
@@ -64,7 +64,7 @@
 }
 
 .about-accent {
-  color: #93c5fd;
+  color: var(--custom-one);
 }
 
 .about-hero__sub {
@@ -93,14 +93,21 @@
 .about-stat__value {
   font-size: 2rem !important;
   font-weight: 700 !important;
+  font-family:
+    Segoe UI,
+    Tahoma,
+    Geneva,
+    Verdana,
+    sans-serif !important;
   color: var(--custom-one) !important;
   line-height: 1 !important;
 }
 
 .about-stat__label {
-  font-size: 0.8rem !important;
+  font-size: 0.9rem !important;
   color: var(--desc) !important;
   margin-top: 4px !important;
+  font-family: var(--description) !important;
   letter-spacing: 0.5px;
 }
 
@@ -375,7 +382,7 @@
 
 .about-team-role {
   font-size: 0.78rem !important;
-    font-family: var(--description) !important;
+  font-family: var(--description) !important;
   color: var(--custom-one) !important;
   font-weight: 600 !important;
   letter-spacing: 0.5px !important;
@@ -386,7 +393,7 @@
 .about-team-bio {
   font-size: 0.875rem !important;
   color: var(--desc) !important;
-     font-family: var(--description) !important;
+  font-family: var(--description) !important;
   line-height: 1.65 !important;
 }
 
@@ -422,7 +429,7 @@
 .about-testi-name {
   font-size: 0.875rem !important;
   font-weight: 400 !important;
-     font-family: var(--description) !important;  
+  font-family: var(--description) !important;
   color: #fff !important;
 }
 
@@ -452,7 +459,7 @@
   font-size: 1rem !important;
   margin-bottom: 36px !important;
   line-height: 1.7 !important;
-     font-family: var(--description) !important;
+  font-family: var(--description) !important;
 }
 
 .about-cta__btns {

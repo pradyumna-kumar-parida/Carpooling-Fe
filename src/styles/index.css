@@ -8,11 +8,11 @@
 }
 
 body {
-  font-family: "Vollkorn", serif;
   color: #1a1a1a;
   background: #ffffff;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
 :root {
@@ -110,6 +110,7 @@ header::before {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: flex;
+  font-family: var(--heading);
   align-items: center;
   gap: 10px;
   letter-spacing: -0.5px;
@@ -143,7 +144,8 @@ nav {
 nav a {
   text-decoration: none;
   color: black;
-  font-weight: 500;
+  font-weight: 400;
+  font-size: 95%;
   transition: color 0.3s ease;
   position: relative;
 }
@@ -339,8 +341,7 @@ nav a:hover::after {
 }
 
 .hero-text p {
-  font-size: 22px;
-  font-weight: 400;
+  font-size: 21px;
   margin-bottom: 40px;
   opacity: 0;
   line-height: 1.6;
@@ -519,12 +520,16 @@ nav a:hover::after {
 }
 
 .card-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
   color: #1a1a1a;
   margin-bottom: 8px;
 }
-
+.arrow-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 .card.green-theme .card-title {
   color: #1a3a2a;
 }
@@ -536,7 +541,7 @@ nav a:hover::after {
 }
 
 .card-subtitle {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--desc);
   margin-bottom: 20px;
 }
@@ -549,7 +554,7 @@ nav a:hover::after {
 .features-list li {
   display: flex;
   align-items: center;
-  font-size: 15px;
+  font-size: 14px;
   color: #1a1a1a;
   margin-bottom: 10px;
 }
@@ -559,8 +564,8 @@ nav a:hover::after {
 }
 
 .check-icon {
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
   background-color: #000000;
   display: flex;
@@ -573,7 +578,7 @@ nav a:hover::after {
 .check-icon::after {
   content: "✓";
   color: white;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
 }
 
@@ -633,6 +638,7 @@ nav a:hover::after {
 
 .why-section h2 {
   text-align: center;
+  font-family: var(--heading);
   font-size: 35px;
   font-weight: 700;
   margin-bottom: 24px;
@@ -676,14 +682,14 @@ nav a:hover::after {
 }
 
 .why-card h3 {
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 700;
   color: #111;
   margin-bottom: 6px;
 }
 
 .why-card p {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--desc);
   line-height: 1.5;
 }
@@ -866,6 +872,7 @@ nav a:hover::after {
   text-align: center;
   font-size: 35px;
   font-weight: 700;
+  font-family: var(--heading);
   margin-bottom: 24px;
   color: #111;
   opacity: 0;
@@ -931,6 +938,7 @@ nav a:hover::after {
 .testimonial-card p {
   font-size: 16px;
   color: #444;
+  font-family: var(--heading);
   line-height: 1.6;
   margin-bottom: 14px;
   font-style: italic;
@@ -1052,6 +1060,7 @@ footer {
   font-size: 20px;
   font-weight: 800;
   display: flex;
+  font-family: var(--heading);
   align-items: center;
   gap: 7px;
 }
@@ -1077,7 +1086,7 @@ footer {
 .footer-links {
   display: flex;
   gap: 18px;
-  font-size: 15px;
+  font-size: 14px;
   flex-wrap: wrap;
 }
 
@@ -1149,6 +1158,7 @@ footer {
 }
 
 .image-overlay h1 {
+  font-family: var(--heading);
   font-size: 2.8rem;
   font-weight: 700;
   margin-bottom: 20px;
@@ -1158,6 +1168,7 @@ footer {
 
 .image-overlay p {
   font-size: 1.25rem;
+  line-height: 1.7rem;
   opacity: 0.95;
   animation: slideUp 1s ease-out 0.5s both;
 }
@@ -1247,6 +1258,7 @@ footer {
 .form-container h2 {
   font-size: 2rem;
   color: #1a1a1a;
+  font-family: var(--heading);
   text-align: center;
   font-weight: 700;
 }
@@ -1441,7 +1453,9 @@ footer {
   align-items: center;
   font-size: 34px;
 }
-
+.auth-logo > h2 {
+  font-family: var(--heading);
+}
 /* ===========================
    SIGN UP
    =========================== */
@@ -1456,6 +1470,7 @@ footer {
 .signup-title {
   font-size: 2rem;
   color: #1a1a1a;
+  font-family: var(--heading);
   text-align: center;
   font-weight: 700;
 }
@@ -1484,7 +1499,7 @@ footer {
 
 .field-label {
   display: block;
-  margin-bottom: 7px;
+  margin-bottom: 10px;
   color: #333;
   font-weight: 500;
   font-size: 0.88rem;
@@ -2016,7 +2031,7 @@ footer {
   border-radius: 8px;
   background: var(--btn-bg);
   color: #ffffff;
-  font-weight: 600;
+  font-weight: 400;
   text-decoration: none;
   transition: all 0.3s ease;
   z-index: 1000;
@@ -2127,7 +2142,7 @@ footer {
   padding: 11px 0;
   border: none;
   cursor: pointer;
-  font-family: "Vollkorn", serif;
+
   font-weight: 600;
   font-size: 13px;
   background: transparent;
@@ -3097,14 +3112,16 @@ footer {
   top: 70px;
   max-height: 400px !important;
   right: 20px;
-  font-family: Roboto, Helvetica, Arial, sans-serif ;
+
   margin: 0 !important;
   width: 380px;
   border-radius: 16px !important;
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
 }
-
+.css-ahj2mt-MuiTypography-root {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
 .notification-dialog-title {
   display: flex;
   align-items: center;
@@ -3117,6 +3134,7 @@ footer {
 .notification-title-wrapper {
   display: flex;
   align-items: center;
+
   gap: 8px;
 }
 
@@ -3180,21 +3198,21 @@ footer {
 }
 
 .notification-item-title {
-  font-size: 16px !important;
+  font-size: 15px !important;
   font-weight: 600 !important;
 }
 
 .notification-item-body {
   color: #666 !important;
   margin-top: 4px !important;
-  font-size: 15px !important;
+  font-size: 13px !important;
 }
 
 .notification-item-time {
   color: #999 !important;
   display: block !important;
-  margin-top: 8px !important;
-  font-size: 12px !important;
+
+  font-size: 10px !important;
 }
 
 .notification-unread-dot {
@@ -3241,4 +3259,21 @@ footer {
   width: 100%;
   justify-content: space-between;
   align-items: center;
+}
+.logout-icon {
+  color: #f97316;
+  background: #fff7ed;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 16px;
+  display: flex;
+}
+.css-twia2z-MuiPaper-root-MuiDialog-paper {
+  border-radius:var(--radius) !important;
+}
+.css-xl6cwr-MuiTypography-root{
+   font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
 }

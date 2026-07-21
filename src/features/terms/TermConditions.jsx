@@ -158,10 +158,7 @@ export default function TermsCondition() {
         <div className="terms-condition-hero-overlay" />
         <div className="terms-condition-hero-content">
           <span className="terms-condition-eyebrow">Legal</span>
-          <h1 className="terms-condition-hero-title">
-            Terms &amp;{" "}
-            <span className="terms-condition-hero-accent">Conditions</span>
-          </h1>
+          <h1 className="terms-condition-hero-title">Terms &amp; Conditions</h1>
           <p className="terms-condition-hero-sub">
             Please read these terms carefully before using the Carpooling India
             platform.

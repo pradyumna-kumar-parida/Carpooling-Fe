@@ -34,14 +34,14 @@
   min-height: 420px;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, #1e3a8a 0%, #0c4a6e 100%);
+  background: linear-gradient(135deg, #151e38ea 0%, #0c4a6e 100%);
   overflow: hidden;
 }
 
 .contact-hero-overlay {
   position: absolute;
   inset: 0;
-  background: url("https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1400&q=80")
+  background: url("https://empathizerpk.com/wp-content/uploads/2022/04/Contact-us-Main-Banner-1.jpg")
     center / cover no-repeat;
   opacity: 0.08;
 }
@@ -81,7 +81,7 @@
 }
 
 .contact-hero-accent {
-  color: #93c5fd;
+  color: #60a5fa;
 }
 
 .contact-hero-sub {

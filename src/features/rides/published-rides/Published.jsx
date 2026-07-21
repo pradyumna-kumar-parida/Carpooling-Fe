@@ -2,6 +2,12 @@
 
 import { useState } from "react";
 import "../../../styles/ride-published.css";
+import { IoLocationOutline } from "react-icons/io5";
+import { FaLocationDot } from "react-icons/fa6";
+
+import { BsCheck2Circle } from "react-icons/bs";
+import { FaHourglassEnd } from "react-icons/fa";
+import { FiAlertTriangle } from "react-icons/fi";
 
 /* ─── Mock Data ──────────────────────────────────────────── */
 
@@ -176,7 +182,7 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
           {/* Route */}
           <div className="ride-publish-modal-route">
             <div className="ride-publish-modal-stop">
-              <div className="ride-publish-modal-stop-dot ride-publish-modal-stop-dot-start" />
+              <IoLocationOutline className="step-icon start" />
               <div>
                 <p className="ride-publish-modal-city">{ride.from}</p>
                 <p className="ride-publish-modal-addr">{ride.fromAddress}</p>
@@ -185,7 +191,7 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
             </div>
             <div className="ride-publish-modal-route-line" />
             <div className="ride-publish-modal-stop">
-              <div className="ride-publish-modal-stop-dot ride-publish-modal-stop-dot-end" />
+              <FaLocationDot className="step-icon end" />
               <div>
                 <p className="ride-publish-modal-city">{ride.to}</p>
                 <p className="ride-publish-modal-addr">{ride.toAddress}</p>
@@ -244,9 +250,23 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
                       </span>
                     </div>
                     <span
-                      className={`ride-publish-pax-paid ${p.paid ? "ride-publish-pax-paid-yes" : "ride-publish-pax-paid-no"}`}
+                      className={`ride-publish-pax-paid ${
+                        p.paid
+                          ? "ride-publish-pax-paid-yes"
+                          : "ride-publish-pax-paid-no"
+                      }`}
                     >
-                      {p.paid ? "✓ Paid" : "⏳ Pending"}
+                      {p.paid ? (
+                        <>
+                          <BsCheck2Circle />
+                          <span>Paid</span>
+                        </>
+                      ) : (
+                        <>
+                          <FaHourglassEnd />
+                          <span>Pending</span>
+                        </>
+                      )}
                     </span>
                   </div>
                 ))}
@@ -280,13 +300,11 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
               className="ride-publish-modal-btn-start"
               onClick={() => onStart(ride.id)}
             >
-              🚗 Start Ride
+              Start Ride
             </button>
           )}
           {ride.status === "upcoming" && (
-            <button className="ride-publish-modal-btn-edit">
-              ✏️ Edit Ride
-            </button>
+            <button className="ride-publish-modal-btn-edit">Edit Ride</button>
           )}
         </div>
       </div>
@@ -478,7 +496,7 @@ export default function PublishedRides() {
                     {/* Route */}
                     <div className="ride-publish-card-route">
                       <div className="ride-publish-card-city-block">
-                        <div className="ride-publish-route-dot ride-publish-route-dot-from" />
+                        <IoLocationOutline size={20} />
                         <div>
                           <p className="ride-publish-card-city">{ride.from}</p>
                           <p className="ride-publish-card-addr">
@@ -498,7 +516,7 @@ export default function PublishedRides() {
                         </svg>
                       </div>
                       <div className="ride-publish-card-city-block ride-publish-card-city-block-right">
-                        <div className="ride-publish-route-dot ride-publish-route-dot-to" />
+                        <FaLocationDot size={20} />
                         <div>
                           <p className="ride-publish-card-city">{ride.to}</p>
                           <p className="ride-publish-card-addr">
@@ -647,7 +665,7 @@ export default function PublishedRides() {
                             className="ride-publish-action-btn ride-publish-action-btn-start"
                             onClick={() => handleStart(ride.id)}
                           >
-                            🚗 Start Ride
+                            Start Ride
                           </button>
                           <button
                             className="ride-publish-action-btn ride-publish-action-btn-cancel"
@@ -663,7 +681,7 @@ export default function PublishedRides() {
                           className="ride-publish-action-btn ride-publish-action-btn-ongoing"
                           disabled
                         >
-                          🟢 Ride in Progress
+                          Ride in Progress
                         </button>
                       )}
 
@@ -672,7 +690,7 @@ export default function PublishedRides() {
                           className="ride-publish-action-btn ride-publish-action-btn-completed"
                           disabled
                         >
-                          ✓ Completed
+                          Completed
                         </button>
                       )}
 
@@ -681,7 +699,7 @@ export default function PublishedRides() {
                           className="ride-publish-action-btn ride-publish-action-btn-cancelled"
                           disabled
                         >
-                          ✕ Cancelled
+                          Cancelled
                         </button>
                       )}
                     </div>
@@ -714,14 +732,7 @@ export default function PublishedRides() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="ride-publish-confirm-icon">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
-              </svg>
+              <FiAlertTriangle />
             </div>
             <h3 className="ride-publish-confirm-title">Cancel this ride?</h3>
             <p className="ride-publish-confirm-text">

@@ -36,9 +36,7 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/slices/authSlice";
 import { clearAuthCookies, getRole, getToken } from "@/lib/cookie";
-
-
-
+import LogoutDialog from "./LogoutDialog";
 
 const getNavLinks = (role, isLoggedIn) => [
   ...(role === "driver" || !isLoggedIn
@@ -101,8 +99,6 @@ const getAccountLinks = (role) => [
     : []),
 ];
 
-
-
 const Header = () => {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -119,7 +115,7 @@ const Header = () => {
   const firstName = user?.name ? user.name.split(" ")[0] : "";
   const profilePicture =
     user?.user_details?.profile_picture || user?.profile_picture || null;
-
+  const [logoutOpen, setLogoutOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [panelOpen, setPanelOpen] = useState(false);
   const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
@@ -222,16 +218,17 @@ const Header = () => {
               <Divider />
             </div>
           ))}
-          <ListItem disablePadding>
-            <ListItemButton
-              className="mobile-menu-sidebar logout"
-              onClick={handleLogout}
-              sx={{ color: "error.main" }}
-            >
-              <FiLogOut />
-              <ListItemText primary="Logout" />
-            </ListItemButton>
-          </ListItem>
+          <ListItemButton
+            className="mobile-menu-sidebar logout"
+            onClick={() => {
+              setDrawerOpen(false);
+              setLogoutOpen(true);
+            }}
+            sx={{ color: "error.main" }}
+          >
+            <FiLogOut />
+            <ListItemText primary="Logout" />
+          </ListItemButton>
         </List>
       ) : (
         <List>
@@ -260,126 +257,136 @@ const Header = () => {
   );
 
   return (
-    <header>
-      <Link className="header-logo" href="/">
-        <div className="header-logo-icon">
-          <Image src={logoImg} alt="Carpooling logo" priority />
-        </div>
-        Carpooling
-      </Link>
-
-      <Drawer
-        anchor="right"
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        {DrawerContent}
-      </Drawer>
-
-      <nav className="home-menus">
-        {navLinks.map((item) => (
-          <Link key={item.label} href={item.path}>
-            {item.label}
-          </Link>
-        ))}
-      </nav>
-
-      <div className="right-side-nav">
-        {isLoggedIn && (
-          <div className="notification" onClick={handleNotification}>
-            <Image src={notification} alt="" width={24} height={24} />
-            <p className="count">
-              {notifications.filter((n) => !n.read).length}
-            </p>
+    <>
+      <header>
+        <Link className="header-logo" href="/">
+          <div className="header-logo-icon">
+            <Image src={logoImg} alt="Carpooling logo" priority />
           </div>
-        )}
+          Carpooling
+        </Link>
 
-        <nav className="menu-icon">
-          <CgMenuRightAlt
-            onClick={() => setDrawerOpen(true)}
-            style={{ cursor: "pointer" }}
-          />
+        <Drawer
+          anchor="right"
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+        >
+          {DrawerContent}
+        </Drawer>
+
+        <nav className="home-menus">
+          {navLinks.map((item) => (
+            <Link key={item.label} href={item.path}>
+              {item.label}
+            </Link>
+          ))}
         </nav>
 
-        <div className="auth-buttons">
-          {!isLoggedIn ? (
-            <>
-              <Link className="header-login-btn" href="/login">
-                Log in
-              </Link>
-              <Link className="header-signup-btn" href="/signup">
-                Sign up
-              </Link>
-            </>
-          ) : (
-            <>
-              <Button
-                onClick={(e) => setAnchorEl(e.currentTarget)}
-                className="user-btn-logined"
-              >
-                <div className="user-profile-box">
-                  <div className="user-profile-text">
-                    <span className="user-greeting">Hi,</span>
-                    <span className="user-role">{firstName || "Guest"}</span>
-                  </div>
-                  <div className="profile-img">
-                    <ProfileAvatar />
-                  </div>
-                </div>
-              </Button>
-
-              {/* FIX: PaperProps forces 250px width — overrides MUI's inline JS style */}
-              <Menu
-                anchorEl={anchorEl}
-                open={menuOpen}
-                onClose={() => setAnchorEl(null)}
-                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                transformOrigin={{ vertical: "top", horizontal: "right" }}
-                PaperProps={{
-                  sx: {
-                    minWidth: 250,
-                    width: 250,
-                    borderRadius: "var(--fr-radius)",
-                    fontFamily: "'Vollkorn', serif",
-                  },
-                }}
-              >
-                {accountLinks.map((item) => (
-                  <div key={item.label}>
-                    <MenuItem
-                      className="drawer-menus"
-                      onClick={() => navTo(item.path)}
-                    >
-                      <div className="menu-lables">
-                        {item.icon}
-                        <span>{item.label}</span>
-                      </div>
-                      <div className="move-forward">
-                        <LiaAngleRightSolid />
-                      </div>
-                    </MenuItem>
-                    <Divider />
-                  </div>
-                ))}
-                <MenuItem
-                  className="drawer-menus logout"
-                  onClick={handleLogout}
-                >
-                  <FiLogOut /> Logout
-                </MenuItem>
-              </Menu>
-            </>
+        <div className="right-side-nav">
+          {isLoggedIn && (
+            <div className="notification" onClick={handleNotification}>
+              <Image src={notification} alt="" width={24} height={24} />
+              <p className="count">
+                {notifications.filter((n) => !n.read).length}
+              </p>
+            </div>
           )}
-        </div>
-      </div>
 
-      <NotificationPanel
-        open={panelOpen}
-        onClose={handleClosePanel}
-        notifications={notifications}
-        onUpdate={handleUpdateNotification}
+          <nav className="menu-icon">
+            <CgMenuRightAlt
+              onClick={() => setDrawerOpen(true)}
+              style={{ cursor: "pointer" }}
+            />
+          </nav>
+
+          <div className="auth-buttons">
+            {!isLoggedIn ? (
+              <>
+                <Link className="header-login-btn" href="/login">
+                  Log in
+                </Link>
+                <Link className="header-signup-btn" href="/signup">
+                  Sign up
+                </Link>
+              </>
+            ) : (
+              <>
+                <Button
+                  onClick={(e) => setAnchorEl(e.currentTarget)}
+                  className="user-btn-logined"
+                >
+                  <div className="user-profile-box">
+                    <div className="user-profile-text">
+                      <span className="user-greeting">Hi,</span>
+                      <span className="user-role">{firstName || "Guest"}</span>
+                    </div>
+                    <div className="profile-img">
+                      <ProfileAvatar />
+                    </div>
+                  </div>
+                </Button>
+
+                {/* FIX: PaperProps forces 250px width — overrides MUI's inline JS style */}
+                <Menu
+                  anchorEl={anchorEl}
+                  open={menuOpen}
+                  onClose={() => setAnchorEl(null)}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+                  transformOrigin={{ vertical: "top", horizontal: "right" }}
+                  PaperProps={{
+                    sx: {
+                      minWidth: 250,
+                      width: 250,
+                      borderRadius: "var(--fr-radius)",
+                      fontFamily: "'Vollkorn', serif",
+                    },
+                  }}
+                >
+                  {accountLinks.map((item) => (
+                    <div key={item.label}>
+                      <MenuItem
+                        className="drawer-menus"
+                        onClick={() => navTo(item.path)}
+                      >
+                        <div className="menu-lables">
+                          {item.icon}
+                          <span>{item.label}</span>
+                        </div>
+                        <div className="move-forward">
+                          <LiaAngleRightSolid />
+                        </div>
+                      </MenuItem>
+                      <Divider />
+                    </div>
+                  ))}
+                  <MenuItem
+                    className="drawer-menus logout"
+                    onClick={() => {
+                      setAnchorEl(null);
+                      setLogoutOpen(true);
+                    }}
+                  >
+                    <FiLogOut /> Logout
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
+          </div>
+        </div>
+
+        <NotificationPanel
+          open={panelOpen}
+          onClose={handleClosePanel}
+          notifications={notifications}
+          onUpdate={handleUpdateNotification}
+        />
+      </header>
+      <LogoutDialog
+        open={logoutOpen}
+        onClose={() => setLogoutOpen(false)}
+        onConfirm={handleLogout}
       />
-    </header>
+    </>
   );
 };
 

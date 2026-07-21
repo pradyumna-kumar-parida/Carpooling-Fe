@@ -24,14 +24,31 @@
   margin: 0 auto;
   display: flex !important;
   flex-direction: column;
+  position: relative;
+  z-index: 2;
   align-items: center;
 }
 
 /* ---------- Hero ---------- */
 .privacy-hero {
-  background: var(--btn-bg);
-  padding: 72px 0 56px;
-  color: #fff;
+  position: relative;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  background: url("https://www.enerds.com.au/wp-content/uploads/2022/10/Cyber-Security-Image-eNerds.jpg")
+    center/cover no-repeat;
+  overflow: hidden;
+}
+
+.privacy-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(21, 49, 141, 0.863) 0%,
+    rgba(3, 106, 161, 0.829) 100%
+  );
+  z-index: 1;
 }
 
 .privacy-hero-chip {
@@ -46,6 +63,7 @@
   font-size: clamp(2.2rem, 4vw, 3.2rem);
   font-weight: 600;
   margin: 0 0 14px;
+  color: var(--section-cardBg);
   letter-spacing: -0.01em;
 }
 
@@ -151,7 +169,7 @@
   background: #fff;
   color: var(--custom-one);
   font-weight: 600;
-    font-size: 0.9rem;
+  font-size: 0.9rem;
   text-decoration: none;
   padding: 10px 22px;
   border-radius: 8px;
