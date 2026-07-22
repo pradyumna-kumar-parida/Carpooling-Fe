@@ -8,7 +8,17 @@ import PaymentCard from "./components/PaymentCard";
 import RideDetailsCard from "./components/RideDetailsCard";
 const RidePayment = () => {
   const router = useRouter();
-  const rideData = JSON.parse(sessionStorage.getItem("bookingData"));
+  const [rideData, setRideData] = useState(null);
+
+  useEffect(() => {
+    const data = sessionStorage.getItem("bookingData");
+
+    if (data) {
+      setRideData(JSON.parse(data));
+    } else {
+      router.replace("/find-ride"); // or wherever appropriate
+    }
+  }, [router]);
   const { ride, booking, noOfSIt } = rideData || {};
   const RAZORPAY_KEY = booking?.razorpay_key;
   const [paymentSuccess, setPaymentSuccess] = useState(false);
@@ -46,7 +56,7 @@ const RidePayment = () => {
         setPaymentSuccess(true);
         setTimeout(() => {
           router.push("/passenger/booking-confirmation");
-        }, 2000);
+        }, 3000);
       },
       modal: {
         ondismiss: function () {
@@ -63,7 +73,13 @@ const RidePayment = () => {
 
     setTimeout(() => rzp.open(), 100);
   };
-
+  if (!rideData) {
+    return (
+      <div className="ridepay-loader-overlay">
+        <ArcLoader />
+      </div>
+    );
+  }
   return (
     <>
       {processing && (
