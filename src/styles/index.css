@@ -281,7 +281,7 @@ nav a.active::after {
 .hero {
   background:
     linear-gradient(to right, #ffffff00 0%, #ffffff9d 19% 35%, #0000 55% 100%),
-    url("../assets/Images/bannerImg-carRide.png");
+    url("../assets/images/bannerImg-carRide.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
