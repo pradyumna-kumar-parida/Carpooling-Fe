@@ -5,7 +5,8 @@ import "../../../styles/booking-req.css";
 import { FaCar } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
-import { VscGitPullRequestComment } from "react-icons/vsc";
+import { BiCommentDetail } from "react-icons/bi";
+
 import { LiaUserCheckSolid } from "react-icons/lia";
 import { GrMoney } from "react-icons/gr";
 import { BsCheck2Circle } from "react-icons/bs";
@@ -273,7 +274,7 @@ function RequestCard({ request, onApprove, onReject }) {
       {/* ── Route ── */}
       <div className="booking-req-route-block">
         <div className="booking-req-route-row">
-          <IoLocationOutline  />
+          <IoLocationOutline />
           <div className="booking-req-route-info">
             <span className="booking-req-route-label">Pickup</span>
             <span className="booking-req-route-place">{request.pickup}</span>
@@ -281,7 +282,7 @@ function RequestCard({ request, onApprove, onReject }) {
         </div>
         <div className="booking-req-route-connector" />
         <div className="booking-req-route-row">
-          <FaLocationDot  />
+          <FaLocationDot />
           <div className="booking-req-route-info">
             <span className="booking-req-route-label">Drop</span>
             <span className="booking-req-route-place">{request.drop}</span>
@@ -502,7 +503,7 @@ export default function BookingRequests() {
         <div className="booking-req-summary-inner">
           <div className="booking-req-summary-card">
             <div className="booking-req-summary-icon booking-req-summary-icon-blue">
-              <VscGitPullRequestComment />
+              <BiCommentDetail />
             </div>
             <div className="booking-req-summary-text">
               <span className="booking-req-summary-val">{counts.All}</span>
