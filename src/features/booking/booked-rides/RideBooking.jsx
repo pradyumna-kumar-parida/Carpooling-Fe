@@ -14,10 +14,29 @@ import TripTimeline from "./components/TripTimeline";
 import DriverCard from "./components/DriverCard";
 import PassengersCard from "./components/PassengersCard";
 import BookingSidebar from "./components/BookingSidebar";
-
+import { getToken } from "@/lib/cookie";
+import { usePathname, useSearchParams } from "next/navigation";
 export default function RideBooking({ rideDetails, totalSeat }) {
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const BOOKING_STATE_KEY = "rideBookingState";
 
+  const redirectToLogin = () => {
+    sessionStorage.setItem(
+      BOOKING_STATE_KEY,
+      JSON.stringify({
+        rideId: ride.id,
+        seats: noOfSIt,
+      }),
+    );
+
+    const currentUrl = searchParams.toString()
+      ? `${pathname}?${searchParams.toString()}`
+      : pathname;
+
+    router.push(`/login?from=${encodeURIComponent(currentUrl)}`);
+  };
   // Prevent hydration mismatch
   const [mounted, setMounted] = useState(false);
 
@@ -47,7 +66,7 @@ export default function RideBooking({ rideDetails, totalSeat }) {
   useEffect(() => {
     setMounted(true);
 
-    const storedToken = localStorage.getItem("token");
+    const storedToken = getToken();
     setToken(storedToken);
   }, []);
 
@@ -141,7 +160,7 @@ export default function RideBooking({ rideDetails, totalSeat }) {
                 noOfSIt,
               })
             }
-            onLoginClick={() => router.push("/login")}
+            onLoginClick={redirectToLogin}
           />
         </div>
       </div>

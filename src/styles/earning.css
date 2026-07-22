@@ -223,8 +223,9 @@
 
 .earning-bar-amount {
   font-size:1.2rem;
-  color: var(--desc);
-  font-weight: 500;
+  color:green;
+  font-weight: 700;
+  font-family: var(--value-text);
 }
 
 .earning-bar-track {

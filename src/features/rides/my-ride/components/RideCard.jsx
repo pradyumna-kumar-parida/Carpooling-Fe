@@ -1,15 +1,12 @@
 "use client";
-import { useState } from "react";
 import { ImArrowRight } from "react-icons/im";
 import { ImInfo } from "react-icons/im";
 import { getStatusColor } from "../hooks/UseMyRides";
-import ChatPanel from "@/features/chat/ChatPanel";
+
 import { useRouter } from "next/navigation";
 import { TbRoute } from "react-icons/tb";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-
-export default function RideCard({ ride, onViewDetails }) {
-  const [showChat, setShowChat] = useState(false);
+export default function RideCard({ ride, onViewDetails, onOpenChat }) {
   const router = useRouter();
   const rideData = {
     id: 14,
@@ -96,14 +93,14 @@ export default function RideCard({ ride, onViewDetails }) {
             Track <TbRoute />
           </button>
 
-          <button className="myride-chat-btn" onClick={() => setShowChat(true)}>
+          <button
+            className="myride-chat-btn"
+            onClick={() => onOpenChat(rideData)}
+          >
             Chat <IoChatbubbleEllipsesOutline />
           </button>
         </div>
       </div>
-      {showChat && (
-        <ChatPanel driver={rideData} onClose={() => setShowChat(false)} />
-      )}
     </>
   );
 }

@@ -305,9 +305,10 @@
   flex-shrink: 0;
 }
 
-.driver-meta {
+.driver-metass {
   flex: 1;
   min-width: 0;
+  align-items: center;
 }
 
 .driver-name {

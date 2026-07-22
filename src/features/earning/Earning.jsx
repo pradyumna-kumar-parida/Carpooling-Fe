@@ -9,6 +9,7 @@ import {
   FiArrowUpRight,
   FiArrowDownRight,
 } from "react-icons/fi";
+import { GrMoney } from "react-icons/gr";
 import "../../styles/earning.css";
 
 const weeklyData = [
@@ -109,7 +110,7 @@ export default function EarningsPage() {
       <div className="earning-stats-grid">
         <div className="earning-stat-card">
           <div className="earning-stat-icon-wrap">
-            <FiDollarSign className="earning-stat-icon" />
+            <GrMoney className="earning-stat-icon" />
           </div>
           <div className="earning-stat-body">
             <span className="earning-stat-label">Total Earned</span>

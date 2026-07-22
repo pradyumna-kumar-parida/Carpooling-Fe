@@ -9,7 +9,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
-import "../../../styles/find-ride.css"
+import "../../../styles/find-ride.css";
 import ArcLoader from "../../../components/Loader";
 import { STEPS } from "./constants/vehicleConstants";
 import { useVehicleForm } from "./hooks/useVehicleForm";
@@ -19,7 +19,7 @@ import StepBasicInfo from "./components/StepBasicInfo";
 import StepDocuments from "./components/StepDocuments";
 import StepInsurance from "./components/StepInsurance";
 import StepFeaturesPhotos from "./components/StepFeaturesPhotos";
-import { useRouter } from "next/navigation";
+import { useRouter} from "next/navigation";
 
 // ── Maps step index to its component ──────────────────────────────────────
 function StepContent({

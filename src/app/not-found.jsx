@@ -35,7 +35,7 @@ const NotFound = () => {
         placeholder="blur"
         style={{ maxWidth: "600px", width: "100%", height: "auto" }}
       />
-      <h1>Oops! Page Not Found</h1>
+      <h1 style={{ fontFamily: "Vollkorn, serif" }}>Oops! Page Not Found</h1>
     </div>
   );
 };

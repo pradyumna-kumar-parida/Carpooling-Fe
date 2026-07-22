@@ -4,7 +4,7 @@ import { vehicleRegistrationApi } from "../../../../services/client/vehicleServi
 import { INITIAL_VEHICLE_DATA } from "../constants/vehicleConstants";
 import { validateStep, buildVehiclePayload } from "../utils/vehicleHelpers";
 import { useSelector } from "react-redux";
-
+import { useRouter, useSearchParams } from "next/navigation";
 export function useVehicleForm() {
   // const { fetchVehicleList } = useVehicleList();
   // ── Stepper ───────────────────────────────────────────────────────────
@@ -24,7 +24,11 @@ export function useVehicleForm() {
     message: "",
     severity: "error",
   });
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const redirectTo = searchParams.get("from") || window.location.href;
 
+  const redirectAfterRegister = () => router.replace(redirectTo);
   // ── Toast helpers ─────────────────────────────────────────────────────
   const showToast = (message, severity = "error") =>
     setToast({ open: true, message, severity });
@@ -88,7 +92,7 @@ export function useVehicleForm() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const user = useSelector((state) => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
 
   // ── Submit ────────────────────────────────────────────────────────────
   const handleSubmit = async () => {
@@ -112,6 +116,7 @@ export function useVehicleForm() {
         setIsSuccess(true);
         // await fetchVehicleList();
         window.scrollTo({ top: 0, behavior: "smooth" });
+        setTimeout(redirectAfterRegister, 500);
       } else {
         showToast(
           response.data?.message || "Submission failed. Please try again.",
@@ -121,9 +126,9 @@ export function useVehicleForm() {
       console.log("422 details →", err?.response?.data);
       showToast(
         err?.response?.data?.message ||
-        err?.response?.data?.error ||
-        err?.message ||
-        "Something went wrong. Please try again.",
+          err?.response?.data?.error ||
+          err?.message ||
+          "Something went wrong. Please try again.",
       );
     } finally {
       setLoading(false);

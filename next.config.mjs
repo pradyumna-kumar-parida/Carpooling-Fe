@@ -23,6 +23,15 @@ const nextConfig = {
         protocol: "https",
         hostname: "ui-avatars.com",
       },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+        {
+        protocol: "https",
+        hostname: "carpool-node-backend-app.onrender.com",
+        pathname: "/uploads/**",
+      },
     ],
   },
 };

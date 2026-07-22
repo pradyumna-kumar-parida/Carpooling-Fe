@@ -13,8 +13,6 @@ import { RxCross2 } from "react-icons/rx";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import ArcLoader from "../../../../components/Loader";
-
-
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { getToken } from "@/lib/cookie";

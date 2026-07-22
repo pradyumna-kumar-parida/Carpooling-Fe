@@ -31,8 +31,8 @@
   inset: 0;
   background: linear-gradient(
     135deg,
-    #0f1c3f54 0%,
-    #164564b6 100%
+    #0f1c3f9c 0%,
+    #164564d2 100%
   );
 }
 
@@ -64,7 +64,7 @@
 }
 
 .about-accent {
-  color: var(--custom-one);
+  color: #60a5fa;
 }
 
 .about-hero__sub {

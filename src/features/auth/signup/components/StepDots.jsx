@@ -7,12 +7,15 @@ export default function StepDots({ total, current }) {
         <div
           key={i}
           style={{
-            width:        i === current ? "24px" : "8px",
-            height:       "8px",
+            width: i === current ? "24px" : "8px",
+            height: "8px",
             borderRadius: "4px",
-            background:   i === current ? "var(--primary-color, #4f46e5)"
-                        : i < current  ? "var(--primary-light, #8395f3)"
-                        :                "var(--border-color, #ddd)",
+            background:
+              i === current
+                ? "var(--primary-color, #4f46e5)"
+                : i < current
+                  ? "var(--primary-light, #8395f3)"
+                  : "var(--border-color, #ddd)",
             transition: "all 0.35s cubic-bezier(0.4,0,0.2,1)",
           }}
         />

@@ -29,7 +29,7 @@ const DriverDetailsCard = ({ driver }) => {
           onError={() => setImageSrc(fallbackImage)}
         />
 
-        <div className="driver-meta">
+        <div className="driver-metass">
           <p className="driver-name">{driver.driver_name}</p>
 
           <p className="driver-rating">⭐ 4.8</p>

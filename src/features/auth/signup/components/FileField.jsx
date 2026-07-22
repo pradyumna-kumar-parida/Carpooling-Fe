@@ -18,7 +18,7 @@ export default function FileField({ id, label, value, onChange }) {
           type="file"
           id={id}
           accept="image/*,.pdf"
-          required
+          // required
           onChange={onChange}
           className="file-upload-suggestation"
         />

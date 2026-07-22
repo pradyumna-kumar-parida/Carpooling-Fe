@@ -8,7 +8,7 @@ import { FaCarAlt } from "react-icons/fa";
 
 const links = [
   { text: "About Us", href: "/about" },
-  { text: "How It Works", href: "/how-it-works" },
+  // { text: "How It Works", href: "/how-it-works" },
   { text: "Help", href: "/help-support" },
   { text: "Contact", href: "/contact" },
   { text: "Terms", href: "/term-conditions" },

@@ -26,7 +26,7 @@ export default function RideCard({ ride, noOfSIt }) {
   const handleClick = () => {
     if (status.passed) return;
 
-    router.push(`/passenger/ride-booking/${ride.id}?seats=${noOfSIt}`);
+    router.push(`/ride-booking/${ride.id}?seats=${noOfSIt}`);
   };
 
   return (

@@ -13,7 +13,7 @@ export default function PhotoUploadBox({
   onChange,
   onRemove,
 }) {
-  if (file) {
+if (file && preview) {
     return (
       <div className="vehicledetails-photo-item">
         <FormLabel className="vehicledetails-label">{label} *</FormLabel>

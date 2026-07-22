@@ -128,7 +128,7 @@
 .fr-field-input::placeholder {
   color: var(--fr-text-gray);
   font-weight: 400;
-  font-family: "Vollkorn", serif;
+
 }
 
 .fr-field-value {
@@ -329,7 +329,7 @@
 .fr-search-btn {
   background: var(--fr-primary);
   color: #fff;
-  font-family: "Vollkorn", serif;
+
   border: none;
   padding: 0 32px;
   border-radius: 0 8px 8px 0;
@@ -340,7 +340,7 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   letter-spacing: 0.01em;
 }
 
@@ -3286,7 +3286,10 @@
   width: max-content;
   text-align: left;
 }
-
+.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root{
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+  font-size: 90% !important;
+}
 .details-Items {
   display: flex;
   align-items: center;

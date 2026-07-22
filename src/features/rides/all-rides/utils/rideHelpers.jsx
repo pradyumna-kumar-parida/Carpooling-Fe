@@ -1,4 +1,4 @@
-"use client"
+"use client";
 const AVATAR_COLORS = [
   ["#dbeafe", "#1e40af"],
   ["#dcfce7", "#166534"],
@@ -56,23 +56,34 @@ export const getDepartSlot = (timeStr) => {
  * e.g. "Departed 2h 10m ago"  /  "Departs in 45m"
  */
 export const getRideStatus = (rideDate, departureTime) => {
-  if (!rideDate || !departureTime) return { passed: false, label: "Scheduled" };
+  if (!rideDate || !departureTime) {
+    return { passed: false, label: "Scheduled" };
+  }
 
-  const rideDateTime = new Date(`${rideDate}T${departureTime}`);
-  const diffMs = rideDateTime - Date.now();
+  const dateOnly = rideDate.split("T")[0]; // "2026-07-22"
+
+  const rideDateTime = new Date(`${dateOnly}T${departureTime}`);
+
+  const diffMs = rideDateTime.getTime() - Date.now();
 
   if (diffMs < 0) {
     const abs = Math.abs(diffMs);
-    const h = Math.floor(abs / 3_600_000);
-    const m = Math.floor((abs % 3_600_000) / 60_000);
-    const ago = h > 0 ? `${h}h ${m}m ago` : `${m}m ago`;
-    return { passed: true, label: `Departed ${ago}` };
+    const h = Math.floor(abs / 3600000);
+    const m = Math.floor((abs % 3600000) / 60000);
+
+    return {
+      passed: true,
+      label: `Departed ${h > 0 ? `${h}h ${m}m` : `${m}m`} ago`,
+    };
   }
 
-  const h = Math.floor(diffMs / 3_600_000);
-  const m = Math.floor((diffMs % 3_600_000) / 60_000);
-  const eta = h > 0 ? `${h}h ${m}m` : `${m}m`;
-  return { passed: false, label: `Departs in ${eta}` };
+  const h = Math.floor(diffMs / 3600000);
+  const m = Math.floor((diffMs % 3600000) / 60000);
+
+  return {
+    passed: false,
+    label: `Departs in ${h > 0 ? `${h}h ${m}m` : `${m}m`}`,
+  };
 };
 
 export const groupByDate = (rides) => {

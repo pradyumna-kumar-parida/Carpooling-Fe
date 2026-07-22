@@ -16,7 +16,7 @@ const DRIVER_ROUTES = [
 
 const PASSENGER_ROUTES = [
   "/passenger/booking-confirmation",
-  "/passenger/ride-booking",
+  // "/passenger/ride-booking",
   "/passenger/booking-payment",
   "/passenger/track-chat",
   "/passenger/my-rides",

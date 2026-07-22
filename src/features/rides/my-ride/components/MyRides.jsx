@@ -1,9 +1,9 @@
 "use client";
-
+import { useState } from "react";
 import { useMyRides, RIDES_DATA } from "../hooks/UseMyRides";
 import RideCard from "./RideCard";
 import RideDetailsModal from "./RideDetailsModal";
-
+import ChatPanel from "@/features/chat/ChatPanel";
 const { requestRides, upcomingRides, completedRides, cancelledRides } =
   RIDES_DATA;
 
@@ -26,7 +26,8 @@ export default function MyRides() {
   } = useMyRides();
 
   const rides = getRidesData();
-
+  const [showChat, setShowChat] = useState(false);
+  const [selectedChatRide, setSelectedChatRide] = useState(null);
   return (
     <div className="myride-page">
       <div className="myride-container">
@@ -74,6 +75,10 @@ export default function MyRides() {
                 key={ride.id}
                 ride={ride}
                 onViewDetails={handleViewDetails}
+                onOpenChat={(ride) => {
+                  setSelectedChatRide(ride);
+                  setShowChat(true);
+                }}
               />
             ))
           )}
@@ -81,8 +86,20 @@ export default function MyRides() {
       </div>
 
       {/* Details Modal */}
+      {/* Details Modal */}
       {openDetailsModal && (
         <RideDetailsModal ride={selectedRide} onClose={handleCloseDetails} />
+      )}
+
+      {/* Chat Panel */}
+      {showChat && (
+        <ChatPanel
+          driver={selectedChatRide}
+          onClose={() => {
+            setShowChat(false);
+            setSelectedChatRide(null);
+          }}
+        />
       )}
     </div>
   );

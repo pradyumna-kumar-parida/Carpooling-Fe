@@ -137,38 +137,41 @@ header::before {
 
 nav {
   display: flex;
-  gap: 50px;
+  gap: 20px;
   align-items: center;
 }
-
 nav a {
-  text-decoration: none;
-  color: black;
-  font-weight: 400;
-  font-size: 95%;
-  transition: color 0.3s ease;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #374151;
+
+  transition: 0.3s;
 }
 
 nav a:hover {
-  background: var(--btn-bg);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #0b63f6;
+  transform: translateY(-1px);
 }
 
-nav a::after {
+nav a.active {
+  color: #0b63f6;
+  font-weight: 600;
+}
+
+nav a.active::after {
   content: "";
   position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--btn-bg);
-  transition: width 0.3s ease;
-}
-
-nav a:hover::after {
-  width: 100%;
+  left: 15%;
+  right: 15%;
+  bottom: -8px;
+  height: 3px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #0b63f6, #4ea3ff);
 }
 
 .right-side-nav,
@@ -277,14 +280,7 @@ nav a:hover::after {
    =========================== */
 .hero {
   background:
-    linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(216, 214, 214, 0.637) 25%,
-      rgba(216, 214, 214, 0.637) 35%,
-      rgba(0, 0, 0, 0) 55%,
-      rgba(0, 0, 0, 0) 100%
-    ),
+    linear-gradient(to right, #ffffff00 0%, #ffffff9d 19% 35%, #0000 55% 100%),
     url("../assets/Images/bannerImg-carRide.png");
   background-size: cover;
   background-position: center;
@@ -1266,7 +1262,7 @@ footer {
 .form-container .subtitle {
   color: var(--desc);
   margin-bottom: 35px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   text-align: center;
 }
 
@@ -1478,7 +1474,7 @@ footer {
 .signup-desc {
   color: var(--desc);
   margin-bottom: 35px;
-  font-size: 1.1rem;
+  font-size: 1rem;
   text-align: center;
 }
 
@@ -3108,7 +3104,7 @@ footer {
 /* Notification panel */
 .notification-dialog-paper {
   position: fixed !important;
-  padding-bottom: 10px;
+  padding-bottom: 20px !important;
   top: 70px;
   max-height: 400px !important;
   right: 20px;
@@ -3272,8 +3268,91 @@ footer {
   display: flex;
 }
 .css-twia2z-MuiPaper-root-MuiDialog-paper {
-  border-radius:var(--radius) !important;
+  border-radius: var(--radius) !important;
 }
-.css-xl6cwr-MuiTypography-root{
-   font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+.css-xl6cwr-MuiTypography-root {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
+.back-to-top {
+  position: fixed;
+  right: 38px;
+  bottom: 45px;
+
+  width: 58px;
+  height: 58px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: var(--fr-bg-white);
+  color: #fff;
+
+  font-size: 20px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transform: translateY(30px) scale(0.8);
+
+  transition: all 0.35s ease;
+
+  box-shadow: 0 12px 30px rgba(19, 60, 122, 0.856);
+
+  z-index: 999;
+}
+
+.back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+
+  animation: floatBtn 2.5s ease-in-out infinite;
+}
+
+.back-to-top:hover {
+  transform: translateY(-5px) scale(1.08);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+}
+
+.back-to-top:active {
+  transform: scale(0.95);
+}
+
+@keyframes floatBtn {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+.back-to-top::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid rgba(13, 78, 219, 0.089);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
 }

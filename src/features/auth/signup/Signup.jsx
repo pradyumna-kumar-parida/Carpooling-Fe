@@ -37,6 +37,7 @@ function StepContent({
   roleOptions,
   phoneVerified,
   onVerifyClick,
+  isDriver,
 }) {
   // Step 0 — basic info
   if (step === 0) {
@@ -107,6 +108,14 @@ function StepContent({
           onChange={onChange}
           autoComplete="new-password"
         />
+        {!isDriver && (
+          <FileField
+            id="profilePicture"
+            label="Profile Picture"
+            value={formData.profilePicture}
+            onChange={onChange}
+          />
+        )}
       </div>
     );
   }
@@ -277,6 +286,7 @@ export default function Signup({ roles }) {
                 roleOptions={roleOptions}
                 phoneVerified={phoneVerified}
                 onVerifyClick={handleOpenOtpModal}
+                isDriver={isDriver}
               />
 
               {/* ── Terms checkbox (final step only) ── */}

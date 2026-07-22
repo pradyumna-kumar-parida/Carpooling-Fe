@@ -63,7 +63,7 @@ const PaymentCard = ({
             Your booking is confirmed. Redirecting…
           </p>
           <div className="ridepay-success-amount">₹{totalAmount} Paid</div>
-          <ArcLoader />
+          
         </div>
       )}
     </div>

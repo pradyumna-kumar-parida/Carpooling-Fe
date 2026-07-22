@@ -236,16 +236,17 @@ html {
   border: none;
   outline: none;
   flex: 1;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--pr-text-dark);
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
   background: transparent;
   min-width: 0;
 }
 .prh-input::placeholder {
   color: var(--pr-text-light);
   font-weight: 400;
-  font-family: "Vollkorn", serif;
+
 }
 
 /* hide spinners on price number input */
@@ -485,7 +486,7 @@ html {
   font-weight: 700;
   cursor: pointer;
   letter-spacing: 0.01em;
-  font-family: "Vollkorn", serif;
+
   box-shadow: 0 6px 20px rgba(30, 64, 175, 0.25);
   transition:
     background 0.2s,
@@ -560,7 +561,7 @@ html {
 .prh-stat {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 5px;
 }
 .prh-stat-val {
   font-size: 1.6rem;
@@ -689,7 +690,7 @@ html {
 /* Vehicle select */
 .prh-select {
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--pr-text-gray);
 }

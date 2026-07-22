@@ -57,7 +57,8 @@ export function buildFormPayload(formData, isDriver) {
   payload.append("phone", formData.phone);
   payload.append("role_id", formData.usertype);
   payload.append("password", formData.password);
-
+  if (formData.profilePicture)
+    payload.append("profile_picture", formData.profilePicture);
   if (!isDriver) return payload;
 
   payload.append("city", formData.city);
@@ -76,8 +77,6 @@ export function buildFormPayload(formData, isDriver) {
   if (formData.panCard) payload.append("pan_card", formData.panCard);
   if (formData.bankAccountDetails)
     payload.append("bank_account", formData.bankAccountDetails);
-  if (formData.profilePicture)
-    payload.append("profile_picture", formData.profilePicture);
 
   return payload;
 }

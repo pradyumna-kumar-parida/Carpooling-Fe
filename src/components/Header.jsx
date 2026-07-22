@@ -37,6 +37,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/slices/authSlice";
 import { clearAuthCookies, getRole, getToken } from "@/lib/cookie";
 import LogoutDialog from "./LogoutDialog";
+import { usePathname } from "next/navigation";
 
 const getNavLinks = (role, isLoggedIn) => [
   ...(role === "driver" || !isLoggedIn
@@ -103,7 +104,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector((state) => state.auth.user);
-
+  const pathname = usePathname();
   const [auth, setAuth] = useState({ isLoggedIn: false, role: null });
 
   useEffect(() => {
@@ -276,7 +277,7 @@ const Header = () => {
 
         <nav className="home-menus">
           {navLinks.map((item) => (
-            <Link key={item.label} href={item.path}>
+            <Link key={item.label} href={item.path}   className={pathname === item.path ? "active" : ""}>
               {item.label}
             </Link>
           ))}
