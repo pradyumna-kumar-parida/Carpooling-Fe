@@ -344,9 +344,9 @@ export default function ContactUs() {
                     Plot No. 24, Infocity Area
                   </p>
                   <p className="contact-address-line">
-                    Bhubaneswar, Odisha – 751024
+                    Bhubaneswar, Odisha – 751024 , India
                   </p>
-                  <p className="contact-address-line">India</p>
+       
                 </div>
                 {/* mini road visual */}
                 <div className="contact-mini-road">
