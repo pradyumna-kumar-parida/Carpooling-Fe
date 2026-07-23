@@ -8,6 +8,7 @@ import DetailedCards from "./components/DetailedCards";
 import WhyChoose from "./components/WhyChoose";
 import Testimonials from "./components/Testimonials";
 import { getRole } from "@/lib/cookie";
+import AvailableRides from "./components/AvaliableRides";
 
 function Landingpage() {
   const [role, setRole] = useState(null);
@@ -25,6 +26,7 @@ function Landingpage() {
         {!isDriver && <SearchRide />}
       </div>
       <div className="container" id="find">
+        {!isDriver && <AvailableRides />}
         <DetailedCards />
         <WhyChoose />
         <Testimonials />

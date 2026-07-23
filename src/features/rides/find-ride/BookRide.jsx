@@ -2,6 +2,7 @@ import React from "react";
 import SearchRide from "../../../components/SearchRide";
 import FRPopularRoutes from "./PopularRoutes";
 import "../../../styles/find-ride.css";
+import NearbyRides from "./NearRides";
 
 const BookRide = () => {
   return (
@@ -11,6 +12,7 @@ const BookRide = () => {
           <h1 className="fr-page-title">Find a ride</h1>
           <SearchRide />
         </div>
+        <NearbyRides />
         <FRPopularRoutes />
       </div>
     </>

@@ -3357,3 +3357,470 @@ footer {
     opacity: 0;
   }
 }
+
+/* ===========================================================
+   Available Rides — token system
+   Blues/greens picked to sit naturally under the existing
+   hero + "Start Your Trip" / "Find a Ride" buttons already
+   on the page.
+=========================================================== */
+
+.avl-rides-section {
+  --avl-blue-light: #eef2fd;
+  --avl-green: #16a34a;
+  --avl-green-light: #eafaf1;
+  --avl-amber: #f5a524;
+  --avl-red: #e0483f;
+  --avl-muted: #667085;
+  --avl-line: #e6e9f2;
+  --avl-mist: #f6f8fd;
+
+  padding: 5px 0 45px 0;
+}
+
+/* ---------- header ---------- */
+
+.avl-rides-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.avl-rides-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--avl-green);
+  margin-bottom: 6px;
+}
+
+.avl-rides-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--avl-green);
+  box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6);
+  animation: avl-rides-ping 1.8s ease-out infinite;
+}
+
+@keyframes avl-rides-ping {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.55);
+  }
+  70% {
+    box-shadow: 0 0 0 7px rgba(22, 163, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+}
+
+.avl-rides-title {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1.15;
+  font-weight: 800;
+  font-family: var(--heading);
+  letter-spacing: -0.01em;
+  color: var(--custom-one);
+}
+
+.avl-rides-viewall {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--custom-one);
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 1.5px solid transparent;
+  transition: border-color 0.15s ease;
+}
+
+.avl-rides-viewall svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---------- grid ---------- */
+
+.avl-rides-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 1080px) {
+  .avl-rides-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .avl-rides-grid {
+    grid-template-columns: 1fr;
+    grid-auto-flow: column;
+    grid-auto-columns: 82%;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+  }
+  .avl-rides-card {
+    scroll-snap-align: start;
+  }
+}
+
+/* ---------- card ---------- */
+
+.avl-rides-card {
+  background: #ffffff;
+  border: 1px solid var(--avl-line);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.avl-rides-card:hover {
+  transform: translateY(-4px);
+  border-color: #d7deef;
+  box-shadow: 0 16px 32px -18px rgba(16, 36, 92, 0.28);
+}
+
+.avl-rides-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.avl-rides-when {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--avl-muted);
+}
+
+.avl-rides-tag {
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.avl-rides-tag--ok {
+  color: var(--avl-green);
+  background: var(--avl-green-light);
+}
+
+.avl-rides-tag--low {
+  color: #b3231c;
+  background: #fdeceb;
+}
+
+.avl-rides-tag--full {
+  color: var(--custom-one);
+  background: var(--avl-blue-light);
+}
+
+/* ---------- route (signature element) ---------- */
+
+.avl-rides-route-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.avl-rides-route-line {
+  flex: 1 1 auto;
+  position: relative;
+  height: 3px;
+  margin: 0 6px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--avl-line) 0,
+    var(--avl-line) 5px,
+    transparent 5px,
+    transparent 9px
+  );
+}
+
+.avl-rides-car {
+  position: absolute;
+  top: 50%;
+  left: 42%;
+  font-size: 20px;
+  transform: translate(-50%, -50%);
+  color: var(--custom-one);
+  background: #ffffff;
+}
+
+.avl-rides-places {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 8px;
+  gap: 8px;
+}
+
+.avl-rides-place {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--black);
+  letter-spacing: -0.01em;
+}
+
+.avl-rides-place--to {
+  text-align: right;
+}
+
+/* ---------- seats ---------- */
+
+.avl-rides-seats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--avl-mist);
+  border-radius: 10px;
+}
+
+.avl-rides-seat-pips {
+  display: flex;
+  gap: 5px;
+}
+
+.avl-rides-pip {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+}
+
+.avl-rides-pip--open {
+  background: #ffffff;
+  border: 1.6px solid var(--avl-green);
+}
+
+.avl-rides-pip--taken {
+  background: #c7cede;
+}
+
+.avl-rides-seats-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--avl-muted);
+}
+
+/* ---------- driver + price ---------- */
+
+.avl-rides-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.avl-rides-driver {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.avl-rides-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--black);
+  color: #ffffff;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.avl-rides-driver-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.avl-rides-driver-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.avl-rides-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--avl-muted);
+}
+
+.avl-rides-star {
+  width: 13px;
+  height: 13px;
+  color: var(--avl-amber);
+}
+
+.avl-rides-trips {
+  color: #9aa2b5;
+  font-weight: 500;
+}
+
+.avl-rides-price {
+  text-align: right;
+  flex: 0 0 auto;
+}
+
+.avl-rides-price-amount {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--custom-one);
+}
+
+.avl-rides-price-unit {
+  font-size: 11.5px;
+  color: var(--avl-muted);
+}
+
+/* ---------- CTA ---------- */
+
+.avl-rides-book-btn {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--custom-one);
+  border-radius: 10px;
+  background: #f5f8ff;
+  color: var(--custom-one);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
+}
+
+.avl-rides-book-btn:active {
+  transform: scale(0.98);
+}
+
+.avl-rides-book-btn:focus-visible {
+  outline: 2px solid var(--custom-one);
+  outline-offset: 2px;
+}
+
+/* ---------- reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .avl-rides-pulse {
+    animation: none;
+  }
+  .avl-rides-card {
+    transition: none;
+  }
+}
+
+.location-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  backdrop-filter: blur(4px);
+}
+
+.location-modal {
+  width: 460px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 35px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.location-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: #e8eeff;
+  color: #0044ff;
+  font-size: 34px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.location-modal h2 {
+  font-family: var(--heading);
+  color: #0f172a;
+  margin: 20px 0 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.location-modal p {
+  color: var(--desc);
+  margin: 0 0 24px;
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+
+.location-buttons {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+}
+
+.btn-secondary {
+  flex: 1;
+
+  border-radius: 8px;
+  padding:  13px;
+  transition: background 0.15s;
+  border: 1px solid #ddd;
+  background: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary {
+  flex: 1;
+
+  border: none;
+  border-radius: 8px;
+  padding: 13
+  px;
+  transition: background 0.15s;
+  background: #19a463;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}

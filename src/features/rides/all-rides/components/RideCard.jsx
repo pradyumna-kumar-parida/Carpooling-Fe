@@ -104,7 +104,7 @@ export default function RideCard({ ride, noOfSIt }) {
 
           <span className="ridetail-driver-name">{ride.driver_name}</span>
 
-          <StarRating rating={ride.driver_rating || 0} />
+          <StarRating rating={ride.driver_rating || 3.5} />
         </div>
 
         <div className="ridetail-badges">
