@@ -615,8 +615,8 @@ nav a.active::after {
 }
 
 .btn-blue:hover {
-  background-color: #0052a3;
-  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+  background-color: #362b2b;
+  box-shadow: 0 4px 12px rgba(0, 9, 17, 0.3);
 }
 .btn-green:hover {
   background-color: #009540;

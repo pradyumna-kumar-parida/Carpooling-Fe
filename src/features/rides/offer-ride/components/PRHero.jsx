@@ -5,7 +5,6 @@ import { FaLocationDot, FaCheck, FaUserGroup } from "react-icons/fa6";
 import { FaCarAlt } from "react-icons/fa";
 import { CgArrowsExchangeV } from "react-icons/cg";
 import { MdAirlineSeatLegroomReduced, MdMyLocation } from "react-icons/md";
-import { BiDollar } from "react-icons/bi";
 import { IoFastFoodSharp } from "react-icons/io5";
 import { FaSmoking } from "react-icons/fa";
 import { GiCometSpark } from "react-icons/gi";
@@ -17,6 +16,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { getToken } from "@/lib/cookie";
 import { publishRideApi } from "@/services/client/rideService";
+import { FaIndianRupeeSign } from "react-icons/fa6";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 let _scriptLoading = false;
@@ -290,7 +290,7 @@ const DEFAULT_PREFS = {
 // ── Must match the key used in useLoginForm / useSignupForm ──────────────
 const SAVED_FORM_KEY = "offerRideSavedForm";
 
-const PRHero = ({vehiclesFetch}) => {
+const PRHero = ({ vehiclesFetch }) => {
   const user = useSelector((state) => state.auth.user);
   const vehicleList = vehiclesFetch;
   const router = useRouter();
@@ -383,7 +383,10 @@ const PRHero = ({vehiclesFetch}) => {
 
     if (vehicleList.length < 1) {
       showAlert("error", "Please register a vehicle first.");
-      setTimeout(() => redirectWithSavedForm("/driver/vehicle-registration"), 1500);
+      setTimeout(
+        () => redirectWithSavedForm("/driver/vehicle-registration"),
+        1500,
+      );
       return;
     }
 
@@ -576,7 +579,7 @@ const PRHero = ({vehiclesFetch}) => {
 
             <div className="prh-field prh-field--price prh-field--focusable">
               <span className="prh-field-icon prh-field-icon--from">
-                <BiDollar />
+                <FaIndianRupeeSign />
               </span>
               <input
                 className="prh-input"

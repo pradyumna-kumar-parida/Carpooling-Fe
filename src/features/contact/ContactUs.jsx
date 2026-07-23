@@ -350,22 +350,15 @@ export default function ContactUs() {
                 </div>
                 {/* mini road visual */}
                 <div className="contact-mini-road">
-                  <div className="contact-mini-road-track">
-                    <div className="contact-mini-road-pin contact-mini-road-pin-start">
-                      A
-                    </div>
-                    <div className="contact-mini-road-dashes">
-                      <span />
-                      <span />
-                      <span />
-                      <span />
-                      <span />
-                    </div>
-                    <div className="contact-mini-road-pin contact-mini-road-pin-end">
-                      B
-                    </div>
-                  </div>
-                  <p className="contact-mini-road-label">Bhubaneswar HQ</p>
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4643.528189777782!2d85.82465407598563!3d20.295764812548814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a1909c288ce88b3%3A0xe55da71d4e1fc078!2sMAASTRIX%20SOLUTIONS%20PRIVATE%20LIMITED!5e1!3m2!1sen!2sin!4v1784784302763!5m2!1sen!2sin"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                  />
                 </div>
               </div>
 
