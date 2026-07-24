@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { getToken } from "@/lib/cookie";
 import { publishRideApi } from "@/services/client/rideService";
 import { FaIndianRupeeSign } from "react-icons/fa6";
-
+import { FaInfoCircle } from "react-icons/fa";
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 let _scriptLoading = false;
 const _scriptCallbacks = [];
@@ -312,6 +312,13 @@ const PRHero = ({ vehiclesFetch }) => {
     type: "info",
   });
 
+  const selectedVehicleData = vehicleList.find(
+    (v) => v.id === Number(selectedVehicle),
+  );
+
+  const maxSeats = selectedVehicleData?.seats || 1;
+  const seatControlDisabled = !selectedVehicle;
+
   const datePickerRef = useRef(null);
   const alertTimerRef = useRef(null);
 
@@ -479,10 +486,10 @@ const PRHero = ({ vehiclesFetch }) => {
         <div className="prh-bg-blur prh-bg-blur--2" />
         <div className="prh-inner">
           <div className="prh-card">
-            <div className="prh-card-badge">
-              <span className="prh-badge-dot" />
+            {/* <div className="prh-card-badge">
+          
               Live rides available
-            </div>
+            </div> */}
             <h2 className="prh-card-title">Offer a Ride</h2>
             <p className="prh-card-sub">Shared journeys, split costs</p>
 
@@ -561,7 +568,7 @@ const PRHero = ({ vehiclesFetch }) => {
                   type="button"
                   className="prh-seats-btn"
                   onClick={() => setSeats((s) => Math.max(1, s - 1))}
-                  disabled={seats <= 1}
+                  disabled={seatControlDisabled || seats <= 1}
                 >
                   −
                 </button>
@@ -569,13 +576,33 @@ const PRHero = ({ vehiclesFetch }) => {
                 <button
                   type="button"
                   className="prh-seats-btn"
-                  onClick={() => setSeats((s) => Math.min(8, s + 1))}
-                  disabled={seats >= 8}
+                  onClick={() => setSeats((s) => Math.min(maxSeats, s + 1))}
+                  disabled={seatControlDisabled || seats >= maxSeats}
                 >
                   +
                 </button>
               </div>
             </div>
+
+            {!selectedVehicle && (
+              <small className="seat-info">
+                <p>
+                  {" "}
+                  <FaInfoCircle />
+                </p>
+                Select a vehicle first to enable seat selection
+              </small>
+            )}
+
+            {selectedVehicle && (
+              <small className="seat-info">
+                <p>
+                  {" "}
+                  <FaInfoCircle />
+                </p>
+                Maximum available seats : {maxSeats}
+              </small>
+            )}
 
             <div className="prh-field prh-field--price prh-field--focusable">
               <span className="prh-field-icon prh-field-icon--from">
@@ -600,7 +627,17 @@ const PRHero = ({ vehiclesFetch }) => {
                 <select
                   className="prh-input prh-select"
                   value={selectedVehicle}
-                  onChange={(e) => setSelectedVehicle(e.target.value)}
+                  onChange={(e) => {
+                    const id = e.target.value;
+                    setSelectedVehicle(id);
+
+                    const vehicle = vehicleList.find(
+                      (v) => v.id === Number(id),
+                    );
+
+                    // Start with one available seat
+                    setSeats(vehicle ? 1 : 1);
+                  }}
                 >
                   <option value="">Choose your vehicle</option>
                   {vehicleList.map((v) => (

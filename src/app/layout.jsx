@@ -4,6 +4,7 @@ import { Vollkorn, Goblin_One } from "next/font/google";
 import PageTransition from "@/components/PageTransition";
 import { getMe } from "@/services/server/authService";
 import LocationPermissionModal from "@/components/LocationAcess";
+import ReactQueryProvider from "@/components/QueryProvider";
 
 const vollkorn = Vollkorn({
   subsets: ["latin"],
@@ -37,10 +38,12 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${vollkorn.variable} ${goblinOne.variable}`}>
-        <Providers userData={userData}>
-          <LocationPermissionModal />
-          <PageTransition>{children}</PageTransition>
-        </Providers>
+        <ReactQueryProvider>
+          <Providers userData={userData}>
+            <LocationPermissionModal />
+            <PageTransition>{children}</PageTransition>
+          </Providers>
+        </ReactQueryProvider>
       </body>
     </html>
   );

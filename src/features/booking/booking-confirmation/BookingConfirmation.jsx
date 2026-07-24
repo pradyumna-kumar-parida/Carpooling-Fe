@@ -7,10 +7,10 @@ import Image from "next/image";
 import sucessBedge from "../../../assets/images/sucess-bedge.png";
 import BookingDetailsCard from "./components/BookingDetailCard";
 import PaymentSummaryCard from "./components/PaymentSummeryCard";
-import "../../../styles/find-ride.css"
-const BookingConfirmation = () => {
+import "../../../styles/find-ride.css";
+const Confirmation = () => {
   const router = useRouter();
-
+  sessionStorage.removeItem("ride");
   // Dummy data (replace with actual API response / passed data)
   const rideDetails = {
     from: "Mumbai",
@@ -92,4 +92,4 @@ const BookingConfirmation = () => {
   );
 };
 
-export default BookingConfirmation;
+export default Confirmation;

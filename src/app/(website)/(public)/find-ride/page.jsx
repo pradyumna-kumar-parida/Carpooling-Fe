@@ -1,5 +1,4 @@
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+
 import BookRide from "@/features/rides/find-ride/BookRide";
 import React from "react";
 

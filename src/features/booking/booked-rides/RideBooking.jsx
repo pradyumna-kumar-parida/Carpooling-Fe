@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
 import "../../../styles/find-ride.css";
 import { Alert, Snackbar } from "@mui/material";
 import { useBooking } from "./hooks/useBooking";
@@ -47,7 +46,12 @@ export default function RideBooking({ rideDetails, totalSeat }) {
   const [ridePassed, setRidePassed] = useState(false);
 
   const ride = rideDetails;
-  sessionStorage.setItem("ride", JSON.stringify(ride));
+
+  useEffect(() => {
+    if (ride) {
+      sessionStorage.setItem("ride", JSON.stringify(ride));
+    }
+  }, [ride]);
   const noOfSIt = totalSeat;
 
   const {

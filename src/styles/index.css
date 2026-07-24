@@ -3824,3 +3824,64 @@ footer {
   font-weight: 600;
   cursor: pointer;
 }
+.avl-rides-book-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.avl-seat-counter {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avl-seat-counter-btn {
+  width: 30px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.avl-seat-counter-btn:hover:not(:disabled) {
+  background: #e2e8f0;
+}
+
+.avl-seat-counter-btn:disabled {
+  color: #cbd5e1;
+  cursor: not-allowed;
+  background: #f8fafc;
+}
+
+.avl-seat-counter-val {
+  min-width: 28px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  background: #fff;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+}
+
+.avl-rides-book-row .avl-rides-book-btn {
+  flex: 1;
+}

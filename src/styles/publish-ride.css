@@ -103,9 +103,9 @@ html {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: #eff6ff;
-  color: var(--pr-primary);
-  font-size: 12px;
+  background: #efffef;
+  color: #22c55e;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -138,6 +138,12 @@ html {
   color: var(--pr-text-dark);
   margin: 0;
   line-height: 1.2;
+  font-family:
+    Segoe UI,
+    Tahoma,
+    Geneva,
+    Verdana,
+    sans-serif;
 }
 .prh-card-sub {
   font-size: 16px;
@@ -246,7 +252,6 @@ html {
 .prh-input::placeholder {
   color: var(--pr-text-light);
   font-weight: 400;
-
 }
 
 /* hide spinners on price number input */
@@ -984,7 +989,7 @@ html {
   font-size: 2.2rem;
   font-weight: 800;
   text-align: center;
-    font-family: var(--heading);
+  font-family: var(--heading);
   color: var(--pr-text-dark);
   margin-bottom: 60px;
 }
@@ -1037,7 +1042,7 @@ html {
 }
 .pr-faq-title {
   font-size: 2.2rem;
-    font-family: var(--heading);
+  font-family: var(--heading);
   font-weight: 800;
   text-align: center;
   color: var(--pr-text-dark);
@@ -1075,7 +1080,6 @@ html {
   align-items: center;
   gap: 20px;
   transition: all 0.3s ease;
-
 }
 .pr-faq-question.active {
   background: var(--pr-bg-light);
@@ -1350,4 +1354,23 @@ html {
     padding: 14px 30px;
     font-size: 0.95rem;
   }
+}
+.seat-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  background: #fff7ef;
+  border: 1px solid #fed8bf;
+  color: #f97316;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02rem;
+  line-height: 1.4;
+}
+.seat-info > p {
+  display: flex;
+  align-items: center;
+  font-size: 100%;
 }

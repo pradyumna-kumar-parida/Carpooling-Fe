@@ -1,15 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { IoLocationOutline, IoLocation } from "react-icons/io5";
 import { FaCar } from "react-icons/fa";
-import { getNearRides } from "@/services/client/rideService";
+import { useNearRides } from "@/hooks/useNearRides";
 
-/**
- * Maps a raw ride object from the API (as returned by /rides/upcoming or
- * /rides/near) into the flat shape the card below renders.
- */
 function normalizeRide(r) {
   return {
     id: r.id,
@@ -28,12 +25,10 @@ function normalizeRide(r) {
   };
 }
 
-// "Cuttack, Odisha, India" -> "Cuttack"
 function shortLocation(address = "") {
   return address.split(",")[0].trim();
 }
 
-// "13:57:00" -> "1:57 PM"
 function formatTime12h(timeStr) {
   if (!timeStr) return "";
   const [h, m] = timeStr.split(":").map(Number);
@@ -42,7 +37,6 @@ function formatTime12h(timeStr) {
   return `${hour12}:${String(m).padStart(2, "0")} ${period}`;
 }
 
-// "2026-07-25T00:00:00.000Z" -> "Today" | "Tomorrow" | "25 Jul"
 function formatRideDate(dateStr) {
   if (!dateStr) return "";
   const rideDate = new Date(dateStr);
@@ -107,12 +101,27 @@ function SeatPips({ total, left }) {
 }
 
 function RideCard({ ride }) {
+  const router = useRouter();
+  const [seatCount, setSeatCount] = useState(1);
+
   const urgency =
     ride.seatsLeft === 1
       ? "avl-rides-tag--low"
       : ride.seatsLeft >= ride.totalSeats
         ? "avl-rides-tag--full"
         : "avl-rides-tag--ok";
+
+  const handleDecrease = () => {
+    setSeatCount((c) => Math.max(1, c - 1));
+  };
+
+  const handleIncrease = () => {
+    setSeatCount((c) => Math.min(ride.seatsLeft, c + 1));
+  };
+
+  const handleBook = () => {
+    router.push(`/ride-booking/${ride.id}?seats=${seatCount}`);
+  };
 
   return (
     <article className="avl-rides-card">
@@ -205,55 +214,51 @@ function RideCard({ ride }) {
         </div>
       </div>
 
-      <button type="button" className="avl-rides-book-btn">
-        Book seat
-      </button>
+      <div className="avl-rides-book-row">
+        <div className="avl-seat-counter">
+          <button
+            type="button"
+            className="avl-seat-counter-btn"
+            onClick={handleDecrease}
+            disabled={seatCount <= 1}
+          >
+            −
+          </button>
+          <span className="avl-seat-counter-val">{seatCount}</span>
+          <button
+            type="button"
+            className="avl-seat-counter-btn"
+            onClick={handleIncrease}
+            disabled={seatCount >= ride.seatsLeft}
+          >
+            +
+          </button>
+        </div>
+
+        <button
+          type="button"
+          className="avl-rides-book-btn"
+          onClick={handleBook}
+        >
+          Book seat
+        </button>
+      </div>
     </article>
   );
 }
 
 export default function AvailableRides() {
-  const [rides, setRides] = useState([]);
+  const { data: rawRides = [], isLoading, error, refetch } = useNearRides();
 
-  useEffect(() => {
-    // If permission already exists (page refresh)
-    const permission = sessionStorage.getItem("locationPermission");
+  const rides = useMemo(() => (rawRides || []).map(normalizeRide), [rawRides]);
 
-    if (permission) {
-      fetchRides();
-    }
+  if (isLoading) {
+    return <p>Loading rides...</p>;
+  }
 
-    // Wait for Allow/Deny
-    const handlePermission = () => {
-      fetchRides();
-    };
-
-    window.addEventListener("locationPermissionUpdated", handlePermission);
-
-    return () => {
-      window.removeEventListener("locationPermissionUpdated", handlePermission);
-    };
-  }, []);
-
-  const fetchRides = async () => {
-    try {
-      const permission = sessionStorage.getItem("locationPermission");
-
-      let response;
-
-      if (permission === "allowed") {
-        const location = JSON.parse(sessionStorage.getItem("userLocation"));
-
-        response = await getNearRides(location.latitude, location.longitude);
-      } else {
-        response = await getNearRides();
-      }
-
-      setRides((response.data.rides || []).map(normalizeRide));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  if (error) {
+    return <p>Failed to load rides.</p>;
+  }
 
   return (
     <section className="avl-rides-section" aria-labelledby="avl-rides-heading">

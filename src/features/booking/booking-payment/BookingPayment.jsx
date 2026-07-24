@@ -6,6 +6,8 @@ import ArcLoader from "../../../components/Loader";
 import "../../../styles/find-ride.css";
 import PaymentCard from "./components/PaymentCard";
 import RideDetailsCard from "./components/RideDetailsCard";
+import { paymentApi } from "@/services/client/bookingService";
+
 const RidePayment = () => {
   const router = useRouter();
   const [rideData, setRideData] = useState(null);
@@ -46,17 +48,44 @@ const RidePayment = () => {
     }
 
     setProcessing(true);
+    console.log("booking", booking);
 
     const options = {
       key: RAZORPAY_KEY,
       amount: booking?.amount * 100,
       order_id: booking?.order_id,
-      handler: function (response) {
-        setProcessing(false);
-        setPaymentSuccess(true);
-        setTimeout(() => {
-          router.push("/passenger/booking-confirmation");
-        }, 3000);
+      handler: async function (response) {
+        console.log("response", response);
+        const payload = {
+          booking_id: booking?.booking_id,
+          razorpay_order_id: response?.razorpay_order_id,
+          razorpay_payment_id: response?.razorpay_payment_id,
+          razorpay_signature: response?.razorpay_signature,
+        };
+
+        try {
+          const api = await paymentApi(payload);
+
+          if (api?.data?.status === "success") {
+            sessionStorage.setItem(
+              "bookingConfirmation",
+              JSON.stringify(api.data),
+            );
+
+            setProcessing(false);
+            setPaymentSuccess(true);
+
+            setTimeout(() => {
+              router.push("/passenger/booking-confirmation");
+            }, 3000);
+          } else {
+            setProcessing(false);
+            router.push("/passenger/booking-failed");
+          }
+        } catch (error) {
+          setProcessing(false);
+          router.push("/passenger/booking-failed");
+        }
       },
       modal: {
         ondismiss: function () {
