@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Chip } from "@mui/material";
 import Image from "next/image";
@@ -10,7 +10,9 @@ import PaymentSummaryCard from "./components/PaymentSummeryCard";
 import "../../../styles/find-ride.css";
 const Confirmation = () => {
   const router = useRouter();
-  sessionStorage.removeItem("ride");
+  useEffect(() => {
+    sessionStorage.removeItem("ride");
+  }, []);
   // Dummy data (replace with actual API response / passed data)
   const rideDetails = {
     from: "Mumbai",
