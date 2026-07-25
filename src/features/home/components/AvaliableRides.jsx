@@ -252,16 +252,16 @@ export default function AvailableRides() {
 
   const rides = useMemo(() => (rawRides || []).map(normalizeRide), [rawRides]);
 
-  if (isLoading) {
-    return <p>Loading rides...</p>;
-  }
+  // if (isLoading) {
+  //   return <p>Loading rides...</p>;
+  // }
 
-  if (error) {
-    return <p>Failed to load rides.</p>;
-  }
+  // if (error) {
+  //   return <p>Failed to load rides.</p>;
+  // }
 
   return (
-    <section className="avl-rides-section" aria-labelledby="avl-rides-heading">
+    <section className="avl-rides-section container" aria-labelledby="avl-rides-heading">
       <div className="avl-rides-header">
         <div>
           <span className="avl-rides-eyebrow">

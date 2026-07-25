@@ -37,24 +37,28 @@ const reasons = [
 
 const WhyChoose = () => {
   return (
-    <section className="why-section">
-      <h2>Why Choose Carpooling?</h2>
+    <section className="why-section ">
+      <div className="container">
 
-      <div className="why-grid">
-        {reasons.map((reason) => (
-          <article key={reason.id} className="why-card">
-            <div className={`icon-wrap ${reason.iconClass}`}>
-              <Image
-                src={reason.icon}
-                alt={`${reason.title} icon`}
-       
-              />
-            </div>
 
-            <h3>{reason.title}</h3>
-            <p>{reason.description}</p>
-          </article>
-        ))}
+        <h2>Why Choose Carpooling?</h2>
+
+        <div className="why-grid">
+          {reasons.map((reason) => (
+            <article key={reason.id} className="why-card">
+              <div className={`icon-wrap ${reason.iconClass}`}>
+                <Image
+                  src={reason.icon}
+                  alt={`${reason.title} icon`}
+
+                />
+              </div>
+
+              <h3>{reason.title}</h3>
+              <p>{reason.description}</p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );

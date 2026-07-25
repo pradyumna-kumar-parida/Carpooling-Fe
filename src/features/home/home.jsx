@@ -9,6 +9,7 @@ import WhyChoose from "./components/WhyChoose";
 import Testimonials from "./components/Testimonials";
 import { getRole } from "@/lib/cookie";
 import AvailableRides from "./components/AvaliableRides";
+import AppDownloadSection from "../../components/Downloaad";
 
 function Landingpage() {
   const [role, setRole] = useState(null);
@@ -25,12 +26,13 @@ function Landingpage() {
       <div className={isDriver ? "search-disappear" : "landingpage-search"}>
         {!isDriver && <SearchRide />}
       </div>
-      <div className="container" id="find">
+      {/* <div className="container" id="find"> */}
         {!isDriver && <AvailableRides />}
         <DetailedCards />
         <WhyChoose />
+        <AppDownloadSection />
         <Testimonials />
-      </div>
+      {/* </div> */}
     </div>
   );
 }

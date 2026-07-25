@@ -95,100 +95,105 @@ const Testimonials = () => {
 
   return (
     <div className="testimonials-section">
-      {/* TITLE */}
-      <h2>What Our Users Say</h2>
+      <div className="container">
 
-      <div className="testimonials-wrapper">
-        {/* LEFT BUTTON */}
-        <button
-          className="arrow-btn"
-          onClick={() => handleScroll("prev")}
-          disabled={currentIndex === 0}
-        >
-          <FaAngleDoubleLeft />
-        </button>
 
-        {/* SLIDER */}
-        <div className="testimonials-grid-wrapper">
-          <div
-            className="testimonials-grid"
-            style={{
-              transform: `translateX(-${currentIndex * 100}%)`,
-            }}
+        {/* TITLE */}
+        <h2>What Our Users Say</h2>
+
+        <div className="testimonials-wrapper">
+          {/* LEFT BUTTON */}
+          <button
+            className="arrow-btn"
+            onClick={() => handleScroll("prev")}
+            disabled={currentIndex === 0}
           >
-            {Array.from({ length: totalSlides }).map((_, slideIndex) => (
-              <div className="slide" key={slideIndex}>
-                {testimonials
-                  .slice(
-                    slideIndex * cardsPerView,
-                    slideIndex * cardsPerView + cardsPerView,
-                  )
-                  .map((item) => (
-                    <div key={item.id} className="testimonial-card">
-                      {/* QUOTE ICON */}
-                      <div className="quote-icon">
-                        <Image
-                          src={quotation}
-                          alt="quote"
-                
-                          width={15}
-                        />
-                      </div>
+            <FaAngleDoubleLeft />
+          </button>
 
-                      {/* TEXT */}
-                      <p className="testimonial-text">{item.text}</p>
+          {/* SLIDER */}
+          <div className="testimonials-grid-wrapper">
+            <div
+              className="testimonials-grid"
+              style={{
+                transform: `translateX(-${currentIndex * 100}%)`,
+              }}
+            >
+              {Array.from({ length: totalSlides }).map((_, slideIndex) => (
+                <div className="slide" key={slideIndex}>
+                  {testimonials
+                    .slice(
+                      slideIndex * cardsPerView,
+                      slideIndex * cardsPerView + cardsPerView,
+                    )
+                    .map((item) => (
+                      <div key={item.id} className="testimonial-card">
+                        {/* QUOTE ICON */}
+                        <div className="quote-icon">
+                          <Image
+                            src={quotation}
+                            alt="quote"
 
-                      {/* USER */}
-                      <div className="reviewer">
-                        <div className="avatar-circle">
-                          <div className="profile-img">
-                            <Image
-                              src={item.avatar}
-                              alt={item.name}
-                             
-                              style={{
-                                objectFit: "cover",
-                                borderRadius: "50%",
-                              }}
-                            />
-                          </div>
+                            width={15}
+                          />
                         </div>
 
-                        <div className="reviewer-info">
-                          <div className="name">
-                            {item.name}, <span>{item.location}</span>
+                        {/* TEXT */}
+                        <p className="testimonial-text">{item.text}</p>
+
+                        {/* USER */}
+                        <div className="reviewer">
+                          <div className="avatar-circle">
+                            <div className="profile-img">
+                              <Image
+                                src={item.avatar}
+                                alt={item.name}
+
+                                style={{
+                                  objectFit: "cover",
+                                  borderRadius: "50%",
+                                }}
+                              />
+                            </div>
                           </div>
-                          <div className="stars">
-                            {renderStars(item.rating)}
+
+                          <div className="reviewer-info">
+                            <div className="name">
+                              {item.name}, <span>{item.location}</span>
+                            </div>
+                            <div className="stars">
+                              {renderStars(item.rating)}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-              </div>
-            ))}
+                    ))}
+                </div>
+              ))}
+            </div>
           </div>
+
+          {/* RIGHT BUTTON */}
+          <button
+            className="arrow-btn"
+            onClick={() => handleScroll("next")}
+            disabled={currentIndex === totalSlides - 1}
+          >
+            <FaAngleDoubleRight />
+          </button>
         </div>
 
-        {/* RIGHT BUTTON */}
-        <button
-          className="arrow-btn"
-          onClick={() => handleScroll("next")}
-          disabled={currentIndex === totalSlides - 1}
-        >
-          <FaAngleDoubleRight />
-        </button>
-      </div>
+        {/* DOTS */}
+        <div className="dots">
+          {Array.from({ length: totalSlides }).map((_, i) => (
+            <div
+              key={i}
+              className={`dot ${i === currentIndex ? "active" : ""}`}
+              onClick={() => setCurrentIndex(i)}
+            />
+          ))}
+        </div>
 
-      {/* DOTS */}
-      <div className="dots">
-        {Array.from({ length: totalSlides }).map((_, i) => (
-          <div
-            key={i}
-            className={`dot ${i === currentIndex ? "active" : ""}`}
-            onClick={() => setCurrentIndex(i)}
-          />
-        ))}
       </div>
     </div>
   );

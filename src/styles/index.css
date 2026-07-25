@@ -456,7 +456,7 @@ nav a.active::after {
   margin: 0 auto;
 }
 
-.detailed-container {
+.detailed-container .container {
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -1641,6 +1641,8 @@ footer {
   background: var(--fr-bg-white);
   border-radius: var(--fr-radius-lg);
   padding: 2rem;
+  border-left: 4px solid var(--custom-one);
+  border-right: 4px solid var(--custom-one);
   margin-bottom: 2rem;
   box-shadow: var(--fr-shadow);
 }
@@ -1648,7 +1650,7 @@ footer {
 .profile-header-content {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 2rem;
   flex-wrap: wrap;
 }
@@ -1717,13 +1719,15 @@ footer {
 }
 
 .profile-badge {
-  display: inline-block;
-  padding: 0.375rem 0.875rem;
-  background: var(--fr-primary);
-  color: white;
-  border-radius: 20px;
-  font-size: 0.8125rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-size: 13px;
   font-weight: 600;
+  border: 1px solid #bfdbfe;
 }
 
 .profile-actions {
@@ -1874,11 +1878,11 @@ footer {
 .form-textarea {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1.5px solid var(--fr-border);
+  border: 1.5px solid var(--black);
   border-radius: var(--fr-radius);
   font-size: 0.9375rem;
   color: var(--fr-text-dark);
-
+  background-color: #f3f3f3;
   transition: all 0.3s ease;
 
   font-family: sans-serif;
@@ -1904,9 +1908,10 @@ footer {
   opacity: 0.6;
   font-size: 0.9375rem;
   color: var(--fr-text-dark);
-  border: 1.5px solid var(--fr-border);
+  border: 1.5px solid var(--desc);
   border-radius: var(--fr-radius);
   margin: 0;
+  background-color: #fefefe;
 }
 
 .documents-grid {
@@ -1971,26 +1976,24 @@ footer {
 }
 
 .file-upload-label {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  background: var(--fr-primary);
-  color: white;
-  border-radius: var(--fr-radius);
-  font-size: 0.875rem;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .file-upload-label:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-  box-shadow: var(--fr-shadow);
+  transform: translateY(-2px);
 }
-
 .file-preview {
   width: 100%;
   padding: 0.75rem;
@@ -3801,7 +3804,7 @@ footer {
   flex: 1;
 
   border-radius: 8px;
-  padding:  13px;
+  padding: 13px;
   transition: background 0.15s;
   border: 1px solid #ddd;
   background: #fff;
@@ -3815,14 +3818,90 @@ footer {
 
   border: none;
   border-radius: 8px;
-  padding: 13
-  px;
+  padding: 13 px;
   transition: background 0.15s;
   background: #19a463;
   color: #fff;
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+}
+@media (max-width: 768px) {
+  .location-overlay {
+    padding: 20px;
+    align-items: center;
+  }
+
+  .location-modal {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 22px;
+    border-radius: 18px;
+  }
+
+  .location-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+  }
+
+  .location-modal h2 {
+    font-size: 1.15rem;
+    margin: 18px 0 10px;
+  }
+
+  .location-modal p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 22px;
+  }
+
+  .location-buttons {
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .location-overlay {
+    padding: 16px;
+  }
+
+  .location-modal {
+    width: 100%;
+    padding: 24px 18px;
+    border-radius: 16px;
+  }
+
+  .location-icon {
+    width: 54px;
+    height: 54px;
+    font-size: 26px;
+  }
+
+  .location-modal h2 {
+    font-size: 1.05rem;
+  }
+
+  .location-modal p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 13px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
 }
 .avl-rides-book-row {
   display: flex;
@@ -3884,4 +3963,314 @@ footer {
 
 .avl-rides-book-row .avl-rides-book-btn {
   flex: 1;
+}
+/* ==========================================================================
+   App Download Section
+   Plain global CSS — uses existing design tokens from :root
+
+   Layout concept:
+   - .app-download is a fixed-height colored band (30vh by default).
+   - .app-download-scannerWrap is pulled out of normal flow and positioned
+     absolutely, bottom-anchored to the band. Because the phone image is
+     taller than the band, its TOP edge naturally crosses above the band's
+     top edge on every breakpoint (including mobile).
+   - Tune the "break-out" amount per breakpoint with --scanner-overlap.
+   ========================================================================== */
+
+.app-download {
+  --app-download-height: 43vh;
+  --app-download-min-height: 240px; /* floor so text never gets crushed */
+  --scanner-width: 320px;
+  --scanner-overlap: 90px; /* how far the image pokes above the band on desktop */
+
+  position: relative;
+  width: 100%;
+  height: var(--app-download-height);
+  min-height: var(--app-download-min-height);
+  background: var(--fr-primary);
+  overflow: visible; /* required so the image can escape the band */
+  box-sizing: border-box;
+  margin: 70px 0 40px 0;
+}
+
+.app-download-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  box-sizing: border-box;
+}
+
+/* ---------- Left: text + badges ---------- */
+
+.app-download-content {
+  /* flex: 1 1 520px; */
+  min-width: 0;
+  max-width: 620px;
+
+  /* keep clear of the image on the right so text never underlaps it */
+  padding-right: calc(var(--scanner-width) * 0.35);
+}
+
+.app-download-accentBar {
+  width: 56px;
+  height: 4px;
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  margin: 0 0 20px;
+}
+
+.app-download-heading {
+  margin: 0 0 16px;
+  font-size: clamp(1.5rem, 2.2vw, 2.15rem);
+  line-height: 1.15;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.app-download-desc {
+  margin: 0 0 20px;
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  line-height: 1.5;
+  color: #e2e2e2;
+  max-width: 460px;
+}
+
+.app-download-badges {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.app-download-badgeLink {
+  display: inline-flex;
+  border-radius: var(--radius);
+  box-shadow: var(--fr-shadow);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.app-download-badgeLink:hover,
+.app-download-badgeLink:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.app-download-badgeLink:focus-visible {
+  outline: 2px solid var(--custom-one);
+  outline-offset: 3px;
+}
+
+.app-download-badgeImg {
+  position: relative;
+  height: 54px;
+  width: auto;
+  display: block;
+  border-radius: var(--radius);
+}
+
+.app-download-scannerWrap {
+  position: absolute;
+  right: 24px;
+  bottom: -160px;
+  width: 320px; /* Adjust as needed */
+  display: flex;
+  justify-content: center;
+}
+
+.app-download-scannerImg {
+  width: 100%;
+  /* height: auto; */
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(var(--fr-shadow));
+  transform: translateY(calc(-1 * var(--scanner-overlap)));
+}
+/* ==========================================================================
+   Tablet
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .app-download {
+    --app-download-height: 32vh;
+    --app-download-min-height: 260px;
+    --scanner-width: 260px;
+    --scanner-overlap: 70px;
+  }
+
+  .app-download-inner {
+    padding: 0 32px;
+    gap: 24px;
+  }
+
+  .app-download-scannerWrap {
+    right: 16px;
+  }
+}
+
+/* ==========================================================================
+   Small tablet / large mobile — image still breaks out on top,
+   centered above the band, content sits below it
+   ========================================================================== */
+@media (max-width: 768px) {
+  .app-download {
+    height: auto !important;
+    --scanner-width: 220px;
+    --scanner-overlap: 60px;
+    height: auto;
+    min-height: 0;
+    padding-top: var(--scanner-overlap);
+    margin: 0 !important;
+  }
+
+  .app-download-inner {
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+    height: auto;
+    padding: 24px 20px 32px;
+    gap: 16px;
+  }
+
+  .app-download-content {
+    max-width: 100%;
+    padding-right: 0;
+  }
+
+  .app-download-accentBar,
+  .app-download-desc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .app-download-badges {
+    justify-content: center;
+  }
+
+  .app-download-scannerWrap {
+    display: none;
+  }
+
+  .app-download-scannerImg {
+    transform: translateY(calc(-1 * var(--scanner-overlap)));
+  }
+}
+
+/* ==========================================================================
+   Mobile
+   ========================================================================== */
+@media (max-width: 480px) {
+  .app-download {
+    --scanner-width: 170px;
+    --scanner-overlap: 46px;
+  }
+
+  .app-download-heading {
+    font-size: 1.4rem;
+  }
+
+  .app-download-desc {
+    font-size: 0.9rem;
+  }
+
+  .app-download-badges {
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .app-download-badgeImg {
+    height: 40px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .app-download-badgeLink {
+    transition: none;
+  }
+}
+
+.profile-progress-card {
+  background: #ffffff;
+  border: 1px solid #f8e8c6;
+  border-radius: 18px;
+  padding: 22px 24px;
+  box-shadow: 0 12px 30px rgba(245, 158, 11, 0.08);
+}
+
+.profile-progress-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.profile-progress-text {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.profile-progress-percentage {
+  font-size: 30px;
+  font-weight: 700;
+  color: #d97706;
+}
+
+.profile-progress-bar {
+  width: 100%;
+  height: 12px;
+  margin-top: 18px;
+  background: #fef3c7;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.profile-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 45%, #ea580c 100%);
+  transition: width 0.4s ease;
+}
+
+.profile-progress-footer {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-progress-info {
+  font-size: 14px;
+  color: #78716c;
+}
+
+.profile-progress-btn {
+  background: linear-gradient(135deg, #f59e0b, #ea580c);
+  color: #fff;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.25);
+}
+
+.profile-progress-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(245, 158, 11, 0.35);
+}
+.profile-progress-top {
+  display: flex;
+  gap: 15px;
 }

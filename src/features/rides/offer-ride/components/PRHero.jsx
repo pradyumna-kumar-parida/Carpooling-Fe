@@ -446,8 +446,8 @@ const PRHero = ({ vehiclesFetch }) => {
       showAlert(
         "error",
         error?.response?.data?.message ||
-          error?.message ||
-          "Something went wrong.",
+        error?.message ||
+        "Something went wrong.",
       );
     } finally {
       setLoading(false);
@@ -486,6 +486,11 @@ const PRHero = ({ vehiclesFetch }) => {
         <div className="prh-bg-blur prh-bg-blur--2" />
         <div className="prh-inner">
           <div className="prh-card">
+            {!token && (
+              <div className="prh-card-badge alert-badge">
+                <FaInfoCircle /> Please log in to publish a ride.
+              </div>
+            )}
             {vehicleList.length < 1 && token && (
               <div className="prh-card-badge alert-badge">
                 <FaInfoCircle /> Register a vehicle first to publish a ride.
@@ -604,20 +609,7 @@ const PRHero = ({ vehiclesFetch }) => {
               </>
             )}
 
-            <div className="prh-field prh-field--price prh-field--focusable">
-              <span className="prh-field-icon prh-field-icon--from">
-                <FaIndianRupeeSign />
-              </span>
-              <input
-                className="prh-input"
-                type="number"
-                placeholder="Price per seat"
-                min="0"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-              <span className="prh-price-suffix">/ seat</span>
-            </div>
+
 
             {vehicleList.length >= 1 && token && (
               <div className="prh-field prh-field--vehicle prh-field--focusable">
@@ -650,7 +642,20 @@ const PRHero = ({ vehiclesFetch }) => {
                 </select>
               </div>
             )}
-
+            <div className="prh-field prh-field--price prh-field--focusable">
+              <span className="prh-field-icon prh-field-icon--from">
+                <FaIndianRupeeSign />
+              </span>
+              <input
+                className="prh-input"
+                type="number"
+                placeholder="Price per seat"
+                min="0"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+              <span className="prh-price-suffix">/ seat</span>
+            </div>
             <div className="prh-prefs-group">
               <p className="prh-prefs-label">Ride preferences</p>
               <div className="prh-prefs-grid">
