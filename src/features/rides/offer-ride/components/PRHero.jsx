@@ -486,10 +486,11 @@ const PRHero = ({ vehiclesFetch }) => {
         <div className="prh-bg-blur prh-bg-blur--2" />
         <div className="prh-inner">
           <div className="prh-card">
-            {/* <div className="prh-card-badge">
-          
-              Live rides available
-            </div> */}
+            {vehicleList.length < 1 && token && (
+              <div className="prh-card-badge alert-badge">
+                <FaInfoCircle /> Register a vehicle first to publish a ride.
+              </div>
+            )}
             <h2 className="prh-card-title">Offer a Ride</h2>
             <p className="prh-card-sub">Shared journeys, split costs</p>
 
@@ -583,25 +584,24 @@ const PRHero = ({ vehiclesFetch }) => {
                 </button>
               </div>
             </div>
-
-            {!selectedVehicle && (
-              <small className="seat-info">
-                <p>
-                  {" "}
-                  <FaInfoCircle />
-                </p>
-                Select a vehicle first to enable seat selection
-              </small>
-            )}
-
-            {selectedVehicle && (
-              <small className="seat-info">
-                <p>
-                  {" "}
-                  <FaInfoCircle />
-                </p>
-                Maximum available seats : {maxSeats}
-              </small>
+            {vehicleList.length >= 1 && token && (
+              <>
+                {!selectedVehicle ? (
+                  <small className="seat-info">
+                    <p>
+                      <FaInfoCircle />
+                    </p>
+                    Select a vehicle first to enable seat selection
+                  </small>
+                ) : (
+                  <small className="seat-info">
+                    <p>
+                      <FaInfoCircle />
+                    </p>
+                    Maximum available seats: {maxSeats}
+                  </small>
+                )}
+              </>
             )}
 
             <div className="prh-field prh-field--price prh-field--focusable">

@@ -4,16 +4,22 @@ import { useState, useEffect } from "react";
 import { MdOutlineMyLocation } from "react-icons/md";
 
 export default function LocationPermissionModal() {
+  const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+
     const permission = sessionStorage.getItem("locationPermission");
 
-    // Show modal only if user hasn't made a choice
     if (!permission) {
       setOpen(true);
     }
   }, []);
+
+  if (!mounted) return null;
+
+  if (!open) return null;
 
   const handleAllow = () => {
     if (!navigator.geolocation) {

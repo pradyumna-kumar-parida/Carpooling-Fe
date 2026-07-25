@@ -102,36 +102,20 @@ html {
 .prh-card-badge {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  background: #efffef;
-  color: #22c55e;
-  font-size: 11px;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #eef7ff;
+  color: #1976d2;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  padding: 5px 12px;
-  border-radius: 100px;
-  width: fit-content;
-}
-.prh-badge-dot {
-  width: 6px;
-  height: 6px;
-  background: #22c55e;
-  border-radius: 50%;
-  animation: prh-pulse-dot 2s ease-in-out infinite;
-}
-@keyframes prh-pulse-dot {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.4);
-  }
 }
 
+.alert-badge {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe69c;
+}
 .prh-card-title {
   font-size: 1.6rem;
   font-weight: 800;

@@ -5,7 +5,7 @@ import { IoLocationOutline, IoCallOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import profile from "../../../../assets/images/offer-ride-profile-1.jpg";
 
-const BookingDetailsCard = ({ rideDetails }) => {
+const BookingDetailsCard = ({ bookingRideDetails }) => {
   return (
     <div className="bookconf-details-section">
       {/* Journey Details */}
@@ -19,9 +19,15 @@ const BookingDetailsCard = ({ rideDetails }) => {
               <div className="bookconf-step-line"></div>
             </div>
             <div className="bookconf-step-content">
-              <h4 className="bookconf-step-city">{rideDetails.from}</h4>
-              <p className="bookconf-step-address">{rideDetails.fromAddress}</p>
-              <span className="bookconf-step-time">{rideDetails.time}</span>
+              <h4 className="bookconf-step-city">
+                {bookingRideDetails?.bookingDetails?.ride_source.split(",")[0]}
+              </h4>
+              <p className="bookconf-step-address">
+                {bookingRideDetails?.bookingDetails?.ride_source}
+              </p>
+              <span className="bookconf-step-time">
+                {bookingRideDetails?.time || "11:00 AM"}
+              </span>
             </div>
           </div>
 
@@ -30,8 +36,16 @@ const BookingDetailsCard = ({ rideDetails }) => {
               <FaLocationDot className="bookconf-step-icon end" />
             </div>
             <div className="bookconf-step-content">
-              <h4 className="bookconf-step-city">{rideDetails.to}</h4>
-              <p className="bookconf-step-address">{rideDetails.toAddress}</p>
+              <h4 className="bookconf-step-city">
+                {
+                  bookingRideDetails?.bookingDetails?.ride_destination.split(
+                    ",",
+                  )[0]
+                }
+              </h4>
+              <p className="bookconf-step-address">
+                {bookingRideDetails?.bookingDetails?.ride_destination}
+              </p>
             </div>
           </div>
         </div>
@@ -46,7 +60,9 @@ const BookingDetailsCard = ({ rideDetails }) => {
             <FaCalendarAlt className="bookconf-info-icon" />
             <div>
               <span className="bookconf-info-label">Date</span>
-              <span className="bookconf-info-value">{rideDetails.date}</span>
+              <span className="bookconf-info-value">
+                {bookingRideDetails?.date || "April 25, 2026"}
+              </span>
             </div>
           </div>
 
@@ -54,7 +70,9 @@ const BookingDetailsCard = ({ rideDetails }) => {
             <FaClock className="bookconf-info-icon" />
             <div>
               <span className="bookconf-info-label">Departure Time</span>
-              <span className="bookconf-info-value">{rideDetails.time}</span>
+              <span className="bookconf-info-value">
+                {bookingRideDetails?.time || "11:00 AM"}
+              </span>
             </div>
           </div>
 
@@ -63,7 +81,7 @@ const BookingDetailsCard = ({ rideDetails }) => {
             <div>
               <span className="bookconf-info-label">Duration</span>
               <span className="bookconf-info-value">
-                {rideDetails.duration}
+                {bookingRideDetails?.duration || "3h 10m"}
               </span>
             </div>
           </div>
@@ -73,7 +91,7 @@ const BookingDetailsCard = ({ rideDetails }) => {
             <div>
               <span className="bookconf-info-label">Passengers</span>
               <span className="bookconf-info-value">
-                {rideDetails.passengers} seats
+                {bookingRideDetails?.bookingDetails?.seats} seats
               </span>
             </div>
           </div>
@@ -87,25 +105,29 @@ const BookingDetailsCard = ({ rideDetails }) => {
         <div className="bookconf-driver">
           <Image
             src={profile}
-            alt={rideDetails.driverName}
+            alt={bookingRideDetails?.userDetails?.driverName}
             className="bookconf-driver-avatar"
             width={60}
             height={60}
           />
           <div className="bookconf-driver-info">
-            <h4 className="bookconf-driver-name">{rideDetails.driverName}</h4>
+            <h4 className="bookconf-driver-name">
+              {bookingRideDetails?.userDetails?.name}
+            </h4>
             <div className="bookconf-driver-meta">
               <span className="bookconf-driver-rating">
                 <FaStar /> <FaStar /> <FaStar /> <FaStar />{" "}
-                <span>{rideDetails.driverRating}</span>
+                <span>{bookingRideDetails?.driverRating || 4.8}</span>
               </span>
             </div>
             <div className="bookconf-driver-phone">
-              <IoCallOutline /> {rideDetails.driverPhone}
+              <IoCallOutline /> +91 {bookingRideDetails?.userDetails?.phone}
             </div>
             <div className="bookconf-driver-car">
               <FaCar className="bookconf-car-icon" />
-              <span>{rideDetails.carModel}</span>
+              <span>
+                {bookingRideDetails?.carModel || "Maruti Swift Dzire - White"}
+              </span>
             </div>
           </div>
         </div>

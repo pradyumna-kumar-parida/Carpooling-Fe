@@ -5,7 +5,7 @@ import { TbRoute } from "react-icons/tb";
 import { FaHandPointLeft } from "react-icons/fa";
 
 const PaymentSummaryCard = ({
-  rideDetails,
+  bookingRideDetails,
   paymentMethod,
   bookingId,
   bookingDate,
@@ -29,9 +29,11 @@ const PaymentSummaryCard = ({
         <div className="bookconf-price-breakdown">
           <div className="bookconf-price-row">
             <span className="bookconf-price-label">
-              Ride Fare ({rideDetails.passengers} seats)
+              Ride Fare ({bookingRideDetails?.bookingDetails?.seats} seats)
             </span>
-            <span className="bookconf-price-value">₹{rideDetails.price}</span>
+            <span className="bookconf-price-value">
+              ₹{bookingRideDetails?.bookingDetails?.total_price}
+            </span>
           </div>
           <div className="bookconf-price-row">
             <span className="bookconf-price-label">Service Fee</span>
@@ -40,13 +42,18 @@ const PaymentSummaryCard = ({
           <div className="bookconf-price-divider"></div>
           <div className="bookconf-price-row total">
             <span className="bookconf-price-label">Total Amount</span>
-            <span className="bookconf-price-value">₹{rideDetails.price}</span>
+            <span className="bookconf-price-value">
+              ₹{bookingRideDetails?.bookingDetails?.total_price}
+            </span>
           </div>
         </div>
 
         {paymentMethod === "cash" && (
           <div className="bookconf-cash-note">
-            <p>Please pay ₹{rideDetails.price} in cash to the driver</p>
+            <p>
+              Please pay ₹{bookingRideDetails?.bookingDetails?.total_price} in
+              cash to the driver
+            </p>
           </div>
         )}
       </div>
@@ -77,11 +84,11 @@ const PaymentSummaryCard = ({
           className="bookconf-btn-secondary"
           onClick={handleDownloadTicket}
         >
-          <FaDownload size={20}/>
+          <FaDownload size={20} />
           Download Ticket
         </button>
         <button className="bookconf-btn-secondary" onClick={handleShareBooking}>
-          <FaShare size={20}/>
+          <FaShare size={20} />
           Share Booking
         </button>
         <button
@@ -92,7 +99,7 @@ const PaymentSummaryCard = ({
           Track & Chat
         </button>
         <button className="bookconf-btn-primary" onClick={handleBackHome}>
-          <FaHandPointLeft size={20}/>
+          <FaHandPointLeft size={20} />
           Back to Home
         </button>
       </div>
