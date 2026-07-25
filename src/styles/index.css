@@ -3877,6 +3877,7 @@ footer {
 
   .location-modal {
     width: 100%;
+    max-width: 325px;
     padding: 24px 18px;
     border-radius: 16px;
   }
