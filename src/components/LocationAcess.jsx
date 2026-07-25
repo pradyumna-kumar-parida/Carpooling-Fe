@@ -105,30 +105,25 @@ import { useEffect } from "react";
 export default function LocationPermission() {
   useEffect(() => {
     if (!navigator.geolocation) return;
-
+    console.log("Requesting location...");
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        sessionStorage.setItem("locationPermission", "allowed");
+
         const location = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         };
 
-        sessionStorage.setItem("locationPermission", "allowed");
         sessionStorage.setItem("userLocation", JSON.stringify(location));
 
         window.dispatchEvent(new Event("locationPermissionUpdated"));
       },
       (error) => {
-        console.log(error);
-
-        sessionStorage.setItem("locationPermission", "denied");
-
-        window.dispatchEvent(new Event("locationPermissionUpdated"));
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0,
+        if (error.code === error.PERMISSION_DENIED) {
+          sessionStorage.setItem("locationPermission", "denied");
+          window.dispatchEvent(new Event("locationPermissionUpdated"));
+        }
       }
     );
   }, []);
