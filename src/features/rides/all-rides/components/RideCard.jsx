@@ -31,9 +31,8 @@ export default function RideCard({ ride, noOfSIt }) {
 
   return (
     <div
-      className={`ridetail-card-ride${
-        status.passed ? " ridetail-card-ride--passed" : ""
-      }`}
+      className={`ridetail-card-ride${status.passed ? " ridetail-card-ride--passed" : ""
+        }`}
       onClick={handleClick}
       role="button"
       tabIndex={status.passed ? -1 : 0}
@@ -99,7 +98,15 @@ export default function RideCard({ ride, noOfSIt }) {
               color: textColor,
             }}
           >
-            {getInitials(ride.driver_name)}
+            {ride.driver_profile_picture ? (
+              <img
+                src={ride.driver_profile_picture}
+                // alt={ride.driver_name}
+                className="ridetail-avatar-img"
+              />
+            ) : (
+              getInitials(ride.driver_name)
+            )}
           </div>
 
           <span className="ridetail-driver-name">{ride.driver_name}</span>
@@ -141,11 +148,10 @@ export default function RideCard({ ride, noOfSIt }) {
       {/* Status */}
       <div className="ridetail-status-row">
         <span
-          className={`ridetail-status-pill${
-            status.passed
-              ? " ridetail-status-pill--passed"
-              : " ridetail-status-pill--active"
-          }`}
+          className={`ridetail-status-pill${status.passed
+            ? " ridetail-status-pill--passed"
+            : " ridetail-status-pill--active"
+            }`}
         >
           <span className="ridetail-status-dot" />
           {status.label}

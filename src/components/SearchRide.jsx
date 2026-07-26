@@ -17,6 +17,7 @@ const FRSearchBar = ({
   defaultTo,
   defaultDate,
   defaultPassengers,
+  onSearchComplete
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -64,6 +65,8 @@ const FRSearchBar = ({
     // Just navigate. No reload. Next.js re-renders any component reading
     // useSearchParams() — including this one and the results page —
     // with the fresh values.
+
+    onSearchComplete?.();
     router.push(`/all-rides?${params.toString()}`);
   };
 

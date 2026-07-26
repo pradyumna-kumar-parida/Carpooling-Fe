@@ -95,6 +95,8 @@ export default function MobileSearchBar({
                 initialTo={to}
                 initialDate={date}
                 initialPassengers={passengers}
+
+                onSearchComplete={() => setSearchOpen(false)}
               />
             </div>
           </div>

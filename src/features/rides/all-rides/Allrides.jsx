@@ -105,7 +105,11 @@ export default function RideDetails() {
     return groups.map((group) => (
       <div key={group.date} className="ridetail-date-group">
         <div className="ridetail-date-header">
-          <span className="ridetail-date-label">{group.date}</span>
+          <span className="ridetail-date-label">  {new Date(group.date).toLocaleDateString("en-IN", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })}</span>
 
           <span className="ridetail-date-route">{group.route}</span>
         </div>

@@ -3465,6 +3465,9 @@ footer {
   .avl-rides-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .avl-rides-section {
+    padding: 20px;
+  }
 }
 
 @media (max-width: 620px) {
@@ -4173,10 +4176,16 @@ footer {
   .app-download {
     --scanner-width: 170px;
     --scanner-overlap: 46px;
+    padding: 10px 0;
   }
 
+  .ridetail-date-route, 
+  .avl-rides-viewall{
+    font-size: 0.7rem !important;
+  }
+.avl-rides-title,
   .app-download-heading {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
 
   .app-download-desc {
