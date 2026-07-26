@@ -308,14 +308,14 @@ const MapPanel = ({
   return (
     <div className="ms-container">
       {/* Status Badge */}
-      <div className="ms-status-badge">
+      {/* <div className="ms-status-badge">
         <span className="ms-status-dot" style={{ background: status.dot }} />
         <span>{status.label}</span>
         <span className="ms-status-sep">·</span>
         <span className="ms-status-sub">
           Live tracking starts 30 min before departure
         </span>
-      </div>
+      </div> */}
 
       {/* Fullscreen Toggle */}
       <button

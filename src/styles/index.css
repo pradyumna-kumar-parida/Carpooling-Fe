@@ -2376,11 +2376,16 @@ footer {
    RESPONSIVE — ≤ 767px — FIX 3
    =========================== */
 @media (max-width: 768px) {
+  .avl-rides-card {
+    min-width: 310px !important;
+  }
   /* Header */
   header {
     padding: 12px 16px !important;
   }
-
+  .detailed-container .container {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
   .notification > img {
     height: 26px !important;
     width: 26px !important;
@@ -4179,11 +4184,11 @@ footer {
     padding: 10px 0;
   }
 
-  .ridetail-date-route, 
-  .avl-rides-viewall{
+  .ridetail-date-route,
+  .avl-rides-viewall {
     font-size: 0.7rem !important;
   }
-.avl-rides-title,
+  .avl-rides-title,
   .app-download-heading {
     font-size: 1.2rem;
   }

@@ -76,10 +76,10 @@ export default function RideCard({ ride, noOfSIt }) {
         </div>
 
         <div className="ridetail-ride-price">
-          <span className="ridetail-price-sym">₹</span>
+        
 
           <span className="ridetail-price-main">
-            {Number(ride.price_per_seat * noOfSIt).toFixed(2)}
+            ₹{Number(ride.price_per_seat * noOfSIt).toFixed(2)}
           </span>
         </div>
       </div>

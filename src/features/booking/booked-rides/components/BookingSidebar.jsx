@@ -47,8 +47,8 @@ export default function BookingSidebar({
             <span>Total price</span>
 
             <div className="summary-price">
-              <span className="price-currency">₹</span>
-              <span className="price-amount">{total}</span>
+           
+              <span className="price-amount">₹{total}</span>
             </div>
           </div>
 

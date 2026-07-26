@@ -824,15 +824,8 @@
 
 .ridetail-ride-price {
   display: flex;
-  align-items: flex-start;
-  gap: 1px;
+  align-items: center;
   flex-shrink: 0;
-}
-
-.ridetail-price-sym {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--fr-text-dark);
 }
 
 .ridetail-price-main {
@@ -1487,15 +1480,8 @@
 
 .summary-price {
   display: flex;
-  align-items: baseline;
-  font-weight: 700;
-}
-
-.price-currency {
-  display: flex;
   align-items: center;
-  font-size: 25px;
-  color: var(--fr-text-dark);
+  font-weight: 700;
 }
 
 .price-amount {
@@ -2653,6 +2639,7 @@
   display: flex;
   gap: 4px;
   font-size: 90%;
+  
   align-items: center;
 }
 
@@ -3629,7 +3616,7 @@
   }
 
   .ridepay-info-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
   }
 
@@ -3722,9 +3709,74 @@
    ========================================== */
 
 @media (max-width: 480px) {
+  .bookconf-success-text,
+  .ridepay-razorpay-desc {
+    font-size: 0.8rem !important;
+    padding: 0 !important;
+  }
+  .css-1016kjc-MuiChip-root{
+    padding: 4px 2px !important ;
+  }
+  .bookconf-payment-chip,
+  .css-6od3lo-MuiChip-label,
+  .ridepay-secure-note,
+  .css-wjsjww-MuiChip-label {
+    font-size: 0.6rem !important;
+  }
+  .bookconf-driver-phone {
+    justify-content: center;
+  }
+  .back-to-top{
+    display: none;
+  }
+  .ridepay-payment {
+    gap: 0.2rem;
+  }
   /* Search */
   .fr-page-title {
     font-size: 1.9rem;
+  }
+  .ride-confirm-title {
+    font-size: 1.4rem;
+  }
+    .bookconf-card-title,
+  .detail-icon,
+  .ride-price-title {
+    font-size: 1.2rem !important;
+  }
+  /* .sucessBedge  */
+  .ridepay-driver-avatar,
+  .dm-avatar,
+  .passenger-avatar,
+  .driver-avatar {
+    height: 40px !important;
+    width: 40px !important;
+  }
+  .bookconf-driver-name,
+  .bookconf-step-city,
+
+  .ridepay-driver-title,
+  .ridepay-summary-title,
+  .ridepay-payment-title,
+  .dm-driver-name,
+  .passengers-title,
+  .driver-name,
+  .ride-price-total span:first-child {
+    font-size: 1rem !important ;
+  }
+  .bookconf-booking-value,
+  .bookconf-booking-label,
+  .bookconf-price-value,
+.bookconf-price-label,
+  .ridepay-driver-name,
+  .ridepay-route-value,
+  .ridepay-amount-value,
+  .ridepay-amount-label,
+  .dm-section-title,
+  .detail-text,
+  .ride-price-row span:last-child,
+  .ride-price-row span:first-child {
+    font-size: 0.9rem !important;
   }
   .fr-field:first-of-type {
     border-radius: 14px 14px 0 0 !important;
@@ -3843,25 +3895,25 @@
     align-items: flex-start;
     gap: 8px;
   }
-.ridetail-ride-top{
-  margin-bottom: 0;
-}
+  .ridetail-ride-top {
+    margin-bottom: 0;
+  }
   .ridetail-price-main {
     font-size: 1rem;
   }
   .ridetail-date-label,
-    .ridetail-status-pill,
-.ridetail-badge{
-  font-size: 0.65rem !important;
-}
-.ridetail-driver-name,
+  .ridetail-status-pill,
+  .ridetail-badge {
+    font-size: 0.65rem !important;
+  }
+  .ridetail-driver-name,
   .ridetail-ride-time {
     font-size: 0.85rem;
   }
 
-.ridetail-ride-city{
-  font-size: 0.75rem;
-}
+  .ridetail-ride-city {
+    font-size: 0.75rem;
+  }
   .ridetail-date-header {
     flex-direction: column;
     align-items: flex-start;
@@ -3962,10 +4014,6 @@
 
   .bookconf-success-title {
     font-size: 1.5rem;
-  }
-
-  .bookconf-success-text {
-    font-size: 0.9375rem;
   }
 
   .bookconf-driver {
@@ -5893,7 +5941,6 @@ body.modal-open {
 }
 
 .bkf-btn:hover {
-
   box-shadow: var(--fr-shadow);
 }
 
@@ -5933,4 +5980,3 @@ body.modal-open {
 .bkf-btn--home:hover {
   opacity: 0.9;
 }
-
