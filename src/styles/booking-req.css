@@ -938,12 +938,12 @@
   .booking-req-filter-tab {
     gap: 4px;
     min-width: max-content;
-    font-size: 0.5rem;
-    padding: 4px 7px !important;
+    font-size: 0.7rem;
+    padding: 5px 9px !important;
   }
   .booking-req-filter-count {
-    padding: 1px 4px;
-    font-size: 0.5rem;
+    padding: 2px 4px;
+    font-size: 0.6rem;
     min-width: auto;
   }
   .booking-req-avatar{

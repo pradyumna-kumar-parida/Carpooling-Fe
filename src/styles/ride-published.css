@@ -1257,6 +1257,8 @@
     height: 12px;
     width: 12px;
   }
+  .ride-publish-modal-btn-cancel,
+  .ride-publish-modal-btn-start,
 .ride-publish-pax-paid,
   .ride-publish-modal-info-label,
   .ride-publish-avatar,
@@ -1291,7 +1293,8 @@
   .ride-publish-card-city-block > svg {
     display: none;
   }
-
+    .ride-publish-modal-earn-val,
+  .ride-publish-modal-earn-label,
   .ride-publish-modal-pax-seat,
   .ride-publish-modal-section-title,
   .ride-publish-modal-pax-name,
@@ -1308,9 +1311,8 @@
   .ride-publish-confirm-btn-yes,
   .ride-publish-confirm-btn-no,
   .ride-publish-confirm-text,
-  .ride-publish-modal-btn-cancel,
   .ride-publish-modal-btn-edit,
-  .ride-publish-modal-earn-label,
+
   .ride-publish-modal-city,
   .ride-publish-card-earn-val,
   .ride-publish-card-city,
@@ -1328,13 +1330,13 @@
   }
   .ride-publish-filter-tab {
     min-width: max-content;
-    font-size: 0.5rem;
+    font-size: 0.7rem;
     gap: 4px;
-    padding: 4px 7px !important;
+    padding: 5px 9px !important;
   }
   .ride-publish-filter-count {
-    padding: 1px 4px;
-    font-size: 0.5rem;
+    padding: 2px 4px;
+    font-size: 0.6rem;
   }
   .ride-publish-body {
     padding: 20px 10px;
@@ -1354,7 +1356,7 @@
     height: 20px;
     width: 20px;
   }
-  .ride-publish-modal-earn-val,
+
   .ride-publish-modal-title {
     font-size: 1rem;
   }

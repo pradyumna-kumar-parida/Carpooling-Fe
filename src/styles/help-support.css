@@ -526,7 +526,9 @@
     min-height: auto !important;
   }
   .css-xsqe0f-MuiButtonBase-root-MuiButton-root,
-  .css-yup6gp-MuiButtonBase-root-MuiButton-root,
+  .css-yup6gp-MuiButtonBase-root-MuiButton-root{
+    font-size: 0.5rem !important;
+  }
   .help-section-label,
   .help-hero-eyebrow {
     font-size: 0.6rem !important ;
