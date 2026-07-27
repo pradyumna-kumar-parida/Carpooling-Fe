@@ -211,6 +211,7 @@
   align-items: flex-end;
   gap: 12px;
   height: 180px;
+  flex-wrap: wrap;
 }
 
 .earning-bar-group {
@@ -222,8 +223,8 @@
 }
 
 .earning-bar-amount {
-  font-size:1.2rem;
-  color:green;
+  font-size: 1.2rem;
+  color: green;
   font-weight: 700;
   font-family: var(--value-text);
 }
@@ -450,6 +451,7 @@
   align-items: center;
   gap: 6px;
   color: var(--desc);
+  width: max-content;
 }
 
 .earning-datetime-icon {
@@ -507,7 +509,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .earning-page {
     padding: 20px 16px 40px;
   }
@@ -527,5 +529,36 @@
   .earning-filter-btn {
     flex: 1;
     text-align: center;
+  }
+}
+@media (max-width: 480px) {
+  .earning-title {
+    font-size: 1.4rem !important;
+  }
+  .earning-header-text {
+    display: flex;
+
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+  }
+  
+  .earning-subtitle {
+    font-size: 0.8rem;
+  }
+  .earning-stat-label{
+    font-size: 0.7rem;
+  }
+  .earning-filter-btn {
+    font-size: 0.7rem;
+    padding:5px 10px ;
+  }
+  .earning-stat-value{
+    font-size: 1rem;
+  }
+.css-yup6gp-MuiButtonBase-root-MuiButton-root,
+  .css-xsqe0f-MuiButtonBase-root-MuiButton-root{
+    font-size: 0.5rem !important;
   }
 }

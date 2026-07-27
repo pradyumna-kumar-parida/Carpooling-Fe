@@ -81,7 +81,7 @@ export default function VehicleDetails({ vehiclesFetch }) {
             className="vehicle-detl-add-btn"
             onClick={() => router.push("/driver/vehicle-registration")}
           >
-            <FiPlus size={16} /> Add New Vehicle
+            <FiPlus size={16} /> Add 
           </button>
           {/* )} */}
         </div>

@@ -3723,9 +3723,7 @@
   .action-btn {
     padding: 14px 16px;
   }
-  .vehicle-detl-title {
-    font-size: 20px;
-  }
+
   .vehicle-detl-card-list {
     grid-template-columns: 1fr;
   }
@@ -3737,10 +3735,7 @@
     align-items: flex-start;
     gap: 8px;
   }
-  .vehicle-detl-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+
   .vehicle-detl-add-btn {
     width: max-content;
     text-align: center;
@@ -3753,6 +3748,8 @@
     width: 100%;
     text-align: center;
   }
+  
+  .vehicle-detl-subtitle,
   .cancel-info p,
   .driver-car,
   .driver-phone,
@@ -3787,8 +3784,19 @@
     padding: 7px 10px !important;
     font-size: 0.7rem !important;
   }
-.sucess-status-badge,
-
+ .vehicle-detl-card-name,
+ .vehicle-detl-panel-title,
+ .vehicle-detl-panel-reg,
+ 
+  .vehicle-detl-add-btn{
+    font-size: 0.8rem !important
+  }
+  .vehicle-detl-doc-btn,
+.vehicle-detl-card-reg,
+.vehicle-detl-card-meta,
+   .vehicle-detl-sidebar-label,
+   .vehicle-detl-badge,
+  .sucess-status-badge,
   .step-time,
   .info-label,
   .route-label-head,
@@ -3815,10 +3823,11 @@
   .fr-page-title {
     font-size: 1.9rem;
   }
+  .vehicle-detl-title,
   .ride-confirm-title {
-    font-size: 1.4rem;
+    font-size: 1.4rem !important;
   }
-.sucess-heading,
+  .sucess-heading,
   .step-icon,
   .bookconf-card-title,
   .detail-icon,
@@ -3833,7 +3842,7 @@
     height: 40px !important;
     width: 40px !important;
   }
-
+.vehicle-detl-section-title,
   .item-icon,
   .myride-modal-title h2,
   .bookconf-driver-name,
@@ -3847,10 +3856,11 @@
   .ride-price-total span:first-child {
     font-size: 1rem !important ;
   }
+  .vehicle-detl-info-label,
   .details-Items,
-    .sucess-subheading,
-   .vehicledetails-btn-submit,
-    .vehicledetails-btn-back,
+  .sucess-subheading,
+  .vehicledetails-btn-submit,
+  .vehicledetails-btn-back,
   .vehicledetails-photo-label span,
   .modal-price-value,
   .modal-price-label,
@@ -3874,8 +3884,9 @@
   .fr-field:first-of-type {
     border-radius: 14px 14px 0 0 !important;
   }
-.vehicledetails-btn-next, .vehicledetails-btn-submit,
-  .vehicledetails-btn-back{
+  .vehicledetails-btn-next,
+  .vehicledetails-btn-submit,
+  .vehicledetails-btn-back {
     padding: 8px 5px !important;
   }
   .fr-field {
@@ -4034,14 +4045,13 @@
   .timeline-stop {
     gap: 1rem;
   }
-  
-  .vehicledetails-subsection-title,
 
+  .vehicledetails-subsection-title,
   .vehicledetails-btn-next,
-  .css-y6rp3m-MuiButton-startIcon>*:nth-of-type(1),
+  .css-y6rp3m-MuiButton-startIcon > *:nth-of-type(1),
   .css-1ytlwq5-MuiAlert-icon,
   .vehicledetails-section-icon,
-.vehicledetails-section-title,
+  .vehicledetails-section-title,
   .price-amount {
     font-size: 1rem !important;
   }
@@ -4107,7 +4117,7 @@
   }
 
   /* Booking conf */
-  
+
   .bookconf-success-icon {
     font-size: 3rem;
   }
@@ -4140,9 +4150,9 @@
   .vehicledetails-content {
     padding: 1rem;
   }
-.vehicledetails-stepper {
-  margin-bottom: 0rem !important;
-}
+  .vehicledetails-stepper {
+    margin-bottom: 0rem !important;
+  }
   .vehicledetails-upload-box,
   .vehicledetails-photo-box {
     padding: 2rem 1rem;
@@ -4151,26 +4161,25 @@
   .vehicledetails-upload-icon {
     font-size: 2rem;
   }
-  .css-eglki6-MuiLinearProgress-root{
-    display:  none !important;
+  .css-eglki6-MuiLinearProgress-root {
+    display: none !important;
   }
   .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input,
   .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input,
   .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input,
   .css-u4tvz2-MuiFormLabel-root,
-  .vehicledetails-upload-text{
+  .vehicledetails-upload-text {
     font-size: 0.8rem !important;
   }
-  
+
   .vehicledetails-remove-btn,
   .vehicledetails-upload-hint,
-  .css-1pxa9xg-MuiAlert-message{
+  .css-1pxa9xg-MuiAlert-message {
     font-size: 0.7rem !important;
   }
-  .vehicledetails-upload-label{
+  .vehicledetails-upload-label {
     gap: 0.4rem;
   }
-
 }
 /* src/pages/Rides/find-ride/ride-booking/components/DriverModal.css */
 
@@ -4335,7 +4344,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 32px;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   gap: 16px;
 }
 
