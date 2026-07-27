@@ -2827,7 +2827,9 @@ footer {
   }
 
   /* Section headings */
-
+.why-card h3{
+  font-size: 1rem;
+}
   .profile-progress-percentage,
   .pr-benefits-title,
   .pr-how-title,
@@ -2847,8 +2849,16 @@ footer {
     width: 50px;
     height: 50px;
   }
+  .why-card p,
+  .btn,
+  .features-list li,
+  .card-subtitle,
   .form-group label {
     font-size: 0.8rem !important;
+  }
+  .check-icon{
+    height: 14px;
+    width: 14px;
   }
   .form-input,
   .form-textarea,
@@ -4250,18 +4260,22 @@ footer {
     --scanner-overlap: 46px;
     padding: 10px 0;
   }
-
+.reviewer-info .name,
+.reviewer-info .name span,
   .ridetail-date-route,
   .avl-rides-viewall {
     font-size: 0.7rem !important;
   }
-  .avl-rides-title,
-  .app-download-heading {
+  .card-title,
+  .avl-rides-title {
     font-size: 1.2rem;
   }
-
+   .app-download-heading{
+    font-size: 1.1rem;
+   }
+.testimonial-card p,
   .app-download-desc {
-    font-size: 0.9rem;
+    font-size: 0.8rem !important;
   }
 
   .app-download-badges {

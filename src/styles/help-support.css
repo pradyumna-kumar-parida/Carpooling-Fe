@@ -525,7 +525,8 @@
   .help-hero {
     min-height: auto !important;
   }
-  .help-cat-icon svg,
+  .css-xsqe0f-MuiButtonBase-root-MuiButton-root,
+  .css-yup6gp-MuiButtonBase-root-MuiButton-root,
   .help-section-label,
   .help-hero-eyebrow {
     font-size: 0.6rem !important ;
@@ -549,6 +550,8 @@
   .css-p7nytx-MuiButtonBase-root-MuiAccordionSummary-root {
     padding: 5px 10px !important;
   }
+  .css-xl6cwr-MuiTypography-root,
+  .help-cat-icon svg,
   .help-contact-card-title,
   .help-contact-card-desc,
   .help-contact-sub,
@@ -569,7 +572,7 @@
   }
   .help-cat-btn {
     padding: 4px 7px !important;
-    font-size: 0.5rem;
+    font-size: 0.6rem;
     gap: 4px;
 
     min-width: max-content;
