@@ -1169,6 +1169,7 @@ html {
     /* FIX: constrain copy so text wraps instead of overflowing */
     width: 100%;
     min-width: 0;
+    gap: 14px;
     overflow-wrap: break-word;
     word-break: break-word;
   }
@@ -1187,12 +1188,14 @@ html {
     transform: translateX(-50%);
   }
   .prh-desc {
-    max-width: 100%;
-    width: 100%;
+    /* max-width: 100%;
+    width: 100%; */
+    display: none;
   }
   .prh-stats {
-    justify-content: center;
-    gap: 20px;
+    /* justify-content: center;
+    gap: 20px; */
+    display: none;
   }
   .prh-stat-val {
     font-size: 1.3rem;
@@ -1264,13 +1267,79 @@ html {
     padding: 40px 14px 48px;
   }
 
+  .prh-tag {
+    font-size: 0.5rem;
+  }
+  .pr-how-title,
   .prh-headline {
-    font-size: 1.7rem;
+    font-size: 1.3rem;
   }
   .prh-card {
     padding: 20px 14px;
   }
+    .pr-faq-title ,
+  .pr-support-card-title,
+  .pr-benefit-title,
+  .prh-card-title {
+    font-size: 1.1rem !important;
+  }
+  .pr-benefits,
+  .pr-how-it-works,
+  .pr-support,
+  .pr-faq {
+    padding: 30px 10px !important;
+  }
 
+    .pr-support-icon,
+  .pr-benefits-title {
+    margin-bottom: 20px;
+    font-size: 1.3rem !important;
+  }
+  .pr-faq-answer p,
+    .pr-benefit-desc,
+  .pr-step-desc,
+  .pr-support-desc,
+  .pr-testimonial-text,
+  .prh-seats-label,
+  .prh-input,
+  .prh-loc-name {
+    font-size: 0.8rem;
+  }
+  .pr-benefits-grid,
+  .pr-support-grid {
+    gap: 20px;
+  }
+  .pr-support-icon,
+  .pr-step-number{
+    height: 34px;
+    width: 34px;
+    font-size: 1rem ;
+  }
+  
+  .pr-benefit-icon {
+    height: 40px;
+    width: 40px;
+    margin: 0 auto 9px;
+  }
+  .pr-benefit-icon svg {
+    height: 20px;
+    width: 20px;
+  }
+  .pr-testimonial-dots {
+    margin-top: 18px;
+  }
+  .pr-faq-link,
+  .prh-pref-text,
+  .seat-info,
+  .prh-prefs-label {
+    font-size: 0.7rem !important;
+  }
+
+  .pr-testimonial-author,
+  .prh-seats-val,
+  .prh-card-sub {
+    font-size: 0.9rem;
+  }
   /* FIX: route-wrap and fields must not overflow on small screens */
   .prh-route-wrap,
   .prh-field--vehicle,
@@ -1290,15 +1359,14 @@ html {
   }
   .prh-prefs-grid {
     grid-template-columns: 1fr 1fr;
+    
     gap: 7px;
   }
   .prh-pref-chip {
     padding: 8px 10px;
     gap: 6px;
   }
-  .prh-pref-text {
-    font-size: 0.72rem;
-  }
+
   .prh-pref-icon {
     font-size: 12px;
   }
@@ -1308,35 +1376,40 @@ html {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    box-shadow: var(--pr-shadow);
+    padding: 20px 10px;
+    border-radius: var(--pr-radius);
   }
   .pr-step-title {
+    font-size: 1.1rem !important;
     justify-content: center;
   }
 
   /* Cards */
   .pr-benefit-card,
   .pr-support-card {
-    padding: 30px 20px;
+    padding: 20px 15px;
   }
 
   /* Testimonials */
   .pr-testimonial-card {
-    padding: 30px 20px;
+    padding: 20px 15px;
   }
-  .pr-testimonial-text {
-    font-size: 1rem;
+  .pr-how-visual {
+    display: none;
   }
 
   /* FAQ */
   .pr-faq-question {
     padding: 15px 20px;
-    font-size: 0.95rem;
+    font-size: 0.8rem;
   }
 
   /* Buttons */
+  .prh-cta,
   .pr-btn {
-    padding: 14px 30px;
-    font-size: 0.95rem;
+    padding: 15px 20px;
+    font-size: 0.8rem;
   }
 }
 .seat-info {

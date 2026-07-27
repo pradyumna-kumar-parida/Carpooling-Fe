@@ -503,7 +503,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .help-banner-inner {
     flex-direction: column;
     align-items: flex-start;
@@ -515,5 +515,93 @@
 
   .help-hero {
     min-height: 320px;
+  }
+}
+
+@media (max-width: 480px) {
+  .help-hero-inner {
+    padding: 25px 20px !important;
+  }
+  .help-hero {
+    min-height: auto !important;
+  }
+  .help-cat-icon svg,
+  .help-section-label,
+  .help-hero-eyebrow {
+    font-size: 0.6rem !important ;
+  }
+  .help-hero-heading {
+    font-size: 1.3rem;
+  }
+  .help-faq-heading {
+    margin: 0 0 14px;
+    font-size: 1.1rem !important;
+  }
+  .help-contact-icon-wrap > svg,
+  .help-contact-heading,
+  .help-safety-heading,
+  .help-safety-badge > svg,
+  .help-how-heading {
+    font-size: 1.1rem !important;
+  }
+
+  .css-1p2urhn-MuiAccordionDetails-root,
+  .css-p7nytx-MuiButtonBase-root-MuiAccordionSummary-root {
+    padding: 5px 10px !important;
+  }
+  .help-contact-card-title,
+  .help-contact-card-desc,
+  .help-contact-sub,
+  .help-safety-item p,
+  .help-safety-item strong,
+  .help-safety-desc,
+  .help-safety-badge,
+  .css-1p2urhn-MuiAccordionDetails-root,
+  .css-1betqn-MuiAccordionSummary-content,
+  .help-how-list li,
+  .help-how-desc,
+  .help-hero-sub {
+    font-size: 0.8rem !important;
+  }
+  .help-contact-card-detail {
+    font-size: 0.7rem;
+    margin-bottom: 15px;
+  }
+  .help-cat-btn {
+    padding: 4px 7px !important;
+    font-size: 0.5rem;
+    gap: 4px;
+
+    min-width: max-content;
+  }
+  .help-how-image,
+  .help-safety-image {
+    height: 200px;
+  }
+  .help-faq-layout {
+    gap: 20px;
+  }
+  .help-cat-nav {
+    margin-top: 10px;
+  }
+  .help-contact-section,
+  .help-safety-section,
+  .help-faq-section,
+  .help-how-section {
+    padding: 30px 0;
+  }
+  .help-how-grid {
+    gap: 20px;
+  }
+  .help-contact-icon-wrap {
+    height: 30px;
+    width: 30px;
+  }
+  .help-contact-card {
+    padding: 20px 20px;
+  }
+  .help-contact-cta {
+    font-size: 0.6rem;
+    padding: 10px 20px;
   }
 }

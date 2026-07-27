@@ -66,9 +66,12 @@ export default function ProfileHeader({
           <div className="profile-progress-card">
             <div className="profile-progress-top">
               <div>
-                <h4 className="profile-progress-title">Complete your profile</h4>
+                <h4 className="profile-progress-title">
+                  Complete your profile
+                </h4>
                 <p className="profile-progress-text">
-                  Complete your profile to build trust and get more ride bookings.
+                  Complete your profile to build trust and get more ride
+                  bookings.
                 </p>
               </div>
 
@@ -87,13 +90,37 @@ export default function ProfileHeader({
                 8 of 12 profile sections completed
               </span>
 
-              <button className="profile-progress-btn">
-                Complete Profile
-              </button>
+              <button className="profile-progress-btn">Complete Profile</button>
             </div>
           </div>
         </div>
+        <div className="profile-progress-card1">
+          <div className="profile-progress-top">
+            <div>
+              <h4 className="profile-progress-title">Complete your profile</h4>
+              <p className="profile-progress-text">
+                Complete your profile to build trust and get more ride bookings.
+              </p>
+            </div>
 
+            <span className="profile-progress-percentage">65%</span>
+          </div>
+
+          <div className="profile-progress-bar">
+            <div
+              className="profile-progress-fill"
+              style={{ width: "65%" }}
+            ></div>
+          </div>
+
+          <div className="profile-progress-footer">
+            <span className="profile-progress-info">
+              8 of 12 profile sections completed
+            </span>
+
+            <button className="profile-progress-btn">Complete Profile</button>
+          </div>
+        </div>
         <div className="profile-actions">
           {!isEditing ? (
             <button className="btn-edit" onClick={onEditToggle}>

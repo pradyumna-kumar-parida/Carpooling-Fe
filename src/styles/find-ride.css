@@ -2639,7 +2639,7 @@
   display: flex;
   gap: 4px;
   font-size: 90%;
-  
+
   align-items: center;
 }
 
@@ -3688,7 +3688,6 @@
   }
 
   .vehicledetails-actions {
-    flex-direction: column;
     gap: 1rem;
   }
 
@@ -3709,24 +3708,104 @@
    ========================================== */
 
 @media (max-width: 480px) {
+  .approval-image {
+    max-width: 320px;
+  }
+  .modal-price {
+    gap: 8px;
+    text-align: center;
+  }
+
+  .myride-modal-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .action-btn {
+    padding: 14px 16px;
+  }
+  .vehicle-detl-title {
+    font-size: 20px;
+  }
+  .vehicle-detl-card-list {
+    grid-template-columns: 1fr;
+  }
+  .vehicle-detl-photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .vehicle-detl-panel-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .vehicle-detl-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .vehicle-detl-add-btn {
+    width: max-content;
+    text-align: center;
+  }
+  .vehicle-detl-modal-footer {
+    flex-direction: column;
+  }
+  .vehicle-detl-cancel-btn,
+  .vehicle-detl-save-btn {
+    width: 100%;
+    text-align: center;
+  }
+  .cancel-info p,
+  .driver-car,
+  .driver-phone,
+  .item-value,
+  .step-address,
+  .step-city,
+  .price-value,
+  .price-label,
+  .info-value,
+  .route-value,
   .bookconf-success-text,
   .ridepay-razorpay-desc {
     font-size: 0.8rem !important;
     padding: 0 !important;
   }
-  .css-1016kjc-MuiChip-root{
+  .css-1016kjc-MuiChip-root {
     padding: 4px 2px !important ;
   }
+  .myride-card-actions {
+    margin-top: 10px !important;
+    padding: 12px !important;
+  }
+  .myride-modal-price-section,
+  .cancel-info,
+  .driver-card,
+  .info-item {
+    padding: 0.6rem 1rem !important;
+  }
+  .myride-chat-btn,
+  .myride-track-btn,
+  .myride-details-btn {
+    padding: 7px 10px !important;
+    font-size: 0.7rem !important;
+  }
+.sucess-status-badge,
+
+  .step-time,
+  .info-label,
+  .route-label-head,
+  .myride-status-chip,
   .bookconf-payment-chip,
   .css-6od3lo-MuiChip-label,
   .ridepay-secure-note,
   .css-wjsjww-MuiChip-label {
     font-size: 0.6rem !important;
   }
+  .myride-modal-badges {
+    margin-bottom: 10px !important;
+  }
   .bookconf-driver-phone {
     justify-content: center;
   }
-  .back-to-top{
+  .back-to-top {
     display: none;
   }
   .ridepay-payment {
@@ -3739,7 +3818,9 @@
   .ride-confirm-title {
     font-size: 1.4rem;
   }
-    .bookconf-card-title,
+.sucess-heading,
+  .step-icon,
+  .bookconf-card-title,
   .detail-icon,
   .ride-price-title {
     font-size: 1.2rem !important;
@@ -3752,9 +3833,11 @@
     height: 40px !important;
     width: 40px !important;
   }
+
+  .item-icon,
+  .myride-modal-title h2,
   .bookconf-driver-name,
   .bookconf-step-city,
-
   .ridepay-driver-title,
   .ridepay-summary-title,
   .ridepay-payment-title,
@@ -3764,10 +3847,20 @@
   .ride-price-total span:first-child {
     font-size: 1rem !important ;
   }
+  .details-Items,
+    .sucess-subheading,
+   .vehicledetails-btn-submit,
+    .vehicledetails-btn-back,
+  .vehicledetails-photo-label span,
+  .modal-price-value,
+  .modal-price-label,
+  .driver-name,
+  .section-title,
+  .vehicledetails-subtitle,
   .bookconf-booking-value,
   .bookconf-booking-label,
   .bookconf-price-value,
-.bookconf-price-label,
+  .bookconf-price-label,
   .ridepay-driver-name,
   .ridepay-route-value,
   .ridepay-amount-value,
@@ -3776,10 +3869,14 @@
   .detail-text,
   .ride-price-row span:last-child,
   .ride-price-row span:first-child {
-    font-size: 0.9rem !important;
+    font-size: 0.8rem !important;
   }
   .fr-field:first-of-type {
     border-radius: 14px 14px 0 0 !important;
+  }
+.vehicledetails-btn-next, .vehicledetails-btn-submit,
+  .vehicledetails-btn-back{
+    padding: 8px 5px !important;
   }
   .fr-field {
     min-width: 100%;
@@ -3937,9 +4034,16 @@
   .timeline-stop {
     gap: 1rem;
   }
+  
+  .vehicledetails-subsection-title,
 
+  .vehicledetails-btn-next,
+  .css-y6rp3m-MuiButton-startIcon>*:nth-of-type(1),
+  .css-1ytlwq5-MuiAlert-icon,
+  .vehicledetails-section-icon,
+.vehicledetails-section-title,
   .price-amount {
-    font-size: 1.25rem;
+    font-size: 1rem !important;
   }
 
   .detail-item {
@@ -3960,25 +4064,20 @@
     gap: 0.5rem;
   }
 
+  .msg-count {
+    padding: 2px 4px !important;
+    font-size: 0.5rem !important;
+  }
+
   .myride-tab {
-    padding: 0.625rem 1.25rem;
-    font-size: 0.875rem;
+    padding: 7px 15px;
+    font-size: 0.6rem;
   }
 
   .myride-card {
     padding: 1rem;
     height: auto;
     min-height: 170px;
-  }
-
-  .myride-route-simple {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .route-arrow {
-    transform: rotate(90deg);
-    align-self: center;
   }
 
   .info-grid {
@@ -4008,6 +4107,7 @@
   }
 
   /* Booking conf */
+  
   .bookconf-success-icon {
     font-size: 3rem;
   }
@@ -4033,14 +4133,16 @@
 
   .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root,
   .css-1u4zpwo-MuiSvgIcon-root-MuiStepIcon-root.Mui-active {
-    font-size: 28px !important;
+    font-size: 22px !important;
   }
 
   .vehicledetails-stepper-wrapper,
   .vehicledetails-content {
     padding: 1rem;
   }
-
+.vehicledetails-stepper {
+  margin-bottom: 0rem !important;
+}
   .vehicledetails-upload-box,
   .vehicledetails-photo-box {
     padding: 2rem 1rem;
@@ -4049,6 +4151,26 @@
   .vehicledetails-upload-icon {
     font-size: 2rem;
   }
+  .css-eglki6-MuiLinearProgress-root{
+    display:  none !important;
+  }
+  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input,
+  .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input,
+  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input,
+  .css-u4tvz2-MuiFormLabel-root,
+  .vehicledetails-upload-text{
+    font-size: 0.8rem !important;
+  }
+  
+  .vehicledetails-remove-btn,
+  .vehicledetails-upload-hint,
+  .css-1pxa9xg-MuiAlert-message{
+    font-size: 0.7rem !important;
+  }
+  .vehicledetails-upload-label{
+    gap: 0.4rem;
+  }
+
 }
 /* src/pages/Rides/find-ride/ride-booking/components/DriverModal.css */
 
@@ -4823,39 +4945,6 @@
   }
 }
 
-/* ── Responsive 480px ─────────────────────────────────────────────────────── */
-@media (max-width: 480px) {
-  .vehicle-detl-title {
-    font-size: 20px;
-  }
-  .vehicle-detl-card-list {
-    grid-template-columns: 1fr;
-  }
-  .vehicle-detl-photo-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .vehicle-detl-panel-actions {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  .vehicle-detl-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .vehicle-detl-add-btn {
-    width: max-content;
-    text-align: center;
-  }
-  .vehicle-detl-modal-footer {
-    flex-direction: column;
-  }
-  .vehicle-detl-cancel-btn,
-  .vehicle-detl-save-btn {
-    width: 100%;
-    text-align: center;
-  }
-}
 /* ── RidePayment Extra Styles ──
    Add these to your existing ridepay CSS file (e.g. RidePayment.css or styles/ridepay.css)
    All existing .ridepay-* classes remain untouched.
@@ -5062,28 +5151,6 @@
   }
 }
 
-@media (max-width: 480px) {
-  .modal-price {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-  }
-
-  .myride-modal-actions {
-    grid-template-columns: 1fr;
-  }
-
-  .action-btn {
-    padding: 14px 16px;
-  }
-}
-/* =============================================
-   RIDE DETAILS MODAL — replaces MUI Dialog
-   Add this to your global CSS or the relevant
-   module CSS file.
-   ============================================= */
-
-/* Overlay — fixed fullscreen dark backdrop */
 .myride-modal-overlay {
   position: fixed;
   inset: 0; /* top/right/bottom/left: 0 */
@@ -5189,11 +5256,6 @@ body.modal-open {
   }
 }
 
-@media (max-width: 480px) {
-  .approval-image {
-    max-width: 320px;
-  }
-}
 .rating-modal-box {
   position: absolute;
   top: 50%;

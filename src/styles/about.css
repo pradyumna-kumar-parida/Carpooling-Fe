@@ -22,18 +22,14 @@
   min-height: 480px;
   display: flex;
   align-items: center;
-  background: url("../assets/images/about-page-banner.png")
-    center / cover no-repeat;
+  background: url("../assets/images/about-page-banner.png") center / cover
+    no-repeat;
 }
 
 .about-hero__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    #0f1c3f9c 0%,
-    #164564d2 100%
-  );
+  background: linear-gradient(135deg, #0f1c3f9c 0%, #164564d2 100%);
 }
 
 .about-hero__content {
@@ -499,7 +495,7 @@
 }
 
 /* ── Responsive ───────────────────────────────────────────────── */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .about-hero {
     min-height: 380px;
   }
@@ -518,5 +514,62 @@
 
   .about-timeline__left {
     width: 52px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section{
+    padding: 30px 0 !important;
+  }
+  .about-stats-bar,
+  .about-eyebrow {
+    display: none !important;
+  }
+  .about-value-icon{
+    height: 40px;
+    width: 40px;
+  }
+  .about-cta__h2,
+    .css-tzssek-MuiSvgIcon-root,
+  .about-section-h2,
+  .about-hero__h1{
+    font-size: 1.3rem !important;
+  }
+  .about-img-badge,
+
+    .about-team-role,
+  .about-section-eyebrow{
+    font-size: 0.6rem!important;
+  }
+  .about-cta__sub{
+    margin-bottom: 20px !important;
+        font-size: 0.8rem !important;
+  }
+    .about-img-badge>svg,
+  .about-testi-name,
+.about-testi-quote,
+  .about-team-bio,
+  .about-timeline__text,
+  .about-timeline__year,
+  .about-step__text,
+  .about-value-desc,
+  .about-body,
+  .about-hero__sub{
+    font-size: 0.8rem !important;
+  }
+  .about-btn{
+     padding: 10px 20px;
+    font-size: 0.8rem;
+  }
+.about-team-name,
+  .about-step__num,
+  .about-value-title{
+    font-size: 1rem !important;
+  }
+  .about-hero__content{
+    padding: 40px 10px !important;
+  }
+  .about-hero{
+    min-height: auto !important;
   }
 }

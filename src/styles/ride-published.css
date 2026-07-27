@@ -132,7 +132,12 @@
 }
 
 .ride-publish-summary-val {
- font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+  font-family:
+    Segoe UI,
+    Tahoma,
+    Geneva,
+    Verdana,
+    sans-serif;
   font-size: 1.7rem;
   font-weight: 700;
 
@@ -615,7 +620,7 @@
 }
 
 .ride-publish-card-earn-val {
-  font-family: var(--ride-publish-heading-font);
+  /* font-family: var(--ride-publish-heading-font); */
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--ride-publish-blue);
@@ -1013,7 +1018,6 @@
   gap: 6px;
 }
 
-
 .ride-publish-pax-paid-yes {
   background: #dcfce7;
   color: #15803d;
@@ -1041,7 +1045,6 @@
 }
 
 .ride-publish-modal-earn-val {
-
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--ride-publish-blue);
@@ -1210,7 +1213,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .ride-publish-header-inner {
     flex-direction: column;
     align-items: flex-start;
@@ -1247,5 +1250,115 @@
 
   .ride-publish-modal-info-grid {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .ride-publish-seat-dot > svg {
+    height: 12px;
+    width: 12px;
+  }
+.ride-publish-pax-paid,
+  .ride-publish-modal-info-label,
+  .ride-publish-avatar,
+  .ride-publish-action-btn,
+  .ride-publish-card-seats-count,
+  .ride-publish-card-addr,
+  .ride-publish-status-badge,
+  .ride-publish-summary-label,
+  .ride-publish-header-eyebrow {
+    font-size: 0.6rem;
+  }
+
+  .ride-publish-header-title {
+    font-size: 1.3rem;
+  }
+  .ride-publish-summary-inner {
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+  }
+  .ride-publish-summary-item {
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+  }
+  .ride-publish-card-meta-item svg {
+    height: 10px;
+    width: 10px;
+  }
+  .ride-publish-header-eyebrow,
+  .ride-publish-modal-time-tag,
+  .ride-publish-card-city-block-right > svg,
+  .ride-publish-card-city-block > svg {
+    display: none;
+  }
+
+  .ride-publish-modal-pax-seat,
+  .ride-publish-modal-section-title,
+  .ride-publish-modal-pax-name,
+  .ride-publish-modal-info-val,
+  .ride-publish-modal-addr,
+  .ride-publish-card-earn-label,
+  .ride-publish-card-seats-label,
+  .ride-publish-card-meta-item {
+    font-size: 0.7rem;
+  }
+  .ride-publish-header-inner{
+    padding: 30px 24px;
+  }
+  .ride-publish-confirm-btn-yes,
+  .ride-publish-confirm-btn-no,
+  .ride-publish-confirm-text,
+  .ride-publish-modal-btn-cancel,
+  .ride-publish-modal-btn-edit,
+  .ride-publish-modal-earn-label,
+  .ride-publish-modal-city,
+  .ride-publish-card-earn-val,
+  .ride-publish-card-city,
+  .ride-publish-summary-val,
+  .ride-publish-header-sub {
+    font-size: 0.8rem;
+  }
+
+  .ride-publish-post-btn {
+    padding: 9px 10px;
+    font-size: 0.8rem;
+  }
+  .ride-publish-summary-inner {
+    gap: 0px;
+  }
+  .ride-publish-filter-tab {
+    min-width: max-content;
+    font-size: 0.5rem;
+    gap: 4px;
+    padding: 4px 7px !important;
+  }
+  .ride-publish-filter-count {
+    padding: 1px 4px;
+    font-size: 0.5rem;
+  }
+  .ride-publish-body {
+    padding: 20px 10px;
+  }
+  .ride-publish-wrapper {
+    padding: 0 10px;
+  }
+  .ride-publish-modal-body,
+  .ride-publish-card {
+    padding: 10px 15px;
+  }
+  .ride-publish-avatar {
+    height: 28px;
+    width: 28px;
+  }
+  .ride-publish-seat-dot {
+    height: 20px;
+    width: 20px;
+  }
+  .ride-publish-modal-earn-val,
+  .ride-publish-modal-title {
+    font-size: 1rem;
+  }
+  .ride-publish-confirm-dialog{
+    padding: 20px;
   }
 }
