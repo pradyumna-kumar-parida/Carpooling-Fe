@@ -10,3 +10,7 @@ export const getRideDetails = async (rideId) => {
   const { data } = await axios.get(`/get-ride-data/${rideId}`);
   return data.ride;
 };
+export const getPublishedRides = async () => {
+  const axios = await getServerAxios();
+  return axios.get("/rides");
+};

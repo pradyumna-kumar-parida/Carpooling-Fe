@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../../styles/ride-published.css";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
@@ -9,7 +9,7 @@ import { BsCheck2Circle } from "react-icons/bs";
 import { FaHourglassEnd } from "react-icons/fa";
 import { FiAlertTriangle } from "react-icons/fi";
 
-/* ─── Mock Data ──────────────────────────────────────────── */
+/* ─── Mock Data (used as fallback whenever an API value is missing) ──── */
 
 const initialRides = [
   {
@@ -119,6 +119,131 @@ const STATUS_META = {
   completed: { label: "Completed", color: "grey" },
   cancelled: { label: "Cancelled", color: "red" },
 };
+
+/* ─── API → UI mapping helpers ──────────────────────────────────────── */
+/* These only translate field names/formats. No UI, layout, or logic
+   below this section (or in the render tree) has been changed. */
+
+function getInitials(name) {
+  if (!name) return null;
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return null;
+  return parts
+    .slice(0, 2)
+    .map((p) => p[0].toUpperCase())
+    .join("");
+}
+
+function extractCityFromAddress(address) {
+  if (!address || typeof address !== "string") return null;
+  const city = address.split(",")[0]?.trim();
+  return city || null;
+}
+
+function formatApiDate(dateStr) {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return null;
+  return d.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
+function formatApiTime(timeStr) {
+  if (!timeStr || typeof timeStr !== "string") return null;
+  const parts = timeStr.split(":");
+  if (parts.length < 2) return null;
+  let h = parseInt(parts[0], 10);
+  const m = parts[1];
+  if (isNaN(h)) return null;
+  const period = h >= 12 ? "PM" : "AM";
+  h = h % 12;
+  if (h === 0) h = 12;
+  return `${String(h).padStart(2, "0")}:${m} ${period}`;
+}
+
+// The API's "status" field (e.g. "scheduled") doesn't correspond to the
+// UI's status set, so we only adopt it when it's one of the known values
+// the UI already understands — otherwise we keep the static fallback so
+// existing card/filter/badge behavior is unaffected.
+function mapApiStatus(apiStatus, fallbackStatus) {
+  if (!apiStatus) return fallbackStatus;
+  const normalized = String(apiStatus).toLowerCase();
+  return STATUS_META[normalized] ? normalized : fallbackStatus;
+}
+
+function mapApiPassengers(bookingDetails, fallbackPassengers) {
+  if (!Array.isArray(bookingDetails) || bookingDetails.length === 0) {
+    return fallbackPassengers || [];
+  }
+
+  let seatCursor = 0;
+  return bookingDetails.map((b, i) => {
+    const fallbackP = fallbackPassengers?.[i];
+    const bookedSeats = b.booked_seats || 1;
+    const seatNumber = seatCursor + 1;
+    seatCursor += bookedSeats;
+
+    return {
+      name: b.passenger_name || fallbackP?.name || "Passenger",
+      seat: seatNumber,
+      paid:
+        b.payment_status != null
+          ? b.payment_status === "paid"
+          : (fallbackP?.paid ?? false),
+      avatar: getInitials(b.passenger_name) || fallbackP?.avatar || "NA",
+    };
+  });
+}
+
+function mapApiRideToUIRide(apiRide, fallbackRide) {
+  const totalSeats = apiRide.total_seats ?? fallbackRide?.totalSeats;
+  const availableSeats = apiRide.available_seats;
+  const bookedSeats =
+    totalSeats != null && availableSeats != null
+      ? totalSeats - availableSeats
+      : fallbackRide?.bookedSeats;
+
+  const vehicle =
+    apiRide.model && apiRide.registration_number
+      ? `${apiRide.model} – ${apiRide.registration_number}`
+      : fallbackRide?.vehicle;
+
+  return {
+    id: apiRide.id ?? fallbackRide?.id,
+    from: extractCityFromAddress(apiRide.source_address) || fallbackRide?.from,
+    fromAddress: apiRide.source_address || fallbackRide?.fromAddress,
+    to: extractCityFromAddress(apiRide.destination_address) || fallbackRide?.to,
+    toAddress: apiRide.destination_address || fallbackRide?.toAddress,
+    date: formatApiDate(apiRide.ride_date) || fallbackRide?.date,
+    time: formatApiTime(apiRide.departure_time) || fallbackRide?.time,
+    totalSeats: totalSeats ?? fallbackRide?.totalSeats,
+    bookedSeats: bookedSeats ?? fallbackRide?.bookedSeats,
+    pricePerSeat:
+      apiRide.price_per_seat != null
+        ? Number(apiRide.price_per_seat)
+        : fallbackRide?.pricePerSeat,
+    status: mapApiStatus(apiRide.status, fallbackRide?.status),
+    vehicle: vehicle || fallbackRide?.vehicle,
+    passengers: mapApiPassengers(
+      apiRide.bookingDetails,
+      fallbackRide?.passengers,
+    ),
+  };
+}
+
+function buildRidesFromApi(apiData, fallbackRides) {
+  const apiRides = apiData?.rides;
+  if (!Array.isArray(apiRides) || apiRides.length === 0) {
+    return fallbackRides;
+  }
+  return apiRides.map((apiRide, index) => {
+    const fallbackRide = fallbackRides[index % fallbackRides.length];
+    return mapApiRideToUIRide(apiRide, fallbackRide);
+  });
+}
 
 /* ─── Helpers ────────────────────────────────────────────── */
 
@@ -314,11 +439,23 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
 
 /* ─── Main Page ──────────────────────────────────────────── */
 
-export default function PublishedRides() {
-  const [rides, setRides] = useState(initialRides);
+export default function PublishedRides({ publishedRide }) {
+  console.log("published ride", publishedRide);
+
+  const [rides, setRides] = useState(() =>
+    buildRidesFromApi(publishedRide, initialRides),
+  );
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedRide, setSelectedRide] = useState(null);
   const [confirmCancel, setConfirmCancel] = useState(null);
+
+  // Re-map whenever the API data arrives/changes (e.g. it may load after
+  // initial mount). Falls back to static values field-by-field as before.
+  useEffect(() => {
+    if (publishedRide) {
+      setRides(buildRidesFromApi(publishedRide, initialRides));
+    }
+  }, [publishedRide]);
 
   const filtered = rides.filter((r) => {
     if (activeFilter === "All") return true;

@@ -227,7 +227,7 @@
 ══════════════════════════════════════════════════════════ */
 .ride-publish-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
 }
 
@@ -239,6 +239,7 @@
   padding: 24px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
   gap: 16px;
   transition:
     transform 0.18s ease,
@@ -370,7 +371,7 @@
 .ride-publish-route-dot-to {
   background: #0f172a;
 }
-
+/* .ride-publish-card-addr,
 .ride-publish-card-city {
   font-family: var(--ride-publish-body-font);
   font-size: 1.1rem;
@@ -378,10 +379,28 @@
   color: #0f172a;
   margin: 0;
   white-space: nowrap;
+  word-break: break-word;
   overflow: hidden;
   text-overflow: ellipsis;
-}
+} */
+.ride-publish-card-addr,
+.ride-publish-card-city {
+  font-family: var(--ride-publish-body-font);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
 
+  max-width: 220px; /* adjust based on card width */
+  line-height: 1.3;
+
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* show max 2 lines */
+  -webkit-box-orient: vertical;
+
+  word-break: break-word !important;
+}
 .ride-publish-card-addr {
   font-size: 0.72rem;
   color: var(--ride-publish-desc);
@@ -1259,7 +1278,7 @@
   }
   .ride-publish-modal-btn-cancel,
   .ride-publish-modal-btn-start,
-.ride-publish-pax-paid,
+  .ride-publish-pax-paid,
   .ride-publish-modal-info-label,
   .ride-publish-avatar,
   .ride-publish-action-btn,
@@ -1271,6 +1290,9 @@
     font-size: 0.6rem;
   }
 
+  .ride-publish-card-addr{
+    max-width: 100px !important;
+  }
   .ride-publish-header-title {
     font-size: 1.3rem;
   }
@@ -1293,7 +1315,7 @@
   .ride-publish-card-city-block > svg {
     display: none;
   }
-    .ride-publish-modal-earn-val,
+  .ride-publish-modal-earn-val,
   .ride-publish-modal-earn-label,
   .ride-publish-modal-pax-seat,
   .ride-publish-modal-section-title,
@@ -1305,14 +1327,13 @@
   .ride-publish-card-meta-item {
     font-size: 0.7rem;
   }
-  .ride-publish-header-inner{
+  .ride-publish-header-inner {
     padding: 30px 24px;
   }
   .ride-publish-confirm-btn-yes,
   .ride-publish-confirm-btn-no,
   .ride-publish-confirm-text,
   .ride-publish-modal-btn-edit,
-
   .ride-publish-modal-city,
   .ride-publish-card-earn-val,
   .ride-publish-card-city,
@@ -1360,7 +1381,7 @@
   .ride-publish-modal-title {
     font-size: 1rem;
   }
-  .ride-publish-confirm-dialog{
+  .ride-publish-confirm-dialog {
     padding: 20px;
   }
 }
