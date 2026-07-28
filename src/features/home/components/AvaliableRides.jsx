@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { IoLocationOutline, IoLocation } from "react-icons/io5";
@@ -252,39 +252,53 @@ function RideCard({ ride }) {
 export default function AvailableRides() {
   useSocket();
   const { data: rawRides = [], isLoading, error, refetch } = useNearRides();
-
   const rides = useMemo(() => (rawRides || []).map(normalizeRide), [rawRides]);
+
+  // Keep a stable ref so the socket effect doesn't need refetch in deps
+  const refetchRef = useRef(refetch);
   useEffect(() => {
-    console.log("Joining rides", rides);
+    refetchRef.current = refetch;
+  }, [refetch]);
 
-    rides.forEach((ride) => {
-      console.log("Joining", ride.id);
-
-      socket.emit("join_ride", ride.id);
-    });
-  }, [rides]);
+  // Debug: log EVERY event the socket receives, no matter the name
   useEffect(() => {
-    const handleRideUpdate = async (data) => {
-      console.log("🔥 Received ride update:", data);
+    const logAny = (event, ...args) =>
+      console.log("📡 socket event:", event, args);
+    socket.onAny(logAny);
+    return () => socket.offAny(logAny);
+  }, []);
 
-      const result = await refetch();
-
-      console.log("Refetch result:", result.data);
+  // Join rooms on connect AND reconnect (fixes rejoining after a drop)
+  useEffect(() => {
+    const joinAll = () => {
+      rides.forEach((ride) => {
+        console.log("Joining ride room:", ride.id);
+        socket.emit("join_ride", ride.id);
+      });
     };
 
-    socket.on("ride-seat-updated", handleRideUpdate);
+    if (socket.connected) joinAll();
+    socket.on("connect", joinAll);
+    return () => socket.off("connect", joinAll);
+  }, [rides]);
 
+  useEffect(() => {
+    const handleNewRide = async () => {
+      await refetchRef.current();
+    };
+    const handleRideUpdate = async (data) => {
+      console.log("🔥 ride-seat-updated payload:", data);
+      const result = await refetchRef.current();
+      console.log("Refetch result:", result?.data);
+    };
+
+    socket.on("ride-created", handleNewRide);
+    socket.on("ride-seat-updated", handleRideUpdate);
     return () => {
+      socket.off("ride-created", handleNewRide);
       socket.off("ride-seat-updated", handleRideUpdate);
     };
-  }, [refetch]);
-  // if (isLoading) {
-  //   return <p>Loading rides...</p>;
-  // }
-
-  // if (error) {
-  //   return <p>Failed to load rides.</p>;
-  // }
+  }, []);
 
   return (
     <section
