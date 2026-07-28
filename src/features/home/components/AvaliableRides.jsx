@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { IoLocationOutline, IoLocation } from "react-icons/io5";
 import { FaCar } from "react-icons/fa";
 import { useNearRides } from "@/hooks/useNearRides";
+import { useSocket } from "@/hooks/useSocket";
+import { socket } from "@/lib/socket";
 
 function normalizeRide(r) {
   return {
@@ -248,10 +250,34 @@ function RideCard({ ride }) {
 }
 
 export default function AvailableRides() {
+  useSocket();
   const { data: rawRides = [], isLoading, error, refetch } = useNearRides();
 
   const rides = useMemo(() => (rawRides || []).map(normalizeRide), [rawRides]);
+  useEffect(() => {
+    console.log("Joining rides", rides);
 
+    rides.forEach((ride) => {
+      console.log("Joining", ride.id);
+
+      socket.emit("join_ride", ride.id);
+    });
+  }, [rides]);
+  useEffect(() => {
+    const handleRideUpdate = async (data) => {
+      console.log("🔥 Received ride update:", data);
+
+      const result = await refetch();
+
+      console.log("Refetch result:", result.data);
+    };
+
+    socket.on("ride-seat-updated", handleRideUpdate);
+
+    return () => {
+      socket.off("ride-seat-updated", handleRideUpdate);
+    };
+  }, [refetch]);
   // if (isLoading) {
   //   return <p>Loading rides...</p>;
   // }
@@ -261,7 +287,10 @@ export default function AvailableRides() {
   // }
 
   return (
-    <section className="avl-rides-section container" aria-labelledby="avl-rides-heading">
+    <section
+      className="avl-rides-section container"
+      aria-labelledby="avl-rides-heading"
+    >
       <div className="avl-rides-header">
         <div>
           <span className="avl-rides-eyebrow">
