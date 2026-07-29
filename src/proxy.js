@@ -12,6 +12,7 @@ const DRIVER_ROUTES = [
   "/driver/earnings",
   "/driver/booking-requests",
   "/driver/published-rides",
+  "/driver/notification",
 ];
 
 const PASSENGER_ROUTES = [
@@ -23,6 +24,7 @@ const PASSENGER_ROUTES = [
   "/passenger/my-rides",
   "/passenger/profile",
   "/passenger/approval-requests",
+  "/passenger/notification",
 ];
 
 export function proxy(request) {

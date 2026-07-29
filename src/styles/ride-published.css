@@ -343,7 +343,10 @@
   align-items: center;
   gap: 12px;
 }
-
+.right-icon,
+.left-icon{
+  min-width: 15px;
+}
 .ride-publish-card-city-block {
   display: flex;
   align-items: center;
@@ -386,7 +389,7 @@
 .ride-publish-card-addr,
 .ride-publish-card-city {
   font-family: var(--ride-publish-body-font);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #0f172a;
   margin: 0;
@@ -544,10 +547,11 @@
 
 /* ── Passengers row ── */
 .ride-publish-card-pax-row {
-  display: flex;
+  /* display: flex;
   align-items: center;
   gap: 10px;
-  flex-wrap: wrap;
+  flex-wrap: wrap; */
+  display: none;
 }
 
 .ride-publish-card-pax-label {
@@ -623,13 +627,14 @@
 
 /* ── Earnings row ── */
 .ride-publish-card-earn-row {
-  display: flex;
+  /* display: flex;
   align-items: center;
   justify-content: space-between;
   background: #f8faff;
   border: 1px solid #e0eaff;
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 10px 14px; */
+  display: none;
 }
 
 .ride-publish-card-earn-label {
@@ -1071,11 +1076,12 @@
 
 /* modal footer */
 .ride-publish-modal-footer {
-  display: flex;
+  /* display: flex;
   gap: 10px;
   padding: 16px 24px 24px;
   border-top: 1px solid #f0f4f8;
-  flex-wrap: wrap;
+  flex-wrap: wrap; */
+  display: none;
 }
 
 .ride-publish-modal-btn-cancel {
@@ -1276,6 +1282,7 @@
     height: 12px;
     width: 12px;
   }
+
   .ride-publish-modal-btn-cancel,
   .ride-publish-modal-btn-start,
   .ride-publish-pax-paid,

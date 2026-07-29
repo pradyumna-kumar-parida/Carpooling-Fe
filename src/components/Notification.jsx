@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import "../styles/index.css";
 import Image from "next/image";
+import Link from "next/link";
 export default function NotificationPanel({
   open = false,
   onClose = () => {},
@@ -38,33 +39,35 @@ export default function NotificationPanel({
           </Box>
         ) : (
           notifications.map((item) => (
-            <Box key={item.id} className="notification-item">
-              <Box className="notification-item-wrapper">
-                <Box className="notification-avatar">
-                  <Image
-                    src={item.img}
-                    alt="img"
-                    className="notification-avatar-image"
-                  />
+            <Link href="" key={item.id} className="notification-link">
+              <Box className="notification-item">
+                <Box className="notification-item-wrapper">
+                  <Box className="notification-avatar">
+                    <Image
+                      src={item.img}
+                      alt="img"
+                      className="notification-avatar-image"
+                    />
+                  </Box>
+
+                  <Box className="notification-content">
+                    <Typography className="notification-item-title">
+                      {item.title}
+                    </Typography>
+
+                    <Typography className="notification-item-body">
+                      {item.body}
+                    </Typography>
+
+                    <Typography className="notification-item-time">
+                      {item.time}
+                    </Typography>
+                  </Box>
+
+                  {!item.read && <Box className="notification-unread-dot" />}
                 </Box>
-
-                <Box className="notification-content">
-                  <Typography className="notification-item-title">
-                    {item.title}
-                  </Typography>
-
-                  <Typography className="notification-item-body">
-                    {item.body}
-                  </Typography>
-
-                  <Typography className="notification-item-time">
-                    {item.time}
-                  </Typography>
-                </Box>
-
-                {!item.read && <Box className="notification-unread-dot" />}
               </Box>
-            </Box>
+            </Link>
           ))
         )}
       </DialogContent>

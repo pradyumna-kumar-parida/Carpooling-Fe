@@ -8,6 +8,8 @@ import { FaLocationDot } from "react-icons/fa6";
 import { BsCheck2Circle } from "react-icons/bs";
 import { FaHourglassEnd } from "react-icons/fa";
 import { FiAlertTriangle } from "react-icons/fi";
+import { useSocket } from "@/hooks/useSocket";
+import { socket } from "@/lib/socket";
 
 /* ─── Mock Data (used as fallback whenever an API value is missing) ──── */
 
@@ -120,10 +122,6 @@ const STATUS_META = {
   cancelled: { label: "Cancelled", color: "red" },
 };
 
-/* ─── API → UI mapping helpers ──────────────────────────────────────── */
-/* These only translate field names/formats. No UI, layout, or logic
-   below this section (or in the render tree) has been changed. */
-
 function getInitials(name) {
   if (!name) return null;
   const parts = name.trim().split(/\s+/).filter(Boolean);
@@ -164,10 +162,6 @@ function formatApiTime(timeStr) {
   return `${String(h).padStart(2, "0")}:${m} ${period}`;
 }
 
-// The API's "status" field (e.g. "scheduled") doesn't correspond to the
-// UI's status set, so we only adopt it when it's one of the known values
-// the UI already understands — otherwise we keep the static fallback so
-// existing card/filter/badge behavior is unaffected.
 function mapApiStatus(apiStatus, fallbackStatus) {
   if (!apiStatus) return fallbackStatus;
   const normalized = String(apiStatus).toLowerCase();
@@ -441,7 +435,7 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
 
 export default function PublishedRides({ publishedRide }) {
   console.log("published ride", publishedRide);
-
+  useSocket();
   const [rides, setRides] = useState(() =>
     buildRidesFromApi(publishedRide, initialRides),
   );
@@ -449,13 +443,45 @@ export default function PublishedRides({ publishedRide }) {
   const [selectedRide, setSelectedRide] = useState(null);
   const [confirmCancel, setConfirmCancel] = useState(null);
 
-  // Re-map whenever the API data arrives/changes (e.g. it may load after
-  // initial mount). Falls back to static values field-by-field as before.
   useEffect(() => {
     if (publishedRide) {
       setRides(buildRidesFromApi(publishedRide, initialRides));
     }
   }, [publishedRide]);
+
+  // Join a socket room for every ride this driver is viewing
+  useEffect(() => {
+    const joinAll = () => {
+      rides.forEach((ride) => {
+        socket.emit("join_ride", ride.id);
+      });
+    };
+
+    if (socket.connected) joinAll();
+    socket.on("connect", joinAll);
+    return () => socket.off("connect", joinAll);
+  }, [rides]);
+
+  // Live seat updates: patch the matching ride in place, no refetch needed
+  useEffect(() => {
+    const handleRideUpdate = (data) => {
+      console.log("🔥 ride-seat-updated payload:", data);
+      setRides((prev) =>
+        prev.map((r) => {
+          if (String(r.id) !== String(data.id)) return r;
+          const booked = r.totalSeats - data.available_seats;
+          return { ...r, bookedSeats: booked };
+        }),
+      );
+    };
+
+    socket.on("ride-seat-updated", handleRideUpdate);
+    return () => {
+      socket.off("ride-seat-updated", handleRideUpdate);
+    };
+  }, []);
+
+
 
   const filtered = rides.filter((r) => {
     if (activeFilter === "All") return true;
@@ -633,7 +659,7 @@ export default function PublishedRides({ publishedRide }) {
                     {/* Route */}
                     <div className="ride-publish-card-route">
                       <div className="ride-publish-card-city-block">
-                        <IoLocationOutline size={20} />
+                        <IoLocationOutline size={15} className="left-icon" />
                         <div>
                           <p className="ride-publish-card-city">{ride.from}</p>
                           <p className="ride-publish-card-addr">
@@ -653,7 +679,7 @@ export default function PublishedRides({ publishedRide }) {
                         </svg>
                       </div>
                       <div className="ride-publish-card-city-block ride-publish-card-city-block-right">
-                        <FaLocationDot size={20} />
+                        <FaLocationDot size={15} className="right-icon" />
                         <div>
                           <p className="ride-publish-card-city">{ride.to}</p>
                           <p className="ride-publish-card-addr">

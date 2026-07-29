@@ -13,6 +13,9 @@ import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import { LiaAngleRightSolid } from "react-icons/lia";
 import INITIAL_NOTIFICATIONS from "@/constant/notification";
+import { MdOutlineNotificationsActive } from "react-icons/md";
+import { LuMessageSquareMore } from "react-icons/lu";
+
 import notification from "../assets/images/notification-icon.png";
 import { RiLoginCircleLine } from "react-icons/ri";
 import {
@@ -55,6 +58,11 @@ const getAccountLinks = (role) => [
     ? [
         { label: "Profile", path: "/passenger/profile", icon: <FiUser /> },
         { label: "My Rides", path: "/passenger/my-rides", icon: <FaRoute /> },
+        // {
+        //   label: "Notification",
+        //   path: "/passenger/notification",
+        //   icon: <MdOutlineNotificationsActive size={20} />,
+        // },
         {
           label: "Find Ride",
           path: "/find-ride",
@@ -65,6 +73,17 @@ const getAccountLinks = (role) => [
   ...(role === "driver"
     ? [
         { label: "Profile", path: "/driver/profile", icon: <FiUser /> },
+        // {
+        //   label: "Notification",
+        //   path: "/driver/notification",
+        //   icon: <MdOutlineNotificationsActive size={20} />,
+        // },
+
+        {
+          label: "Messages",
+          path: "/driver/chats",
+          icon: <LuMessageSquareMore size={16}/>,
+        },
         { label: "My Rides", path: "/driver/my-rides", icon: <FaRoute /> },
         {
           label: "Published Rides",
@@ -127,15 +146,15 @@ const Header = () => {
     setPanelOpen(true);
   };
 
-  const handleClosePanel = () => {
-    setPanelOpen(false);
-  };
+  // const handleClosePanel = () => {
+  //   setPanelOpen(false);
+  // };
 
-  const handleUpdateNotification = (id, updates) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, ...updates } : n)),
-    );
-  };
+  // const handleUpdateNotification = (id, updates) => {
+  //   setNotifications((prev) =>
+  //     prev.map((n) => (n.id === id ? { ...n, ...updates } : n)),
+  //   );
+  // };
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -277,7 +296,11 @@ const Header = () => {
 
         <nav className="home-menus">
           {navLinks.map((item) => (
-            <Link key={item.label} href={item.path}   className={pathname === item.path ? "active" : ""}>
+            <Link
+              key={item.label}
+              href={item.path}
+              className={pathname === item.path ? "active" : ""}
+            >
               {item.label}
             </Link>
           ))}
@@ -285,12 +308,19 @@ const Header = () => {
 
         <div className="right-side-nav">
           {isLoggedIn && (
-            <div className="notification" onClick={handleNotification}>
+            <Link
+              className="notification"
+              href={
+                role === "driver"
+                  ? "/driver/notification"
+                  : "/passenger/notification"
+              }
+            >
               <Image src={notification} alt="" width={24} height={24} />
               <p className="count">
                 {notifications.filter((n) => !n.read).length}
               </p>
-            </div>
+            </Link>
           )}
 
           <nav className="menu-icon">
@@ -375,12 +405,12 @@ const Header = () => {
           </div>
         </div>
 
-        <NotificationPanel
+        {/* <NotificationPanel
           open={panelOpen}
           onClose={handleClosePanel}
           notifications={notifications}
           onUpdate={handleUpdateNotification}
-        />
+        /> */}
       </header>
       <LogoutDialog
         open={logoutOpen}
