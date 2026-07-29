@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useNearRides } from "@/hooks/useNearRides";
 import { TbCurrentLocationFilled } from "react-icons/tb";
+import Image from "next/image";
 
 const DEFAULT_RIDES = [
   {
@@ -145,10 +146,10 @@ function normalizeRide(r) {
     rating: r.rating || "4.3",
     trips: r.trips || "120",
     driver: r.driver_name || "guest",
+    driver_profile_picture: r.driver_profile_picture || null,
     distance: r.distance_km !== undefined ? `${r.distance_km} km away` : "21",
   };
 }
-
 function initials(name) {
   return name
     .split(" ")
@@ -179,6 +180,7 @@ function SeatPips({ total, left }) {
 function RideRow({ ride }) {
   const router = useRouter();
   const [seatCount, setSeatCount] = useState(1);
+console.log("roides",ride);
 
   const urgency =
     ride.seatsLeft === 1
@@ -228,7 +230,14 @@ function RideRow({ ride }) {
         <div className="fr-rides-divider" />
 
         <div className="fr-rides-driver-col">
-          <span className="fr-rides-avatar">{initials(ride.driver)}</span>
+          {/* <span className="fr-rides-avatar">{initials(ride.driver)}</span> */}
+          <Image
+            src={ride.driver_profile_picture }
+            alt={ride.driverName || "Driver"}
+            width={40}
+            height={40}
+            className="fr-rides-avatar"
+          />
           <div className="fr-rides-driver-meta">
             <span className="fr-rides-driver-name">{ride.driver}</span>
             <span className="fr-rides-rating">

@@ -3787,10 +3787,13 @@
  .vehicle-detl-card-name,
  .vehicle-detl-panel-title,
  .vehicle-detl-panel-reg,
- 
+ .fr-rides-driver-name,
   .vehicle-detl-add-btn{
     font-size: 0.8rem !important
   }
+  .fr-rides-rating,
+  .fr-rides-distance,
+  .fr-rides-subtitle,
   .vehicle-detl-doc-btn,
 .vehicle-detl-card-reg,
 .vehicle-detl-card-meta,
@@ -3809,6 +3812,11 @@
   }
   .myride-modal-badges {
     margin-bottom: 10px !important;
+  }
+  .fr-rides-avatar{
+    height: 28px !important;
+    
+    width: 28px !important;
   }
   .bookconf-driver-phone {
     justify-content: center;
@@ -3856,6 +3864,7 @@
   .ride-price-total span:first-child {
     font-size: 1rem !important ;
   }
+  .fr-rides-place,
   .vehicle-detl-info-label,
   .details-Items,
   .sucess-subheading,
@@ -3940,10 +3949,12 @@
 
   .fr-routes-title {
     font-size: 1.4rem;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     padding: 0 10px;
   }
-
+.fr-rides-section{
+      margin: 24px auto 24px !important;
+}
   .fr-route-item {
     padding: 16px;
     flex-direction: row;
@@ -3957,7 +3968,7 @@
 
   .fr-route-from,
   .fr-route-to {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .fr-route-arrow {
@@ -5761,9 +5772,14 @@ body.modal-open {
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 480px) {
+  .fr-rides-sort-chip{
+    font-size: 0.7rem !important;
+    padding: 6px 12px !important;
+  }
   .fr-rides-header {
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
   }
 
   .fr-rides-sort {

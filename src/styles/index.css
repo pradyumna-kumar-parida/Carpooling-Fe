@@ -2725,8 +2725,8 @@ footer {
     padding: 10px 14px !important;
   }
   .hero-cta {
-    padding: 8px 15px;
-    font-size: 0.6rem !important;
+    padding: 10px 15px;
+    font-size: 0.7rem !important;
   }
   .notification-item-body {
     font-size: 13px !important;
@@ -2765,6 +2765,7 @@ footer{
   .hero {
     padding-top: 24px;
     padding-bottom: 40px;
+    min-height: 340px !important;
   }
   .hero-content {
     grid-template-columns: 280px;
@@ -2987,7 +2988,7 @@ footer{
     gap: 16px;
   }
 
-
+.form-container,
   .signup-wrapper {
     padding: 12px !important;
   }
