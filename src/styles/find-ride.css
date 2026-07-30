@@ -256,7 +256,7 @@
   top: calc(100% + 10px);
   right: 0;
   left: 0;
-  width: 100%;
+  width: max-content;
   background: #fff;
   border-radius: 12px;
   padding: 16px 18px;
@@ -2214,7 +2214,7 @@
   box-shadow: var(--fr-shadow);
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0rem;
 }
 
 .ridepay-payment-title {
@@ -6066,4 +6066,44 @@ body.modal-open {
 
 .bkf-btn--home:hover {
   opacity: 0.9;
+}
+/* ================= Payment Timer ================= */
+
+.ridepay-payment-alert {
+  background: #fff8e8;
+  border: 1px solid #ffd56a;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.ridepay-payment-alert-top {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.ridepay-payment-icon {
+  font-size: 26px;
+  line-height: 1;
+    color: #d32f2f;
+}
+
+.ridepay-payment-alert h4 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #9a6700;
+}
+
+.ridepay-payment-alert p {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #6c5d31;
+}
+
+.ridepay-payment-alert strong {
+  color: #d32f2f;
+  font-weight: 700;
 }

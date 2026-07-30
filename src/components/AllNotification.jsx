@@ -237,18 +237,24 @@ export default function NotificationsPage() {
         <h2 id="avl-rides-heading" className="avl-rides-title">
           Notifications
         </h2>
-        <nav className="ntfy-tabs">
-          {TABS.map((tab) => (
-            <button
-              key={tab.id}
-              className={`ntfy-tab${activeTab === tab.id ? " is-active" : ""}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              {tab.label}
-              <span className="ntfy-tab-count">{tabCounts[tab.id]}</span>
-            </button>
-          ))}
-        </nav>
+       <nav className="ntfy-tabs">
+  {TABS.map((tab) => (
+    <button
+      key={tab.id}
+      className={`ntfy-tab${activeTab === tab.id ? " is-active" : ""}`}
+      onClick={() => setActiveTab(tab.id)}
+    >
+      {tab.label}
+      <span
+        className={`ntfy-tab-count ${
+          activeTab === tab.id ? "tab-countactive" : ""
+        }`}
+      >
+        {tabCounts[tab.id]}
+      </span>
+    </button>
+  ))}
+</nav>
       </div>
 
       <div className="ntfy-scroll-area">

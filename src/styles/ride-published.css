@@ -1011,8 +1011,15 @@
   background: #f8fafc;
   border-radius: 8px;
   border: 1px solid #e8edf4;
+  cursor: pointer;
+   transition: color 0.25s ease, transform 0.25s ease;
 }
-
+.ride-publish-modal-pax-row:hover{
+  background-color:#f7f3f3;
+}
+.ride-publish-modal-pax-row:active{
+    transform: scale(0.95);
+}
 .ride-publish-modal-pax-info {
   display: flex;
   flex-direction: column;
@@ -1083,6 +1090,18 @@
   flex-wrap: wrap; */
   display: none;
 }
+.pas-info {
+  font-size: 15px;
+  color: var(--ride-publish-blue);
+  cursor: pointer;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.pas-info:hover {
+  color: #2563eb; /* Slightly darker blue */
+  transform: scale(1.15);
+}
+
 
 .ride-publish-modal-btn-cancel {
   flex: 1;

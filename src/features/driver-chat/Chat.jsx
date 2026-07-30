@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { FaCar } from "react-icons/fa";
+import { FaRegSmile } from "react-icons/fa";
+import { FiPhoneCall } from "react-icons/fi";
+import { HiDotsVertical } from "react-icons/hi";
+
 
 const CHATS = [
   {
@@ -272,20 +276,17 @@ export default function ChatPage() {
                   className="chat-icon-btn"
                   aria-label="Call passenger"
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.12.9.34 1.78.66 2.61a2 2 0 01-.45 2.11L8.09 9.68a16 16 0 006.23 6.23l1.24-1.23a2 2 0 012.11-.45c.83.32 1.71.54 2.61.66A2 2 0 0122 16.92z" />
-                  </svg>
+              <FiPhoneCall />
+
+
                 </button>
                 <button
                   type="button"
                   className="chat-icon-btn"
                   aria-label="More options"
                 >
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="5" r="1.5" />
-                    <circle cx="12" cy="12" r="1.5" />
-                    <circle cx="12" cy="19" r="1.5" />
-                  </svg>
+              <HiDotsVertical />
+
                 </button>
               </div>
             </header>
@@ -374,12 +375,8 @@ export default function ChatPage() {
                 className="chat-icon-btn chat-icon-btn--ghost"
                 aria-label="Emoji"
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-                  <line x1="9" y1="9" x2="9.01" y2="9" />
-                  <line x1="15" y1="9" x2="15.01" y2="9" />
-                </svg>
+               <FaRegSmile  size={20}/>
+
               </button>
               <input
                 type="text"

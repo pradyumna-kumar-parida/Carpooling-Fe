@@ -1295,6 +1295,7 @@ html {
     margin-bottom: 20px;
     font-size: 1.3rem !important;
   }
+  
   .pr-faq-answer p,
     .pr-benefit-desc,
   .pr-step-desc,
@@ -1328,6 +1329,7 @@ html {
   .pr-testimonial-dots {
     margin-top: 18px;
   }
+  .prh-card-badge,
   .pr-faq-link,
   .prh-pref-text,
   .seat-info,

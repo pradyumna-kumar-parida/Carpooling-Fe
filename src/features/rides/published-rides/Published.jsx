@@ -7,104 +7,10 @@ import { FaLocationDot } from "react-icons/fa6";
 
 import { BsCheck2Circle } from "react-icons/bs";
 import { FaHourglassEnd } from "react-icons/fa";
-import { FiAlertTriangle } from "react-icons/fi";
+import { FiAlertTriangle, FiPhone } from "react-icons/fi";
 import { useSocket } from "@/hooks/useSocket";
 import { socket } from "@/lib/socket";
-
-/* ─── Mock Data (used as fallback whenever an API value is missing) ──── */
-
-const initialRides = [
-  {
-    id: "RD-1001",
-    from: "Mumbai",
-    fromAddress: "Dadar Station, Mumbai",
-    to: "Pune",
-    toAddress: "Shivaji Nagar, Pune",
-    date: "June 30, 2026",
-    time: "08:00 AM",
-    totalSeats: 4,
-    bookedSeats: 4,
-    pricePerSeat: 600,
-    status: "ready",
-    vehicle: "Honda City – MH 01 AB 1234",
-    passengers: [
-      { name: "Rahul S.", seat: 1, paid: true, avatar: "RS" },
-      { name: "Priya M.", seat: 2, paid: true, avatar: "PM" },
-      { name: "Arjun K.", seat: 3, paid: true, avatar: "AK" },
-      { name: "Sneha R.", seat: 4, paid: false, avatar: "SR" },
-    ],
-  },
-  {
-    id: "RD-1002",
-    from: "Delhi",
-    fromAddress: "Kashmere Gate, Delhi",
-    to: "Agra",
-    toAddress: "Taj Mahal Road, Agra",
-    date: "July 2, 2026",
-    time: "06:00 AM",
-    totalSeats: 3,
-    bookedSeats: 2,
-    pricePerSeat: 450,
-    status: "upcoming",
-    vehicle: "Swift Dzire – DL 10 CD 5678",
-    passengers: [
-      { name: "Karan T.", seat: 1, paid: true, avatar: "KT" },
-      { name: "Meera V.", seat: 2, paid: true, avatar: "MV" },
-    ],
-  },
-  {
-    id: "RD-1003",
-    from: "Bangalore",
-    fromAddress: "MG Road, Bangalore",
-    to: "Mysore",
-    toAddress: "Mysore Palace Road",
-    date: "June 15, 2026",
-    time: "09:30 AM",
-    totalSeats: 3,
-    bookedSeats: 3,
-    pricePerSeat: 350,
-    status: "completed",
-    vehicle: "Honda City – KA 05 EF 9012",
-    passengers: [
-      { name: "Amit P.", seat: 1, paid: true, avatar: "AP" },
-      { name: "Divya S.", seat: 2, paid: true, avatar: "DS" },
-      { name: "Rohan N.", seat: 3, paid: true, avatar: "RN" },
-    ],
-  },
-  {
-    id: "RD-1004",
-    from: "Hyderabad",
-    fromAddress: "Secunderabad Station",
-    to: "Vijayawada",
-    toAddress: "Benz Circle, Vijayawada",
-    date: "July 5, 2026",
-    time: "07:00 AM",
-    totalSeats: 4,
-    bookedSeats: 1,
-    pricePerSeat: 520,
-    status: "upcoming",
-    vehicle: "Maruti Ertiga – TS 09 GH 3456",
-    passengers: [{ name: "Lakshmi K.", seat: 1, paid: true, avatar: "LK" }],
-  },
-  {
-    id: "RD-1005",
-    from: "Chennai",
-    fromAddress: "Chennai Central",
-    to: "Pondicherry",
-    toAddress: "White Town, Pondicherry",
-    date: "June 10, 2026",
-    time: "08:00 AM",
-    totalSeats: 3,
-    bookedSeats: 2,
-    pricePerSeat: 280,
-    status: "cancelled",
-    vehicle: "Swift Dzire – TN 22 IJ 7890",
-    passengers: [
-      { name: "Arun M.", seat: 1, paid: true, avatar: "AM" },
-      { name: "Kavya P.", seat: 2, paid: false, avatar: "KP" },
-    ],
-  },
-];
+import { FaAngleRight } from "react-icons/fa6";
 
 const STATUS_FILTERS = [
   "All",
@@ -122,26 +28,28 @@ const STATUS_META = {
   cancelled: { label: "Cancelled", color: "red" },
 };
 
+const READY_WINDOW_MS = 5 * 60 * 1000; // show "Ready to Depart" 5 min before departure
+
+/* ─── API → UI mapping helpers ──────────────────────────────────────── */
+
 function getInitials(name) {
-  if (!name) return null;
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return null;
-  return parts
+  if (!name) return "";
+  return name
+    .trim()
+    .split(/\s+/)
     .slice(0, 2)
     .map((p) => p[0].toUpperCase())
     .join("");
 }
 
 function extractCityFromAddress(address) {
-  if (!address || typeof address !== "string") return null;
-  const city = address.split(",")[0]?.trim();
-  return city || null;
+  if (!address) return "";
+  return address.split(",")[0].trim();
 }
 
 function formatApiDate(dateStr) {
-  if (!dateStr) return null;
   const d = new Date(dateStr);
-  if (isNaN(d.getTime())) return null;
+  if (isNaN(d.getTime())) return "";
   return d.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
@@ -150,93 +58,83 @@ function formatApiDate(dateStr) {
 }
 
 function formatApiTime(timeStr) {
-  if (!timeStr || typeof timeStr !== "string") return null;
-  const parts = timeStr.split(":");
-  if (parts.length < 2) return null;
-  let h = parseInt(parts[0], 10);
-  const m = parts[1];
-  if (isNaN(h)) return null;
+  if (!timeStr) return "";
+  const [hStr, m] = timeStr.split(":");
+  let h = parseInt(hStr, 10);
   const period = h >= 12 ? "PM" : "AM";
-  h = h % 12;
-  if (h === 0) h = 12;
+  h = h % 12 || 12;
   return `${String(h).padStart(2, "0")}:${m} ${period}`;
 }
 
-function mapApiStatus(apiStatus, fallbackStatus) {
-  if (!apiStatus) return fallbackStatus;
-  const normalized = String(apiStatus).toLowerCase();
-  return STATUS_META[normalized] ? normalized : fallbackStatus;
-}
-
-function mapApiPassengers(bookingDetails, fallbackPassengers) {
-  if (!Array.isArray(bookingDetails) || bookingDetails.length === 0) {
-    return fallbackPassengers || [];
+// Derives the ride's lifecycle status from date/time, since the API's
+// "status" field is currently always "scheduled". Once the backend starts
+// sending real "ongoing" / "completed" / "cancelled" values, those are
+// respected directly instead of being recomputed.
+function computeRideStatus(apiRide) {
+  const apiStatus = String(apiRide.status || "").toLowerCase();
+  if (["ongoing", "completed", "cancelled"].includes(apiStatus)) {
+    return apiStatus;
   }
 
-  let seatCursor = 0;
-  return bookingDetails.map((b, i) => {
-    const fallbackP = fallbackPassengers?.[i];
-    const bookedSeats = b.booked_seats || 1;
-    const seatNumber = seatCursor + 1;
-    seatCursor += bookedSeats;
+  const departureAt = new Date(
+    `${apiRide.ride_date}T${apiRide.departure_time}`,
+  );
+  if (isNaN(departureAt.getTime())) return "upcoming";
 
+  let reachAt = null;
+  if (apiRide.estimated_reach_time) {
+    reachAt = new Date(`${apiRide.ride_date}T${apiRide.estimated_reach_time}`);
+    if (reachAt < departureAt) reachAt.setDate(reachAt.getDate() + 1); // overnight trip
+  }
+
+  const now = new Date();
+  if (reachAt && now >= reachAt) return "completed";
+  if (now >= departureAt) return "ongoing";
+  if (now >= new Date(departureAt.getTime() - READY_WINDOW_MS)) return "ready";
+  return "upcoming";
+}
+
+function mapApiPassengers(bookingDetails) {
+  if (!Array.isArray(bookingDetails)) return [];
+  let seatCursor = 0;
+  return bookingDetails.map((b) => {
+    const seatsBooked = b.booked_seats || 1;
+    const seat = seatCursor + 1;
+    seatCursor += seatsBooked;
     return {
-      name: b.passenger_name || fallbackP?.name || "Passenger",
-      seat: seatNumber,
-      paid:
-        b.payment_status != null
-          ? b.payment_status === "paid"
-          : (fallbackP?.paid ?? false),
-      avatar: getInitials(b.passenger_name) || fallbackP?.avatar || "NA",
+      name: b.passenger_name,
+      seat,
+      seatsBooked,
+      phone: b.passenger_phone,
+      amount: b.total_price,
+      paid: b.payment_status === "paid",
+      avatar: getInitials(b.passenger_name),
     };
   });
 }
 
-function mapApiRideToUIRide(apiRide, fallbackRide) {
-  const totalSeats = apiRide.total_seats ?? fallbackRide?.totalSeats;
-  const availableSeats = apiRide.available_seats;
-  const bookedSeats =
-    totalSeats != null && availableSeats != null
-      ? totalSeats - availableSeats
-      : fallbackRide?.bookedSeats;
-
-  const vehicle =
-    apiRide.model && apiRide.registration_number
-      ? `${apiRide.model} – ${apiRide.registration_number}`
-      : fallbackRide?.vehicle;
-
+function mapApiRideToUIRide(apiRide) {
   return {
-    id: apiRide.id ?? fallbackRide?.id,
-    from: extractCityFromAddress(apiRide.source_address) || fallbackRide?.from,
-    fromAddress: apiRide.source_address || fallbackRide?.fromAddress,
-    to: extractCityFromAddress(apiRide.destination_address) || fallbackRide?.to,
-    toAddress: apiRide.destination_address || fallbackRide?.toAddress,
-    date: formatApiDate(apiRide.ride_date) || fallbackRide?.date,
-    time: formatApiTime(apiRide.departure_time) || fallbackRide?.time,
-    totalSeats: totalSeats ?? fallbackRide?.totalSeats,
-    bookedSeats: bookedSeats ?? fallbackRide?.bookedSeats,
-    pricePerSeat:
-      apiRide.price_per_seat != null
-        ? Number(apiRide.price_per_seat)
-        : fallbackRide?.pricePerSeat,
-    status: mapApiStatus(apiRide.status, fallbackRide?.status),
-    vehicle: vehicle || fallbackRide?.vehicle,
-    passengers: mapApiPassengers(
-      apiRide.bookingDetails,
-      fallbackRide?.passengers,
-    ),
+    id: apiRide.id,
+    from: extractCityFromAddress(apiRide.source_address),
+    fromAddress: apiRide.source_address,
+    to: extractCityFromAddress(apiRide.destination_address),
+    toAddress: apiRide.destination_address,
+    date: formatApiDate(apiRide.ride_date),
+    time: formatApiTime(apiRide.departure_time),
+    totalSeats: apiRide.total_seats,
+    bookedSeats: apiRide.total_seats - apiRide.available_seats,
+    pricePerSeat: Number(apiRide.price_per_seat),
+    status: computeRideStatus(apiRide),
+    vehicle: `${apiRide.model} – ${apiRide.registration_number}`,
+    passengers: mapApiPassengers(apiRide.bookingDetails),
   };
 }
 
-function buildRidesFromApi(apiData, fallbackRides) {
+function buildRidesFromApi(apiData) {
   const apiRides = apiData?.rides;
-  if (!Array.isArray(apiRides) || apiRides.length === 0) {
-    return fallbackRides;
-  }
-  return apiRides.map((apiRide, index) => {
-    const fallbackRide = fallbackRides[index % fallbackRides.length];
-    return mapApiRideToUIRide(apiRide, fallbackRide);
-  });
+  if (!Array.isArray(apiRides)) return [];
+  return apiRides.map(mapApiRideToUIRide);
 }
 
 /* ─── Helpers ────────────────────────────────────────────── */
@@ -272,6 +170,8 @@ function PassengerAvatar({ initials, paid }) {
 /* ─── Detail Modal ───────────────────────────────────────── */
 
 function RideDetailModal({ ride, onClose, onCancel, onStart }) {
+  const [expandedPax, setExpandedPax] = useState(null);
+
   const earned =
     ride.passengers.filter((p) => p.paid).length * ride.pricePerSeat;
 
@@ -357,38 +257,173 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
               <p className="ride-publish-modal-empty">No passengers yet.</p>
             ) : (
               <div className="ride-publish-modal-pax-list">
-                {ride.passengers.map((p, i) => (
-                  <div key={i} className="ride-publish-modal-pax-row">
-                    <div className="ride-publish-avatar">{p.avatar}</div>
-                    <div className="ride-publish-modal-pax-info">
-                      <span className="ride-publish-modal-pax-name">
-                        {p.name}
-                      </span>
-                      <span className="ride-publish-modal-pax-seat">
-                        Seat {p.seat}
-                      </span>
-                    </div>
-                    <span
-                      className={`ride-publish-pax-paid ${
-                        p.paid
-                          ? "ride-publish-pax-paid-yes"
-                          : "ride-publish-pax-paid-no"
-                      }`}
+                {ride.passengers.map((p, i) => {
+                  const expanded = expandedPax === i;
+                  return (
+                    <div
+                      key={i}
+                      className="ride-publish-modal-pax-row"
+                      style={{
+                        flexDirection: "column",
+                        alignItems: "stretch",
+                        padding: 0,
+                        overflow: "hidden",
+                      }}
                     >
-                      {p.paid ? (
-                        <>
-                          <BsCheck2Circle />
-                          <span>Paid</span>
-                        </>
-                      ) : (
-                        <>
-                          <FaHourglassEnd />
-                          <span>Pending</span>
-                        </>
+                      <div
+                        onClick={() => setExpandedPax(expanded ? null : i)}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 12,
+                          padding: "10px 12px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <div className="ride-publish-avatar">{p.avatar}</div>
+                        <div className="ride-publish-modal-pax-info">
+                          <span className="ride-publish-modal-pax-name">
+                            {p.name}
+                          </span>
+                          <span className="ride-publish-modal-pax-seat">
+                            Seat {p.seat}
+                          </span>
+                        </div>
+                        <span
+                          className={`ride-publish-pax-paid ${
+                            p.paid
+                              ? "ride-publish-pax-paid-yes"
+                              : "ride-publish-pax-paid-no"
+                          }`}
+                        >
+                          {p.paid ? (
+                            <>
+                              <BsCheck2Circle />
+                              <span>Paid</span>
+                            </>
+                          ) : (
+                            <>
+                              <FaHourglassEnd />
+                              <span>Pending</span>
+                            </>
+                          )}
+                        </span>
+
+                        <FaAngleRight
+                          style={{
+                            color: "#94a3b8",
+                            flexShrink: 0,
+                            transform: expanded
+                              ? "rotate(90deg)"
+                              : "rotate(0deg)",
+                            transition: "transform 0.15s ease",
+                          }}
+                        />
+                      </div>
+
+                      {expanded && (
+                        <div
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "1fr 1fr 1fr",
+                            gap: 10,
+                            padding: "10px 12px 12px",
+                            borderTop: "1px solid #e8edf4",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 3,
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: "0.65rem",
+                                fontWeight: 700,
+                                textTransform: "uppercase",
+                                letterSpacing: "0.5px",
+                                color: "#94a3b8",
+                              }}
+                            >
+                              Phone
+                            </span>
+                            <span
+                              style={{
+                                fontSize: "0.85rem",
+                                fontWeight: 600,
+                                color: "#0f172a",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 6,
+                              }}
+                            >
+                              <FiPhone size={13} color="#1e40af" />
+                              {p.phone}
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 3,
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: "0.65rem",
+                                fontWeight: 700,
+                                textTransform: "uppercase",
+                                letterSpacing: "0.5px",
+                                color: "#94a3b8",
+                              }}
+                            >
+                              Seats Booked
+                            </span>
+                            <span
+                              style={{
+                                fontSize: "0.85rem",
+                                fontWeight: 600,
+                                color: "#0f172a",
+                              }}
+                            >
+                              {p.seatsBooked}
+                            </span>
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 3,
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: "0.65rem",
+                                fontWeight: 700,
+                                textTransform: "uppercase",
+                                letterSpacing: "0.5px",
+                                color: "#94a3b8",
+                              }}
+                            >
+                              Amount Received
+                            </span>
+                            <span
+                              style={{
+                                fontSize: "0.85rem",
+                                fontWeight: 600,
+                                color: "#0f172a",
+                              }}
+                            >
+                              {p.amount}
+                            </span>
+                          </div>
+                        </div>
                       )}
-                    </span>
-                  </div>
-                ))}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -436,17 +471,14 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
 export default function PublishedRides({ publishedRide }) {
   console.log("published ride", publishedRide);
   useSocket();
-  const [rides, setRides] = useState(() =>
-    buildRidesFromApi(publishedRide, initialRides),
-  );
+
+  const [rides, setRides] = useState(() => buildRidesFromApi(publishedRide));
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedRide, setSelectedRide] = useState(null);
   const [confirmCancel, setConfirmCancel] = useState(null);
 
   useEffect(() => {
-    if (publishedRide) {
-      setRides(buildRidesFromApi(publishedRide, initialRides));
-    }
+    setRides(buildRidesFromApi(publishedRide));
   }, [publishedRide]);
 
   // Join a socket room for every ride this driver is viewing
@@ -480,8 +512,6 @@ export default function PublishedRides({ publishedRide }) {
       socket.off("ride-seat-updated", handleRideUpdate);
     };
   }, []);
-
-
 
   const filtered = rides.filter((r) => {
     if (activeFilter === "All") return true;
@@ -549,35 +579,29 @@ export default function PublishedRides({ publishedRide }) {
       <div className="ride-publish-summary-strip">
         <div className="ride-publish-summary-inner">
           <div className="ride-publish-summary-item">
-            <span className="ride-publish-summary-val">{rides.length}</span>
+            <span className="ride-publish-summary-val">
+              {publishedRide?.total_rides}
+            </span>
             <span className="ride-publish-summary-label">Total Published</span>
           </div>
           <div className="ride-publish-summary-divider" />
           <div className="ride-publish-summary-item">
             <span className="ride-publish-summary-val">
-              {rides.reduce((a, r) => a + r.bookedSeats, 0)}
+              {publishedRide?.total_seat_booked}
             </span>
             <span className="ride-publish-summary-label">Seats Booked</span>
           </div>
           <div className="ride-publish-summary-divider" />
           <div className="ride-publish-summary-item">
             <span className="ride-publish-summary-val ride-publish-summary-val-green">
-              ₹
-              {rides
-                .filter((r) => r.status !== "cancelled")
-                .reduce((a, r) => a + r.bookedSeats * r.pricePerSeat, 0)
-                .toLocaleString("en-IN")}
+              ₹{Number(publishedRide?.total_earning).toLocaleString("en-IN")}
             </span>
             <span className="ride-publish-summary-label">Total Earned</span>
           </div>
           <div className="ride-publish-summary-divider" />
           <div className="ride-publish-summary-item">
             <span className="ride-publish-summary-val ride-publish-summary-val-orange">
-              {
-                rides.filter(
-                  (r) => r.status === "upcoming" || r.status === "ready",
-                ).length
-              }
+              1
             </span>
             <span className="ride-publish-summary-label">Active Rides</span>
           </div>
