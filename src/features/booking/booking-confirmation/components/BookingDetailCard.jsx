@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { FaClock, FaCalendarAlt,  FaCar, FaStar } from "react-icons/fa";
+import { FaClock, FaCalendarAlt, FaCar, FaStar } from "react-icons/fa";
 import { IoLocationOutline, IoCallOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import { GiPathDistance } from "react-icons/gi";
@@ -9,20 +9,22 @@ import { FiUsers } from "react-icons/fi";
 import { IoTimerOutline } from "react-icons/io5";
 
 const BookingDetailsCard = ({ bookingRideDetails }) => {
-  const formattedDate = new Date(bookingRideDetails?.rideDetails?.ride_date).toLocaleDateString("en-US", {
+  const formattedDate = new Date(
+    bookingRideDetails?.rideDetails?.ride_date,
+  ).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
   });
   const formattedTime = new Date(
-    `1970-01-01T${bookingRideDetails?.rideDetails?.departure_time}`
+    `1970-01-01T${bookingRideDetails?.rideDetails?.departure_time}`,
   ).toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
     hour12: true,
   });
   const formattedArrivalTime = new Date(
-    `1970-01-01T${bookingRideDetails?.rideDetails?.estimated_reach_time}`
+    `1970-01-01T${bookingRideDetails?.rideDetails?.estimated_reach_time}`,
   ).toLocaleTimeString("en-US", {
     hour: "numeric",
     minute: "2-digit",
@@ -40,7 +42,9 @@ const BookingDetailsCard = ({ bookingRideDetails }) => {
     return `${minutes}m`;
   };
 
-  const duration = formatDuration(bookingRideDetails?.rideDetails?.duration_seconds);
+  const duration = formatDuration(
+    bookingRideDetails?.rideDetails?.duration_seconds,
+  );
   const formattedDistance = `${(bookingRideDetails?.rideDetails?.distance_meters / 1000).toFixed(1)} km`;
 
   return (
@@ -62,9 +66,7 @@ const BookingDetailsCard = ({ bookingRideDetails }) => {
               <p className="bookconf-step-address">
                 {bookingRideDetails?.bookingDetails?.ride_source}
               </p>
-              <span className="bookconf-step-time">
-                {formattedTime}
-              </span>
+              <span className="bookconf-step-time">{formattedTime}</span>
             </div>
           </div>
 
@@ -97,9 +99,7 @@ const BookingDetailsCard = ({ bookingRideDetails }) => {
             <FaCalendarAlt className="bookconf-info-icon" />
             <div>
               <span className="bookconf-info-label">Date</span>
-              <span className="bookconf-info-value">
-                {formattedDate}
-              </span>
+              <span className="bookconf-info-value">{formattedDate}</span>
             </div>
           </div>
 
@@ -107,13 +107,11 @@ const BookingDetailsCard = ({ bookingRideDetails }) => {
             <FaClock className="bookconf-info-icon" />
             <div>
               <span className="bookconf-info-label">Departure Time</span>
-              <span className="bookconf-info-value">
-                {formattedTime}
-              </span>
+              <span className="bookconf-info-value">{formattedTime}</span>
             </div>
           </div>
           <div className="bookconf-info-item">
-           <IoTimerOutline  className="bookconf-info-icon" />
+            <IoTimerOutline className="bookconf-info-icon" />
             <div>
               <span className="bookconf-info-label">Arrival Time</span>
               <span className="bookconf-info-value">
@@ -126,23 +124,19 @@ const BookingDetailsCard = ({ bookingRideDetails }) => {
             <GiPathDistance className="bookconf-info-icon" />
             <div>
               <span className="bookconf-info-label">Distance</span>
-              <span className="bookconf-info-value">
-                {formattedDistance}
-              </span>
+              <span className="bookconf-info-value">{formattedDistance}</span>
             </div>
           </div>
           <div className="bookconf-info-item">
-            <GiDuration  className="bookconf-info-icon" />
+            <GiDuration className="bookconf-info-icon" />
             <div>
               <span className="bookconf-info-label">Duration</span>
-              <span className="bookconf-info-value">
-                {duration}
-              </span>
+              <span className="bookconf-info-value">{duration}</span>
             </div>
           </div>
 
           <div className="bookconf-info-item">
-            <FiUsers  className="bookconf-info-icon" />
+            <FiUsers className="bookconf-info-icon" />
             <div>
               <span className="bookconf-info-label">Passengers</span>
               <span className="bookconf-info-value">
@@ -158,13 +152,15 @@ const BookingDetailsCard = ({ bookingRideDetails }) => {
         <h3 className="bookconf-card-title">Driver Details</h3>
 
         <div className="bookconf-driver">
+          {bookingRideDetails?.userDetails?.profile_picture && (
           <Image
             src={bookingRideDetails?.userDetails?.profile_picture}
-            alt={bookingRideDetails?.userDetails?.driverName}
+            alt={bookingRideDetails?.userDetails?.name || "Driver"}
             className="bookconf-driver-avatar"
             width={60}
             height={60}
           />
+          )}
           <div className="bookconf-driver-info">
             <h4 className="bookconf-driver-name">
               {bookingRideDetails?.userDetails?.name}

@@ -8,6 +8,7 @@ import sucessBedge from "../../../assets/images/sucess-bedge.png";
 import BookingDetailsCard from "./components/BookingDetailCard";
 import PaymentSummaryCard from "./components/PaymentSummeryCard";
 import "../../../styles/find-ride.css";
+import ChatPanel from "@/features/chat/ChatPanel";
 const Confirmation = () => {
   const [bookingRideDetails, setBookingDetails] = useState(null);
   const router = useRouter();
@@ -18,7 +19,8 @@ const Confirmation = () => {
       setBookingDetails(JSON.parse(data));
     }
   }, []);
-
+  const [showChat, setShowChat] = useState(false);
+  const [selectedChatRide, setSelectedChatRide] = useState(null);
   const paymentMethod = "card";
 
   const bookingId = bookingRideDetails?.bookingDetails?.booking_code;
@@ -91,6 +93,7 @@ const Confirmation = () => {
           </div>
         </div>
       </div>
+      <ChatPanel />
     </>
   );
 };

@@ -5,19 +5,19 @@ const ChatHeader = ({ driver, onClose }) => {
   return (
     <div className="cp-header">
       <img
-        src={driver.driver_profile_picture}
-        alt={driver.driver_name}
+        src={driver?.driver_profile_picture}
+        alt={driver?.driver_name}
         className="cp-driver-avatar"
         onError={(e) => {
           e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-            driver.driver_name
+            driver?.driver_name
           )}&background=1a56db&color=fff`;
         }}
       />
 
       <div className="cp-driver-meta">
         <p className="cp-driver-name">
-          Chat with {driver.driver_name}
+          Chat with {driver?.driver_name}
         </p>
 
         <div className="cp-online-row">
@@ -28,7 +28,7 @@ const ChatHeader = ({ driver, onClose }) => {
 
       <div className="cp-header-actions">
         <a
-          href={`tel:${driver.driver_phone}`}
+          href={`tel:${driver?.driver_phone}`}
           className="cp-call-btn"
         >
           <BiSolidPhoneCall size={22} />

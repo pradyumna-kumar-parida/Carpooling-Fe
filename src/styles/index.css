@@ -3436,8 +3436,8 @@ footer{
 }
 .back-to-top {
   position: fixed;
-  right: 38px;
-  bottom: 45px;
+    bottom: 105px !important;
+    right: 26px !important;
 
   width: 58px;
   height: 58px;
@@ -4901,6 +4901,9 @@ footer{
     transform: none;
   }
 }
+
+
+
 
 /* ---------- Layout shell ---------- */
 .chat-page {

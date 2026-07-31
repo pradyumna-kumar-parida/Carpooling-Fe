@@ -7,12 +7,12 @@ import ChatToggleButton from "./components/ChatToggleButton";
 
 import { useChat } from "./hooks/useChat";
 import "../../styles/track-chat.css";
-const ChatPanel = ({ driver }) => {
+const ChatPanel = ({ driver, defaultOpen = false, onClose }) => {
   const { messages, inputText, setInputText, handleSend, handleKeyDown } =
     useChat();
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+  const [isVisible, setIsVisible] = useState(defaultOpen);
 
   const messagesEndRef = useRef(null);
 
@@ -35,6 +35,9 @@ const ChatPanel = ({ driver }) => {
 
     setTimeout(() => {
       setIsVisible(false);
+
+      // notify parent after animation
+      onClose?.();
     }, 280);
   };
 
@@ -67,7 +70,7 @@ const ChatPanel = ({ driver }) => {
         )}
       </div>
 
-      {!isVisible && (
+      {!defaultOpen && !isVisible && (
         <ChatToggleButton count={messages.length} onOpen={handleOpen} />
       )}
     </>

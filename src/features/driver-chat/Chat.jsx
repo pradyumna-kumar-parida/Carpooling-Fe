@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { FaCar } from "react-icons/fa";
 import { FaRegSmile } from "react-icons/fa";
 import { FiPhoneCall } from "react-icons/fi";
 import { HiDotsVertical } from "react-icons/hi";
-
+import { useState, useRef, useEffect } from "react";
 
 const CHATS = [
   {
@@ -107,8 +106,14 @@ export default function ChatPage() {
   const [draft, setDraft] = useState("");
   const [chats, setChats] = useState(CHATS);
 
+  const messagesContainerRef = useRef(null);
   const activeChat = chats.find((c) => c.id === activeId);
-
+  useEffect(() => {
+    const el = messagesContainerRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
+  }, [activeChat?.messages]);
   function openChat(id) {
     setActiveId(id);
     setMobileChatOpen(true);
@@ -183,15 +188,6 @@ export default function ChatPage() {
             placeholder="Search passenger..."
             className="chat-search__input"
           />
-          <svg
-            viewBox="0 0 24 24"
-            className="chat-search__filter"
-            aria-hidden="true"
-          >
-            <line x1="4" y1="6" x2="20" y2="6" />
-            <line x1="7" y1="12" x2="17" y2="12" />
-            <line x1="10" y1="18" x2="14" y2="18" />
-          </svg>
         </div>
 
         <ul className="chat-list">
@@ -276,17 +272,14 @@ export default function ChatPage() {
                   className="chat-icon-btn"
                   aria-label="Call passenger"
                 >
-              <FiPhoneCall />
-
-
+                  <FiPhoneCall />
                 </button>
                 <button
                   type="button"
                   className="chat-icon-btn"
                   aria-label="More options"
                 >
-              <HiDotsVertical />
-
+                  <HiDotsVertical />
                 </button>
               </div>
             </header>
@@ -331,7 +324,7 @@ export default function ChatPage() {
               </div>
             </div>
 
-            <div className="chat-messages">
+            <div className="chat-messages" ref={messagesContainerRef}>
               {activeChat.messages.map((msg) => (
                 <div
                   key={msg.id}
@@ -370,14 +363,13 @@ export default function ChatPage() {
             </div>
 
             <div className="chat-composer">
-              <button
+              {/* <button
                 type="button"
                 className="chat-icon-btn chat-icon-btn--ghost"
                 aria-label="Emoji"
               >
-               <FaRegSmile  size={20}/>
-
-              </button>
+                <FaRegSmile size={20} />
+              </button> */}
               <input
                 type="text"
                 className="chat-composer__input"

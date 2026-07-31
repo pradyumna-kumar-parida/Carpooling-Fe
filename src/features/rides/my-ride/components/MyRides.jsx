@@ -95,6 +95,7 @@ export default function MyRides() {
       {showChat && (
         <ChatPanel
           driver={selectedChatRide}
+          defaultOpen={true}
           onClose={() => {
             setShowChat(false);
             setSelectedChatRide(null);
