@@ -4,30 +4,30 @@ import { socket } from "@/lib/socket";
 
 export const useSocket = () => {
   useEffect(() => {
-    socket.connect();
+    const handleConnect = () => {
+      console.log("✅ Socket Connected", socket.id);
+    };
 
-    socket.on("connect", () => {
-      console.log("✅ Socket Connected");
-      console.log(socket.connected);
-      console.log("Socket ID:", socket.id);
-    });
+    const handleDisconnect = (reason) => {
+      console.log("❌ Socket Disconnected. Reason:", reason);
+    };
 
-    socket.on("disconnect", (reason) => {
-      console.log("❌ Socket Disconnected");
-      console.log("Reason:", reason);
-    });
+    const handleConnectError = (error) => {
+      console.log("🚫 Socket Connection Failed:", error.message);
+    };
 
-    socket.on("connect_error", (error) => {
-      console.log("🚫 Socket Connection Failed");
-      console.log(error.message);
-    });
+    socket.on("connect", handleConnect);
+    socket.on("disconnect", handleDisconnect);
+    socket.on("connect_error", handleConnectError);
+
+    if (!socket.connected) {
+      socket.connect();
+    }
 
     return () => {
-      socket.off("connect");
-      socket.off("disconnect");
-      socket.off("connect_error");
-
-      socket.disconnect();
+      socket.off("connect", handleConnect);
+      socket.off("disconnect", handleDisconnect);
+      socket.off("connect_error", handleConnectError);
     };
   }, []);
 };

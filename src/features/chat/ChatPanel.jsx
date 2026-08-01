@@ -7,14 +7,23 @@ import ChatToggleButton from "./components/ChatToggleButton";
 
 import { useChat } from "./hooks/useChat";
 import "../../styles/track-chat.css";
+import { useSocket } from "@/hooks/useSocket";
 const ChatPanel = ({ driver, defaultOpen = false, onClose }) => {
-  const { messages, inputText, setInputText, handleSend, handleKeyDown } =
-    useChat();
-
+  const {
+    conversation,
+    loading,
+    messages,
+    inputText,
+    setInputText,
+    handleSend,
+    handleKeyDown,
+  } = useChat();
+  useSocket();
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const [isVisible, setIsVisible] = useState(defaultOpen);
 
   const messagesEndRef = useRef(null);
+  console.log("messages", messages);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
@@ -49,11 +58,14 @@ const ChatPanel = ({ driver, defaultOpen = false, onClose }) => {
             isOpen ? " cp-open--active" : isVisible ? " cp-open--hidden" : ""
           }`}
         >
-          <ChatHeader driver={driver} onClose={handleClose} />
+          <ChatHeader
+            driver={conversation?.userDetails}
+            onClose={handleClose}
+          />
 
           <ChatMessages
             messages={messages}
-            driver={driver}
+            driver={conversation?.userDetails}
             messagesEndRef={messagesEndRef}
           />
 

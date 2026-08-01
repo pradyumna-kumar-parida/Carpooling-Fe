@@ -3,6 +3,16 @@ import { IoCheckmarkSharp } from "react-icons/io5";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 
 const MessageBubble = ({ msg, driver }) => {
+  const formatTimeUTC = (time) => {
+  return new Date(time).toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: "UTC",
+  });
+};
+
+
   return (
     <div
       className={`cp-msg-row ${
@@ -11,12 +21,12 @@ const MessageBubble = ({ msg, driver }) => {
     >
       {msg.sender === "driver" && (
         <img
-          src={driver?.driver_profile_picture}
+          src={driver?.profile_picture}
           alt=""
           className="cp-msg-avatar"
           onError={(e) => {
             e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-              driver.driver_name,
+              driver?.name,
             )}&background=1a56db&color=fff&size=32`;
           }}
         />
@@ -29,10 +39,11 @@ const MessageBubble = ({ msg, driver }) => {
             : "cp-bubble-driver"
         }`}
       >
-        <p className="cp-bubble-text">{msg.text}</p>
+        <p className="cp-bubble-text">{msg.message}</p>
 
         <span className="cp-bubble-time">
-          {msg.time}
+          {/* {formatTimeUTC(msg.created_at)} */}
+          {(msg?.time)}
           {/* <span>
             <IoCheckmarkSharp size={12} />
           </span> */}

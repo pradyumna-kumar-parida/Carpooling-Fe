@@ -13,6 +13,7 @@ const DRIVER_ROUTES = [
   "/driver/booking-requests",
   "/driver/published-rides",
   "/driver/notification",
+  "/driver/chats",
 ];
 
 const PASSENGER_ROUTES = [

@@ -11,7 +11,7 @@ export default function AppDownloadSection() {
         <div className="app-download-content">
           <span className="app-download-accentBar" aria-hidden="true"></span>
           <h2 id="app-download-heading" className="app-download-heading">
-            Enjoy a better travel experience with the RideShare app
+            Enjoy a better travel experience with the Carpooling app
           </h2>
           <p className="app-download-desc">
             All your rides and tickets in one place, up-to-date info and exclusive mobile-only features.

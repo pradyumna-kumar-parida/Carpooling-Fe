@@ -11,6 +11,7 @@ import { FiAlertTriangle, FiPhone } from "react-icons/fi";
 import { useSocket } from "@/hooks/useSocket";
 import { socket } from "@/lib/socket";
 import { FaAngleRight } from "react-icons/fa6";
+import Link from "next/link";
 
 const STATUS_FILTERS = [
   "All",
@@ -285,10 +286,11 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
                           <span className="ride-publish-modal-pax-name">
                             {p.name}
                           </span>
-                          <span className="ride-publish-modal-pax-seat">
-                            Seat {p.seat}
-                          </span>
+                        
                         </div>
+                          <Link className="ride-publish-modal-pax-seat" href="/driver/chats">
+                           Chat
+                          </Link>
                         <span
                           className={`ride-publish-pax-paid ${
                             p.paid

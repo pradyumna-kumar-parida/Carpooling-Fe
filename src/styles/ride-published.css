@@ -1034,8 +1034,31 @@
 }
 
 .ride-publish-modal-pax-seat {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
   font-size: 0.72rem;
-  color: var(--ride-publish-desc);
+  font-weight: 600;
+  color: #fff;
+  background: #22c55e; /* Green */
+  border: 1px solid #16a34a;
+  
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.ride-publish-modal-pax-seat:hover {
+  background: #16a34a;
+  border-color: #15803d;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.25);
+}
+
+.ride-publish-modal-pax-seat:active {
+  transform: scale(0.97);
 }
 
 .ride-publish-pax-paid {

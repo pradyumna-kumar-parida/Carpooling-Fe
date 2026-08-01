@@ -929,7 +929,10 @@
   align-items: center;
   gap: 3px;
 }
-
+.cp-bubble-time >span{
+  display: flex;
+  align-items: flex-end;
+}
 .cp-bubble-driver .cp-bubble-time {
   color: var(--text-4);
 }
