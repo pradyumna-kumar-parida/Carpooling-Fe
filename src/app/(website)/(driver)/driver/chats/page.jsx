@@ -1,8 +1,16 @@
 import ChatPage from "@/features/driver-chat/Chat";
-import React from "react";
+import { getChatListApi } from "@/services/server/chatService";
 
-const page = () => {
-  return <ChatPage />;
+const Page = async () => {
+  let chatList = [];
+
+  try {
+    chatList = await getChatListApi();
+  } catch (error) {
+    console.error("Failed to load chat list:", error);
+  }
+
+  return <ChatPage chatList={chatList} />;
 };
 
-export default page;
+export default Page;

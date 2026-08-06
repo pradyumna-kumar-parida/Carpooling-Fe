@@ -11,8 +11,15 @@ export default async function Page() {
   let vehicles = [];
 
   if (token) {
-    const { data } = await getOnlyVehicleList();
-    vehicles = data;
+    try {
+      const { data } = await getOnlyVehicleList();
+      vehicles = data;
+    } catch (err) {
+      // If the vehicle fetch fails (network/server error),
+      // continue rendering the page with an empty vehicle list
+      // instead of letting the server component throw.
+      vehicles = [];
+    }
   }
 
   return <PublishRide vehiclesFetch={vehicles} />;
