@@ -85,11 +85,11 @@ const getAccountLinks = (role) => [
           icon: <LuMessageSquareMore size={16}/>,
         },
         { label: "My Rides", path: "/driver/my-rides", icon: <FaRoute /> },
-        {
-          label: "Published Rides",
-          path: "/driver/published-rides",
-          icon: <MdOutlinePublishedWithChanges size={18} />,
-        },
+        // {
+        //   label: "Published Rides",
+        //   path: "/driver/published-rides",
+        //   icon: <MdOutlinePublishedWithChanges size={18} />,
+        // },
         {
           label: "Offer Ride",
           path: "/offer-ride",

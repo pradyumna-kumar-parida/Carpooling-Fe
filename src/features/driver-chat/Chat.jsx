@@ -44,6 +44,16 @@ const getStatusTagClass = (status) => {
     : "chat-tag--gray";
 };
 
+// small helper: treat ids as strings when comparing, since one side
+// (socket payload) and the other (REST payload) don't always agree
+// on number vs string
+const sameId = (a, b) =>
+  a !== undefined &&
+  a !== null &&
+  b !== undefined &&
+  b !== null &&
+  String(a) === String(b);
+
 export default function ChatPage({ chatList }) {
   useSocket();
   const user = useSelector((state) => state.auth.user); // logged-in driver
@@ -92,10 +102,13 @@ export default function ChatPage({ chatList }) {
     try {
       // 1. Conversation API -> conversation + userDetails + rideDetails
       const conversationRes = await getConversationsApi(chat?.booking_id);
-      setConversation(conversationRes || null);
 
       // 2. Messages API -> message list
       const messagesRes = await getMessagessApi(conversationRes?.id);
+
+      // set both together so header/ride-card and messages appear at the
+      // same time instead of the header popping in first
+      setConversation(conversationRes || null);
       setMessages(Array.isArray(messagesRes) ? messagesRes : []);
 
       // 3. Join socket room
@@ -137,7 +150,7 @@ export default function ChatPage({ chatList }) {
     if (!conversation?.id) return;
 
     const handleMessageReceived = (message) => {
-      if (!message || message.conversation_id !== conversation.id) return;
+      if (!message || !sameId(message.conversation_id, conversation.id)) return;
 
       setMessages((prev) => {
         const safePrev = Array.isArray(prev) ? prev : [];
@@ -153,7 +166,11 @@ export default function ChatPage({ chatList }) {
             return next;
           }
         }
-        if (safePrev.some((m) => m.id === message.id)) return safePrev;
+
+        // already have this message (e.g. the sendMessageApi response
+        // already inserted it before the socket event arrived) -> skip
+        if (safePrev.some((m) => sameId(m.id, message.id))) return safePrev;
+
         return [...safePrev, message];
       });
 
@@ -244,17 +261,37 @@ export default function ChatPage({ chatList }) {
 
       setMessages((prev) => {
         const safePrev = Array.isArray(prev) ? prev : [];
+
         const tempIndex = safePrev.findIndex(
           (m) => m._clientTempId === clientTempId,
         );
+
+        // Case 1: optimistic temp bubble still present -> replace it in place
         if (tempIndex !== -1) {
+          // but guard against the socket having ALSO already inserted the
+          // real message elsewhere in the array (rare, but possible)
+          const alreadyElsewhere =
+            newMessage &&
+            safePrev.some(
+              (m, i) => i !== tempIndex && sameId(m.id, newMessage.id),
+            );
+          if (alreadyElsewhere) {
+            return safePrev.filter((m) => m._clientTempId !== clientTempId);
+          }
           const next = [...safePrev];
           next[tempIndex] = newMessage || safePrev[tempIndex];
           return next;
         }
-        if (newMessage && safePrev.some((m) => m.id === newMessage.id)) {
+
+        // Case 2: temp bubble already got replaced by the socket event
+        // (message_received arrived before this promise resolved) ->
+        // the real message is already in state, don't append again
+        if (newMessage && safePrev.some((m) => sameId(m.id, newMessage.id))) {
           return safePrev;
         }
+
+        // Case 3: neither temp nor real message present for some reason
+        // -> append the real message so it isn't lost
         return newMessage ? [...safePrev, newMessage] : safePrev;
       });
 
@@ -297,6 +334,9 @@ export default function ChatPage({ chatList }) {
 
   const safeMessages = Array.isArray(messages) ? messages : [];
   const safeChats = Array.isArray(chats) ? chats : [];
+
+  // true only while we have nothing to show yet for the selected chat
+  const showFullPanelLoading = conversationLoading && !conversation;
 
   return (
     <div
@@ -372,7 +412,20 @@ export default function ChatPage({ chatList }) {
 
       {/* ---------- Main chat window ---------- */}
       <section className="chat-window">
-        {activeChat ? (
+        {!activeChat && (
+          <div className="chat-empty">
+            Select a passenger to start chatting.
+          </div>
+        )}
+
+        {activeChat && showFullPanelLoading && (
+          <div className="chat-window__full-loading">
+            <div className="chat-spinner" aria-hidden="true" />
+            <p>Loading conversation...</p>
+          </div>
+        )}
+
+        {activeChat && !showFullPanelLoading && (
           <>
             <header className="chat-window__header">
               <button
@@ -445,7 +498,7 @@ export default function ChatPage({ chatList }) {
 
               <div className="ride-card__details">
                 <p className="ride-card__route">
-                  Ride:{" "}
+               {" "}
                   <strong>
                     {conversation?.rideDetails?.source_address} →{" "}
                     {conversation?.rideDetails?.destination_address}
@@ -458,7 +511,7 @@ export default function ChatPage({ chatList }) {
                   )}
                   <br className="ride-card__break" />
                   <span className="ride-card__vehicle">
-                    Vehicle: {vehicleLabel}
+                  •{" "}{vehicleLabel}
                   </span>
                 </p>
               </div>
@@ -478,17 +531,13 @@ export default function ChatPage({ chatList }) {
             </div>
 
             <div className="chat-messages" ref={messagesContainerRef}>
-              {conversationLoading && (
-                <p className="chat-list__preview">Loading messages...</p>
-              )}
-
-              {!conversationLoading && safeMessages.length === 0 && (
-                <p className="chat-list__preview">No messages yet.</p>
+              {safeMessages.length === 0 && (
+                <p className="chat-list__preview-load">No messages yet.</p>
               )}
 
               {safeMessages.map((msg, index) => {
                 const isMe =
-                  msg?.sender === "driver" || msg?.sender_id === user?.id;
+                  msg?.sender === "driver" || sameId(msg?.sender_id, user?.id);
 
                 return (
                   <div
@@ -548,14 +597,14 @@ export default function ChatPage({ chatList }) {
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
                 onKeyDown={handleKeyDown}
-                disabled={sending || conversationLoading}
+                disabled={sending}
               />
               <button
                 type="button"
                 className="chat-send-btn"
                 onClick={sendMessage}
                 aria-label="Send message"
-                disabled={sending || conversationLoading}
+                disabled={sending}
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M22 2L11 13" />
@@ -564,10 +613,6 @@ export default function ChatPage({ chatList }) {
               </button>
             </div>
           </>
-        ) : (
-          <div className="chat-empty">
-            Select a passenger to start chatting.
-          </div>
         )}
       </section>
     </div>

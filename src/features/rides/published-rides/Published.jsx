@@ -557,7 +557,7 @@ export default function PublishedRides({ publishedRide }) {
             <span className="ride-publish-header-eyebrow">
               Driver Dashboard
             </span>
-            <h1 className="ride-publish-header-title">Published Rides</h1>
+            <h1 className="ride-publish-header-title">My Rides</h1>
             <p className="ride-publish-header-sub">
               Manage all your posted rides, track seat bookings and earnings in
               real time
