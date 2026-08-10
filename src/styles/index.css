@@ -2730,7 +2730,7 @@ footer {
   .notification-item-body {
     font-size: 13px !important;
   }
- 
+
   footer {
     gap: 8px !important;
   }
@@ -2776,9 +2776,9 @@ footer {
     padding: 20px 14px !important;
     gap: 16px;
   }
-.chat-sidebar__title{
-  display: none !important;
-}
+  .chat-sidebar__title {
+    display: none !important;
+  }
   .hero-text h1 {
     font-size: 1.4rem !important;
     margin-bottom: 12px;
@@ -2788,7 +2788,7 @@ footer {
     font-size: 0.9rem !important;
     margin-bottom: 16px !important;
   }
-.ride-card__status,
+  .ride-card__status,
   .hero-image {
     display: none !important;
   }
@@ -2871,11 +2871,12 @@ footer {
     padding: 12px 15px 12px 44px;
     font-size: 0.8rem !important;
   }
-
+  .MuiTypography-root,
   .input-icon,
   .why-card h3 {
     font-size: 1rem !important;
   }
+
   .signup-title,
   .footer-logo-div,
   .footer-logo,
@@ -2915,7 +2916,7 @@ footer {
   .avl-rides-card {
     min-width: 260px !important;
   }
-
+  .ntfy-card-title,
   .ride-card__route strong,
   .chat-list__preview,
   .avl-rides-book-btn,
@@ -2936,15 +2937,36 @@ footer {
   .form-group label {
     font-size: 0.8rem !important;
   }
-    .chat-bubble__text,
-    .ride-card__route strong{
-        font-size: 0.7rem !important;
-    }
-    .chat-bubble__time,
-    .ride-card__meta,
-.chat-list__time{
-  font-size: 0.6rem !important;
-}
+  .ntfy-card-desc,
+  .chat-bubble__text,
+  .ride-card__route strong {
+    font-size: 0.7rem !important;
+  }
+  .ntfy-tag,
+  .ntfy-timing,
+  .ntfy-tab,
+  .chat-bubble__time,
+  .ride-card__meta,
+  .chat-list__time {
+    font-size: 0.6rem !important;
+  }
+  .ntfy-tab {
+    padding: 5px 8px !important;
+  }
+  .notify-header {
+    gap: 5px !important;
+    margin-top: 4vh !important;
+  }
+
+  .ntfy-tab .ntfy-tab-count {
+    padding: 1px 3px !important;
+    font-size: 0.5rem !important;
+  }
+
+  .ntfy-group-label {
+    margin: 10px 0 !important;
+  }
+
   .social-icon {
     height: 20px;
     width: 20px;
@@ -2955,7 +2977,8 @@ footer {
     height: 14px !important;
     width: 14px !important;
   }
-  .chat-icon-btn{
+  .ntfy-avatar,
+  .chat-icon-btn {
     height: 30px !important;
     width: 30px !important;
   }
@@ -4403,19 +4426,19 @@ footer {
 
 .profile-progress-title {
   margin: 0;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #1f2937;
 }
 
 .profile-progress-text {
   margin-top: 6px;
-  font-size: 14px;
+  font-size: 12px;
   color: #6b7280;
 }
 
 .profile-progress-percentage {
-  font-size: 30px;
+  font-size: 27px;
   font-weight: 700;
   color: #d97706;
 }
@@ -4590,54 +4613,15 @@ footer {
 }
 
 .ntfy-group-label {
-  font-family: var(--heading);
   font-size: 15px;
   font-weight: 600;
   color: var(--black);
-  margin: 0 0 14px 44px;
+  margin: 20px 0;
 }
 
 .ntfy-row {
   display: flex;
   gap: 16px;
-}
-
-.ntfy-marker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 20px;
-  flex-shrink: 0;
-}
-
-.ntfy-dot-marker {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-top: 26px;
-  box-shadow: 0 0 0 4px #fff;
-  position: relative;
-  z-index: 1;
-}
-
-.ntfy-row.is-unread .ntfy-dot-marker::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1.5px solid currentColor;
-  opacity: 0.35;
-}
-
-.ntfy-line {
-  width: 2px;
-  flex: 1;
-  margin-top: 2px;
-  background: repeating-linear-gradient(
-    to bottom,
-    var(--ntfy-border) 0 6px,
-    transparent 6px 13px
-  );
 }
 
 .ntfy-row:last-child .ntfy-line {
@@ -4683,7 +4667,9 @@ footer {
 .ntfy-card.is-read:hover {
   opacity: 1;
 }
-
+.ntfy-timing {
+  font-size: 0.7rem;
+}
 .ntfy-avatar {
   width: 44px;
   height: 44px;
@@ -4694,7 +4680,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--heading);
+
   font-weight: 700;
   font-size: 16px;
 }
@@ -4795,16 +4781,6 @@ footer {
   flex-shrink: 0;
 }
 
-.ntfy-unread-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--custom-one);
-  box-shadow: 0 0 0 4px var(--ntfy-blue-bg);
-  margin-top: 5px;
-  flex-shrink: 0;
-}
-
 .ntfy-dismiss {
   border: none;
   background: transparent;
@@ -4876,12 +4852,7 @@ footer {
   }
 
   .ntfy-group-label {
-    margin-left: 28px;
     font-size: 14px;
-  }
-
-  .ntfy-marker {
-    width: 14px;
   }
 
   .ntfy-row {
@@ -5417,7 +5388,6 @@ footer {
   justify-content: flex-end;
 }
 
-
 .chat-bubble {
   border-radius: 14px;
   max-width: 62%;
@@ -5624,7 +5594,6 @@ footer {
   }
 }
 
-
 /* Add this to your existing chat stylesheet */
 
 .chat-window__full-loading {
@@ -5650,5 +5619,1387 @@ footer {
 @keyframes chat-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                                */
+/* ------------------------------------------------------------------ */
+.driver-track-page {
+  background: #eef1f6;
+  min-height: 100vh;
+  font-family: var(--ntfy-font-body);
+  color: var(--black);
+}
+
+.driver-track-container {
+  max-width: var(--ntfy-max);
+  margin: 0 auto;
+  padding: 20px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.driver-track-card {
+  background: #ffffff;
+  border-radius: var(--radius);
+  box-shadow: var(--fr-shadow);
+  border: 1px solid var(--ntfy-border);
+  padding: 20px;
+}
+
+.driver-track-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.driver-track-card-head h2 {
+  font-family: var(--heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.driver-track-muted {
+  color: var(--desc);
+  font-size: 0.85rem;
+  margin: 0 0 14px;
+}
+
+.driver-track-hint {
+  color: var(--desc);
+  font-size: 0.78rem;
+  text-align: center;
+  margin: 10px 0 0;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Top nav                                                             */
+/* ------------------------------------------------------------------ */
+
+.driver-track-icon-btn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--ntfy-border);
+  background: #fff;
+  color: var(--custom-one);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.driver-track-icon-btn:hover {
+  background: var(--ntfy-blue-bg);
+}
+
+.driver-track-icon-btn-outline {
+  border-color: var(--custom-one);
+}
+
+.driver-track-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--btn-bg);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.driver-track-foot-btn {
+  display: flex;
+  gap: 10px;
+}
+/* ------------------------------------------------------------------ */
+/*  Ride header                                                         */
+/* ------------------------------------------------------------------ */
+.driver-track-header-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.driver-track-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.driver-track-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.driver-track-title {
+  font-family: var(--heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.driver-track-subtitle {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  color: var(--desc);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Badges                                                              */
+/* ------------------------------------------------------------------ */
+.driver-track-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.driver-track-badge-live {
+  background: var(--ntfy-success-bg);
+  color: var(--ntfy-success);
+}
+
+.driver-track-badge-success {
+  background: var(--ntfy-success-bg);
+  color: var(--ntfy-success);
+}
+
+.driver-track-badge-amber {
+  background: var(--ntfy-amber-bg);
+  color: var(--ntfy-amber);
+}
+
+.driver-track-badge-gray {
+  background: var(--ntfy-gray-bg);
+  color: var(--ntfy-gray);
+}
+
+.driver-track-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ntfy-success);
+  animation: driver-track-pulse 1.6s infinite;
+}
+
+@keyframes driver-track-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(22, 163, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Buttons                                                             */
+/* ------------------------------------------------------------------ */
+.driver-track-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 11px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    filter 0.15s ease,
+    background 0.15s ease;
+}
+
+.driver-track-btn:hover {
+  filter: brightness(0.97);
+}
+
+.driver-track-full {
+  width: 100%;
+}
+
+.driver-track-btn-primary {
+  background: var(--btn-bg);
+  color: #fff;
+}
+
+.driver-track-btn-danger {
+  background: var(--ntfy-danger);
+  color: #fff;
+}
+
+.driver-track-btn-outline-danger {
+  background: #fff;
+  color: var(--ntfy-danger);
+  border-color: var(--ntfy-danger);
+}
+
+.driver-track-btn-outline-primary {
+  background: #fff;
+  color: var(--custom-one);
+  border-color: var(--custom-one);
+}
+
+.driver-track-btn-outline-amber {
+  background: #fff;
+  color: var(--ntfy-amber);
+  border-color: var(--ntfy-amber);
+}
+
+.swipe-end-ride {
+  height: 44px !important;
+  width: fit-content !important;
+  min-width: 0 !important;
+  padding: 3px !important;
+  background: #fff !important;
+  border: 2px solid var(--ntfy-success) !important;
+  border-radius: 9px !important;
+  overflow: hidden !important;
+  user-select: none !important;
+}
+
+.swipe-end-ride-track {
+  position: relative !important;
+  height: 100% !important;
+  width: auto !important;
+  min-width: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+
+  /* Space for arrow */
+  padding: 0 8px 0 43px !important;
+
+  box-sizing: border-box !important;
+}
+
+.swipe-end-ride-text {
+  position: relative !important;
+  z-index: 1 !important;
+
+  color: var(--ntfy-success) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+
+  pointer-events: none !important;
+
+  transition: opacity 0.15s ease !important;
+}
+.swipe-end-ride-thumb {
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+
+  width: 35px !important;
+  height: 35px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  background: var(--ntfy-success) !important;
+  color: #fff !important;
+
+  border-radius: 6px !important;
+  border: 0 !important;
+
+  cursor: grab !important;
+  touch-action: none !important;
+  user-select: none !important;
+
+  z-index: 2 !important;
+
+  /* Keep your drag movement working */
+  transition: none !important;
+
+  /* Only animate the shadow */
+  animation: swipeShadowHint 1.5s ease-in-out infinite;
+}
+
+/* ONLY shadow animation - no transform */
+@keyframes swipeShadowHint {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+
+  40% {
+    box-shadow: 8px 0 10px -3px rgba(22, 163, 74, 0.55);
+  }
+
+  70% {
+    box-shadow: 15px 0 18px -5px rgba(22, 163, 74, 0.35);
+  }
+
+  100% {
+    box-shadow: 22px 0 25px -8px rgba(22, 163, 74, 0);
+  }
+}
+.swipe-end-ride-thumb:active {
+  cursor: grabbing !important;
+}
+
+.driver-track-end-ride-top {
+  flex-shrink: 0;
+}
+
+.driver-track-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--custom-one);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.driver-track-controls-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Stepper                                                             */
+/* ------------------------------------------------------------------ */
+.driver-track-stepper-card {
+  overflow-x: auto;
+}
+
+.driver-track-stepper {
+  list-style: none;
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  min-width: 560px;
+}
+
+.driver-track-step {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.driver-track-step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  background: var(--ntfy-gray-bg);
+  color: var(--ntfy-gray);
+  border: 2px solid transparent;
+  z-index: 1;
+}
+
+.driver-track-step-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--desc);
+}
+
+.driver-track-step-connector {
+  position: absolute;
+  top: 20px;
+  left: 55%;
+  width: 90%;
+  height: 2px;
+  background: var(--ntfy-border);
+  z-index: 0;
+}
+
+.driver-track-step-done .driver-track-step-icon {
+  background: var(--ntfy-success);
+  color: #fff;
+}
+
+.driver-track-step-done .driver-track-step-label {
+  color: var(--black);
+}
+
+.driver-track-step-done .driver-track-step-connector {
+  background: var(--ntfy-success);
+}
+
+.driver-track-step-active .driver-track-step-icon {
+  background: var(--custom-one);
+  color: #fff;
+  box-shadow: 0 0 0 4px var(--ntfy-blue-bg);
+}
+
+.driver-track-step-active .driver-track-step-label {
+  color: var(--custom-one);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Map                                                                  */
+/* ------------------------------------------------------------------ */
+.driver-track-map-card {
+  padding: 0;
+  overflow: hidden;
+}
+
+.driver-track-map-wrap {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  z-index: 0;
+}
+
+.driver-track-map {
+  width: 100%;
+  height: 100%;
+  background: #e6e9ee;
+}
+
+.driver-track-map-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--desc);
+  font-size: 0.85rem;
+  background: #eef1f6;
+}
+
+.driver-track-chip {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 10px;
+  box-shadow: var(--fr-shadow);
+  padding: 9px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.78rem;
+  z-index: 1000;
+  max-width: 220px;
+}
+
+.driver-track-chip strong {
+  display: block;
+  font-size: 0.82rem;
+}
+
+.driver-track-chip p {
+  margin: 2px 0 0;
+  color: var(--desc);
+  font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+.driver-track-chip-label {
+  display: block;
+  color: var(--desc);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.driver-track-chip-here {
+  top: 14px;
+  left: 14px;
+}
+
+.driver-track-chip-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--custom-one);
+  margin-top: 4px;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px var(--ntfy-blue-bg);
+}
+
+.driver-track-chip-eta {
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--ntfy-success);
+  align-items: center;
+}
+
+.driver-track-chip-eta strong {
+  color: var(--ntfy-success);
+}
+
+.driver-track-chip-dest {
+  top: 14px;
+  right: 14px;
+}
+
+.driver-track-chip-dest-icon {
+  color: var(--ntfy-danger);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.driver-track-chip-speed {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  color: var(--custom-one);
+}
+
+.driver-track-chip-distance {
+  bottom: 14px;
+  left: 14px;
+}
+
+.driver-track-map-controls {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.driver-track-map-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  border: 1px solid var(--ntfy-border);
+  background: #fff;
+  box-shadow: var(--fr-shadow);
+  color: var(--custom-one);
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Leaflet marker content */
+.driver-track-pin {
+  width: 18px;
+  height: 18px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+
+.driver-track-pin-pickup {
+  background: var(--ntfy-success);
+}
+
+.driver-track-pin-dest {
+  background: var(--ntfy-danger);
+}
+
+.driver-track-car-marker {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.driver-track-car-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(30, 64, 175, 0.25);
+  animation: driver-track-car-ping 1.8s ease-out infinite;
+}
+
+@keyframes driver-track-car-ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+.driver-track-car-dot {
+  height: 36px;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.driver-track-car-dot > img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+/* ------------------------------------------------------------------ */
+/*  Trip info bar                                                       */
+/* ------------------------------------------------------------------ */
+.driver-track-info-bar {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.driver-track-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.driver-track-info-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: var(--desc);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.driver-track-info-item strong {
+  font-size: 0.95rem;
+}
+
+.driver-track-info-sub {
+  font-size: 0.74rem;
+  color: var(--desc);
+}
+
+.driver-track-info-icon-red {
+  color: var(--ntfy-danger);
+}
+
+.driver-track-dot-green {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ntfy-success);
+  display: inline-block;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Two-column sections                                                 */
+/* ------------------------------------------------------------------ */
+.driver-track-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Passenger list                                                      */
+/* ------------------------------------------------------------------ */
+.driver-track-passenger-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.driver-track-passenger-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ntfy-border);
+}
+
+.driver-track-passenger-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.driver-track-avatar-passenger {
+  flex-shrink: 0;
+}
+
+.driver-track-passenger-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.driver-track-passenger-info strong {
+  font-size: 0.88rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.driver-track-passenger-info span {
+  font-size: 0.74rem;
+  color: var(--desc);
+}
+
+.driver-track-passenger-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.driver-track-passenger-actions .driver-track-icon-btn {
+  width: 34px;
+  height: 34px;
+  font-size: 0.9rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Ride summary list                                                   */
+/* ------------------------------------------------------------------ */
+.driver-track-summary-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.driver-track-summary-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--ntfy-border);
+  font-size: 0.86rem;
+}
+
+.driver-track-summary-list li:last-child {
+  border-bottom: none;
+}
+
+.driver-track-summary-list span {
+  color: var(--desc);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Need help footer                                                    */
+/* ------------------------------------------------------------------ */
+.driver-track-help-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--ntfy-blue-bg);
+  border-color: transparent;
+}
+
+.driver-track-help-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.driver-track-help-left strong {
+  font-size: 0.92rem;
+}
+
+.driver-track-help-left p {
+  margin: 2px 0 0;
+  font-size: 0.8rem;
+  color: var(--desc);
+}
+
+.driver-track-help-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--custom-one);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Responsive                                                          */
+/* ------------------------------------------------------------------ */
+@media (max-width: 1024px) {
+  .driver-track-info-bar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 860px) {
+  .driver-track-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .driver-track-container {
+    padding: 14px 12px 32px;
+  }
+
+  .driver-track-topbar-menu {
+    display: inline-flex;
+  }
+
+  .driver-track-end-ride-top {
+    width: 100%;
+  }
+
+  .driver-track-title {
+    font-size: 1.1rem;
+  }
+
+  .driver-track-info-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .driver-track-map-wrap {
+    height: 360px;
+  }
+
+  .driver-track-chip {
+    max-width: 150px;
+    padding: 7px 9px;
+    font-size: 0.7rem;
+  }
+
+  .driver-track-chip strong {
+    font-size: 0.74rem;
+  }
+
+  .driver-track-chip-here {
+    left: 10px;
+    top: 10px;
+  }
+
+  .driver-track-chip-dest {
+    right: 10px;
+    top: 10px;
+  }
+
+  .driver-track-chip-eta {
+    top: 66px;
+    left: 50%;
+  }
+
+  .driver-track-chip-speed {
+    top: auto;
+    bottom: 60px;
+    left: 10px;
+    transform: none;
+  }
+
+  .driver-track-chip-distance {
+    bottom: 10px;
+    left: 10px;
+  }
+
+  .driver-track-controls-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .driver-track-info-bar {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+/* ==========================================================================
+   RideCompleted — uses the site's existing design tokens (see :root in your
+   global stylesheet): --btn-bg, --section-cardBg, --custom-one, --ntfy-*, etc.
+   Class names are intentionally verbose/prefixed (ride-com-*) for easy
+   targeting elsewhere in the app.
+   ========================================================================== */
+
+.ride-com-wrapper {
+  width: 100%;
+  max-width: var(--ntfy-max);
+  margin: 0 auto;
+  padding: 40px 24px 64px;
+  font-family: var(--ntfy-font-body);
+  color: var(--black);
+}
+
+.ride-com-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+/* ---------------------------- Hero column ---------------------------- */
+
+.ride-com-hero {
+  border-radius: calc(var(--radius) * 2);
+  box-shadow: var(--fr-shadow);
+  padding: 40px 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ride-com-illustration {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: var(--ntfy-blue-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.ride-com-confetti {
+  position: absolute;
+  width: 6px;
+  height: 18px;
+  border-radius: 3px;
+  opacity: 0;
+  animation: ride-com-confetti-burst 0.9s ease-out 0.15s both;
+}
+
+.c1 {
+  top: 6%;
+  left: 10%;
+  background: var(--custom-one);
+  transform: rotate(-20deg);
+  animation-delay: 0.15s;
+}
+.c2 {
+  top: 0%;
+  left: 78%;
+  background: var(--ntfy-success);
+  transform: rotate(15deg);
+  animation-delay: 0.22s;
+}
+.c3 {
+  top: 62%;
+  left: 2%;
+  background: var(--ntfy-amber);
+  transform: rotate(35deg);
+  animation-delay: 0.28s;
+}
+.c4 {
+  top: 70%;
+  left: 88%;
+  background: var(--ntfy-danger);
+  transform: rotate(-25deg);
+  animation-delay: 0.2s;
+}
+.c5 {
+  top: 30%;
+  left: 92%;
+  background: var(--ntfy-gray);
+  transform: rotate(10deg);
+  animation-delay: 0.32s;
+}
+.c6 {
+  top: 28%;
+  left: -4%;
+  background: var(--custom-one);
+  transform: rotate(-15deg);
+  animation-delay: 0.26s;
+}
+
+@keyframes ride-com-pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes ride-com-confetti-burst {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) rotate(0deg) scale(0.6);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-26px) rotate(180deg) scale(1);
+  }
+}
+
+.ride-com-title {
+  font-family: var(--heading);
+  font-size: 28px;
+  font-weight: 700;
+  margin: 54px 0 6px;
+}
+
+.ride-com-subtitle {
+  font-size: 15px;
+  color: var(--desc);
+  margin: 0 0 16px;
+}
+
+.ride-com-role-tag {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--custom-one);
+  background: var(--ntfy-blue-bg);
+  border: 1px solid var(--ntfy-border);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+/* --------------------------- Content column --------------------------- */
+
+.ride-com-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ride-com-card {
+  background: #fff;
+  border: 1px solid var(--ntfy-border);
+  border-radius: var(--radius);
+  box-shadow: var(--fr-shadow);
+  padding: 22px 24px;
+}
+
+.ride-com-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ride-com-card-title {
+  font-family: var(--heading);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.ride-com-card-header .ride-com-card-title {
+  margin: 0;
+}
+
+/* Route */
+
+.ride-com-route {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--ntfy-border);
+  font-weight: 600;
+  font-size: 15px;
+  flex-wrap: wrap;
+}
+
+.ride-com-route-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--custom-one);
+  flex-shrink: 0;
+}
+
+.ride-com-route-line {
+  flex: 1 1 32px;
+  min-width: 32px;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--ntfy-border),
+    var(--ntfy-border) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+/* Stats */
+
+.ride-com-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.ride-com-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 14px 8px;
+  background: var(--section-cardBg);
+  border-radius: var(--radius);
+}
+
+.ride-com-stat-icon {
+  color: var(--custom-one);
+  font-size: 18px;
+}
+
+.ride-com-stat-value {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.ride-com-stat-label {
+  font-size: 12px;
+  color: var(--desc);
+}
+
+/* View all */
+
+.ride-com-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--custom-one);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ride-com-view-all:hover {
+  text-decoration: underline;
+}
+
+/* Avatars (driver view: passenger list) */
+
+.ride-com-avatars {
+  display: flex;
+  align-items: center;
+  gap: -8px;
+}
+
+.ride-com-avatar,
+.ride-com-avatar-more {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--custom-one);
+  border: 2px solid #fff;
+  margin-left: -10px;
+  flex-shrink: 0;
+}
+
+.ride-com-avatar:first-child,
+.ride-com-avatar-more:first-child {
+  margin-left: 0;
+}
+
+.ride-com-avatar-more {
+  background: var(--ntfy-blue-bg);
+  color: var(--custom-one);
+}
+
+/* Driver card (passenger view) */
+
+.ride-com-driver-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.ride-com-driver-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ride-com-driver-name {
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.ride-com-driver-car {
+  font-size: 13px;
+  color: var(--desc);
+}
+
+.ride-com-driver-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ntfy-amber);
+  background: var(--ntfy-amber-bg);
+  padding: 6px 12px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+/* Nudge banner */
+
+.ride-com-nudge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ntfy-success-bg);
+  color: var(--ntfy-success);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ride-com-nudge-icon {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+/* CTA */
+
+.ride-com-rate-btn {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  background: var(--btn-bg);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--fr-shadow);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ride-com-rate-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.28);
+}
+
+.ride-com-rate-btn:active {
+  transform: translateY(0);
+}
+
+.ride-com-rate-btn-timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.75);
+  transform-origin: left center;
+  animation-name: ride-com-timer-shrink;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes ride-com-timer-shrink {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* ============================== Responsive ============================== */
+
+/* Tablet and up: a touch more breathing room */
+@media (min-width: 600px) {
+  .ride-com-hero {
+    padding: 48px 36px;
+  }
+
+  .ride-com-stats {
+    gap: 16px;
+  }
+}
+
+/* Desktop: two-column layout, hero sticks alongside scrolling details */
+@media (min-width: 992px) {
+  .ride-com-wrapper {
+    padding: 56px 32px 80px;
+  }
+
+  .ride-com-grid {
+    grid-template-columns: 380px 1fr;
+    align-items: start;
+    gap: 32px;
+  }
+
+  .ride-com-hero {
+    position: sticky;
+    top: 32px;
+  }
+
+  .ride-com-rate-btn {
+    width: auto;
+    align-self: flex-start;
+    padding: 16px 32px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .ride-com-badge,
+  .ride-com-confetti,
+  .ride-com-rate-btn-timer {
+    animation: none !important;
   }
 }

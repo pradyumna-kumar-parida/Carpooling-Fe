@@ -279,13 +279,7 @@ export default function NotificationsPage() {
                       key={n.id}
                       style={{ color: DOT_COLOR[meta.tone] }}
                     >
-                      <div className="ntfy-marker">
-                        <span
-                          className="ntfy-dot-marker"
-                          style={{ background: DOT_COLOR[meta.tone] }}
-                        />
-                        <span className="ntfy-line" />
-                      </div>
+                     
 
                       <article
                         className={`ntfy-card${n.unread ? "" : " is-read"}`}
@@ -309,7 +303,7 @@ export default function NotificationsPage() {
                               <p className="ntfy-card-desc">{n.description}</p>
                             </div>
                             <div className="ntfy-row-actions">
-                              {n.unread && <span className="ntfy-unread-dot" />}
+                              {/* {n.unread && <span className="ntfy-unread-dot" />} */}
                               <button
                                 className="ntfy-dismiss"
                                 onClick={(e) => dismiss(n.id, e)}
@@ -323,7 +317,7 @@ export default function NotificationsPage() {
                             <span className={`ntfy-tag ${meta.tone}`}>
                               {meta.label}
                             </span>
-                            <span>{n.time}</span>
+                            <span className="ntfy-timing">{n.time}</span>
                           </div>
                         </div>
                       </article>

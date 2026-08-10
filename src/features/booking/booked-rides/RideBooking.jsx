@@ -147,7 +147,7 @@ export default function RideBooking({ rideDetails, totalSeat }) {
               onDriverClick={() => setOpenDriverModal(true)}
             />
 
-            <PassengersCard ride={ride} />
+            {/* <PassengersCard ride={ride} /> */}
           </div>
 
           <BookingSidebar

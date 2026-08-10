@@ -425,13 +425,14 @@
 
 /* ── Meta row ── */
 .ride-publish-card-meta-row {
-  display: flex;
-  align-items: center;
+  /* display: flex; */
+  display: none;
+  /* align-items: center;
   gap: 16px;
   flex-wrap: wrap;
   padding: 12px 0;
   border-top: 1px solid #f0f4f8;
-  border-bottom: 1px solid #f0f4f8;
+  border-bottom: 1px solid #f0f4f8; */
 }
 
 .ride-publish-card-meta-item {

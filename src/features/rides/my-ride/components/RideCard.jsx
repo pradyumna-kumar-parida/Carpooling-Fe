@@ -34,7 +34,7 @@ export default function RideCard({ ride, onViewDetails, onOpenChat }) {
   return (
     <>
       <div className="myride-card">
-        <div className="myride-card-header">
+        {/* <div className="myride-card-header">
           <span
             className="myride-status-chip"
             style={{
@@ -45,7 +45,7 @@ export default function RideCard({ ride, onViewDetails, onOpenChat }) {
           >
             {ride.status}
           </span>
-        </div>
+        </div> */}
 
         <div className="myride-route-simple">
           <div className="route-simple-item">

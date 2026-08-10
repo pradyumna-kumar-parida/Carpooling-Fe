@@ -671,7 +671,7 @@ export default function PublishedRides({ publishedRide }) {
                   >
                     {/* Card top bar */}
                     <div className="ride-publish-card-topbar">
-                      <span className="ride-publish-card-id">{ride.id}</span>
+                      <span className="ride-publish-card-id">RIDE-{ride.id}</span>
                       <span
                         className={`ride-publish-status-badge ride-publish-status-badge-${meta.color}`}
                       >

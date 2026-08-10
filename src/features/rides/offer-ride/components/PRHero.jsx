@@ -565,30 +565,7 @@ const PRHero = ({ vehiclesFetch }) => {
               </div>
             </div>
 
-            <div className="prh-seats-row">
-              <span className="prh-seats-label">
-                <MdAirlineSeatLegroomReduced /> Seats
-              </span>
-              <div className="prh-seats-ctrl">
-                <button
-                  type="button"
-                  className="prh-seats-btn"
-                  onClick={() => setSeats((s) => Math.max(1, s - 1))}
-                  disabled={seatControlDisabled || seats <= 1}
-                >
-                  −
-                </button>
-                <span className="prh-seats-val">{seats}</span>
-                <button
-                  type="button"
-                  className="prh-seats-btn"
-                  onClick={() => setSeats((s) => Math.min(maxSeats, s + 1))}
-                  disabled={seatControlDisabled || seats >= maxSeats}
-                >
-                  +
-                </button>
-              </div>
-            </div>
+           
             {vehicleList.length >= 1 && token && (
               <>
                 {!selectedVehicle ? (
@@ -642,6 +619,31 @@ const PRHero = ({ vehiclesFetch }) => {
                 </select>
               </div>
             )}
+
+             <div className="prh-seats-row">
+              <span className="prh-seats-label">
+                <MdAirlineSeatLegroomReduced /> Seats
+              </span>
+              <div className="prh-seats-ctrl">
+                <button
+                  type="button"
+                  className="prh-seats-btn"
+                  onClick={() => setSeats((s) => Math.max(1, s - 1))}
+                  disabled={seatControlDisabled || seats <= 1}
+                >
+                  −
+                </button>
+                <span className="prh-seats-val">{seats}</span>
+                <button
+                  type="button"
+                  className="prh-seats-btn"
+                  onClick={() => setSeats((s) => Math.min(maxSeats, s + 1))}
+                  disabled={seatControlDisabled || seats >= maxSeats}
+                >
+                  +
+                </button>
+              </div>
+            </div>
             <div className="prh-field prh-field--price prh-field--focusable">
               <span className="prh-field-icon prh-field-icon--from">
                 <FaIndianRupeeSign />

@@ -11,12 +11,20 @@ import {
 } from "@mui/material";
 import "../styles/find-ride.css";
 
-export default function RatingModal() {
-  const [open, setOpen] = useState(true);
+export default function RatingModal({
+  isOpen = false,
+  onClose = () => {},
+  role = "passenger",
+  rateeType,
+  passengers,
+  driver,
+}) {
   const [rating, setRating] = useState(null);
   const [feedback, setFeedback] = useState("");
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    onClose?.();
+  };
 
   const handleSubmit = () => {
     const payload = {
@@ -33,7 +41,7 @@ export default function RatingModal() {
 
   return (
     <Modal
-      open={open}
+      open={isOpen}
       onClose={handleClose}
       aria-labelledby="rating-modal-title"
     >
