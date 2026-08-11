@@ -19,7 +19,6 @@ const DRIVER_ROUTES = [
 const PASSENGER_ROUTES = [
   "/passenger/booking-confirmation",
   "/passenger/booking-failed",
-  // "/passenger/ride-booking",
   "/passenger/booking-payment",
   "/passenger/track-chat",
   "/passenger/my-rides",
@@ -29,44 +28,61 @@ const PASSENGER_ROUTES = [
 ];
 
 export function proxy(request) {
-  console.log("Middleware running successfully ✅");
+  console.log("Proxy running successfully ✅");
 
   const token = request.cookies.get("token")?.value;
   const role = request.cookies.get("role")?.value;
 
   const { pathname } = request.nextUrl;
 
-  const isGuest = GUEST_ROUTES.some((route) => pathname.startsWith(route));
-
-  const isProtected = PROTECTED_ROUTES.some((route) =>
-    pathname.startsWith(route),
+  const isGuest = GUEST_ROUTES.some((route) =>
+    pathname.startsWith(route)
   );
 
-  const isDriver = DRIVER_ROUTES.some((route) => pathname.startsWith(route));
+  const isProtected = PROTECTED_ROUTES.some((route) =>
+    pathname.startsWith(route)
+  );
+
+  const isDriver = DRIVER_ROUTES.some((route) =>
+    pathname.startsWith(route)
+  );
 
   const isPassenger = PASSENGER_ROUTES.some((route) =>
-    pathname.startsWith(route),
+    pathname.startsWith(route)
   );
 
   if (isGuest && token) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(
+      new URL("/", request.url)
+    );
   }
 
   if (!token && isProtected) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(
+      new URL("/login", request.url)
+    );
   }
 
   if (isDriver && role !== "driver") {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(
+      new URL("/", request.url)
+    );
   }
 
   if (isPassenger && role !== "passenger") {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(
+      new URL("/", request.url)
+    );
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/driver/:path*", "/passenger/:path*", "/login", "/signup"],
+  matcher: [
+    "/driver/:path*",
+    "/passenger/:path*",
+    "/login",
+    "/signup",
+  ],
 };
