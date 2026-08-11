@@ -5,13 +5,10 @@ import "leaflet/dist/leaflet.css";
 import { BiSolidSend } from "react-icons/bi";
 import { LuUsers } from "react-icons/lu";
 import { FaRightLong } from "react-icons/fa6";
-
-import { FaLocationDot } from "react-icons/fa6";
 import { FiMaximize, FiX } from "react-icons/fi";
 import { AiFillAlert } from "react-icons/ai";
 import { TbCurrentLocationFilled } from "react-icons/tb";
 import { GiRailRoad } from "react-icons/gi";
-
 
 import {
   Dialog,
@@ -20,31 +17,20 @@ import {
   DialogActions,
   Button,
   IconButton,
-  Typography,
 } from "@mui/material";
 
 import trackingCar from "@/assets/images/trackingCar.png";
 import {
-  FiArrowLeft,
-  FiMenu,
-  FiBell,
   FiPhone,
-  FiMessageSquare,
-  FiShare2,
-  FiAlertTriangle,
   FiHeadphones,
   FiPlus,
   FiMinus,
-  FiCrosshair,
   FiClock,
   FiMapPin,
   FiCalendar,
-  FiSquare,
-  FiUsers,
-  FiChevronRight,
   FiTruck,
 } from "react-icons/fi";
-import { FaCarSide, FaFlagCheckered, FaTachometerAlt } from "react-icons/fa";
+import { FaCarSide, FaFlagCheckered } from "react-icons/fa";
 
 const RIDE_DATA = {
   rideId: "#BKGC8364",
@@ -97,6 +83,20 @@ const CAR_STEP_PER_TICK = 1;
 const CAR_TICK_MS = 1000;
 
 /* ------------------------------------------------------------------ */
+/*  Rotating "nav camera" tuning                                       */
+/*  Leaflet has no native map-rotation. The trick: render the map      */
+/*  inside an oversized hidden container and CSS-rotate that container */
+/*  so the car's current heading always points "up" (Google-Maps-style */
+/*  nav mode). Because the container is bigger than the visible        */
+/*  window, every zoom Leaflet computes must be bumped up by           */
+/*  log2(MAP_OVERSIZE_FACTOR) or the map will look too zoomed out.     */
+/* ------------------------------------------------------------------ */
+// Rotor is sized 260% / offset -80% in the CSS (.driver-track-map-rotor) —
+// keep MAP_OVERSIZE_FACTOR in sync with that value if you ever change it.
+const MAP_OVERSIZE_FACTOR = 2.6;
+const MAP_ZOOM_COMPENSATION = Math.log2(MAP_OVERSIZE_FACTOR);
+
+/* ------------------------------------------------------------------ */
 /*  Small geo helpers                                                  */
 /* ------------------------------------------------------------------ */
 function bearingBetween(lat1, lon1, lat2, lon2) {
@@ -110,12 +110,15 @@ function bearingBetween(lat1, lon1, lat2, lon2) {
   return (toDeg(Math.atan2(y, x)) + 360) % 360;
 }
 
-export default function DriverActiveRide({ ride = RIDE_DATA }) {
+export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
   const mapElRef = useRef(null);
+  const mapRotorRef = useRef(null); // oversized div that gets CSS-rotated
   const mapRef = useRef(null);
   const routeLayerRef = useRef(null);
   const coveredLayerRef = useRef(null);
   const carMarkerRef = useRef(null);
+  const pickupMarkerRef = useRef(null);
+  const destMarkerRef = useRef(null);
   const leafletRef = useRef(null);
 
   const routeCoordsRef = useRef([]);
@@ -125,7 +128,9 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
   const [mapReady, setMapReady] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
   const [userLocationLabel, setUserLocationLabel] = useState("");
+  const [rideCompleted, setRideCompleted] = useState(false);
 
+  // eslint-disable-next-line no-unused-vars
   const currentStepIndex = STEPS.findIndex((s) => s.key === ride.status);
 
   const updateCarMarkerRotation = (bearing) => {
@@ -134,22 +139,56 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
     if (dot) dot.style.transform = `rotate(${bearing}deg)`;
   };
 
-  const moveCarToIndex = useCallback((index) => {
-    const coords = routeCoordsRef.current;
-    if (!coords.length || !carMarkerRef.current) return;
+  const updatePinRotation = (markerRef, angleDeg) => {
+    const el = markerRef.current?.getElement();
+    const rotor = el?.querySelector(".driver-track-pin-rotor");
+    if (rotor) rotor.style.transform = `rotate(${angleDeg}deg)`;
+  };
 
-    const clamped = Math.min(Math.max(index, 0), coords.length - 1);
-    const pos = coords[clamped];
-    const lookAhead = coords[Math.min(clamped + 1, coords.length - 1)];
-    const bearing =
-      bearingBetween(pos[0], pos[1], lookAhead[0], lookAhead[1]) + 180;
-
-    carMarkerRef.current.setLatLng(pos);
-    updateCarMarkerRotation(bearing);
-    coveredLayerRef.current?.setLatLngs(coords.slice(0, clamped + 1));
-
-    carIndexRef.current = clamped;
+  /* Rotates the whole map so `rawBearingDeg` (the raw direction-of-travel,
+     0 = north) points to the top of the screen, then counter-rotates the
+     pickup/destination pins so they stay upright instead of spinning with
+     the map — matches Google Maps nav-mode behaviour. */
+  const applyMapRotation = useCallback((rawBearingDeg) => {
+    const rotateDeg = -rawBearingDeg;
+    if (mapRotorRef.current) {
+      mapRotorRef.current.style.transform = `rotate(${rotateDeg}deg)`;
+    }
+    updatePinRotation(pickupMarkerRef, rawBearingDeg);
+    updatePinRotation(destMarkerRef, rawBearingDeg);
   }, []);
+
+  const moveCarToIndex = useCallback(
+    (index) => {
+      const coords = routeCoordsRef.current;
+      if (!coords.length || !carMarkerRef.current) return;
+
+      const clamped = Math.min(Math.max(index, 0), coords.length - 1);
+      const pos = coords[clamped];
+      const lookAhead = coords[Math.min(clamped + 1, coords.length - 1)];
+      const rawBearing = bearingBetween(
+        pos[0],
+        pos[1],
+        lookAhead[0],
+        lookAhead[1],
+      );
+
+      carMarkerRef.current.setLatLng(pos);
+      updateCarMarkerRotation(rawBearing + 180);
+      coveredLayerRef.current?.setLatLngs(coords.slice(0, clamped + 1));
+      applyMapRotation(rawBearing);
+
+      // Keep the car centred in view as it advances (nav-camera follow).
+      mapRef.current?.panTo(pos, {
+        animate: true,
+        duration: CAR_TICK_MS / 1000,
+        easeLinearity: 1,
+      });
+
+      carIndexRef.current = clamped;
+    },
+    [applyMapRotation],
+  );
 
   useEffect(() => {
     const stored = window.sessionStorage.getItem("userLocation");
@@ -203,12 +242,15 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
             .join(", ");
 
           setUserLocationLabel(
-            label || `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`,
+            label ||
+              `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`,
           );
         }
       } catch (err) {
         console.warn("Failed to resolve user location label", err);
-        setUserLocationLabel(`${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`);
+        setUserLocationLabel(
+          `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`,
+        );
       }
     };
 
@@ -228,7 +270,15 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
       const map = L.map(mapElRef.current, {
         zoomControl: false,
         attributionControl: false,
-      }).setView([ride.from.lat, ride.from.lng], 8);
+        // Fractional zoom so we can precisely compensate for the oversized
+        // rotor container (see MAP_ZOOM_COMPENSATION above).
+        zoomSnap: 0.25,
+        zoomDelta: 0.5,
+        // Dragging is disabled on purpose: once the map is CSS-rotated,
+        // a manual drag gesture no longer matches the screen direction.
+        // Recenter / zoom buttons remain fully functional.
+        dragging: false,
+      }).setView([ride.from.lat, ride.from.lng], 8 + MAP_ZOOM_COMPENSATION);
 
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
@@ -238,19 +288,23 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
 
       const pickupIcon = L.divIcon({
         className: "driver-track-leaflet-icon",
-        html: '<div class="driver-track-pin driver-track-pin-pickup"></div>',
+        html: '<div class="driver-track-pin-rotor"><div class="driver-track-pin driver-track-pin-pickup"></div></div>',
         iconSize: [22, 22],
         iconAnchor: [11, 20],
       });
       const destIcon = L.divIcon({
         className: "driver-track-leaflet-icon",
-        html: '<div class="driver-track-pin driver-track-pin-dest"></div>',
+        html: '<div class="driver-track-pin-rotor"><div class="driver-track-pin driver-track-pin-dest"></div></div>',
         iconSize: [22, 22],
         iconAnchor: [11, 20],
       });
 
-      L.marker([ride.from.lat, ride.from.lng], { icon: pickupIcon }).addTo(map);
-      L.marker([ride.to.lat, ride.to.lng], { icon: destIcon }).addTo(map);
+      pickupMarkerRef.current = L.marker([ride.from.lat, ride.from.lng], {
+        icon: pickupIcon,
+      }).addTo(map);
+      destMarkerRef.current = L.marker([ride.to.lat, ride.to.lng], {
+        icon: destIcon,
+      }).addTo(map);
 
       /* Fetch the road route from OSRM (same approach as the rider-side map) */
       let coords = [
@@ -302,20 +356,19 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
       const startPos = coords[startIndex];
       const startLookAhead =
         coords[Math.min(startIndex + 1, coords.length - 1)];
-      const startBearing =
-        bearingBetween(
-          startPos[0],
-          startPos[1],
-          startLookAhead[0],
-          startLookAhead[1],
-        ) + 180;
+      const startRawBearing = bearingBetween(
+        startPos[0],
+        startPos[1],
+        startLookAhead[0],
+        startLookAhead[1],
+      );
 
       const carIcon = L.divIcon({
         className: "driver-track-leaflet-icon",
         html: `
     <div class="driver-track-car-marker">
       <span class="driver-track-car-pulse"></span>
-      <div class="driver-track-car-dot" style="transform: rotate(${startBearing}deg)">
+      <div class="driver-track-car-dot" style="transform: rotate(${startRawBearing + 180}deg)">
         <img src="${trackingCar.src}" width="28" height="28" alt="" />
       </div>
     </div>`,
@@ -327,6 +380,12 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
       carIndexRef.current = startIndex;
 
       map.fitBounds(L.latLngBounds(coords), { padding: [40, 40] });
+      map.setZoom(map.getZoom() + MAP_ZOOM_COMPENSATION, { animate: false });
+
+      // Orient the map + pins for the very first frame: direction of
+      // travel points up, source sits behind (bottom), destination ahead
+      // (top) — same math the live ticker uses below.
+      applyMapRotation(startRawBearing);
 
       /* Leaflet reads the container's pixel size the instant L.map()
          runs. In Next.js the container can still be 0x0 at that
@@ -338,6 +397,12 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
         if (!mapRef.current) return;
         mapRef.current.invalidateSize();
         mapRef.current.fitBounds(L.latLngBounds(coords), { padding: [40, 40] });
+        mapRef.current.setZoom(
+          mapRef.current.getZoom() + MAP_ZOOM_COMPENSATION,
+          {
+            animate: false,
+          },
+        );
       });
 
       const resizeObserver = new ResizeObserver(() => {
@@ -389,9 +454,13 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
   const zoomOut = useCallback(() => mapRef.current?.zoomOut(), []);
   const recenter = useCallback(() => {
     if (!mapRef.current || !carMarkerRef.current) return;
-    mapRef.current.flyTo(carMarkerRef.current.getLatLng(), 12, {
-      duration: 0.6,
-    });
+    mapRef.current.flyTo(
+      carMarkerRef.current.getLatLng(),
+      12 + MAP_ZOOM_COMPENSATION,
+      {
+        duration: 0.6,
+      },
+    );
   }, []);
 
   const [swipePosition, setSwipePosition] = useState(0);
@@ -402,6 +471,17 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
 
   const handleOpenSosModal = () => setOpenSosModal(true);
   const handleCloseSosModal = () => setOpenSosModal(false);
+
+  /* Stops the live-position interval and marks the ride complete.
+     Wired up to the swipe-to-complete control below. */
+  const handleCompleteRide = useCallback(() => {
+    if (carIntervalRef.current) {
+      clearInterval(carIntervalRef.current);
+      carIntervalRef.current = null;
+    }
+    setRideCompleted(true);
+    onRideComplete?.(ride);
+  }, [onRideComplete, ride]);
 
   const handleSwipeStart = (e) => {
     e.preventDefault();
@@ -450,23 +530,22 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
 
   return (
     <div className="driver-track-page">
-      {/* ---------------- Top nav ---------------- */}
-
       <main className="driver-track-container">
         {/* ---------------- Ride header ---------------- */}
         <section className="driver-track-card driver-track-header-card">
           <div className="driver-track-header-left">
             <div>
               <div className="driver-track-title-row">
-                <h1 className="driver-track-title">{ride.from.label} <FaRightLong />
- {ride.to.label}</h1>
+                <h1 className="driver-track-title">
+                  {ride.from.label} <FaRightLong /> {ride.to.label}
+                </h1>
                 <span className="driver-track-badge driver-track-badge-live">
                   <span className="driver-track-live-dot" /> LIVE
                 </span>
               </div>
-              {/* <p className="driver-track-subtitle">Ride ID: {ride.rideId}</p> */}
             </div>
           </div>
+
           <div className="driver-track-btn driver-track-btn-outline-danger driver-track-end-ride-top swipe-end-ride">
             <div className="swipe-end-ride-track">
               <span
@@ -475,7 +554,7 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
                   opacity: Math.max(0, 1 - swipePosition / 70),
                 }}
               >
-                Complete Ride
+                {rideCompleted ? "Ride Completed" : "Complete Ride"}
               </span>
 
               <div
@@ -483,7 +562,7 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
                 style={{
                   transform: `translateX(${swipePosition}px)`,
                 }}
-                onPointerDown={handleSwipeStart}
+                onPointerDown={rideCompleted ? undefined : handleSwipeStart}
               >
                 <BiSolidSend size={22} />
               </div>
@@ -491,65 +570,24 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
           </div>
         </section>
 
-        {/* ---------------- Status stepper ---------------- */}
-        {/* <section className="driver-track-card driver-track-stepper-card">
-          <ol className="driver-track-stepper">
-            {STEPS.map((step, i) => {
-              const Icon = step.icon;
-              const state =
-                i < currentStepIndex
-                  ? "done"
-                  : i === currentStepIndex
-                    ? "active"
-                    : "upcoming";
-              return (
-                <li
-                  key={step.key}
-                  className={`driver-track-step driver-track-step-${state}`}
-                >
-                  <span className="driver-track-step-icon">
-                    <Icon />
-                  </span>
-                  <span className="driver-track-step-label">{step.label}</span>
-                  {i < STEPS.length - 1 && (
-                    <span className="driver-track-step-connector" />
-                  )}
-                </li>
-              );
-            })}
-          </ol>
-        </section> */}
-
         {/* ---------------- Map ---------------- */}
         <section className="driver-track-card driver-track-map-card">
           <div className="driver-track-map-wrap">
-            <div ref={mapElRef} className="driver-track-map" />
+            {/* Oversized rotor: CSS-rotated so the car's heading always
+                points up, like Google Maps nav mode. The wrap above clips
+                the overflow so no empty corners show. */}
+            <div ref={mapRotorRef} className="driver-track-map-rotor">
+              <div ref={mapElRef} className="driver-track-map" />
+            </div>
 
             {!mapReady && (
               <div className="driver-track-map-loading">Loading live map…</div>
             )}
 
-            {/* <div className="driver-track-chip driver-track-chip-here">
-                <span className="driver-track-chip-dot" />
-                <div>
-                    <strong>You are here</strong>
-                    <p>{ride.from.label}</p>
-                </div>
-                </div> */}
-
-            {/* <div className="driver-track-chip driver-track-chip-dest">
-              <FiMapPin className="driver-track-chip-dest-icon" />
-              <div>
-                <strong>Destination</strong>
-                <p>{ride.to.label}</p>
-              </div>
-            </div> */}
-
             <div className="driver-track-bottom-chips">
               <div className="driver-track-chip">
                 <p>
-
-                <GiRailRoad />
+                  <GiRailRoad />
                 </p>
                 <div>
                   <span className="driver-track-chip-label">Distance Left</span>
@@ -559,8 +597,7 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
 
               <div className="driver-track-chip">
                 <p>
-
-                <LuUsers />
+                  <LuUsers />
                 </p>
                 <div>
                   <span className="driver-track-chip-label">Passenger</span>
@@ -570,8 +607,7 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
 
               <div className="driver-track-chip">
                 <p>
-
-                <FiClock />
+                  <FiClock />
                 </p>
                 <div>
                   <span className="driver-track-chip-label">Eta</span>
@@ -606,164 +642,6 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
           </div>
         </section>
 
-        {/* ---------------- Trip info bar ---------------- */}
-        {/* <section className="driver-track-card driver-track-info-bar">
-          <div className="driver-track-info-item">
-            <span className="driver-track-info-label">
-              <span className="driver-track-dot-green" /> From
-            </span>
-            <strong>{ride.from.city}</strong>
-          </div>
-          <div className="driver-track-info-item">
-            <span className="driver-track-info-label">
-              <FiMapPin className="driver-track-info-icon-red" /> To
-            </span>
-            <strong>{ride.to.city}</strong>
-          </div>
-          <div className="driver-track-info-item">
-            <span className="driver-track-info-label">
-              <FiCalendar /> Departure Time
-            </span>
-            <strong>{ride.departureTime}</strong>
-          </div>
-          <div className="driver-track-info-item">
-            <span className="driver-track-info-label">
-              <FaCarSide /> Vehicle
-            </span>
-            <strong>{ride.vehicle.number}</strong>
-            <span className="driver-track-info-sub">{ride.vehicle.model}</span>
-          </div>
-          <div className="driver-track-info-item">
-            <span className="driver-track-info-label">
-              <FiUsers /> Total Seats
-            </span>
-            <strong>{ride.totalSeats}</strong>
-          </div>
-          <div className="driver-track-info-item">
-            <span className="driver-track-info-label">
-              <FiUsers /> Booked
-            </span>
-            <strong>{ride.bookedSeats}</strong>
-          </div>
-        </section> */}
-
-        {/* ---------------- Passengers + Ride summary ---------------- */}
-        {/* <section className="driver-track-grid-2">
-          <div className="driver-track-card">
-            <div className="driver-track-card-head">
-              <h2>Passengers ({ride.passengers.length})</h2>
-              <button className="driver-track-link-btn">
-                View All Details <FiChevronRight />
-              </button>
-            </div>
-            <ul className="driver-track-passenger-list">
-              {ride.passengers.map((p) => (
-                <li key={p.id} className="driver-track-passenger-row">
-                  <span className="driver-track-avatar driver-track-avatar-passenger">
-                    {p.initials}
-                  </span>
-                  <div className="driver-track-passenger-info">
-                    <strong>{p.name}</strong>
-                    <span>Seat {p.seat}</span>
-                  </div>
-                  <span
-                    className={`driver-track-badge driver-track-badge-${
-                      p.status === "paid" ? "success" : "amber"
-                    }`}
-                  >
-                    {p.status === "paid" ? "PAID" : "PENDING"}
-                  </span>
-                  <div className="driver-track-passenger-actions">
-                    <button
-                      className="driver-track-icon-btn driver-track-icon-btn-outline"
-                      aria-label={`Call ${p.name}`}
-                    >
-                      <FiPhone />
-                    </button>
-                    <button
-                      className="driver-track-icon-btn driver-track-icon-btn-outline"
-                      aria-label={`Message ${p.name}`}
-                    >
-                      <FiMessageSquare />
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="driver-track-card">
-            <div className="driver-track-card-head">
-              <h2>Ride Summary</h2>
-            </div>
-            <ul className="driver-track-summary-list">
-              <li>
-                <span>Total Distance</span>
-                <strong>{ride.totalDistanceKm} km</strong>
-              </li>
-              <li>
-                <span>Distance Covered</span>
-                <strong>{ride.distanceCoveredKm} km</strong>
-              </li>
-              <li>
-                <span>Remaining Distance</span>
-                <strong>{ride.distanceRemainingKm} km</strong>
-              </li>
-              <li>
-                <span>ETA to Destination</span>
-                <strong>{ride.etaLabel}</strong>
-              </li>
-              <li>
-                <span>Expected Arrival</span>
-                <strong>{ride.expectedArrival}</strong>
-              </li>
-              <li>
-                <span>Earnings</span>
-                <strong>₹{ride.earnings.toLocaleString("en-IN")}</strong>
-              </li>
-           
-            </ul>
-          </div>
-        </section> */}
-
-        {/* ---------------- Live location + Ride controls ---------------- */}
-        {/* <section className="driver-track-grid-2">
-          <div className="driver-track-card driver-track-live-card">
-            <div className="driver-track-card-head">
-              <h2>Live Location</h2>
-              <span className="driver-track-badge driver-track-badge-live">
-                <span className="driver-track-live-dot" /> LIVE
-              </span>
-            </div>
-            <p className="driver-track-muted">
-              Your location is being shared with passengers
-            </p>
-            <button className="driver-track-btn driver-track-btn-primary driver-track-full">
-              <FiShare2 /> Share Live Location
-            </button>
-            <p className="driver-track-hint">
-              Location updates every 5 seconds
-            </p>
-          </div >
-
-          <div className="driver-track-card">
-            <div className="driver-track-card-head">
-              <h2>Ride Controls</h2>
-            </div>
-            <button className="driver-track-btn driver-track-btn-danger driver-track-full">
-              <FiSquare /> End Ride
-            </button>
-            <div className="driver-track-controls-row">
-              <button className="driver-track-btn driver-track-btn-outline-primary">
-                <FiPhone /> Call All Passengers
-              </button>
-              <button className="driver-track-btn driver-track-btn-outline-amber">
-                <FiAlertTriangle /> Report an Issue
-              </button>
-            </div>
-          </div>
-        </section> */}
-
         {/* ---------------- Need help ---------------- */}
         <section className="driver-track-card driver-track-help-bar">
           <div className="driver-track-help-left">
@@ -777,88 +655,91 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
           </div>
           <div className="driver-track-foot-btn">
             <button className="driver-track-btn driver-track-btn-outline-primary">
-
               <FiPhone /> Call Support
             </button>
-            {/* <button className="driver-track-btn driver-track-btn-outline-amber">
-              <FiAlertTriangle /> Report an Issue
-            </button> */}
-            <button className="driver-track-btn sos-btn" onClick={handleOpenSosModal}>
-          <span>    <AiFillAlert  /></span>
+            <button
+              className="driver-track-btn sos-btn"
+              onClick={handleOpenSosModal}
+            >
+              <span>
+                <AiFillAlert />
+              </span>
               SOS Emergency
             </button>
           </div>
         </section>
       </main>
 
-  <Dialog
-  open={openSosModal}
-  onClose={handleCloseSosModal}
-  maxWidth="xs"
-  fullWidth
-  className="sos-dialog"
->
-  <DialogTitle className="sos-dialog-title">
-    <div className="sos-title-content">
-      <span className="sos-title-icon">  <AiFillAlert /></span>
-      <span>SOS ACTIVATED</span>
-    </div>
+      <Dialog
+        open={openSosModal}
+        onClose={handleCloseSosModal}
+        maxWidth="xs"
+        fullWidth
+        className="sos-dialog"
+      >
+        <DialogTitle className="sos-dialog-title">
+          <div className="sos-title-content">
+            <span className="sos-title-icon">
+              <AiFillAlert />
+            </span>
+            <span>SOS ACTIVATED</span>
+          </div>
 
-    <IconButton
-      edge="end"
-      onClick={handleCloseSosModal}
-      aria-label="Close"
-      size="medium"
-      className="sos-close-btn"
-    >
-      <FiX />
-    </IconButton>
-  </DialogTitle>
+          <IconButton
+            edge="end"
+            onClick={handleCloseSosModal}
+            aria-label="Close"
+            size="medium"
+            className="sos-close-btn"
+          >
+            <FiX />
+          </IconButton>
+        </DialogTitle>
 
-  <DialogContent dividers className="sos-dialog-content">
-    <div className="sos-alert-box">
-      <div className="sos-alert-icon">!</div>
+        <DialogContent dividers className="sos-dialog-content">
+          <div className="sos-alert-box">
+            <div className="sos-alert-icon">!</div>
 
-      <div>
-        <div className="sos-alert-title">
-          Emergency assistance requested
-        </div>
+            <div>
+              <div className="sos-alert-title">
+                Emergency assistance requested
+              </div>
 
-        <div className="sos-alert-text">
-    Emergency assistance has been requested. Your location is available to help responders assist you
-        </div>
-      </div>
-    </div>
+              <div className="sos-alert-text">
+                Emergency assistance has been requested. Your location is
+                available to help responders assist you
+              </div>
+            </div>
+          </div>
 
-    <div className="sos-location-section">
-      <div className="sos-section-title"><TbCurrentLocationFilled />
- Your current location</div>
+          <div className="sos-location-section">
+            <div className="sos-section-title">
+              <TbCurrentLocationFilled /> Your current location
+            </div>
 
-      <div className="sos-location-box">
-        <span>
-          {userLocationLabel ||
-            (userLocation
-              ? `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`
-              : `${ride.from.lat.toFixed(4)}, ${ride.from.lng.toFixed(4)}`)}
-        </span>
-      </div>
-    </div>
-  </DialogContent>
+            <div className="sos-location-box">
+              <span>
+                {userLocationLabel ||
+                  (userLocation
+                    ? `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`
+                    : `${ride.from.lat.toFixed(4)}, ${ride.from.lng.toFixed(4)}`)}
+              </span>
+            </div>
+          </div>
+        </DialogContent>
 
-  <DialogActions className="sos-dialog-actions">
-    <Button
-      variant="contained"
-      color="error"
-      fullWidth
-      className="sos-emergency-btn"
-      href="tel:112"
-    >
-      Call Emergency Services
-    </Button>
-
-   
-  </DialogActions>
-</Dialog>
+        <DialogActions className="sos-dialog-actions">
+          <Button
+            variant="contained"
+            color="error"
+            fullWidth
+            className="sos-emergency-btn"
+            href="tel:112"
+          >
+            Call Emergency Services
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

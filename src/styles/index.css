@@ -1987,9 +1987,9 @@ footer {
   flex-direction: column;
   gap: 1rem;
 }
-  .sos-btn>span{
+.sos-btn > span {
   font-size: 1.2rem;
-  }
+}
 .file-upload-label {
   display: inline-flex;
   align-items: center;
@@ -2778,7 +2778,7 @@ footer {
     padding: 20px 14px !important;
     gap: 16px;
   }
-.driver-track-badge,
+  .driver-track-badge,
   .chat-sidebar__title {
     display: none !important;
   }
@@ -2874,7 +2874,7 @@ footer {
     padding: 12px 15px 12px 44px;
     font-size: 0.8rem !important;
   }
-    .sos-btn>span,
+  .sos-btn > span,
   .MuiTypography-root,
   .input-icon,
   .why-card h3 {
@@ -2882,7 +2882,6 @@ footer {
   }
 
   .signup-title,
-  
   .footer-logo-div,
   .footer-logo,
   .logo-icon,
@@ -2921,8 +2920,8 @@ footer {
   .avl-rides-card {
     min-width: 260px !important;
   }
-  .sos-alert-icon{
-        width: 14px !important;
+  .sos-alert-icon {
+    width: 14px !important;
     height: 14px !important;
     font-size: 9px !important;
   }
@@ -2930,8 +2929,6 @@ footer {
   .sos-section-title,
   .sos-alert-title,
   .sos-title-content,
-
-
   .driver-track-title,
   .swipe-end-ride-text,
   .ntfy-card-title,
@@ -2956,18 +2953,18 @@ footer {
     font-size: 0.8rem !important;
   }
   .driver-track-btn,
-
   .sos-alert-text,
   .ntfy-card-desc,
   .chat-bubble__text,
   .ride-card__route strong {
     font-size: 0.7rem !important;
   }
-  
-.sos-location-box,
+
+  .sos-location-box,
   .driver-track-chip-label,
   .driver-track-subtitle,
-  .driver-track-badge-live, .driver-track-badge-success,
+  .driver-track-badge-live,
+  .driver-track-badge-success,
   .ntfy-tag,
   .ntfy-timing,
   .ntfy-tab,
@@ -4066,12 +4063,12 @@ footer {
     padding: 20px;
     align-items: center;
   }
-.driver-track-chip-distance,
-.driver-track-chip-speed,
-.driver-track-chip-eta{
-  max-width: max-content !important;
-  min-width: max-content !important;
-}
+  .driver-track-chip-distance,
+  .driver-track-chip-speed,
+  .driver-track-chip-eta {
+    max-width: max-content !important;
+    min-width: max-content !important;
+  }
   .location-modal {
     width: 100%;
     max-width: 420px;
@@ -5659,7 +5656,6 @@ footer {
     transform: rotate(360deg);
   }
 }
-
 /* ------------------------------------------------------------------ */
 /*  Base                                                                */
 /* ------------------------------------------------------------------ */
@@ -5784,13 +5780,12 @@ footer {
 }
 
 .driver-track-title {
-
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0;
   display: flex;
   align-items: center;
-  gap:10px;
+  gap: 10px;
 }
 
 .driver-track-subtitle {
@@ -5943,7 +5938,7 @@ footer {
   text-align: center !important;
 
   color: var(--ntfy-success) !important;
-  font-size: 13px ;
+  font-size: 13px;
   font-weight: 700 !important;
   line-height: 1 !important;
   white-space: nowrap !important;
@@ -6139,13 +6134,30 @@ footer {
   width: 100%;
   height: 560px !important;
   z-index: 0;
-  
+  /* Required: the rotor below is oversized (260%) and rotates — this
+     clips it back down to the visible window so no empty corners show. */
+  overflow: hidden;
 }
 
 .driver-track-map {
   width: 100%;
   height: 100%;
   background: #e6e9ee;
+}
+
+/* Oversized, CSS-rotated container the actual Leaflet map lives in.
+   Sized/offset so it fully covers the visible window at any rotation
+   angle. Keep MAP_OVERSIZE_FACTOR in DriverActiveRide.jsx in sync with
+   the 260% value below if you ever change it. */
+.driver-track-map-rotor {
+  position: absolute;
+  top: -80%;
+  left: -80%;
+  width: 260%;
+  height: 260%;
+  transform-origin: 50% 50%;
+  transition: transform 1s linear;
+  will-change: transform;
 }
 
 .driver-track-map-loading {
@@ -6157,6 +6169,7 @@ footer {
   color: var(--desc);
   font-size: 0.85rem;
   background: #eef1f6;
+  z-index: 1;
 }
 
 .driver-track-chip {
@@ -6266,7 +6279,7 @@ footer {
 
 .driver-track-bottom-chips {
   /* parent background + rounded card */
-  background: rgba(255,255,255,0.98);
+  background: rgba(255, 255, 255, 0.98);
   padding: 6px 8px;
   border-radius: 12px;
   box-shadow: var(--fr-shadow);
@@ -6288,7 +6301,7 @@ footer {
 .driver-track-bottom-chips .driver-track-chip + .driver-track-chip {
   padding-left: 14px;
   margin-left: 8px;
-  border-left: 1px solid rgba(0,0,0,0.06);
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 /* ensure old absolute positioning doesn't affect chips inside the container */
@@ -6323,7 +6336,7 @@ footer {
 
   .driver-track-bottom-chips .driver-track-chip + .driver-track-chip {
     margin-left: 0;
-    border-left: 1px solid rgba(0,0,0,0.06);
+    border-left: 1px solid rgba(0, 0, 0, 0.06);
     padding-left: 8px;
   }
 }
@@ -6371,6 +6384,19 @@ footer {
   background: var(--ntfy-danger);
 }
 
+/* Wraps each pin. The map rotor rotates the whole map, so this inner
+   wrapper gets counter-rotated (in JS) to keep pins visually upright
+   instead of spinning along with the map — same idea Google Maps uses
+   for place markers in rotated nav mode. */
+.driver-track-pin-rotor {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 1s linear;
+}
+
 .driver-track-car-marker {
   position: relative;
   width: 34px;
@@ -6404,6 +6430,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 1s linear;
 }
 .driver-track-car-dot > img {
   width: 36px;
@@ -6622,7 +6649,6 @@ footer {
   }
 
   .driver-track-chip-eta {
-  
     left: auto;
     transform: none;
   }
@@ -7187,7 +7213,6 @@ footer {
   color: #b91c1c !important;
 }
 
-
 /* =========================
    CONTENT
 ========================= */
@@ -7195,7 +7220,6 @@ footer {
 .sos-dialog-content {
   padding: 20px !important;
 }
-
 
 /* Emergency information */
 
@@ -7247,7 +7271,6 @@ footer {
   line-height: 1.5;
 }
 
-
 /* =========================
    LOCATION
 ========================= */
@@ -7258,9 +7281,9 @@ footer {
 
 .sos-section-title {
   margin-bottom: 8px;
-display: flex;
-align-items: center;
-gap: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   color: #374151;
 
   font-size: 0.84rem;
@@ -7283,9 +7306,7 @@ gap: 5px;
   color: #374151;
 
   font-size: 0.84rem;
-
 }
-
 
 /* =========================
    ACTIONS
@@ -7312,7 +7333,6 @@ gap: 5px;
   text-transform: none;
 }
 
-
 /* Call Emergency */
 
 .sos-emergency-btn {
@@ -7324,7 +7344,6 @@ gap: 5px;
   background: #b91c1c !important;
   box-shadow: none !important;
 }
-
 
 /* Emergency Contact */
 
@@ -7361,7 +7380,7 @@ gap: 5px;
   .sos-alert-box {
     padding: 12px;
   }
-  .driver-track-chip-speed{
+  .driver-track-chip-speed {
     width: max-content !important;
   }
 }
