@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import ChatPage from "@/features/driver-chat/Chat";
 import { getChatListApi } from "@/services/server/chatService";
 

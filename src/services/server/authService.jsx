@@ -1,7 +1,7 @@
-import getServerAxios from "@/lib/axiosServer";
+import getServerAxios, { getPublicAxios } from "@/lib/axiosServer";
 
 export const getRolesApi = async () => {
-  const axios = await getServerAxios();
+  const axios = getPublicAxios();
   return axios.get("/get-roles");
 };
 
