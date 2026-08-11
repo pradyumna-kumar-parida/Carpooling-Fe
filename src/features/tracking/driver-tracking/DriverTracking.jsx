@@ -3,9 +3,25 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import "leaflet/dist/leaflet.css";
 import { BiSolidSend } from "react-icons/bi";
+import { LuUsers } from "react-icons/lu";
+import { FaRightLong } from "react-icons/fa6";
 
 import { FaLocationDot } from "react-icons/fa6";
-import { FiMaximize } from "react-icons/fi";
+import { FiMaximize, FiX } from "react-icons/fi";
+import { AiFillAlert } from "react-icons/ai";
+import { TbCurrentLocationFilled } from "react-icons/tb";
+import { GiRailRoad } from "react-icons/gi";
+
+
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  IconButton,
+  Typography,
+} from "@mui/material";
 
 import trackingCar from "@/assets/images/trackingCar.png";
 import {
@@ -30,11 +46,6 @@ import {
 } from "react-icons/fi";
 import { FaCarSide, FaFlagCheckered, FaTachometerAlt } from "react-icons/fa";
 
-/* ------------------------------------------------------------------ */
-/*  STATIC DATA — swap this block for a live API / websocket feed     */
-/*  later. Keeping one shape here means the rest of the component     */
-/*  doesn't need to change when the data source changes.              */
-/* ------------------------------------------------------------------ */
 const RIDE_DATA = {
   rideId: "#BKGC8364",
   status: "driver_on_way", // scheduled | driver_on_way | arrived | in_progress | completed
@@ -82,8 +93,6 @@ const STEPS = [
   { key: "completed", label: "Completed", icon: FaFlagCheckered },
 ];
 
-/* Indices to advance per tick of the movement interval. Bump this up
-   if the OSRM route has a lot of points and the car feels too slow. */
 const CAR_STEP_PER_TICK = 1;
 const CAR_TICK_MS = 1000;
 
@@ -109,16 +118,13 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
   const carMarkerRef = useRef(null);
   const leafletRef = useRef(null);
 
-  /* Route + car-movement state. routeCoordsRef holds the full path
-     (from OSRM today, from your live API later). carIndexRef is
-     "where along that path the car currently is" — replace the
-     setInterval below with your real position feed and this whole
-     block keeps working unchanged. */
   const routeCoordsRef = useRef([]);
   const carIndexRef = useRef(0);
   const carIntervalRef = useRef(null);
 
   const [mapReady, setMapReady] = useState(false);
+  const [userLocation, setUserLocation] = useState(null);
+  const [userLocationLabel, setUserLocationLabel] = useState("");
 
   const currentStepIndex = STEPS.findIndex((s) => s.key === ride.status);
 
@@ -128,11 +134,6 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
     if (dot) dot.style.transform = `rotate(${bearing}deg)`;
   };
 
-  /* Moves the car marker to routeCoordsRef.current[index], rotates it
-     to face the next point, and extends the "covered" blue line.
-     This is the single place to call from a real GPS/socket update
-     once you're off static data — just feed it a new index (or swap
-     it for a function that takes a live {lat,lng} directly). */
   const moveCarToIndex = useCallback((index) => {
     const coords = routeCoordsRef.current;
     if (!coords.length || !carMarkerRef.current) return;
@@ -149,6 +150,70 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
 
     carIndexRef.current = clamped;
   }, []);
+
+  useEffect(() => {
+    const stored = window.sessionStorage.getItem("userLocation");
+    if (!stored) return;
+
+    try {
+      const parsed = JSON.parse(stored);
+      if (
+        parsed &&
+        typeof parsed.latitude === "number" &&
+        typeof parsed.longitude === "number"
+      ) {
+        setUserLocation({
+          lat: parsed.latitude,
+          lng: parsed.longitude,
+        });
+      }
+    } catch (err) {
+      console.warn("Invalid userLocation in sessionStorage", err);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!userLocation) return;
+
+    const fetchLabel = async () => {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${userLocation.lat}&lon=${userLocation.lng}&zoom=18&addressdetails=1`,
+        );
+        const data = await response.json();
+        const address = data?.address;
+        if (address) {
+          const parts = [
+            address.road,
+            address.neighbourhood,
+            address.suburb,
+            address.hamlet,
+            address.village,
+            address.town,
+            address.city_district,
+            address.city,
+            address.state,
+            address.country,
+          ];
+
+          const label = parts
+            .filter(Boolean)
+            .map((value) => value.trim())
+            .filter((value, index, self) => self.indexOf(value) === index)
+            .join(", ");
+
+          setUserLocationLabel(
+            label || `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`,
+          );
+        }
+      } catch (err) {
+        console.warn("Failed to resolve user location label", err);
+        setUserLocationLabel(`${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`);
+      }
+    };
+
+    fetchLabel();
+  }, [userLocation]);
 
   /* ---------------- Leaflet map bootstrap + OSRM route ---------------- */
   useEffect(() => {
@@ -330,9 +395,13 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
   }, []);
 
   const [swipePosition, setSwipePosition] = useState(0);
+  const [openSosModal, setOpenSosModal] = useState(false);
 
   const swipeStartX = useRef(0);
   const isSwiping = useRef(false);
+
+  const handleOpenSosModal = () => setOpenSosModal(true);
+  const handleCloseSosModal = () => setOpenSosModal(false);
 
   const handleSwipeStart = (e) => {
     e.preventDefault();
@@ -389,37 +458,37 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
           <div className="driver-track-header-left">
             <div>
               <div className="driver-track-title-row">
-                <h1 className="driver-track-title">Active Ride</h1>
+                <h1 className="driver-track-title">{ride.from.label} <FaRightLong />
+ {ride.to.label}</h1>
                 <span className="driver-track-badge driver-track-badge-live">
                   <span className="driver-track-live-dot" /> LIVE
                 </span>
               </div>
-              <p className="driver-track-subtitle">Ride ID: {ride.rideId}</p>
+              {/* <p className="driver-track-subtitle">Ride ID: {ride.rideId}</p> */}
             </div>
           </div>
-     <div className="driver-track-btn driver-track-btn-outline-danger driver-track-end-ride-top swipe-end-ride">
-  <div className="swipe-end-ride-track">
-    <span
-      className="swipe-end-ride-text"
-      style={{
-        opacity: Math.max(0, 1 - swipePosition / 70),
-      }}
-    >
+          <div className="driver-track-btn driver-track-btn-outline-danger driver-track-end-ride-top swipe-end-ride">
+            <div className="swipe-end-ride-track">
+              <span
+                className="swipe-end-ride-text"
+                style={{
+                  opacity: Math.max(0, 1 - swipePosition / 70),
+                }}
+              >
+                Complete Ride
+              </span>
 
-      Complete Ride
-    </span>
-
-    <div
-      className="swipe-end-ride-thumb"
-      style={{
-        transform: `translateX(${swipePosition}px)`,
-      }}
-      onPointerDown={handleSwipeStart}
-    >
-        <BiSolidSend  size={22} />
-    </div>
-  </div>
-</div>
+              <div
+                className="swipe-end-ride-thumb"
+                style={{
+                  transform: `translateX(${swipePosition}px)`,
+                }}
+                onPointerDown={handleSwipeStart}
+              >
+                <BiSolidSend size={22} />
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* ---------------- Status stepper ---------------- */}
@@ -460,23 +529,13 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
               <div className="driver-track-map-loading">Loading live map…</div>
             )}
 
-                {/* <div className="driver-track-chip driver-track-chip-here">
+            {/* <div className="driver-track-chip driver-track-chip-here">
                 <span className="driver-track-chip-dot" />
                 <div>
                     <strong>You are here</strong>
                     <p>{ride.from.label}</p>
                 </div>
                 </div> */}
-
-            {/* <div className="driver-track-chip driver-track-chip-eta">
-              <FiClock />
-              <div>
-                <span className="driver-track-chip-label">
-                  ETA to Destination
-                </span>
-                <strong>{ride.etaLabel}</strong>
-              </div>
-            </div> */}
 
             {/* <div className="driver-track-chip driver-track-chip-dest">
               <FiMapPin className="driver-track-chip-dest-icon" />
@@ -486,20 +545,40 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
               </div>
             </div> */}
 
-            {/* <div className="driver-track-chip driver-track-chip-speed">
-              <FaTachometerAlt />
-              <div>
-                <span className="driver-track-chip-label">Current Speed</span>
-                <strong>{ride.currentSpeedKmph} km/h</strong>
+            <div className="driver-track-bottom-chips">
+              <div className="driver-track-chip">
+                <p>
+
+                <GiRailRoad />
+                </p>
+                <div>
+                  <span className="driver-track-chip-label">Distance Left</span>
+                  <strong>{ride.distanceRemainingKm} km</strong>
+                </div>
               </div>
-            </div> */}
-{/* 
-            <div className="driver-track-chip driver-track-chip-distance">
-              <span className="driver-track-chip-label">
-                Distance Remaining
-              </span>
-              <strong>{ride.distanceRemainingKm} km</strong>
-            </div> */}
+
+              <div className="driver-track-chip">
+                <p>
+
+                <LuUsers />
+                </p>
+                <div>
+                  <span className="driver-track-chip-label">Passenger</span>
+                  <strong>{ride?.paidCount}</strong>
+                </div>
+              </div>
+
+              <div className="driver-track-chip">
+                <p>
+
+                <FiClock />
+                </p>
+                <div>
+                  <span className="driver-track-chip-label">Eta</span>
+                  <strong>{ride.etaLabel}</strong>
+                </div>
+              </div>
+            </div>
 
             <div className="driver-track-map-controls">
               <button
@@ -507,8 +586,7 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
                 className="driver-track-map-btn"
                 aria-label="Recenter"
               >
-<FiMaximize />
-
+                <FiMaximize />
               </button>
               <button
                 onClick={zoomIn}
@@ -529,7 +607,7 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
         </section>
 
         {/* ---------------- Trip info bar ---------------- */}
-        <section className="driver-track-card driver-track-info-bar">
+        {/* <section className="driver-track-card driver-track-info-bar">
           <div className="driver-track-info-item">
             <span className="driver-track-info-label">
               <span className="driver-track-dot-green" /> From
@@ -567,10 +645,10 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
             </span>
             <strong>{ride.bookedSeats}</strong>
           </div>
-        </section>
+        </section> */}
 
         {/* ---------------- Passengers + Ride summary ---------------- */}
-        <section className="driver-track-grid-2">
+        {/* <section className="driver-track-grid-2">
           <div className="driver-track-card">
             <div className="driver-track-card-head">
               <h2>Passengers ({ride.passengers.length})</h2>
@@ -643,15 +721,10 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
                 <span>Earnings</span>
                 <strong>₹{ride.earnings.toLocaleString("en-IN")}</strong>
               </li>
-              <li>
-                <span>Paid</span>
-                <strong>
-                  {ride.paidCount}/{ride.passengers.length}
-                </strong>
-              </li>
+           
             </ul>
           </div>
-        </section>
+        </section> */}
 
         {/* ---------------- Live location + Ride controls ---------------- */}
         {/* <section className="driver-track-grid-2">
@@ -704,14 +777,88 @@ export default function DriverActiveRide({ ride = RIDE_DATA }) {
           </div>
           <div className="driver-track-foot-btn">
             <button className="driver-track-btn driver-track-btn-outline-primary">
+
               <FiPhone /> Call Support
             </button>
-            <button className="driver-track-btn driver-track-btn-outline-amber">
+            {/* <button className="driver-track-btn driver-track-btn-outline-amber">
               <FiAlertTriangle /> Report an Issue
+            </button> */}
+            <button className="driver-track-btn sos-btn" onClick={handleOpenSosModal}>
+          <span>    <AiFillAlert  /></span>
+              SOS Emergency
             </button>
           </div>
         </section>
       </main>
+
+  <Dialog
+  open={openSosModal}
+  onClose={handleCloseSosModal}
+  maxWidth="xs"
+  fullWidth
+  className="sos-dialog"
+>
+  <DialogTitle className="sos-dialog-title">
+    <div className="sos-title-content">
+      <span className="sos-title-icon">  <AiFillAlert /></span>
+      <span>SOS ACTIVATED</span>
+    </div>
+
+    <IconButton
+      edge="end"
+      onClick={handleCloseSosModal}
+      aria-label="Close"
+      size="medium"
+      className="sos-close-btn"
+    >
+      <FiX />
+    </IconButton>
+  </DialogTitle>
+
+  <DialogContent dividers className="sos-dialog-content">
+    <div className="sos-alert-box">
+      <div className="sos-alert-icon">!</div>
+
+      <div>
+        <div className="sos-alert-title">
+          Emergency assistance requested
+        </div>
+
+        <div className="sos-alert-text">
+    Emergency assistance has been requested. Your location is available to help responders assist you
+        </div>
+      </div>
+    </div>
+
+    <div className="sos-location-section">
+      <div className="sos-section-title"><TbCurrentLocationFilled />
+ Your current location</div>
+
+      <div className="sos-location-box">
+        <span>
+          {userLocationLabel ||
+            (userLocation
+              ? `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`
+              : `${ride.from.lat.toFixed(4)}, ${ride.from.lng.toFixed(4)}`)}
+        </span>
+      </div>
+    </div>
+  </DialogContent>
+
+  <DialogActions className="sos-dialog-actions">
+    <Button
+      variant="contained"
+      color="error"
+      fullWidth
+      className="sos-emergency-btn"
+      href="tel:112"
+    >
+      Call Emergency Services
+    </Button>
+
+   
+  </DialogActions>
+</Dialog>
     </div>
   );
 }

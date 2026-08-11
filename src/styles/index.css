@@ -1987,7 +1987,9 @@ footer {
   flex-direction: column;
   gap: 1rem;
 }
-
+  .sos-btn>span{
+  font-size: 1.2rem;
+  }
 .file-upload-label {
   display: inline-flex;
   align-items: center;
@@ -2776,6 +2778,7 @@ footer {
     padding: 20px 14px !important;
     gap: 16px;
   }
+.driver-track-badge,
   .chat-sidebar__title {
     display: none !important;
   }
@@ -2871,6 +2874,7 @@ footer {
     padding: 12px 15px 12px 44px;
     font-size: 0.8rem !important;
   }
+    .sos-btn>span,
   .MuiTypography-root,
   .input-icon,
   .why-card h3 {
@@ -2878,6 +2882,7 @@ footer {
   }
 
   .signup-title,
+  
   .footer-logo-div,
   .footer-logo,
   .logo-icon,
@@ -2916,6 +2921,19 @@ footer {
   .avl-rides-card {
     min-width: 260px !important;
   }
+  .sos-alert-icon{
+        width: 14px !important;
+    height: 14px !important;
+    font-size: 9px !important;
+  }
+  .sos-emergency-btn,
+  .sos-section-title,
+  .sos-alert-title,
+  .sos-title-content,
+
+
+  .driver-track-title,
+  .swipe-end-ride-text,
   .ntfy-card-title,
   .ride-card__route strong,
   .chat-list__preview,
@@ -2937,11 +2955,19 @@ footer {
   .form-group label {
     font-size: 0.8rem !important;
   }
+  .driver-track-btn,
+
+  .sos-alert-text,
   .ntfy-card-desc,
   .chat-bubble__text,
   .ride-card__route strong {
     font-size: 0.7rem !important;
   }
+  
+.sos-location-box,
+  .driver-track-chip-label,
+  .driver-track-subtitle,
+  .driver-track-badge-live, .driver-track-badge-success,
   .ntfy-tag,
   .ntfy-timing,
   .ntfy-tab,
@@ -2949,6 +2975,13 @@ footer {
   .ride-card__meta,
   .chat-list__time {
     font-size: 0.6rem !important;
+  }
+  .driver-track-btn {
+    padding: 8px 13px !important;
+    gap: 4px !important;
+  }
+  .driver-track-card {
+    padding: 14px 10px !important;
   }
   .ntfy-tab {
     padding: 5px 8px !important;
@@ -4033,7 +4066,12 @@ footer {
     padding: 20px;
     align-items: center;
   }
-
+.driver-track-chip-distance,
+.driver-track-chip-speed,
+.driver-track-chip-eta{
+  max-width: max-content !important;
+  min-width: max-content !important;
+}
   .location-modal {
     width: 100%;
     max-width: 420px;
@@ -5746,10 +5784,13 @@ footer {
 }
 
 .driver-track-title {
-  font-family: var(--heading);
-  font-size: 1.3rem;
-  font-weight: 700;
+
+  font-size: 1.1rem;
+  font-weight: 600;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap:10px;
 }
 
 .driver-track-subtitle {
@@ -5887,7 +5928,7 @@ footer {
 
   display: flex !important;
   align-items: center !important;
-  justify-content: flex-start !important;
+  justify-content: center !important;
 
   /* Space for arrow */
   padding: 0 8px 0 43px !important;
@@ -5898,9 +5939,11 @@ footer {
 .swipe-end-ride-text {
   position: relative !important;
   z-index: 1 !important;
+  width: 100% !important;
+  text-align: center !important;
 
   color: var(--ntfy-success) !important;
-  font-size: 13px !important;
+  font-size: 13px ;
   font-weight: 700 !important;
   line-height: 1 !important;
   white-space: nowrap !important;
@@ -5963,6 +6006,22 @@ footer {
 }
 .swipe-end-ride-thumb:active {
   cursor: grabbing !important;
+}
+
+@media (max-width: 767px) {
+  .swipe-end-ride {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .swipe-end-ride-track {
+    width: 100% !important;
+    padding: 0 10px 0 43px !important;
+  }
+
+  .swipe-end-ride-thumb {
+    left: 0 !important;
+  }
 }
 
 .driver-track-end-ride-top {
@@ -6078,8 +6137,9 @@ footer {
 .driver-track-map-wrap {
   position: relative;
   width: 100%;
-  height: 460px;
+  height: 560px !important;
   z-index: 0;
+  
 }
 
 .driver-track-map {
@@ -6106,7 +6166,8 @@ footer {
   box-shadow: var(--fr-shadow);
   padding: 9px 12px;
   display: flex;
-  align-items: flex-start;
+  align-items: center !important;
+  justify-content: center !important;
   gap: 8px;
   font-size: 0.78rem;
   z-index: 1000;
@@ -6129,7 +6190,7 @@ footer {
   display: block;
   color: var(--desc);
   font-size: 0.68rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
   letter-spacing: 0.03em;
 }
 
@@ -6149,9 +6210,8 @@ footer {
 }
 
 .driver-track-chip-eta {
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 14px;
+  right: 14px;
   color: var(--ntfy-success);
   align-items: center;
 }
@@ -6172,21 +6232,105 @@ footer {
 }
 
 .driver-track-chip-speed {
-  top: 50%;
+  bottom: 14px;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   align-items: center;
   color: var(--custom-one);
+  min-width: 140px;
 }
 
 .driver-track-chip-distance {
   bottom: 14px;
   left: 14px;
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+}
+
+.driver-track-chip {
+  padding: 12px 14px;
+}
+
+/* Consolidated bottom chips row */
+.driver-track-bottom-chips {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  z-index: 1000;
+}
+
+.driver-track-bottom-chips {
+  /* parent background + rounded card */
+  background: rgba(255,255,255,0.98);
+  padding: 6px 8px;
+  border-radius: 12px;
+  box-shadow: var(--fr-shadow);
+}
+
+.driver-track-bottom-chips .driver-track-chip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 0;
+  box-shadow: none;
+  max-width: none;
+}
+
+/* separators between chips (thin vertical line) */
+.driver-track-bottom-chips .driver-track-chip + .driver-track-chip {
+  padding-left: 14px;
+  margin-left: 8px;
+  border-left: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ensure old absolute positioning doesn't affect chips inside the container */
+.driver-track-bottom-chips .driver-track-chip-distance,
+.driver-track-bottom-chips .driver-track-chip-speed,
+.driver-track-bottom-chips .driver-track-chip-eta {
+  top: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  right: auto !important;
+  transform: none !important;
+}
+
+@media (max-width: 640px) {
+  .driver-track-bottom-chips {
+    left: 14px;
+    right: 14px;
+    transform: none;
+    width: calc(100% - 28px);
+    justify-content: space-between;
+    gap: 6px;
+    padding: 8px 10px;
+  }
+
+  .driver-track-bottom-chips .driver-track-chip {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 8px;
+  }
+
+  .driver-track-bottom-chips .driver-track-chip + .driver-track-chip {
+    margin-left: 0;
+    border-left: 1px solid rgba(0,0,0,0.06);
+    padding-left: 8px;
+  }
 }
 
 .driver-track-map-controls {
   position: absolute;
-  bottom: 14px;
+  top: 14px;
   right: 14px;
   display: flex;
   flex-direction: column;
@@ -6279,37 +6423,6 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-.driver-track-info-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.72rem;
-  color: var(--desc);
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.driver-track-info-item strong {
-  font-size: 0.95rem;
-}
-
-.driver-track-info-sub {
-  font-size: 0.74rem;
-  color: var(--desc);
-}
-
-.driver-track-info-icon-red {
-  color: var(--ntfy-danger);
-}
-
-.driver-track-dot-green {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--ntfy-success);
-  display: inline-block;
 }
 
 /* ------------------------------------------------------------------ */
@@ -6485,11 +6598,11 @@ footer {
   }
 
   .driver-track-map-wrap {
-    height: 360px;
+    height: 360px !important;
   }
 
   .driver-track-chip {
-    max-width: 150px;
+    max-width: 140px;
     padding: 7px 9px;
     font-size: 0.7rem;
   }
@@ -6509,20 +6622,20 @@ footer {
   }
 
   .driver-track-chip-eta {
-    top: 66px;
-    left: 50%;
-  }
-
-  .driver-track-chip-speed {
-    top: auto;
-    bottom: 60px;
-    left: 10px;
+  
+    left: auto;
     transform: none;
   }
 
+  .driver-track-chip-speed {
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   .driver-track-chip-distance {
-    bottom: 10px;
-    left: 10px;
+    bottom: 14px;
+    left: 14px;
   }
 
   .driver-track-controls-row {
@@ -7001,5 +7114,254 @@ footer {
   .ride-com-confetti,
   .ride-com-rate-btn-timer {
     animation: none !important;
+  }
+}
+.sos-btn {
+  background: #dc2626;
+  color: #fff;
+}
+
+.sos-btn:hover {
+  background: #b91c1c;
+  color: #fff;
+}
+
+.sos-btn:active {
+  transform: translateY(1px);
+}
+/* =========================
+   SOS MODAL
+========================= */
+
+.sos-dialog .MuiDialog-paper {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+
+.sos-dialog-title {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+
+  padding: 18px 20px !important;
+
+  background: #fff5f5;
+  border-bottom: 1px solid #fee2e2;
+}
+
+.sos-title-content {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #b91c1c;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.sos-title-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+  background: #fee2e2;
+
+  font-size: 18px;
+}
+
+.sos-close-btn {
+  color: #6b7280 !important;
+}
+
+.sos-close-btn:hover {
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+}
+
+
+/* =========================
+   CONTENT
+========================= */
+
+.sos-dialog-content {
+  padding: 20px !important;
+}
+
+
+/* Emergency information */
+
+.sos-alert-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  background: #fff7f7;
+  border: 1px solid #fecaca;
+}
+
+.sos-alert-icon {
+  flex: 0 0 auto;
+
+  width: 26px;
+  height: 26px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #dc2626;
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.sos-alert-title {
+  margin-bottom: 4px;
+
+  color: #991b1b;
+
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.sos-alert-text {
+  color: #6b7280;
+
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+
+/* =========================
+   LOCATION
+========================= */
+
+.sos-location-section {
+  margin-top: 20px;
+}
+
+.sos-section-title {
+  margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 5px;
+  color: #374151;
+
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.sos-location-box {
+  display: flex;
+  align-items: center;
+
+  min-height: 44px;
+
+  padding: 10px 13px;
+
+  border-radius: 8px;
+
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+
+  color: #374151;
+
+  font-size: 0.84rem;
+
+}
+
+
+/* =========================
+   ACTIONS
+========================= */
+
+.sos-dialog-actions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+
+  padding: 16px 20px 20px !important;
+
+  background: #fff;
+}
+
+.sos-dialog-actions .MuiButton-root {
+  min-height: 44px;
+
+  border-radius: 8px;
+
+  font-size: 0.86rem;
+  font-weight: 600;
+
+  text-transform: none;
+}
+
+
+/* Call Emergency */
+
+.sos-emergency-btn {
+  background: #dc2626 !important;
+  box-shadow: none !important;
+}
+
+.sos-emergency-btn:hover {
+  background: #b91c1c !important;
+  box-shadow: none !important;
+}
+
+
+/* Emergency Contact */
+
+.sos-contact-btn {
+  color: #1d4ed8 !important;
+
+  border-color: #2563eb !important;
+
+  background: #fff !important;
+}
+
+.sos-contact-btn:hover {
+  background: #eff6ff !important;
+  border-color: #1d4ed8 !important;
+}
+@media (max-width: 480px) {
+  .sos-dialog .MuiDialog-paper {
+    margin: 16px;
+    border-radius: 12px;
+  }
+
+  .sos-dialog-title {
+    padding: 15px 16px !important;
+  }
+
+  .sos-dialog-content {
+    padding: 16px !important;
+  }
+
+  .sos-dialog-actions {
+    padding: 14px 16px 16px !important;
+  }
+
+  .sos-alert-box {
+    padding: 12px;
+  }
+  .driver-track-chip-speed{
+    width: max-content !important;
   }
 }
