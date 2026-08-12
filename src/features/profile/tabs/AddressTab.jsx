@@ -18,7 +18,7 @@ export default function AddressTab({ isEditing, userData, editData, onChange }) 
               required
             />
           ) : (
-            <p className="form-value">{userData.address}</p>
+            <p className="form-value">{userData.address || "Not provided"}</p>
           )}
         </div>
 
@@ -34,7 +34,7 @@ export default function AddressTab({ isEditing, userData, editData, onChange }) 
               required
             />
           ) : (
-            <p className="form-value">{userData.city}</p>
+            <p className="form-value">{userData.city || "Not provided"}</p>
           )}
         </div>
 
@@ -50,7 +50,7 @@ export default function AddressTab({ isEditing, userData, editData, onChange }) 
               required
             />
           ) : (
-            <p className="form-value">{userData.state}</p>
+            <p className="form-value">{userData.state || "Not provided"}</p>
           )}
         </div>
 
@@ -66,7 +66,7 @@ export default function AddressTab({ isEditing, userData, editData, onChange }) 
               required
             />
           ) : (
-            <p className="form-value">{userData.postalCode}</p>
+            <p className="form-value">{userData.postalCode || "Not provided"}</p>
           )}
         </div>
 
@@ -82,7 +82,7 @@ export default function AddressTab({ isEditing, userData, editData, onChange }) 
               required
             />
           ) : (
-            <p className="form-value">{userData.country}</p>
+            <p className="form-value">{userData.country || "Not provided"}</p>
           )}
         </div>
       </div>

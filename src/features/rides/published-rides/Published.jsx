@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import "../../../styles/ride-published.css";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
@@ -12,24 +13,16 @@ import { useSocket } from "@/hooks/useSocket";
 import { socket } from "@/lib/socket";
 import { FaAngleRight } from "react-icons/fa6";
 import Link from "next/link";
+import { cancelRideApi, startRideApi } from "@/services/client/rideService";
 
-const STATUS_FILTERS = [
-  "All",
-  "Upcoming",
-  "Ready to Depart",
-  "Completed",
-  "Cancelled",
-];
+const STATUS_FILTERS = ["All", "Upcoming", "Ongoing", "Completed", "Cancelled"];
 
 const STATUS_META = {
   upcoming: { label: "Upcoming", color: "blue" },
-  ready: { label: "Ready to Depart", color: "green" },
   ongoing: { label: "Ongoing", color: "orange" },
   completed: { label: "Completed", color: "grey" },
   cancelled: { label: "Cancelled", color: "red" },
 };
-
-const READY_WINDOW_MS = 5 * 60 * 1000; // show "Ready to Depart" 5 min before departure
 
 /* ─── API → UI mapping helpers ──────────────────────────────────────── */
 
@@ -67,32 +60,39 @@ function formatApiTime(timeStr) {
   return `${String(h).padStart(2, "0")}:${m} ${period}`;
 }
 
-// Derives the ride's lifecycle status from date/time, since the API's
-// "status" field is currently always "scheduled". Once the backend starts
-// sending real "ongoing" / "completed" / "cancelled" values, those are
-// respected directly instead of being recomputed.
-function computeRideStatus(apiRide) {
-  const apiStatus = String(apiRide.status || "").toLowerCase();
-  if (["ongoing", "completed", "cancelled"].includes(apiStatus)) {
-    return apiStatus;
+// Status now comes straight from the API — no derived/guessed values.
+// "scheduled" is normalized to "upcoming" for the UI; anything else the
+// API sends (ongoing / completed / cancelled) is used as-is.
+function normalizeApiStatus(apiStatus) {
+  const s = String(apiStatus || "").toLowerCase();
+  if (s === "scheduled") return "upcoming";
+  if (["upcoming", "ongoing", "completed", "cancelled"].includes(s)) {
+    return s;
   }
-
-  const departureAt = new Date(
-    `${apiRide.ride_date}T${apiRide.departure_time}`,
-  );
-  if (isNaN(departureAt.getTime())) return "upcoming";
-
-  let reachAt = null;
-  if (apiRide.estimated_reach_time) {
-    reachAt = new Date(`${apiRide.ride_date}T${apiRide.estimated_reach_time}`);
-    if (reachAt < departureAt) reachAt.setDate(reachAt.getDate() + 1); // overnight trip
-  }
-
-  const now = new Date();
-  if (reachAt && now >= reachAt) return "completed";
-  if (now >= departureAt) return "ongoing";
-  if (now >= new Date(departureAt.getTime() - READY_WINDOW_MS)) return "ready";
   return "upcoming";
+}
+
+// Start Ride is only enabled once today's date is on/after the ride's
+// date (time of day is ignored — the button unlocks the moment the date
+// rolls over, e.g. ride on 13-08-2026 09:50 AM becomes startable as soon
+// as it's 13-08-2026, not 5 minutes before departure).
+function canStartToday(rideDateStr) {
+  if (!rideDateStr) return false;
+  const rideDate = new Date(rideDateStr);
+  if (isNaN(rideDate.getTime())) return false;
+
+  const today = new Date();
+  const todayOnly = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate(),
+  );
+  const rideDateOnly = new Date(
+    rideDate.getFullYear(),
+    rideDate.getMonth(),
+    rideDate.getDate(),
+  );
+  return todayOnly >= rideDateOnly;
 }
 
 function mapApiPassengers(bookingDetails) {
@@ -122,11 +122,12 @@ function mapApiRideToUIRide(apiRide) {
     to: extractCityFromAddress(apiRide.destination_address),
     toAddress: apiRide.destination_address,
     date: formatApiDate(apiRide.ride_date),
+    rideDateRaw: apiRide.ride_date, // kept raw for the date-gate check
     time: formatApiTime(apiRide.departure_time),
     totalSeats: apiRide.total_seats,
     bookedSeats: apiRide.total_seats - apiRide.available_seats,
     pricePerSeat: Number(apiRide.price_per_seat),
-    status: computeRideStatus(apiRide),
+    status: normalizeApiStatus(apiRide.status),
     vehicle: `${apiRide.model} – ${apiRide.registration_number}`,
     passengers: mapApiPassengers(apiRide.bookingDetails),
   };
@@ -170,11 +171,14 @@ function PassengerAvatar({ initials, paid }) {
 
 /* ─── Detail Modal ───────────────────────────────────────── */
 
-function RideDetailModal({ ride, onClose, onCancel, onStart }) {
+// onStart here is a *request* to confirm, not the actual start call —
+// the parent shows a confirm dialog and only calls the API after "Yes".
+function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
   const [expandedPax, setExpandedPax] = useState(null);
 
   const earned =
     ride.passengers.filter((p) => p.paid).length * ride.pricePerSeat;
+  const startEnabled = canStartToday(ride.rideDateRaw);
 
   return (
     <div className="ride-publish-modal-backdrop" onClick={onClose}>
@@ -286,11 +290,13 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
                           <span className="ride-publish-modal-pax-name">
                             {p.name}
                           </span>
-                        
                         </div>
-                          <Link className="ride-publish-modal-pax-seat" href="/driver/chats">
-                           Chat
-                          </Link>
+                        <Link
+                          className="ride-publish-modal-pax-seat"
+                          href="/driver/chats"
+                        >
+                          Chat
+                        </Link>
                         <span
                           className={`ride-publish-pax-paid ${
                             p.paid
@@ -443,24 +449,28 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
 
         {/* Footer actions */}
         <div className="ride-publish-modal-footer">
-          {(ride.status === "upcoming" || ride.status === "ready") && (
-            <button
-              className="ride-publish-modal-btn-cancel"
-              onClick={() => onCancel(ride.id)}
-            >
-              Cancel Ride
-            </button>
-          )}
-          {ride.status === "ready" && (
-            <button
-              className="ride-publish-modal-btn-start"
-              onClick={() => onStart(ride.id)}
-            >
-              Start Ride
-            </button>
-          )}
           {ride.status === "upcoming" && (
-            <button className="ride-publish-modal-btn-edit">Edit Ride</button>
+            <>
+              <button
+                className="ride-publish-modal-btn-cancel"
+                onClick={() => onRequestCancel(ride.id)}
+              >
+                Cancel Ride
+              </button>
+              <button
+                className="ride-publish-modal-btn-start"
+                disabled={!startEnabled}
+                title={
+                  startEnabled
+                    ? ""
+                    : "You can start this ride on the scheduled date"
+                }
+                onClick={() => onRequestStart(ride.id)}
+              >
+                Start Ride
+              </button>
+              {/* <button className="ride-publish-modal-btn-edit">Edit Ride</button> */}
+            </>
           )}
         </div>
       </div>
@@ -473,11 +483,13 @@ function RideDetailModal({ ride, onClose, onCancel, onStart }) {
 export default function PublishedRides({ publishedRide }) {
   console.log("published ride", publishedRide);
   useSocket();
+  const router = useRouter();
 
   const [rides, setRides] = useState(() => buildRidesFromApi(publishedRide));
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedRide, setSelectedRide] = useState(null);
   const [confirmCancel, setConfirmCancel] = useState(null);
+  const [confirmStart, setConfirmStart] = useState(null);
 
   useEffect(() => {
     setRides(buildRidesFromApi(publishedRide));
@@ -518,35 +530,50 @@ export default function PublishedRides({ publishedRide }) {
   const filtered = rides.filter((r) => {
     if (activeFilter === "All") return true;
     if (activeFilter === "Upcoming") return r.status === "upcoming";
-    if (activeFilter === "Ready to Depart") return r.status === "ready";
+    if (activeFilter === "Ongoing") return r.status === "ongoing";
     if (activeFilter === "Completed") return r.status === "completed";
     if (activeFilter === "Cancelled") return r.status === "cancelled";
     return true;
   });
 
-  const handleCancel = (id) => {
-    setRides((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status: "cancelled" } : r)),
-    );
-    setSelectedRide(null);
-    setConfirmCancel(null);
+  // Actual API call — only fires after the cancel confirm dialog says "Yes"
+  const handleCancel = async (id) => {
+    try {
+      await cancelRideApi(id);
+      setRides((prev) =>
+        prev.map((r) => (r.id === id ? { ...r, status: "cancelled" } : r)),
+      );
+    } catch (err) {
+      console.error("Failed to cancel ride:", err);
+    } finally {
+      setSelectedRide(null);
+      setConfirmCancel(null);
+    }
   };
 
-  const handleStart = (id) => {
-    setRides((prev) =>
-      prev.map((r) => (r.id === id ? { ...r, status: "ongoing" } : r)),
-    );
-    setSelectedRide(null);
+  // Actual API call — only fires after the start confirm dialog says "Yes"
+  const handleStart = async (id) => {
+    try {
+      await startRideApi(id);
+      router.push("/driver/tracking");
+    } catch (err) {
+      console.error("Failed to start ride:", err);
+    } finally {
+      setConfirmStart(null);
+    }
   };
 
   // counts for tabs
   const counts = {
     All: rides.length,
     Upcoming: rides.filter((r) => r.status === "upcoming").length,
-    "Ready to Depart": rides.filter((r) => r.status === "ready").length,
+    Ongoing: rides.filter((r) => r.status === "ongoing").length,
     Completed: rides.filter((r) => r.status === "completed").length,
     Cancelled: rides.filter((r) => r.status === "cancelled").length,
   };
+
+  const rideBeingCancelled = rides.find((r) => r.id === confirmCancel);
+  const rideBeingStarted = rides.find((r) => r.id === confirmStart);
 
   return (
     <div className="ride-publish-root">
@@ -603,7 +630,7 @@ export default function PublishedRides({ publishedRide }) {
           <div className="ride-publish-summary-divider" />
           <div className="ride-publish-summary-item">
             <span className="ride-publish-summary-val ride-publish-summary-val-orange">
-              1
+              {counts.Ongoing}
             </span>
             <span className="ride-publish-summary-label">Active Rides</span>
           </div>
@@ -663,6 +690,7 @@ export default function PublishedRides({ publishedRide }) {
                   ride.passengers.filter((p) => p.paid).length *
                   ride.pricePerSeat;
                 const meta = STATUS_META[ride.status];
+                const startEnabled = canStartToday(ride.rideDateRaw);
 
                 return (
                   <div
@@ -671,11 +699,13 @@ export default function PublishedRides({ publishedRide }) {
                   >
                     {/* Card top bar */}
                     <div className="ride-publish-card-topbar">
-                      <span className="ride-publish-card-id">RIDE-{ride.id}</span>
+                      <span className="ride-publish-card-id">
+                        RIDE-{ride.id}
+                      </span>
                       <span
                         className={`ride-publish-status-badge ride-publish-status-badge-${meta.color}`}
                       >
-                        {meta.color === "green" && (
+                        {meta.color === "orange" && (
                           <span className="ride-publish-status-pulse" />
                         )}
                         {meta.label}
@@ -836,23 +866,18 @@ export default function PublishedRides({ publishedRide }) {
 
                       {ride.status === "upcoming" && (
                         <>
-                          <button className="ride-publish-action-btn ride-publish-action-btn-edit">
+                          {/* <button className="ride-publish-action-btn ride-publish-action-btn-edit">
                             Edit Ride
-                          </button>
-                          <button
-                            className="ride-publish-action-btn ride-publish-action-btn-cancel"
-                            onClick={() => setConfirmCancel(ride.id)}
-                          >
-                            Cancel
-                          </button>
-                        </>
-                      )}
-
-                      {ride.status === "ready" && (
-                        <>
+                          </button> */}
                           <button
                             className="ride-publish-action-btn ride-publish-action-btn-start"
-                            onClick={() => handleStart(ride.id)}
+                            disabled={!startEnabled}
+                            title={
+                              startEnabled
+                                ? ""
+                                : "You can start this ride on the scheduled date"
+                            }
+                            onClick={() => setConfirmStart(ride.id)}
                           >
                             Start Ride
                           </button>
@@ -905,8 +930,14 @@ export default function PublishedRides({ publishedRide }) {
         <RideDetailModal
           ride={selectedRide}
           onClose={() => setSelectedRide(null)}
-          onCancel={(id) => setConfirmCancel(id)}
-          onStart={handleStart}
+          onRequestCancel={(id) => {
+            setSelectedRide(null);
+            setConfirmCancel(id);
+          }}
+          onRequestStart={(id) => {
+            setSelectedRide(null);
+            setConfirmStart(id);
+          }}
         />
       )}
 
@@ -925,6 +956,9 @@ export default function PublishedRides({ publishedRide }) {
             </div>
             <h3 className="ride-publish-confirm-title">Cancel this ride?</h3>
             <p className="ride-publish-confirm-text">
+              {rideBeingCancelled
+                ? `${rideBeingCancelled.from} → ${rideBeingCancelled.to} on ${rideBeingCancelled.date}. `
+                : ""}
               All passengers will be notified and refunded automatically. This
               action cannot be undone.
             </p>
@@ -940,6 +974,45 @@ export default function PublishedRides({ publishedRide }) {
                 onClick={() => handleCancel(confirmCancel)}
               >
                 Yes, Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Start Confirm Dialog ── */}
+      {confirmStart && (
+        <div
+          className="ride-publish-modal-backdrop"
+          onClick={() => setConfirmStart(null)}
+        >
+          <div
+            className="ride-publish-confirm-dialog"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="ride-publish-confirm-icon ride-publish-confirm-icon-start">
+              <BsCheck2Circle />
+            </div>
+            <h3 className="ride-publish-confirm-title">Start this ride?</h3>
+            <p className="ride-publish-confirm-text">
+              {rideBeingStarted
+                ? `${rideBeingStarted.from} → ${rideBeingStarted.to} at ${rideBeingStarted.time}. `
+                : ""}
+              Passengers will be notified you're on the way, and you'll be taken
+              to live tracking.
+            </p>
+            <div className="ride-publish-confirm-actions">
+              <button
+                className="ride-publish-confirm-btn-no"
+                onClick={() => setConfirmStart(null)}
+              >
+                Not Yet
+              </button>
+              <button
+                className="ride-publish-confirm-btn-yes ride-publish-confirm-btn-start"
+                onClick={() => handleStart(confirmStart)}
+              >
+                Yes, Start Ride
               </button>
             </div>
           </div>

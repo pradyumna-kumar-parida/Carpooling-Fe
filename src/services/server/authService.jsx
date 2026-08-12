@@ -9,3 +9,13 @@ export const getMe = async () => {
   const axios = await getServerAxios();
   return axios.get("/get-me");
 };
+
+export const getProfile = async () => {
+  const axios = await getServerAxios();
+  return axios.get("/edit-user");
+};
+export const CompleteProfileApi = async () => {
+  const axios = await getServerAxios();
+  const { data } = await axios.get("/profile-status");
+  return data;
+};

@@ -23,7 +23,7 @@ export default function PersonalInfoTab({
               required
             />
           ) : (
-            <p className="form-value">{userData.fullname}</p>
+            <p className="form-value">{userData.fullname || "Not provided"}</p>
           )}
         </div>
 
@@ -39,7 +39,7 @@ export default function PersonalInfoTab({
               required
             />
           ) : (
-            <p className="form-value">{userData.email}</p>
+            <p className="form-value">{userData.email || "Not provided"}</p>
           )}
         </div>
 
@@ -55,7 +55,7 @@ export default function PersonalInfoTab({
               required
             />
           ) : (
-            <p className="form-value">{userData.phone}</p>
+            <p className="form-value">{userData.phone || "Not provided"}</p>
           )}
         </div>
 
@@ -69,12 +69,12 @@ export default function PersonalInfoTab({
               className="form-input"
               required
             >
+              <option value="">Select user type</option>
               <option value="Driver">Driver</option>
               <option value="Passenger">Passenger</option>
-              <option value="Both">Both</option>
             </select>
           ) : (
-            <p className="form-value">{userData.usertype}</p>
+            <p className="form-value">{userData.usertype === "2" ? "driver" : "passenger"|| "Not provided"}</p>
           )}
         </div>
 

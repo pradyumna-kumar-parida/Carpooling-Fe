@@ -11,6 +11,7 @@ import HelpSupportCard from "./components/HelpSupportCard";
 import ChatPanel from "../chat/ChatPanel";
 
 import "../../styles/track-chat.css";
+import SosFloating from "@/components/SOS";
 
 const TrackChat = () => {
   const searchParams = useSearchParams();
@@ -117,6 +118,7 @@ const TrackChat = () => {
 
   return (
     <div className="tc-page">
+          <SosFloating  />
       <div className={`tc-wrapper ${mapFullscreen ? "tc-fullscreen" : ""}`}>
         {/* LEFT — MAP */}
 
@@ -146,7 +148,7 @@ const TrackChat = () => {
                 formatTime={formatTime}
               />
 
-              <DriverDetailsCard driver={rideData} />
+              {/* <DriverDetailsCard driver={rideData} /> */}
 
               <RideStatusCard rideStatus={rideStatus} />
 

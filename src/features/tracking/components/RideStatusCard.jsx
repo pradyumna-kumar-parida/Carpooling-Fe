@@ -31,17 +31,11 @@ function StepIconCustom(props) {
   return (
     <div
       style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 44,
-        height: 44,
-        borderRadius: "50%",
-        boxSizing: "border-box",
+      
         background: COLORS.white,
         border: `2.5px solid ${isBlue ? COLORS.blue : COLORS.gray}`,
-        transition: "all 0.3s ease",
       }}
+      className="user-tracking-status"
       aria-hidden="true"
     >
       <IconComponent size={18} color={isBlue ? COLORS.blue : COLORS.gray} />

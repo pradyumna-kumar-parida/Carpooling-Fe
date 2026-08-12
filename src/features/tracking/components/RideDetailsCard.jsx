@@ -1,4 +1,5 @@
 "use client";
+import { IoLocationSharp } from "react-icons/io5";
 
 const RideDetailsCard = ({
   ride,
@@ -68,7 +69,10 @@ const RideDetailsCard = ({
       {/* Route */}
       <div className="route-section">
         <div className="route-point">
-          <span className="route-dot route-dot-green" />
+          <span className="route-dot route-dot-green" >
+            <IoLocationSharp />
+
+          </span>
 
           <div>
             <p className="route-label">Pickup</p>
@@ -84,7 +88,10 @@ const RideDetailsCard = ({
         <div className="route-line-v" />
 
         <div className="route-point">
-          <span className="route-dot route-dot-red" />
+          <span className="route-dot route-dot-red" >
+            <IoLocationSharp />
+
+          </span>
 
           <div>
             <p className="route-label">Drop</p>

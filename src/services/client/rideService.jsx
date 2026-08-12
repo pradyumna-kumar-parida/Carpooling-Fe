@@ -17,3 +17,9 @@ export const getNearRides = (lat, lng) => {
 
   return getClientAxios.get("/rides/upcoming");
 };
+export const completeRideApi = (rideId) =>
+  getClientAxios.patch(`/ride/${rideId}/complete`);
+export const startRideApi = (rideId) =>
+  getClientAxios.patch(`/ride/${rideId}/start`);
+export const cancelRideApi = (rideId) =>
+  getClientAxios.patch(`/ride/${rideId}/cancel`);

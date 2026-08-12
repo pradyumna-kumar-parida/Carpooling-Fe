@@ -3748,7 +3748,7 @@
     width: 100%;
     text-align: center;
   }
-  
+  .rating-modal-subtitle,
   .vehicle-detl-subtitle,
   .cancel-info p,
   .driver-car,
@@ -3764,6 +3764,7 @@
   .ridepay-razorpay-desc {
     font-size: 0.8rem !important;
     padding: 0 !important;
+    margin-bottom: 0 !important;
   }
   .css-1016kjc-MuiChip-root {
     padding: 4px 2px !important ;
@@ -3784,6 +3785,10 @@
     padding: 7px 10px !important;
     font-size: 0.7rem !important;
   }
+  .rating-modal-box {
+    padding: 20px 15px  !important;
+  }
+
  .vehicle-detl-card-name,
  .vehicle-detl-panel-title,
  .vehicle-detl-panel-reg,
@@ -3791,6 +3796,7 @@
   .vehicle-detl-add-btn{
     font-size: 0.8rem !important
   }
+    .rating-modal-feedback,
   .fr-rides-rating,
   .fr-rides-distance,
   .fr-rides-subtitle,
@@ -3852,6 +3858,7 @@
   }
 .vehicle-detl-section-title,
   .item-icon,
+  
   .myride-modal-title h2,
   .bookconf-driver-name,
   .bookconf-step-city,

@@ -11,6 +11,8 @@ import {
   FaChevronRight,
   FaStar,
 } from "react-icons/fa";
+import { IoLocationSharp } from "react-icons/io5";
+
 import RatingModal from "@/components/Rating";
 import rideComplete from "@/assets/images/ride-complete.png";
 /**
@@ -45,7 +47,7 @@ const DEMO_RIDE_DATA = {
 const AUTO_OPEN_DELAY_MS = 5000;
 
 /** Small helper — colored initials avatar, falls back gracefully when no photo exists. */
-function RideComAvatar({ name, avatar, size = 44 }) {
+function RideComAvatar({ name, avatar, size = 34 }) {
   const initials = name
     .split(" ")
     .map((part) => part[0])
@@ -123,6 +125,7 @@ export default function RideCompleted({
               width={400}
               height={300}
               priority
+              className= "ride-complete-img"
             />
             <span className="ride-com-confetti c1" />
             <span className="ride-com-confetti c2" />
@@ -152,9 +155,14 @@ export default function RideCompleted({
 
             <div className="ride-com-route">
               <span className="ride-com-route-dot" />
-              <span className="ride-com-route-point">{route.from}</span>
+              <span className="ride-com-route-point"> 
+                <p className="source"><IoLocationSharp />
+</p>
+                {route.from}</span>
+                
               <span className="ride-com-route-line" />
-              <span className="ride-com-route-point">{route.to}</span>
+              <span className="ride-com-route-point">{route.to}            <p className="destination"><IoLocationSharp />
+</p></span>
             </div>
 
             <div className="ride-com-stats">

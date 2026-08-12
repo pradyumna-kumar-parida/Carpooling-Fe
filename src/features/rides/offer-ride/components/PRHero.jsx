@@ -10,6 +10,8 @@ import { FaSmoking } from "react-icons/fa";
 import { GiCometSpark } from "react-icons/gi";
 import { RxCross2 } from "react-icons/rx";
 import Alert from "@mui/material/Alert";
+import { FaRegHourglassHalf } from "react-icons/fa6";
+
 import Snackbar from "@mui/material/Snackbar";
 import ArcLoader from "../../../../components/Loader";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -57,6 +59,7 @@ function LocationDropdown({
   value,
   onSelect,
   showCurrentLocation = false,
+  disabled = false,
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState(value?.name || "");
@@ -217,7 +220,7 @@ function LocationDropdown({
           setFocused(true);
         }}
         onBlur={() => setFocused(false)}
-        disabled={!googleReady}
+        disabled={!googleReady || disabled}
       />
       {selected && query && (
         <button
@@ -290,7 +293,9 @@ const DEFAULT_PREFS = {
 // ── Must match the key used in useLoginForm / useSignupForm ──────────────
 const SAVED_FORM_KEY = "offerRideSavedForm";
 
-const PRHero = ({ vehiclesFetch }) => {
+const PRHero = ({ vehiclesFetch, profileData }) => {
+  console.log("[profile data", profileData);
+
   const user = useSelector((state) => state.auth.user);
   const vehicleList = vehiclesFetch;
   const router = useRouter();
@@ -381,10 +386,30 @@ const PRHero = ({ vehiclesFetch }) => {
     router.push(`${destination}?from=${encodeURIComponent(currentUrl)}`);
   };
   const token = getToken();
+  const profileCompleted = profileData?.profileCompleted;
+  const isVerified = profileData?.isVerified;
+
   const handlePublish = async () => {
     if (!token) {
       showAlert("error", "Please login to publish a ride.");
       setTimeout(() => redirectWithSavedForm("/login"), 1500);
+      return;
+    }
+
+    if (!profileCompleted) {
+      showAlert(
+        "error",
+        "Please complete your profile before offering a ride.",
+      );
+      setTimeout(() => redirectWithSavedForm("/driver/complete-profile"), 1500);
+      return;
+    }
+
+    if (!isVerified) {
+      showAlert(
+        "error",
+        "Your verification is pending. You cannot offer a ride until it is approved",
+      );
       return;
     }
 
@@ -446,8 +471,8 @@ const PRHero = ({ vehiclesFetch }) => {
       showAlert(
         "error",
         error?.response?.data?.message ||
-        error?.message ||
-        "Something went wrong.",
+          error?.message ||
+          "Something went wrong.",
       );
     } finally {
       setLoading(false);
@@ -480,10 +505,23 @@ const PRHero = ({ vehiclesFetch }) => {
           <ArcLoader />
         </div>
       )}
+      <div className="verification-pending-box">
+        <div className="verification-title">
+          <span className="verification-icon">
+            <FaRegHourglassHalf />
+          </span>
+          <h3>Verification Pending</h3>
+        </div>
 
+        <p>
+          Your verification is pending. You can offer rides after your account
+          is approved.
+        </p>
+      </div>
       <section className="prh-root">
         <div className="prh-bg-blur prh-bg-blur--1" />
         <div className="prh-bg-blur prh-bg-blur--2" />
+
         <div className="prh-inner">
           <div className="prh-card">
             {!token && (
@@ -506,11 +544,13 @@ const PRHero = ({ vehiclesFetch }) => {
                 value={from}
                 onSelect={setFrom}
                 showCurrentLocation
+                disabled={isVerified === false}
               />
               <button
                 className={`prh-swap-btn${swapped ? " prh-swap-btn--active" : ""}`}
                 onClick={handleSwap}
                 aria-label="Swap cities"
+                disabled={isVerified === false}
               >
                 <CgArrowsExchangeV />
               </button>
@@ -519,6 +559,7 @@ const PRHero = ({ vehiclesFetch }) => {
                 icon={<FaLocationDot />}
                 value={to}
                 onSelect={setTo}
+                disabled={isVerified === false}
               />
             </div>
 
@@ -529,8 +570,10 @@ const PRHero = ({ vehiclesFetch }) => {
                   className="prh-field prh-field--inline prh-field--focusable"
                   style={{ position: "relative" }}
                   onClick={() =>
-                    datePickerRef.current?.showPicker?.() ||
-                    datePickerRef.current?.focus?.()
+                    isVerified === false
+                      ? null
+                      : datePickerRef.current?.showPicker?.() ||
+                        datePickerRef.current?.focus?.()
                   }
                 >
                   <input
@@ -539,6 +582,7 @@ const PRHero = ({ vehiclesFetch }) => {
                     placeholder="yyyy-mm-dd"
                     value={date || ""}
                     readOnly
+                    disabled={isVerified === false}
                   />
                   <input
                     ref={datePickerRef}
@@ -549,6 +593,7 @@ const PRHero = ({ vehiclesFetch }) => {
                     tabIndex={-1}
                     aria-hidden="true"
                     className="date-picker-format"
+                    disabled={isVerified === false}
                   />
                 </div>
               </div>
@@ -560,13 +605,13 @@ const PRHero = ({ vehiclesFetch }) => {
                     type="time"
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
+                    disabled={isVerified === false}
                   />
                 </div>
               </div>
             </div>
 
-           
-            {vehicleList.length >= 1 && token && (
+            {vehicleList.length >= 1 && token && isVerified && (
               <>
                 {!selectedVehicle ? (
                   <small className="seat-info">
@@ -586,9 +631,7 @@ const PRHero = ({ vehiclesFetch }) => {
               </>
             )}
 
-
-
-            {vehicleList.length >= 1 && token && (
+            {vehicleList.length >= 1 && token && isVerified && (
               <div className="prh-field prh-field--vehicle prh-field--focusable">
                 <span className="prh-field-icon prh-field-icon--from">
                   <FaCarAlt />
@@ -607,6 +650,7 @@ const PRHero = ({ vehiclesFetch }) => {
                     // Start with one available seat
                     setSeats(vehicle ? 1 : 1);
                   }}
+                  disabled={isVerified === false}
                 >
                   <option value="">Choose your vehicle</option>
                   {vehicleList.map((v) => (
@@ -620,7 +664,7 @@ const PRHero = ({ vehiclesFetch }) => {
               </div>
             )}
 
-             <div className="prh-seats-row">
+            <div className="prh-seats-row">
               <span className="prh-seats-label">
                 <MdAirlineSeatLegroomReduced /> Seats
               </span>
@@ -629,7 +673,9 @@ const PRHero = ({ vehiclesFetch }) => {
                   type="button"
                   className="prh-seats-btn"
                   onClick={() => setSeats((s) => Math.max(1, s - 1))}
-                  disabled={seatControlDisabled || seats <= 1}
+                  disabled={
+                    seatControlDisabled || seats <= 1 || isVerified === false
+                  }
                 >
                   −
                 </button>
@@ -638,7 +684,11 @@ const PRHero = ({ vehiclesFetch }) => {
                   type="button"
                   className="prh-seats-btn"
                   onClick={() => setSeats((s) => Math.min(maxSeats, s + 1))}
-                  disabled={seatControlDisabled || seats >= maxSeats}
+                  disabled={
+                    seatControlDisabled ||
+                    seats >= maxSeats ||
+                    isVerified === false
+                  }
                 >
                   +
                 </button>
@@ -655,6 +705,7 @@ const PRHero = ({ vehiclesFetch }) => {
                 min="0"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+                disabled={isVerified === false}
               />
               <span className="prh-price-suffix">/ seat</span>
             </div>
@@ -673,6 +724,7 @@ const PRHero = ({ vehiclesFetch }) => {
                       onChange={() =>
                         setPrefs((p) => ({ ...p, [key]: !p[key] }))
                       }
+                      disabled={isVerified === false}
                     />
                     <span className="prh-pref-icon">{icon}</span>
                     <span className="prh-pref-text">{label}</span>

@@ -5,7 +5,7 @@ import Landingpage from "@/features/home/home";
 import React from "react";
 
 const Home = () => {
-  // console.log("HOME RENDER");
+
   return (
     <>
       <Header />

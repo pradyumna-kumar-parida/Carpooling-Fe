@@ -20,3 +20,4 @@ export const getRole = () => {
   if (typeof window === "undefined") return undefined;
   return Cookies.get("role");
 };
+  

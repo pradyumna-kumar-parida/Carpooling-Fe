@@ -1,38 +1,59 @@
 "use client";
 
+import { getRole } from "@/lib/cookie";
 import { useState } from "react";
 
 const initialUserData = {
-  fullname: "Deepak Kumar",
-  email: "deepak.kumar@example.com",
-  phone: "+91 9876543210",
-  usertype: "Driver",
-  password: "********",
-  confirmPassword: "********",
-  terms: true,
-  city: "Mumbai",
-  state: "Maharashtra",
-  country: "India",
-  postalCode: "400001",
-  address: "123, Marine Drive, Mumbai",
-  bankAccountHolder: "Deepak Kumar",
-  bankAccountNumber: "1234567890123456",
-  bankIFSC: "SBIN0001234",
-  bankBranchName: "Mumbai Main Branch",
-  bankBranchCode: "001234",
+  fullname: "",
+  email: "",
+  phone: "",
+  usertype: "",
+  password: "",
+  confirmPassword: "",
+  terms: false,
+
+  completeProfile: "no", // "yes" | "no" — from API
+
+  city: "",
+  state: "",
+  country: "",
+  postalCode: "",
+  address: "",
+
+  bankAccountHolder: "",
+  bankAccountNumber: "",
+  bankIFSC: "",
+  bankBranchName: "",
+  bankBranchCode: "",
+
   driverLicense: null,
   aadhaarCard: null,
   panCard: null,
-  passportPhoto: null,
   bankAccountDetails: null,
-  profilePicture: "https://i.pravatar.cc/150?img=12",
+
+  profilePicture: "",
 };
 
-export function useProfile() {
+function computeIsDriver(usertype) {
+  return String(usertype || "").toLowerCase() === "driver";
+}
+
+export function useProfile(profileData) {
   const [isEditing, setIsEditing] = useState(false);
-  const [userData, setUserData] = useState(initialUserData);
-  const [editData, setEditData] = useState({ ...initialUserData });
+
+  const [userData, setUserData] = useState({
+    ...initialUserData,
+    ...(profileData || {}),
+  });
+
+  const [editData, setEditData] = useState({
+    ...initialUserData,
+    ...(profileData || {}),
+  });
+
   const [filePreview, setFilePreview] = useState({});
+
+const isDriver = getRole()?.toLowerCase() === "driver";
 
   const handleEditToggle = () => {
     if (isEditing) {
@@ -80,6 +101,7 @@ export function useProfile() {
     userData,
     editData,
     filePreview,
+    isDriver,
     handleEditToggle,
     handleSave,
     handleInputChange,

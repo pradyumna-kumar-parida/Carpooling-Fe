@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { FiUser } from "react-icons/fi";
 import { PiBankBold } from "react-icons/pi";
 import { IoDocuments } from "react-icons/io5";
@@ -13,58 +13,66 @@ import AddressTab from "../tabs/AddressTab";
 import BankingTab from "../tabs/BankingTab";
 import DocumentsTab from "../tabs/DocumentsTab";
 
-const TABS = [
+const ALL_TABS = [
   { id: "personal", label: "Personal Info", icon: <FiUser /> },
   { id: "address", label: "Address", icon: <RiUserLocationFill /> },
   { id: "banking", label: "Banking", icon: <PiBankBold /> },
   { id: "documents", label: "Documents", icon: <IoDocuments /> },
 ];
 
-export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState("personal");
-
+export default function ProfilePage({ profileData }) {
   const {
     isEditing,
     userData,
     editData,
     filePreview,
+    isDriver,
     handleEditToggle,
     handleSave,
     handleInputChange,
     handleFileChange,
-  } = useProfile();
+  } = useProfile(profileData);
+
+  // Passengers only get the Personal Info tab — no address/banking/documents.
+  const TABS = useMemo(
+    () => (isDriver ? ALL_TABS : ALL_TABS.filter((t) => t.id === "personal")),
+    [isDriver],
+  );
+
+  const [activeTab, setActiveTab] = useState("personal");
 
   return (
     <div className="profile-page">
       <div className="container">
-        {/* Header */}
         <ProfileHeader
           isEditing={isEditing}
           userData={userData}
           editData={editData}
           filePreview={filePreview}
+          isDriver={isDriver}
           onEditToggle={handleEditToggle}
           onSave={handleSave}
           onFileChange={handleFileChange}
         />
 
-        {/* Tab Navigation */}
-        <div className="profile-tabs">
-          <div className="tabs-wrapper">
-            {TABS.map((tab) => (
-              <button
-                key={tab.id}
-                className={`tab-btn ${activeTab === tab.id ? "active" : ""}`}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                <span className="tab-icon">{tab.icon}</span>
-                <span className="tab-label">{tab.label}</span>
-              </button>
-            ))}
+        {TABS.length > 1 && (
+          <div className="profile-tabs">
+            <div className="tabs-wrapper">
+              {TABS.map((tab) => (
+                <button
+                  key={tab.id}
+                  type="button"
+                  className={`tab-btn ${activeTab === tab.id ? "active" : ""}`}
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  <span className="tab-icon">{tab.icon}</span>
+                  <span className="tab-label">{tab.label}</span>
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Tab Content */}
         <div className="profile-content">
           <form onSubmit={handleSave}>
             {activeTab === "personal" && (
@@ -75,7 +83,8 @@ export default function ProfilePage() {
                 onChange={handleInputChange}
               />
             )}
-            {activeTab === "address" && (
+
+            {isDriver && activeTab === "address" && (
               <AddressTab
                 isEditing={isEditing}
                 userData={userData}
@@ -83,7 +92,8 @@ export default function ProfilePage() {
                 onChange={handleInputChange}
               />
             )}
-            {activeTab === "banking" && (
+
+            {isDriver && activeTab === "banking" && (
               <BankingTab
                 isEditing={isEditing}
                 userData={userData}
@@ -91,7 +101,8 @@ export default function ProfilePage() {
                 onChange={handleInputChange}
               />
             )}
-            {activeTab === "documents" && (
+
+            {isDriver && activeTab === "documents" && (
               <DocumentsTab
                 isEditing={isEditing}
                 userData={userData}

@@ -7,12 +7,31 @@ import {
   Button,
   Stack,
 } from "@mui/material";
-
 import { FiAlertTriangle } from "react-icons/fi";
 
-export default function LogoutDialog({ open, onClose, onConfirm }) {
+export default function LogoutDialog({
+  open,
+  onClose,
+  onConfirm,
+}) {
+  const handleLogout = () => {
+    // Close modal immediately
+    onClose();
+
+    // Perform logout after the modal close state is triggered
+    setTimeout(() => {
+      onConfirm();
+    }, 0);
+  };
+
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth className="logout-dialog">
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="xs"
+      fullWidth
+      className="logout-dialog"
+    >
       <DialogContent
         sx={{
           textAlign: "center",
@@ -32,7 +51,11 @@ export default function LogoutDialog({ open, onClose, onConfirm }) {
         </Typography>
 
         <Stack direction="row" spacing={2}>
-          <Button fullWidth variant="outlined" onClick={onClose}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={onClose}
+          >
             Stay Logged In
           </Button>
 
@@ -40,7 +63,7 @@ export default function LogoutDialog({ open, onClose, onConfirm }) {
             fullWidth
             variant="contained"
             color="error"
-            onClick={onConfirm}
+            onClick={handleLogout}
           >
             Logout
           </Button>

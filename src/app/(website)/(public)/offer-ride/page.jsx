@@ -1,26 +1,32 @@
 import { cookies } from "next/headers";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+
 import PublishRide from "@/features/rides/offer-ride/PublishRide";
 import { getOnlyVehicleList } from "@/services/server/vehicleService";
+import { CompleteProfileApi } from "@/services/server/authService";
+
 
 export default async function Page() {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
   let vehicles = [];
+  let profileData = null;
 
   if (token) {
     try {
       const { data } = await getOnlyVehicleList();
       vehicles = data;
     } catch (err) {
-      // If the vehicle fetch fails (network/server error),
-      // continue rendering the page with an empty vehicle list
-      // instead of letting the server component throw.
       vehicles = [];
+    }
+
+    try {
+      const { data } = await CompleteProfileApi();
+      profileData = data;
+    } catch (err) {
+      profileData = null;
     }
   }
 
-  return <PublishRide vehiclesFetch={vehicles} />;
+  return <PublishRide vehiclesFetch={vehicles} profileData={profileData} />;
 }

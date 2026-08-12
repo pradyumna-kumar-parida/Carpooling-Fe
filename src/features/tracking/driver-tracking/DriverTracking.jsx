@@ -5,19 +5,9 @@ import "leaflet/dist/leaflet.css";
 import { BiSolidSend } from "react-icons/bi";
 import { LuUsers } from "react-icons/lu";
 import { FaRightLong } from "react-icons/fa6";
-import { FiMaximize, FiX } from "react-icons/fi";
-import { AiFillAlert } from "react-icons/ai";
-import { TbCurrentLocationFilled } from "react-icons/tb";
+import { FiMaximize } from "react-icons/fi";
 import { GiRailRoad } from "react-icons/gi";
-
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  IconButton,
-} from "@mui/material";
+import { useRouter } from "next/navigation";
 
 import trackingCar from "@/assets/images/trackingCar.png";
 import {
@@ -31,6 +21,8 @@ import {
   FiTruck,
 } from "react-icons/fi";
 import { FaCarSide, FaFlagCheckered } from "react-icons/fa";
+
+import SosFloating from "@/components/SOS";
 
 const RIDE_DATA = {
   rideId: "#BKGC8364",
@@ -111,6 +103,7 @@ function bearingBetween(lat1, lon1, lat2, lon2) {
 }
 
 export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
+  const router = useRouter();
   const mapElRef = useRef(null);
   const mapRotorRef = useRef(null); // oversized div that gets CSS-rotated
   const mapRef = useRef(null);
@@ -126,8 +119,6 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
   const carIntervalRef = useRef(null);
 
   const [mapReady, setMapReady] = useState(false);
-  const [userLocation, setUserLocation] = useState(null);
-  const [userLocationLabel, setUserLocationLabel] = useState("");
   const [rideCompleted, setRideCompleted] = useState(false);
 
   // eslint-disable-next-line no-unused-vars
@@ -189,73 +180,6 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
     },
     [applyMapRotation],
   );
-
-  useEffect(() => {
-    const stored = window.sessionStorage.getItem("userLocation");
-    if (!stored) return;
-
-    try {
-      const parsed = JSON.parse(stored);
-      if (
-        parsed &&
-        typeof parsed.latitude === "number" &&
-        typeof parsed.longitude === "number"
-      ) {
-        setUserLocation({
-          lat: parsed.latitude,
-          lng: parsed.longitude,
-        });
-      }
-    } catch (err) {
-      console.warn("Invalid userLocation in sessionStorage", err);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!userLocation) return;
-
-    const fetchLabel = async () => {
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${userLocation.lat}&lon=${userLocation.lng}&zoom=18&addressdetails=1`,
-        );
-        const data = await response.json();
-        const address = data?.address;
-        if (address) {
-          const parts = [
-            address.road,
-            address.neighbourhood,
-            address.suburb,
-            address.hamlet,
-            address.village,
-            address.town,
-            address.city_district,
-            address.city,
-            address.state,
-            address.country,
-          ];
-
-          const label = parts
-            .filter(Boolean)
-            .map((value) => value.trim())
-            .filter((value, index, self) => self.indexOf(value) === index)
-            .join(", ");
-
-          setUserLocationLabel(
-            label ||
-              `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`,
-          );
-        }
-      } catch (err) {
-        console.warn("Failed to resolve user location label", err);
-        setUserLocationLabel(
-          `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`,
-        );
-      }
-    };
-
-    fetchLabel();
-  }, [userLocation]);
 
   /* ---------------- Leaflet map bootstrap + OSRM route ---------------- */
   useEffect(() => {
@@ -331,7 +255,7 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
       routeCoordsRef.current = coords;
 
       routeLayerRef.current = L.polyline(coords, {
-        color: "#babdc2",
+        color: "#1e40af",
         weight: 6,
         opacity: 1,
         lineCap: "round",
@@ -347,7 +271,7 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
       );
 
       coveredLayerRef.current = L.polyline(coords.slice(0, startIndex + 1), {
-        color: "#1e40af",
+        color: "#9FA6B3",
         weight: 6,
         opacity: 1,
         lineCap: "round",
@@ -464,13 +388,9 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
   }, []);
 
   const [swipePosition, setSwipePosition] = useState(0);
-  const [openSosModal, setOpenSosModal] = useState(false);
 
   const swipeStartX = useRef(0);
   const isSwiping = useRef(false);
-
-  const handleOpenSosModal = () => setOpenSosModal(true);
-  const handleCloseSosModal = () => setOpenSosModal(false);
 
   /* Stops the live-position interval and marks the ride complete.
      Wired up to the swipe-to-complete control below. */
@@ -481,7 +401,8 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
     }
     setRideCompleted(true);
     onRideComplete?.(ride);
-  }, [onRideComplete, ride]);
+    setTimeout(() => router.push("/driver/ride-complete"), 400);
+  }, [onRideComplete, ride, router]); // add router to the dependency array
 
   const handleSwipeStart = (e) => {
     e.preventDefault();
@@ -530,6 +451,9 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
 
   return (
     <div className="driver-track-page">
+      {/* Floating SOS icon + emergency modal, fully self-contained */}
+      <SosFloating fallbackLat={ride.from.lat} fallbackLng={ride.from.lng} />
+
       <main className="driver-track-container">
         {/* ---------------- Ride header ---------------- */}
         <section className="driver-track-card driver-track-header-card">
@@ -657,89 +581,9 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
             <button className="driver-track-btn driver-track-btn-outline-primary">
               <FiPhone /> Call Support
             </button>
-            <button
-              className="driver-track-btn sos-btn"
-              onClick={handleOpenSosModal}
-            >
-              <span>
-                <AiFillAlert />
-              </span>
-              SOS Emergency
-            </button>
           </div>
         </section>
       </main>
-
-      <Dialog
-        open={openSosModal}
-        onClose={handleCloseSosModal}
-        maxWidth="xs"
-        fullWidth
-        className="sos-dialog"
-      >
-        <DialogTitle className="sos-dialog-title">
-          <div className="sos-title-content">
-            <span className="sos-title-icon">
-              <AiFillAlert />
-            </span>
-            <span>SOS ACTIVATED</span>
-          </div>
-
-          <IconButton
-            edge="end"
-            onClick={handleCloseSosModal}
-            aria-label="Close"
-            size="medium"
-            className="sos-close-btn"
-          >
-            <FiX />
-          </IconButton>
-        </DialogTitle>
-
-        <DialogContent dividers className="sos-dialog-content">
-          <div className="sos-alert-box">
-            <div className="sos-alert-icon">!</div>
-
-            <div>
-              <div className="sos-alert-title">
-                Emergency assistance requested
-              </div>
-
-              <div className="sos-alert-text">
-                Emergency assistance has been requested. Your location is
-                available to help responders assist you
-              </div>
-            </div>
-          </div>
-
-          <div className="sos-location-section">
-            <div className="sos-section-title">
-              <TbCurrentLocationFilled /> Your current location
-            </div>
-
-            <div className="sos-location-box">
-              <span>
-                {userLocationLabel ||
-                  (userLocation
-                    ? `${userLocation.lat.toFixed(4)}, ${userLocation.lng.toFixed(4)}`
-                    : `${ride.from.lat.toFixed(4)}, ${ride.from.lng.toFixed(4)}`)}
-              </span>
-            </div>
-          </div>
-        </DialogContent>
-
-        <DialogActions className="sos-dialog-actions">
-          <Button
-            variant="contained"
-            color="error"
-            fullWidth
-            className="sos-emergency-btn"
-            href="tel:112"
-          >
-            Call Emergency Services
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }

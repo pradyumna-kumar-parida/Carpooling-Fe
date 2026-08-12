@@ -7,6 +7,6 @@ export const metadata = {
   description: "Manage your profile information",
 };
 
-export default function ProfileRoute() {
-  return <ProfilePage />;
+export default function ProfileRoute({ profileData }) {
+  return <ProfilePage profileData={profileData} />;
 }

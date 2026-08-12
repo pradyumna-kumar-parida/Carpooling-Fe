@@ -32,7 +32,7 @@ export default function RatingModal({
       feedback,
     };
 
-    console.log("Rating Submitted:", payload);
+
 
     // API Call Here
 
