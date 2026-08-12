@@ -48,9 +48,9 @@ const Page = async () => {
           We couldn't load your profile information. Please try again later.
         </p>
 
-        <button type="button" onClick={() => window.location.reload()}>
+        <a href="" className="fail-profile-retry">
           Try Again
-        </button>
+        </a>
       </div>
     );
   }
