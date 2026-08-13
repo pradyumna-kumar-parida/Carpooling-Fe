@@ -81,7 +81,7 @@ export default function BookingRouteMap({
       <FaLocationDot
         style={{
           color,
-          fontSize: "30px",
+          fontSize: "20px",
         }}
       />,
     );

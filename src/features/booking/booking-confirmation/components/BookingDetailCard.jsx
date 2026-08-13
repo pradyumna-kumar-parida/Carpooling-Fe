@@ -7,6 +7,7 @@ import { GiPathDistance } from "react-icons/gi";
 import { GiDuration } from "react-icons/gi";
 import { FiUsers } from "react-icons/fi";
 import { IoTimerOutline } from "react-icons/io5";
+import { MdVerified } from "react-icons/md";
 
 const BookingDetailsCard = ({ bookingRideDetails }) => {
   const formattedDate = new Date(
@@ -66,7 +67,7 @@ const BookingDetailsCard = ({ bookingRideDetails }) => {
               <p className="bookconf-step-address">
                 {bookingRideDetails?.bookingDetails?.ride_source}
               </p>
-              <span className="bookconf-step-time">{formattedTime}</span>
+              <span className="bookconf-step-time">{duration}</span>
             </div>
           </div>
 
@@ -164,6 +165,7 @@ const BookingDetailsCard = ({ bookingRideDetails }) => {
           <div className="bookconf-driver-info">
             <h4 className="bookconf-driver-name">
               {bookingRideDetails?.userDetails?.name}
+                <MdVerified className="verify-driver" />
             </h4>
             <div className="bookconf-driver-meta">
               <span className="bookconf-driver-rating">

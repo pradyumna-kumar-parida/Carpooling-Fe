@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, Button, Chip } from "@mui/material";
 import { BsShieldCheck } from "react-icons/bs";
 import { FaPhone, FaEnvelope } from "react-icons/fa6";
+import { MdVerified } from "react-icons/md";
 
 import Avatar from "./Avatar";
 
@@ -57,20 +58,9 @@ export default function DriverModal({ open, onClose, ride }) {
           />
 
           <div className="dm-header-info">
-            <h2 className="dm-driver-name">{ride?.driver_details?.name}</h2>
+            <h2 className="dm-driver-name">{ride?.driver_details?.name}   <MdVerified className="verify-driver" /></h2>
 
-            <div className="dm-verified-row">
-              {ride.driver_is_verified === "1" ? (
-                <Chip
-                  icon={<BsShieldCheck />}
-                  label="Verified Driver"
-                  size="small"
-                  color="success"
-                />
-              ) : (
-                <Chip label="Not Verified" size="small" color="default" />
-              )}
-            </div>
+           
           </div>
         </div>
 

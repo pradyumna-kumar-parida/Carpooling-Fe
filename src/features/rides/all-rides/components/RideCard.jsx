@@ -6,7 +6,7 @@ import { FaCarSide, FaSmoking } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { GiCometSpark } from "react-icons/gi";
 import { IoFastFoodSharp } from "react-icons/io5";
-
+import { MdVerified } from "react-icons/md";
 import StarRating from "./StarRating";
 
 import {
@@ -31,8 +31,9 @@ export default function RideCard({ ride, noOfSIt }) {
 
   return (
     <div
-      className={`ridetail-card-ride${status.passed ? " ridetail-card-ride--passed" : ""
-        }`}
+      className={`ridetail-card-ride${
+        status.passed ? " ridetail-card-ride--passed" : ""
+      }`}
       onClick={handleClick}
       role="button"
       tabIndex={status.passed ? -1 : 0}
@@ -76,8 +77,6 @@ export default function RideCard({ ride, noOfSIt }) {
         </div>
 
         <div className="ridetail-ride-price">
-        
-
           <span className="ridetail-price-main">
             ₹{Number(ride.price_per_seat * noOfSIt).toFixed(2)}
           </span>
@@ -109,8 +108,13 @@ export default function RideCard({ ride, noOfSIt }) {
             )}
           </div>
 
-          <span className="ridetail-driver-name">{ride.driver_name}</span>
-
+          <span className="ridetail-driver-name">
+            {ride.driver_name}
+         
+          </span>
+   {/* {ride.verified &&  */}
+   <MdVerified className="verify-driver" />
+ {/* } */}
           <StarRating rating={ride.driver_rating || 3.5} />
         </div>
 
@@ -148,10 +152,11 @@ export default function RideCard({ ride, noOfSIt }) {
       {/* Status */}
       <div className="ridetail-status-row">
         <span
-          className={`ridetail-status-pill${status.passed
-            ? " ridetail-status-pill--passed"
-            : " ridetail-status-pill--active"
-            }`}
+          className={`ridetail-status-pill${
+            status.passed
+              ? " ridetail-status-pill--passed"
+              : " ridetail-status-pill--active"
+          }`}
         >
           <span className="ridetail-status-dot" />
           {status.label}

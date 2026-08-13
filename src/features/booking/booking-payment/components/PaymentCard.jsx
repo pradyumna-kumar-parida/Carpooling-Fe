@@ -71,10 +71,10 @@ const PaymentCard = ({
             </p>
           </div>
 
-          <div className="ridepay-amount-display">
+          {/* <div className="ridepay-amount-display">
             <span className="ridepay-amount-label">You Pay</span>
             <span className="ridepay-amount-value">₹{totalAmount}</span>
-          </div>
+          </div> */}
 
           <button
             className="ridepay-btn-primary"

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { Alert, Snackbar } from "@mui/material";
 import "../../../styles/ride-published.css";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
@@ -25,7 +26,14 @@ const STATUS_META = {
 };
 
 /* ─── API → UI mapping helpers ──────────────────────────────────────── */
-
+function formatDuration(seconds) {
+  if (seconds === undefined || seconds === null) return "";
+  const h = Math.floor(seconds / 3600);
+  const m = Math.round((seconds % 3600) / 60);
+  if (h === 0) return `${m} min`;
+  if (m === 0) return `${h} hr`;
+  return `${h} hr ${m} min`;
+}
 function getInitials(name) {
   if (!name) return "";
   return name
@@ -122,8 +130,10 @@ function mapApiRideToUIRide(apiRide) {
     to: extractCityFromAddress(apiRide.destination_address),
     toAddress: apiRide.destination_address,
     date: formatApiDate(apiRide.ride_date),
-    rideDateRaw: apiRide.ride_date, // kept raw for the date-gate check
+    rideDateRaw: apiRide.ride_date,
     time: formatApiTime(apiRide.departure_time),
+    arrivalTime: formatApiTime(apiRide.estimated_reach_time), // ← new
+    duration: formatDuration(apiRide.duration_seconds),        // ← new
     totalSeats: apiRide.total_seats,
     bookedSeats: apiRide.total_seats - apiRide.available_seats,
     pricePerSeat: Number(apiRide.price_per_seat),
@@ -175,6 +185,7 @@ function PassengerAvatar({ initials, paid }) {
 // the parent shows a confirm dialog and only calls the API after "Yes".
 function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
   const [expandedPax, setExpandedPax] = useState(null);
+console.log("ride datassss alll",ride);
 
   const earned =
     ride.passengers.filter((p) => p.paid).length * ride.pricePerSeat;
@@ -185,7 +196,7 @@ function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
       <div className="ride-publish-modal" onClick={(e) => e.stopPropagation()}>
         <div className="ride-publish-modal-header">
           <div>
-            <p className="ride-publish-modal-id">{ride.id}</p>
+            {/* <p className="ride-publish-modal-id">{ride.id}</p> */}
             <h2 className="ride-publish-modal-title">
               {ride.from} → {ride.to}
             </h2>
@@ -251,6 +262,18 @@ function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
                 {ride.bookedSeats} / {ride.totalSeats}
               </span>
             </div>
+              <div className="ride-publish-modal-info-item">
+    <span className="ride-publish-modal-info-label">Departure Time</span>
+    <span className="ride-publish-modal-info-val">{ride.time}</span>
+  </div>
+  <div className="ride-publish-modal-info-item">
+    <span className="ride-publish-modal-info-label">Estimated Arrival</span>
+    <span className="ride-publish-modal-info-val">{ride.arrivalTime}</span>
+  </div>
+  <div className="ride-publish-modal-info-item">
+    <span className="ride-publish-modal-info-label">Duration</span>
+    <span className="ride-publish-modal-info-val">{ride.duration}</span>
+  </div>
           </div>
 
           {/* Passengers */}
@@ -489,7 +512,14 @@ export default function PublishedRides({ publishedRide }) {
   const [activeFilter, setActiveFilter] = useState("All");
   const [selectedRide, setSelectedRide] = useState(null);
   const [confirmCancel, setConfirmCancel] = useState(null);
+  const [cancelReason, setCancelReason] = useState("");
   const [confirmStart, setConfirmStart] = useState(null);
+  const [toast, setToast] = useState({
+    open: false,
+    message: "",
+    type: "success",
+  });
+  const toastTimerRef = useRef(null);
 
   useEffect(() => {
     setRides(buildRidesFromApi(publishedRide));
@@ -536,31 +566,60 @@ export default function PublishedRides({ publishedRide }) {
     return true;
   });
 
+  // Close toast helper
+  const closeToast = () => setToast((p) => ({ ...p, open: false }));
+
+  // Show toast helper
+  const showToast = (message, type = "success") => {
+    clearTimeout(toastTimerRef.current);
+    setToast({ open: true, message, type });
+  };
+
   // Actual API call — only fires after the cancel confirm dialog says "Yes"
-  const handleCancel = async (id) => {
-    try {
-      await cancelRideApi(id);
-      setRides((prev) =>
-        prev.map((r) => (r.id === id ? { ...r, status: "cancelled" } : r)),
-      );
-    } catch (err) {
-      console.error("Failed to cancel ride:", err);
-    } finally {
-      setSelectedRide(null);
-      setConfirmCancel(null);
-    }
+  // Now shows toast first, then executes after 2 seconds
+  const handleCancel = (id) => {
+    // Show toast immediately
+    showToast("Ride cancelled", "error");
+    
+    // Close the confirm dialog immediately
+    setConfirmCancel(null);
+
+    // Execute the API call after 2 seconds
+    toastTimerRef.current = setTimeout(async () => {
+      try {
+        await cancelRideApi(id, { reason: cancelReason });
+        setRides((prev) =>
+          prev.map((r) => (r.id === id ? { ...r, status: "cancelled" } : r)),
+        );
+      } catch (err) {
+        console.error("Failed to cancel ride:", err);
+        showToast("Failed to cancel ride", "error");
+      } finally {
+        setSelectedRide(null);
+        setCancelReason("");
+      }
+    }, 2000);
   };
 
   // Actual API call — only fires after the start confirm dialog says "Yes"
-  const handleStart = async (id) => {
-    try {
-      await startRideApi(id);
-      router.push("/driver/tracking");
-    } catch (err) {
-      console.error("Failed to start ride:", err);
-    } finally {
-      setConfirmStart(null);
-    }
+  // Now shows toast first, then executes after 2 seconds
+  const handleStart = (id) => {
+    // Show toast immediately
+    showToast("Ride started", "success");
+    
+    // Close the confirm dialog immediately
+    setConfirmStart(null);
+
+    // Execute the API call after 2 seconds
+    toastTimerRef.current = setTimeout(async () => {
+      try {
+        await startRideApi(id);
+        router.push("/driver/tracking");
+      } catch (err) {
+        console.error("Failed to start ride:", err);
+        showToast("Failed to start ride", "error");
+      }
+    }, 2000);
   };
 
   // counts for tabs
@@ -577,6 +636,24 @@ export default function PublishedRides({ publishedRide }) {
 
   return (
     <div className="ride-publish-root">
+      {/* ── Toast Alert ── */}
+      <Snackbar
+        open={toast.open}
+        autoHideDuration={3000}
+        onClose={closeToast}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        sx={{ zIndex: 9999 }}
+      >
+        <Alert
+          severity={toast.type}
+          variant="filled"
+          onClose={closeToast}
+          sx={{ width: "100%" }}
+        >
+          {toast.message}
+        </Alert>
+      </Snackbar>
+
       {/* ── Page Header ── */}
       <div className="ride-publish-header">
         <div className="ride-publish-header-inner">
@@ -700,7 +777,7 @@ export default function PublishedRides({ publishedRide }) {
                     {/* Card top bar */}
                     <div className="ride-publish-card-topbar">
                       <span className="ride-publish-card-id">
-                        RIDE-{ride.id}
+                    {ride.date}
                       </span>
                       <span
                         className={`ride-publish-status-badge ride-publish-status-badge-${meta.color}`}
@@ -869,18 +946,23 @@ export default function PublishedRides({ publishedRide }) {
                           {/* <button className="ride-publish-action-btn ride-publish-action-btn-edit">
                             Edit Ride
                           </button> */}
-                          <button
-                            className="ride-publish-action-btn ride-publish-action-btn-start"
-                            disabled={!startEnabled}
-                            title={
-                              startEnabled
-                                ? ""
-                                : "You can start this ride on the scheduled date"
-                            }
-                            onClick={() => setConfirmStart(ride.id)}
-                          >
-                            Start Ride
-                          </button>
+                         <button
+  className="ride-publish-action-btn ride-publish-action-btn-start"
+  disabled={!startEnabled}
+  title={
+    startEnabled
+      ? ""
+      : "You can start this ride on the scheduled date"
+  }
+  style={{
+    opacity: startEnabled ? 1 : 0.5,
+    cursor: startEnabled ? "pointer" : "not-allowed",
+    pointerEvents: startEnabled ? "auto" : "none",
+  }}
+  onClick={() => setConfirmStart(ride.id)}
+>
+  Start Ride
+</button>
                           <button
                             className="ride-publish-action-btn ride-publish-action-btn-cancel"
                             onClick={() => setConfirmCancel(ride.id)}
@@ -945,7 +1027,10 @@ export default function PublishedRides({ publishedRide }) {
       {confirmCancel && (
         <div
           className="ride-publish-modal-backdrop"
-          onClick={() => setConfirmCancel(null)}
+          onClick={() => {
+            setConfirmCancel(null);
+            setCancelReason("");
+          }}
         >
           <div
             className="ride-publish-confirm-dialog"
@@ -962,15 +1047,63 @@ export default function PublishedRides({ publishedRide }) {
               All passengers will be notified and refunded automatically. This
               action cannot be undone.
             </p>
+
+            {/* Reason Input Field */}
+            <div style={{ marginBottom: "16px" }}>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  marginBottom: "8px",
+                  color: "#0f172a",
+                }}
+              >
+                Reason for cancellation <span style={{ color: "#dc2626" }}>*</span>
+              </label>
+              <textarea
+                placeholder="Please provide a reason for cancelling this ride..."
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                style={{
+                  width: "100%",
+                  height: "80px",
+                  padding: "10px 12px",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: "8px",
+                  fontSize: "13px",
+                  fontFamily: "inherit",
+                  resize: "none",
+                  outline: "none",
+                  transition: "border-color 0.2s",
+                  boxSizing: "border-box",
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = "#1e40af";
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = "#e2e8f0";
+                }}
+              />
+            </div>
+
             <div className="ride-publish-confirm-actions">
               <button
                 className="ride-publish-confirm-btn-no"
-                onClick={() => setConfirmCancel(null)}
+                onClick={() => {
+                  setConfirmCancel(null);
+                  setCancelReason("");
+                }}
               >
                 Keep Ride
               </button>
               <button
                 className="ride-publish-confirm-btn-yes"
+                disabled={!cancelReason.trim()}
+                style={{
+                  opacity: !cancelReason.trim() ? 0.5 : 1,
+                  cursor: !cancelReason.trim() ? "not-allowed" : "pointer",
+                }}
                 onClick={() => handleCancel(confirmCancel)}
               >
                 Yes, Cancel

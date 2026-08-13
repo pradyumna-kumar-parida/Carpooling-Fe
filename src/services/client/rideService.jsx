@@ -21,5 +21,5 @@ export const completeRideApi = (rideId) =>
   getClientAxios.patch(`/ride/${rideId}/complete`);
 export const startRideApi = (rideId) =>
   getClientAxios.patch(`/ride/${rideId}/start`);
-export const cancelRideApi = (rideId) =>
-  getClientAxios.patch(`/ride/${rideId}/cancel`);
+export const cancelRideApi = (rideId, data) =>
+  getClientAxios.patch(`/ride/${rideId}/cancel`, data);

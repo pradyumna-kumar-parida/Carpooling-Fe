@@ -5,7 +5,7 @@ import { FaCar } from "react-icons/fa";
 import { FaUserGroup } from "react-icons/fa6";
 import { FaSmoking } from "react-icons/fa";
 import { IoFastFoodSharp } from "react-icons/io5";
-
+import { MdVerified } from "react-icons/md";
 import Avatar from "./Avatar";
 
 export default function DriverCard({ ride, onDriverClick }) {
@@ -40,7 +40,7 @@ export default function DriverCard({ ride, onDriverClick }) {
           />
 
           <span className="driver-name" style={{ textTransform: "capitalize" }}>
-            {ride?.driver_details?.name}
+            {ride?.driver_details?.name} 
 
             <b
               style={{
@@ -49,8 +49,10 @@ export default function DriverCard({ ride, onDriverClick }) {
               }}
             >
               {" "}
-              (Driver)
+              (Driver) 
             </b>
+            
+             <MdVerified className="verify-driver" />
           </span>
         </div>
 

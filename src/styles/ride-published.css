@@ -26,7 +26,14 @@
   margin: 0 auto;
   padding: 0 24px 80px;
 }
-
+.ride-publish-modal-btn-start:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  background-color: #d1d5db !important;
+  border-color: #d1d5db !important;
+  color: #6b7280 !important;
+}
 /* ══════════════════════════════════════════════════════════
    PAGE HEADER
 ══════════════════════════════════════════════════════════ */

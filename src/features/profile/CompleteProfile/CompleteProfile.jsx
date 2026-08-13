@@ -444,7 +444,7 @@ export default function CompleteProfile() {
 
       {loading && <PageLoader />}
 
-      <div className="cp-container">
+      <div className="complete-profile-container">
         {submitted ? (
           <PendingVerification />
         ) : (

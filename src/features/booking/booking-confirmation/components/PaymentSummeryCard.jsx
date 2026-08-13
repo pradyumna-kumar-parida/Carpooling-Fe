@@ -1,8 +1,8 @@
 import React from "react";
 import { Chip } from "@mui/material";
-import { FaDownload, FaShare } from "react-icons/fa";
-import { TbRoute } from "react-icons/tb";
 import { FaHandPointLeft } from "react-icons/fa";
+import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import { FiDownload } from "react-icons/fi";
 
 const PaymentSummaryCard = ({
   bookingRideDetails,
@@ -13,6 +13,7 @@ const PaymentSummaryCard = ({
   handleShareBooking,
   handleBackHome,
   router,
+  onOpenChat,
 }) => {
   return (
     <div className="bookconf-summary-section">
@@ -81,23 +82,26 @@ const PaymentSummaryCard = ({
       {/* Actions */}
       <div className="bookconf-actions">
         <button
-          className="bookconf-btn-secondary"
+          className="bookconf-btn-secondary ticket-download"
           onClick={handleDownloadTicket}
         >
-          <FaDownload size={20} />
+          <FiDownload size={20} />
           Download Ticket
         </button>
-        <button className="bookconf-btn-secondary" onClick={handleShareBooking}>
-          <FaShare size={20} />
-          Share Booking
-        </button>
         <button
+          className="bookconf-btn-secondary chat-btn-driver"
+          onClick={() => onOpenChat()}
+        >
+          <IoChatboxEllipsesOutline size={20} />
+          Chat With Driver
+        </button>
+        {/* <button
           className="bookconf-btn-secondary track-chat-btn"
           onClick={() => router.push("/passenger/track-chat")}
         >
           <TbRoute size={20} />
-          Track & Chat
-        </button>
+          Track 
+        </button> */}
         <button className="bookconf-btn-primary" onClick={handleBackHome}>
           <FaHandPointLeft size={20} />
           Back to Home

@@ -8,6 +8,7 @@ import { FaCar } from "react-icons/fa";
 import { useNearRides } from "@/hooks/useNearRides";
 import { useSocket } from "@/hooks/useSocket";
 import { socket } from "@/lib/socket";
+import { MdVerified } from "react-icons/md";
 
 function normalizeRide(r) {
   return {
@@ -169,24 +170,8 @@ function RideCard({ ride }) {
             <span className="avl-rides-driver-name">
               {ride.driver}
               {ride.verified && (
-                <svg
-                  viewBox="0 0 20 20"
-                  className="avl-rides-verified"
-                  aria-label="Verified driver"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M10 1.5l2.1 1.2 2.4-.3 1.1 2.1 2.1 1.2-.3 2.4 1.2 2.1-1.2 2.1.3 2.4-2.1 1.1-1.1 2.1-2.4-.3L10 18.5l-2.1-1.2-2.4.3-1.1-2.1L2.3 14l.3-2.4L1.4 9.5l1.2-2.1-.3-2.4 2.1-1.1L5.5 1.8l2.4.3z"
-                  />
-                  <path
-                    d="M7 10.2l2 2 4-4.4"
-                    stroke="#fff"
-                    strokeWidth="1.6"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+              <MdVerified  className="verify-driver"/>
+
               )}
             </span>
             {/* {ride.vehicle && (

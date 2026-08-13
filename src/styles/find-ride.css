@@ -1301,6 +1301,9 @@
   font-weight: 600;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
   color: var(--fr-text-dark);
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 .css-wjsjww-MuiChip-label {
   font-size: 85% !important;
@@ -2196,6 +2199,9 @@
 
 .ridepay-driver-name {
   font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-weight: 600;
   color: var(--fr-text-dark);
   margin: 0 0 0.25rem 0;
@@ -2612,6 +2618,9 @@
 
 .bookconf-driver-name {
   font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-weight: 600;
   color: var(--fr-text-dark);
   margin: 0 0 0.5rem 0;
@@ -2795,23 +2804,23 @@
   background: var(--fr-primary);
   color: white;
 }
-
+.ticket-download:hover,
+.bookconf-btn-secondary:hover,
 .bookconf-btn-primary:hover {
   opacity: 0.9;
   transform: translateY(-2px);
   box-shadow: var(--fr-shadow-lg);
 }
-
+.ticket-download{
+  background-color: var(--fr-text-gray) !important;
+  color: white !important;
+}
 .bookconf-btn-secondary {
   background: var(--fr-bg-white);
   color: var(--fr-text-dark);
   border: 2px solid var(--fr-border);
 }
 
-.bookconf-btn-secondary:hover {
-  border-color: var(--fr-primary-light);
-  background: var(--fr-bg-light);
-}
 
 /* ==========================================
    VEHICLE DETAILS PAGE
@@ -3788,7 +3797,7 @@
   .rating-modal-box {
     padding: 20px 15px  !important;
   }
-
+.ridepay-payment-alert h4,
  .vehicle-detl-card-name,
  .vehicle-detl-panel-title,
  .vehicle-detl-panel-reg,
@@ -3796,6 +3805,7 @@
   .vehicle-detl-add-btn{
     font-size: 0.8rem !important
   }
+  
     .rating-modal-feedback,
   .fr-rides-rating,
   .fr-rides-distance,
@@ -3812,7 +3822,7 @@
   .myride-status-chip,
   .bookconf-payment-chip,
   .css-6od3lo-MuiChip-label,
-  .ridepay-secure-note,
+
   .css-wjsjww-MuiChip-label {
     font-size: 0.6rem !important;
   }
@@ -3837,9 +3847,13 @@
   .fr-page-title {
     font-size: 1.9rem;
   }
+  .ridepay-payment-icon,
   .vehicle-detl-title,
   .ride-confirm-title {
     font-size: 1.4rem !important;
+  }
+  .ridepay-payment-alert-top {
+    gap: 8px !important;
   }
   .sucess-heading,
   .step-icon,
@@ -3871,6 +3885,12 @@
   .ride-price-total span:first-child {
     font-size: 1rem !important ;
   }
+  .show-map-btn{
+height: 38px !important;
+  }
+  .ridepay-btn-primary,
+  .show-map-btn,
+  .ridepay-info-value,
   .fr-rides-place,
   .vehicle-detl-info-label,
   .details-Items,
@@ -3899,6 +3919,10 @@
   }
   .fr-field:first-of-type {
     border-radius: 14px 14px 0 0 !important;
+  }
+  .ridepay-secure-note,
+  .ridepay-payment-alert p{
+    font-size: 0.7rem !important;
   }
   .vehicledetails-btn-next,
   .vehicledetails-btn-submit,
@@ -4236,17 +4260,16 @@
 
 .dm-driver-name {
   font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-weight: 700;
   margin: 0 0 4px;
   text-transform: capitalize;
   color: #111827;
 }
 
-.dm-verified-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
+
 
 /* ── Body (everything below the header) ── */
 .dm-body {
@@ -5032,7 +5055,7 @@
 }
 
 /* Amount display */
-.ridepay-amount-display {
+/* .ridepay-amount-display {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -5042,7 +5065,7 @@
   border-radius: 10px;
   padding: 14px 18px;
   margin-bottom: 18px;
-}
+} */
 
 .ridepay-amount-label {
   font-size: 17px;
@@ -5081,12 +5104,15 @@
   margin: 12px 0 20px;
 }
 .track-chat-btn {
-  background: #2e7d32;
+ background-color:rgb(201, 16, 16);
+ color:white;
+}
+.chat-btn-driver{
+ background: #2e7d32;
   color: white;
   border: none;
 }
-
-.track-chat-btn:hover {
+.chat-btn-driver:hover {
   background: #09632a;
 }
 /* ── EXTRA CSS ONLY - NEW CLASSES FOR MYRIDES MODAL ──────────────────── */
@@ -6116,7 +6142,19 @@ body.modal-open {
   color: #d32f2f;
   font-weight: 700;
 }
-
+.ridetail-avatar-img{
+background: var(--black);
+    color: #fff;
+    border-radius: 50%;
+    flex: none;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    font-size: 12.5px;
+    font-weight: 700;
+    display: flex;
+}
 .ride-map-preview {
   width: 100%;
   height: 145px;

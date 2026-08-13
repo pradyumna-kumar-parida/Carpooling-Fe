@@ -21,55 +21,68 @@ export default function ProfileHeader({
 
   const showCompleteProfileCard =
     isDriver && String(userData.profileCompleted).toLowerCase() === "true";
+console.log("profile data", editData);
 
   return (
     <div className="profile-header">
       <div className="profile-header-content">
         <div className="profile-avatar-section">
-          <div className="profile-avatar-wrapper">
-            {isEditing ? (
-              <div className="profile-avatar-edit">
-                {editData.profilePicture ? (
-                  <Image
-                    src={
-                      filePreview.profilePicture ||
-                      editData.profilePicture ||
-                      "https://via.placeholder.com/150"
-                    }
-                    alt="Profile"
-                    className="profile-avatar"
-                    width={96}
-                    height={96}
-                    unoptimized
-                  />
-                ) : (
-                  <FaUserCircle className="profile-default-avatar" />
-                )}
+     <div className="profile-avatar-wrapper">
+  {isEditing ? (
+    <div className="profile-avatar-edit">
+      {filePreview?.profilePicture || editData?.profilePicture ? (
+        <Image
+          src={
+            filePreview?.profilePicture || editData?.profilePicture
+          }
+          alt="Profile"
+          className="profile-avatar"
+          width={96}
+          height={96}
+          unoptimized
+        />
+      ) : (
+        <FaUserCircle
+          className="profile-default-avatar"
+         
+        />
+      )}
 
-                <label htmlFor="profilePicture" className="avatar-upload-btn">
-                  <FiPlus />
-                </label>
-                <input
-                  type="file"
-                  id="profilePicture"
-                  accept="image/*"
-                  onChange={(e) => onFileChange(e, "profilePicture")}
-                  style={{ display: "none" }}
-                />
-              </div>
-            ) : (
-              <Image
-                src={
-                  userData.profilePicture || "https://via.placeholder.com/150"
-                }
-                alt="Profile"
-                className="profile-avatar"
-                width={96}
-                height={96}
-                unoptimized
-              />
-            )}
-          </div>
+      <label
+        htmlFor="profilePicture"
+        className="avatar-upload-btn"
+      >
+        <FiPlus />
+      </label>
+
+      <input
+        type="file"
+        id="profilePicture"
+        accept="image/*"
+        onChange={(e) => onFileChange(e, "profilePicture")}
+        style={{ display: "none" }}
+      />
+    </div>
+  ) : (
+    <>
+      {userData?.profilePicture ? (
+        <Image
+          src={userData.profilePicture}
+          alt="Profile"
+          className="profile-avatar"
+          width={96}
+          height={96}
+          unoptimized
+        />
+      ) : (
+        <FaUserCircle
+          className="profile-default-avatar"
+          size={96}
+        />
+      )}
+    </>
+  )}
+</div>
 
           <div className="profile-info">
             <h1 className="profile-name">

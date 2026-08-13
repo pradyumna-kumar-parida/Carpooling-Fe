@@ -39,14 +39,14 @@ export default function LogoutDialog({
         }}
       >
         <div className="logout-icon">
-          <FiAlertTriangle size={30} color="#ff9800" />
+          <FiAlertTriangle  color="#ff9800" />
         </div>
 
         <Typography variant="h6" fontWeight={700} mt={2}>
           Logout?
         </Typography>
 
-        <Typography color="text.secondary" mt={1} mb={3}>
+        <Typography color="text.secondary" mt={1} mb={3} className="logout-confirm">
           Are you sure you want to logout from your account?
         </Typography>
 
@@ -55,6 +55,7 @@ export default function LogoutDialog({
             fullWidth
             variant="outlined"
             onClick={onClose}
+            className="logout-confirm-btn"
           >
             Stay Logged In
           </Button>
@@ -64,6 +65,7 @@ export default function LogoutDialog({
             variant="contained"
             color="error"
             onClick={handleLogout}
+            className="logout-confirm-btn"
           >
             Logout
           </Button>

@@ -11,6 +11,7 @@ import "../../../styles/find-ride.css";
 import ChatPanel from "@/features/chat/ChatPanel";
 const Confirmation = () => {
   const [bookingRideDetails, setBookingDetails] = useState(null);
+
   const router = useRouter();
   useEffect(() => {
     sessionStorage.removeItem("ride");
@@ -89,11 +90,14 @@ const Confirmation = () => {
               handleShareBooking={handleShareBooking}
               handleBackHome={handleBackHome}
               router={router}
+              onOpenChat={() => {
+                setShowChat(true);
+              }}
             />
           </div>
         </div>
       </div>
-      <ChatPanel />
+      {showChat && <ChatPanel />}
     </>
   );
 };

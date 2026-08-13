@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { FaLocationDot, FaCheck, FaUserGroup } from "react-icons/fa6";
-import { FaCarAlt } from "react-icons/fa";
+import { FaCarAlt, FaInfoCircle } from "react-icons/fa";
 import { CgArrowsExchangeV } from "react-icons/cg";
 import { MdAirlineSeatLegroomReduced, MdMyLocation } from "react-icons/md";
 import { IoFastFoodSharp } from "react-icons/io5";
@@ -10,8 +10,6 @@ import { FaSmoking } from "react-icons/fa";
 import { GiCometSpark } from "react-icons/gi";
 import { RxCross2 } from "react-icons/rx";
 import Alert from "@mui/material/Alert";
-import { FaRegHourglassHalf } from "react-icons/fa6";
-
 import Snackbar from "@mui/material/Snackbar";
 import ArcLoader from "../../../../components/Loader";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -19,7 +17,8 @@ import { useSelector } from "react-redux";
 import { getToken } from "@/lib/cookie";
 import { publishRideApi } from "@/services/client/rideService";
 import { FaIndianRupeeSign } from "react-icons/fa6";
-import { FaInfoCircle } from "react-icons/fa";
+import OfferRideStatus from "./OfferRideStatus";
+
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 let _scriptLoading = false;
 const _scriptCallbacks = [];
@@ -59,7 +58,6 @@ function LocationDropdown({
   value,
   onSelect,
   showCurrentLocation = false,
-  disabled = false,
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState(value?.name || "");
@@ -220,7 +218,7 @@ function LocationDropdown({
           setFocused(true);
         }}
         onBlur={() => setFocused(false)}
-        disabled={!googleReady || disabled}
+        disabled={!googleReady}
       />
       {selected && query && (
         <button
@@ -294,10 +292,10 @@ const DEFAULT_PREFS = {
 const SAVED_FORM_KEY = "offerRideSavedForm";
 
 const PRHero = ({ vehiclesFetch, profileData }) => {
-  console.log("[profile data", profileData);
-
   const user = useSelector((state) => state.auth.user);
-  const vehicleList = vehiclesFetch;
+  const vehicleList = vehiclesFetch || [];
+  console.log("vehicle list status",vehicleList);
+  
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -317,15 +315,41 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
     type: "info",
   });
 
-  const selectedVehicleData = vehicleList.find(
-    (v) => v.id === Number(selectedVehicle),
-  );
-
-  const maxSeats = selectedVehicleData?.seats || 1;
-  const seatControlDisabled = !selectedVehicle;
-
   const datePickerRef = useRef(null);
   const alertTimerRef = useRef(null);
+console.log("profile complted",profileData);
+
+  const token = getToken();
+  const profileCompleted = profileData?.profileCompleted;
+  const profileStatus = profileData?.profileStatus; // "pending" | "active" | "blocked"
+  const profileVerified =
+    !!token && !!profileCompleted && profileStatus === "active";
+
+  // Vehicle-level gating: profile clearance alone doesn't unlock the form —
+  // at least one registered vehicle must also be active. Once that's true,
+  // the vehicle picker below still lets pending/blocked vehicles show up
+  // (disabled) alongside active ones for multi-vehicle drivers.
+  const approvedVehicles = vehicleList.filter(
+    (v) => v.status === "active",
+  );
+  const otherVehicles = vehicleList.filter((v) => v.status !== "active");
+  const vehicleVerified = vehicleList.length > 0 && approvedVehicles.length > 0;
+  // If every registered vehicle was blocked (none pending, none active),
+  // the status card shows the "rejected" message instead of "pending".
+  const vehicleVerificationTone =
+    vehicleList.length > 0 &&
+    approvedVehicles.length === 0 &&
+    otherVehicles.every((v) => v.Status === "blocked")
+      ? "rejected"
+      : "pending";
+
+  const isCleared = profileVerified && vehicleVerified;
+
+  const selectedVehicleData = approvedVehicles.find(
+    (v) => String(v.id) === String(selectedVehicle),
+  );
+  const maxSeats = selectedVehicleData?.seats || 1;
+  const seatControlDisabled = !selectedVehicle;
 
   const showAlert = (type, message) => {
     clearTimeout(alertTimerRef.current);
@@ -377,7 +401,6 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
   };
 
   // ── Save form to sessionStorage then redirect with ?from= ─────────────
-  // Login hook reads searchParams.get("from"), so we MUST use ?from= here.
   const redirectWithSavedForm = (destination) => {
     sessionStorage.setItem(SAVED_FORM_KEY, JSON.stringify(getFormSnapshot()));
     const currentUrl = searchParams.toString()
@@ -385,9 +408,12 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
       : pathname;
     router.push(`${destination}?from=${encodeURIComponent(currentUrl)}`);
   };
-  const token = getToken();
-  const profileCompleted = profileData?.profileCompleted;
-  const isVerified = profileData?.isVerified;
+
+  const handleVehicleSelect = (vehicle) => {
+    if (vehicle.status !== "active") return;
+    setSelectedVehicle(String(vehicle.id));
+    setSeats(1);
+  };
 
   const handlePublish = async () => {
     if (!token) {
@@ -405,22 +431,28 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
       return;
     }
 
-    if (!isVerified) {
+    if (profileStatus !== "active") {
       showAlert(
         "error",
-        "Your verification is pending. You cannot offer a ride until it is approved",
+        profileStatus === "blocked"
+          ? "Your profile verification was not approved. Please review your details."
+          : "Your profile is under verification. You can offer rides once it's approved.",
       );
       return;
     }
 
-    if (vehicleList.length < 1) {
-      showAlert("error", "Please register a vehicle first.");
+    if (approvedVehicles.length < 1) {
+      showAlert(
+        "error",
+        "You need at least one verified vehicle to publish a ride.",
+      );
       setTimeout(
         () => redirectWithSavedForm("/driver/vehicle-registration"),
         1500,
       );
       return;
     }
+console.log("profile startus",profileStatus);
 
     if (!from) return showAlert("error", "Please select a departure location.");
     if (!to) return showAlert("error", "Please select a destination.");
@@ -428,11 +460,12 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
     if (!time) return showAlert("error", "Please select a departure time.");
     if (!price || isNaN(price) || Number(price) <= 0)
       return showAlert("error", "Please enter a valid price per seat.");
-    if (!selectedVehicle) return showAlert("error", "Please choose a vehicle.");
+    if (!selectedVehicleData)
+      return showAlert("error", "Please choose a verified vehicle.");
 
     const payload = {
       driver_id: user?.id || "",
-      vehicle_id: selectedVehicle,
+      vehicle_id: selectedVehicleData.id,
       source_address: from.fullAddress,
       destination_address: to.fullAddress,
       source_lat: from.lat,
@@ -481,6 +514,12 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
 
   const today = new Date().toISOString().split("T")[0];
 
+  const vehicleStatusLabel = (status) => {
+    if (status === "active") return "Verified";
+    if (status === "pending") return "Pending";
+    return "Rejected";
+  };
+
   return (
     <>
       <Snackbar
@@ -505,122 +544,178 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
           <ArcLoader />
         </div>
       )}
-      <div className="verification-pending-box">
-        <div className="verification-title">
-          <span className="verification-icon">
-            <FaRegHourglassHalf />
-          </span>
-          <h3>Verification Pending</h3>
-        </div>
 
-        <p>
-          Your verification is pending. You can offer rides after your account
-          is approved.
-        </p>
-      </div>
       <section className="prh-root">
         <div className="prh-bg-blur prh-bg-blur--1" />
         <div className="prh-bg-blur prh-bg-blur--2" />
 
         <div className="prh-inner">
           <div className="prh-card">
-            {!token && (
-              <div className="prh-card-badge alert-badge">
-                <FaInfoCircle /> Please log in to publish a ride.
-              </div>
-            )}
-            {vehicleList.length < 1 && token && (
-              <div className="prh-card-badge alert-badge">
-                <FaInfoCircle /> Register a vehicle first to publish a ride.
-              </div>
-            )}
-            <h2 className="prh-card-title">Offer a Ride</h2>
-            <p className="prh-card-sub">Shared journeys, split costs</p>
-
-            <div className="prh-route-wrap">
-              <LocationDropdown
-                placeholder="Leaving from"
-                icon={<CiLocationOn />}
-                value={from}
-                onSelect={setFrom}
-                showCurrentLocation
-                disabled={isVerified === false}
+            {!isCleared ? (
+              <OfferRideStatus
+                isLoggedIn={!!token}
+                profileCompleted={profileCompleted}
+                profileStatus={profileStatus}
+                vehicleCount={vehicleList.length}
+                approvedVehicleCount={approvedVehicles.length}
+                vehicleVerificationTone={vehicleVerificationTone}
+                onLoginRedirect={() => redirectWithSavedForm("/login")}
+                onCompleteProfileRedirect={() =>
+                  redirectWithSavedForm("/driver/complete-profile")
+                }
+                onReviewProfileRedirect={() =>
+                  redirectWithSavedForm("/driver/complete-profile")
+                }
+                onRegisterVehicleRedirect={() =>
+                  redirectWithSavedForm("/driver/vehicle-registration")
+                }
+                onReviewVehicleRedirect={() =>
+                  redirectWithSavedForm("/driver/vehicle-registration")
+                }
               />
-              <button
-                className={`prh-swap-btn${swapped ? " prh-swap-btn--active" : ""}`}
-                onClick={handleSwap}
-                aria-label="Swap cities"
-                disabled={isVerified === false}
-              >
-                <CgArrowsExchangeV />
-              </button>
-              <LocationDropdown
-                placeholder="Going to"
-                icon={<FaLocationDot />}
-                value={to}
-                onSelect={setTo}
-                disabled={isVerified === false}
-              />
-            </div>
-
-            <div className="prh-datetime-row">
-              <div className="underFields">
-                <p className="prh-prefs-label">DATE</p>
-                <div
-                  className="prh-field prh-field--inline prh-field--focusable"
-                  style={{ position: "relative" }}
-                  onClick={() =>
-                    isVerified === false
-                      ? null
-                      : datePickerRef.current?.showPicker?.() ||
-                        datePickerRef.current?.focus?.()
-                  }
-                >
-                  <input
-                    className="prh-input"
-                    type="text"
-                    placeholder="yyyy-mm-dd"
-                    value={date || ""}
-                    readOnly
-                    disabled={isVerified === false}
-                  />
-                  <input
-                    ref={datePickerRef}
-                    type="date"
-                    value={date}
-                    min={today}
-                    onChange={(e) => setDate(e.target.value)}
-                    tabIndex={-1}
-                    aria-hidden="true"
-                    className="date-picker-format"
-                    disabled={isVerified === false}
-                  />
-                </div>
-              </div>
-              <div className="underFields">
-                <p className="prh-prefs-label">TIME</p>
-                <div className="prh-field prh-field--inline prh-field--focusable">
-                  <input
-                    className="prh-input"
-                    type="time"
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    disabled={isVerified === false}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {vehicleList.length >= 1 && token && isVerified && (
+            ) : (
               <>
-                {!selectedVehicle ? (
-                  <small className="seat-info">
-                    <p>
+                <h2 className="prh-card-title">Offer a Ride</h2>
+                <p className="prh-card-sub">Shared journeys, split costs</p>
+
+                <div className="prh-route-wrap">
+                  <LocationDropdown
+                    placeholder="Leaving from"
+                    icon={<CiLocationOn />}
+                    value={from}
+                    onSelect={setFrom}
+                    showCurrentLocation
+                  />
+                  <button
+                    className={`prh-swap-btn${swapped ? " prh-swap-btn--active" : ""}`}
+                    onClick={handleSwap}
+                    aria-label="Swap cities"
+                  >
+                    <CgArrowsExchangeV />
+                  </button>
+                  <LocationDropdown
+                    placeholder="Going to"
+                    icon={<FaLocationDot />}
+                    value={to}
+                    onSelect={setTo}
+                  />
+                </div>
+
+                <div className="prh-datetime-row">
+                  <div className="underFields">
+                    <p className="prh-prefs-label">DATE</p>
+                    <div
+                      className="prh-field prh-field--inline prh-field--focusable"
+                      style={{ position: "relative" }}
+                      onClick={() =>
+                        datePickerRef.current?.showPicker?.() ||
+                        datePickerRef.current?.focus?.()
+                      }
+                    >
+                      <input
+                        className="prh-input"
+                        type="text"
+                        placeholder="yyyy-mm-dd"
+                        value={date || ""}
+                        readOnly
+                      />
+                      <input
+                        ref={datePickerRef}
+                        type="date"
+                        value={date}
+                        min={today}
+                        onChange={(e) => setDate(e.target.value)}
+                        tabIndex={-1}
+                        aria-hidden="true"
+                        className="date-picker-format"
+                      />
+                    </div>
+                  </div>
+                  <div className="underFields">
+                    <p className="prh-prefs-label">TIME</p>
+                    <div className="prh-field prh-field--inline prh-field--focusable">
+                      <input
+                        className="prh-input"
+                        type="time"
+                        value={time}
+                        onChange={(e) => setTime(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── Vehicle picker: soft gate, per-vehicle status ── */}
+                <div className="prh-vehicle-group">
+                  <p className="prh-prefs-label">Select vehicle</p>
+
+                  {vehicleList.length === 0 ? (
+                    <div className="prh-vehicle-empty">
                       <FaInfoCircle />
-                    </p>
-                    Select a vehicle first to enable seat selection
-                  </small>
-                ) : (
+                      <p>You haven&apos;t added a vehicle yet.</p>
+                      <button
+                        type="button"
+                        className="ors-btn"
+                        onClick={() =>
+                          redirectWithSavedForm("/driver/vehicle-registration")
+                        }
+                      >
+                        Register Vehicle 
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="prh-vehicle-list">
+                        {[...approvedVehicles, ...otherVehicles].map((v) => {
+                          const isApproved = v.status === "active";
+                          const isSelected =
+                            String(selectedVehicle) === String(v.id);
+                          return (
+                            <label
+                              key={v.id}
+                              className={`prh-vehicle-item${
+                                isSelected ? " prh-vehicle-item--on" : ""
+                              }${!isApproved ? " prh-vehicle-item--disabled" : ""}`}
+                            >
+                              <input
+                                type="radio"
+                                name="offerRideVehicle"
+                                className="prh-pref-hidden-check"
+                                checked={isSelected}
+                                disabled={!isApproved}
+                                onChange={() => handleVehicleSelect(v)}
+                              />
+                              <span className="prh-vehicle-icon">
+                                <FaCarAlt />
+                              </span>
+                              <span className="prh-vehicle-info">
+                                <span className="prh-vehicle-name">
+                                  {v.brand}
+                                  {v.model ? ` ${v.model}` : ""}
+                                </span>
+                                <span className="prh-vehicle-plate">
+                                  {v.plate}
+                                </span>
+                              </span>
+                              <span
+                                className={`vh-badge vh-badge--${v.status}`}
+                              >
+                                {vehicleStatusLabel(v.status)}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                      <p className="prh-vehicle-summary">
+                        {approvedVehicles.length} verified vehicle
+                        {approvedVehicles.length === 1 ? "" : "s"} available.
+                        {otherVehicles.length > 0 &&
+                          " Vehicles under review or rejected can't be selected."}
+                      </p>
+                    </>
+                  )}
+                </div>
+
+                {selectedVehicleData && (
                   <small className="seat-info">
                     <p>
                       <FaInfoCircle />
@@ -628,121 +723,82 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
                     Maximum available seats: {maxSeats}
                   </small>
                 )}
+
+                <div className="prh-seats-row">
+                  <span className="prh-seats-label">
+                    <MdAirlineSeatLegroomReduced /> Seats
+                  </span>
+                  <div className="prh-seats-ctrl">
+                    <button
+                      type="button"
+                      className="prh-seats-btn"
+                      onClick={() => setSeats((s) => Math.max(1, s - 1))}
+                      disabled={seatControlDisabled || seats <= 1}
+                    >
+                      −
+                    </button>
+                    <span className="prh-seats-val">{seats}</span>
+                    <button
+                      type="button"
+                      className="prh-seats-btn"
+                      onClick={() => setSeats((s) => Math.min(maxSeats, s + 1))}
+                      disabled={seatControlDisabled || seats >= maxSeats}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div className="prh-field prh-field--price prh-field--focusable">
+                  <span className="prh-field-icon prh-field-icon--from">
+                    <FaIndianRupeeSign />
+                  </span>
+                  <input
+                    className="prh-input"
+                    type="number"
+                    placeholder="Price per seat"
+                    min="0"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                  <span className="prh-price-suffix">/ seat</span>
+                </div>
+
+                <div className="prh-prefs-group">
+                  <p className="prh-prefs-label">Ride preferences</p>
+                  <div className="prh-prefs-grid">
+                    {PREFS.map(({ key, icon, label }) => (
+                      <label
+                        key={key}
+                        className={`prh-pref-chip${prefs[key] ? " prh-pref-chip--on" : ""}`}
+                      >
+                        <input
+                          type="checkbox"
+                          className="prh-pref-hidden-check"
+                          checked={prefs[key]}
+                          onChange={() =>
+                            setPrefs((p) => ({ ...p, [key]: !p[key] }))
+                          }
+                        />
+                        <span className="prh-pref-icon">{icon}</span>
+                        <span className="prh-pref-text">{label}</span>
+                        <span className="prh-pref-tick">
+                          <FaCheck size={10} />
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  className="prh-cta"
+                  onClick={handlePublish}
+                  disabled={loading}
+                >
+                  <span>Publish a ride</span>
+                </button>
               </>
             )}
-
-            {vehicleList.length >= 1 && token && isVerified && (
-              <div className="prh-field prh-field--vehicle prh-field--focusable">
-                <span className="prh-field-icon prh-field-icon--from">
-                  <FaCarAlt />
-                </span>
-                <select
-                  className="prh-input prh-select"
-                  value={selectedVehicle}
-                  onChange={(e) => {
-                    const id = e.target.value;
-                    setSelectedVehicle(id);
-
-                    const vehicle = vehicleList.find(
-                      (v) => v.id === Number(id),
-                    );
-
-                    // Start with one available seat
-                    setSeats(vehicle ? 1 : 1);
-                  }}
-                  disabled={isVerified === false}
-                >
-                  <option value="">Choose your vehicle</option>
-                  {vehicleList.map((v) => (
-                    <option key={v.id} value={v.id}>
-                      {v.brand}
-                      {v.model ? ` ${v.model}` : ""}
-                      {v.plate ? ` — ${v.plate}` : ""}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            <div className="prh-seats-row">
-              <span className="prh-seats-label">
-                <MdAirlineSeatLegroomReduced /> Seats
-              </span>
-              <div className="prh-seats-ctrl">
-                <button
-                  type="button"
-                  className="prh-seats-btn"
-                  onClick={() => setSeats((s) => Math.max(1, s - 1))}
-                  disabled={
-                    seatControlDisabled || seats <= 1 || isVerified === false
-                  }
-                >
-                  −
-                </button>
-                <span className="prh-seats-val">{seats}</span>
-                <button
-                  type="button"
-                  className="prh-seats-btn"
-                  onClick={() => setSeats((s) => Math.min(maxSeats, s + 1))}
-                  disabled={
-                    seatControlDisabled ||
-                    seats >= maxSeats ||
-                    isVerified === false
-                  }
-                >
-                  +
-                </button>
-              </div>
-            </div>
-            <div className="prh-field prh-field--price prh-field--focusable">
-              <span className="prh-field-icon prh-field-icon--from">
-                <FaIndianRupeeSign />
-              </span>
-              <input
-                className="prh-input"
-                type="number"
-                placeholder="Price per seat"
-                min="0"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                disabled={isVerified === false}
-              />
-              <span className="prh-price-suffix">/ seat</span>
-            </div>
-            <div className="prh-prefs-group">
-              <p className="prh-prefs-label">Ride preferences</p>
-              <div className="prh-prefs-grid">
-                {PREFS.map(({ key, icon, label }) => (
-                  <label
-                    key={key}
-                    className={`prh-pref-chip${prefs[key] ? " prh-pref-chip--on" : ""}`}
-                  >
-                    <input
-                      type="checkbox"
-                      className="prh-pref-hidden-check"
-                      checked={prefs[key]}
-                      onChange={() =>
-                        setPrefs((p) => ({ ...p, [key]: !p[key] }))
-                      }
-                      disabled={isVerified === false}
-                    />
-                    <span className="prh-pref-icon">{icon}</span>
-                    <span className="prh-pref-text">{label}</span>
-                    <span className="prh-pref-tick">
-                      <FaCheck size={10} />
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <button
-              className="prh-cta"
-              onClick={handlePublish}
-              disabled={loading}
-            >
-              <span>Publish a ride</span>
-            </button>
           </div>
 
           <div className="prh-copy">

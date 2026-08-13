@@ -7,7 +7,7 @@ import PRTestimonials from "./components/PRTestimonials";
 import PRHowItWorks from "./components/PRHowItWorks";
 import PRSupport from "./components/PRSupport";
 import PRFaq from "./components/PRFaq";
-
+import { FaRegHourglassHalf } from "react-icons/fa6";
 const PublishRide = ({vehiclesFetch,profileData}) => {
 
 

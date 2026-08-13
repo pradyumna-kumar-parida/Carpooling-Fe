@@ -1,5 +1,9 @@
 import Image from "next/image";
 import React from "react";
+import { IoTimerOutline } from "react-icons/io5";
+import { MdOutlineAirlineSeatLegroomReduced } from "react-icons/md";
+import { MdVerified } from "react-icons/md";
+
 import { FaCalendarAlt, FaClock, FaRoad, FaChair } from "react-icons/fa";
 import { ImArrowRight } from "react-icons/im";
 const RideDetailsCard = ({ ride, noOfSIt }) => {
@@ -64,7 +68,7 @@ const RideDetailsCard = ({ ride, noOfSIt }) => {
           </div>
           <div className="ridepay-info-item">
             <span className="ridepay-info-label">
-              <FaClock /> Estimated Arrival
+            <IoTimerOutline/> Estimated Arrival
             </span>
             <span className="ridepay-info-value">
               {formatTime(ride?.estimated_reach_time)}
@@ -81,7 +85,8 @@ const RideDetailsCard = ({ ride, noOfSIt }) => {
           </div>
           <div className="ridepay-info-item">
             <span className="ridepay-info-label">
-              <FaChair /> Seats Booked
+       <MdOutlineAirlineSeatLegroomReduced />
+ Seats Booked
             </span>
             <span className="ridepay-info-value">
               {noOfSIt || 1} seat{noOfSIt > 1 ? "s" : ""}
@@ -104,7 +109,7 @@ const RideDetailsCard = ({ ride, noOfSIt }) => {
             )}
             <div>
               <p className="ridepay-driver-name">
-                {ride?.driver_details?.name || "-"}
+                {ride?.driver_details?.name || "-"}   <MdVerified className="verify-driver" />
               </p>
 
               <p className="ridepay-driver-car">
