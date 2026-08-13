@@ -19,9 +19,9 @@ body {
   --btn-bg: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
   --section-cardBg: #f7f9fb;
   --heading: "Vollkorn", serif;
-    --fr-bg-gray: #f8f9fa;
+  --fr-bg-gray: #f8f9fa;
   --custom-one: #1e40af;
-    --fr-text-dark: #1a202c;
+  --fr-text-dark: #1a202c;
   --black: #000000;
   --desc: #666;
   --fr-primary-light: #3b82f6;
@@ -1034,7 +1034,6 @@ nav a.active::after {
   transform: scale(0.95);
 }
 .profile-default-avatar {
-
   color: #2563eb;
   display: block;
 }
@@ -1691,12 +1690,10 @@ footer {
 
 .profile-avatar-wrapper {
   position: relative;
-
-
 }
-  .logout-confirm-btn{
-    text-transform: capitalize !important;
-  }
+.logout-confirm-btn {
+  text-transform: capitalize !important;
+}
 .profile-avatar {
   width: 100px;
   height: 100px;
@@ -1919,7 +1916,7 @@ footer {
 
   font-family: sans-serif;
 }
-.profile-rate{
+.profile-rate {
   display: flex;
   gap: 5px;
 
@@ -1999,16 +1996,16 @@ footer {
 
 .status-uploaded {
   color: #10b981;
-    background: #dbfedd;
-    border: 1px solid #c4febf;
-    border-radius: 999px;
-    align-items: center;
-    margin-bottom: 5px;
-    gap: 2px  ;
-    padding: 6px 14px;
+  background: #dbfedd;
+  border: 1px solid #c4febf;
+  border-radius: 999px;
+  align-items: center;
+  margin-bottom: 5px;
+  gap: 2px;
+  padding: 6px 14px;
 
-    font-weight: 600;
-    display: inline-flex;
+  font-weight: 600;
+  display: inline-flex;
   font-weight: 600;
 }
 .status-pending {
@@ -2730,9 +2727,9 @@ footer {
     grid-template-columns: 1fr;
   }
 }
- .logout-icon{
+.logout-icon {
   font-size: 2rem;
- }
+}
 .profile-default-avatar {
   width: 70px;
   height: 70px;
@@ -2755,7 +2752,7 @@ footer {
   .footer-links a {
     font-size: 0.6rem !important;
   }
-  .logout-icon{
+  .logout-icon {
     height: 40px !important;
     width: 40px !important;
     font-size: 1.3rem !important;
@@ -3002,7 +2999,7 @@ footer {
   .ride-com-stat {
     gap: 3px !important;
   }
-    .logout-confirm-btn,
+
   .logout-confirm,
   .profile-avatar-wrapper,
   .profile-default-avatar,
@@ -3015,6 +3012,7 @@ footer {
   .sos-alert-title,
   .sos-title-content,
   .driver-track-title,
+  .logout-confirm-btn,
   .swipe-end-ride-text,
   .ntfy-card-title,
   .ride-card__route strong,
@@ -3037,6 +3035,10 @@ footer {
   .form-group label {
     font-size: 0.8rem !important;
   }
+  .logout-dialog-box {
+    padding: 20px 15px !important;
+  }
+
   .document-title,
   .ride-com-nudge,
   .ride-com-view-all,
@@ -3047,11 +3049,11 @@ footer {
   .ride-card__route strong {
     font-size: 0.7rem !important;
   }
-  .document-card{
+  .document-card {
     gap: 10px !important;
   }
 
-.status-uploaded,
+  .status-uploaded,
   .sos-location-box,
   .driver-track-chip-label,
   .driver-track-subtitle,
@@ -3262,12 +3264,12 @@ footer {
   }
 
   .document-icon svg {
-  font-size: 1.1rem;
+    font-size: 1.1rem;
   }
 }
-  .document-icon svg {
-    font-size: 1.6rem;
-  }
+.document-icon svg {
+  font-size: 1.6rem;
+}
 /* ===========================
    PRINT
    =========================== */
@@ -3954,8 +3956,8 @@ footer {
 
 /* ---------- driver + price ---------- */
 
-.verify-driver{
-color: var(--fr-primary-light);
+.verify-driver {
+  color: var(--fr-primary-light);
 }
 .avl-rides-card-bottom {
   display: flex;
@@ -7921,7 +7923,7 @@ color: var(--fr-primary-light);
 }
 .SOS-Flot {
   position: fixed !important;
-    animation: sosEmergency 1.5s infinite ease-in-out !important;
+  animation: sosEmergency 1.5s infinite ease-in-out !important;
   right: 20px !important;
   bottom: 105px !important;
 
@@ -7939,7 +7941,9 @@ color: var(--fr-primary-light);
   /* Slight floating effect */
   filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.25));
 
-  transition: transform 0.25s ease, filter 0.25s ease !important;
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease !important;
 }
 
 .SOS-Flot img {

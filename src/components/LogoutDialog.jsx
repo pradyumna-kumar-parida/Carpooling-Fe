@@ -32,10 +32,10 @@ export default function LogoutDialog({
       fullWidth
       className="logout-dialog"
     >
-      <DialogContent
+      <DialogContent className="logout-dialog-box"
         sx={{
           textAlign: "center",
-          p: 4,
+          p: 3,
         }}
       >
         <div className="logout-icon">
@@ -57,7 +57,7 @@ export default function LogoutDialog({
             onClick={onClose}
             className="logout-confirm-btn"
           >
-            Stay Logged In
+            Stay 
           </Button>
 
           <Button
