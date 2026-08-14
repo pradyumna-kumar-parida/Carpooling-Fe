@@ -5688,7 +5688,7 @@ footer {
 /* ---------- Responsive: mobile ---------- */
 @media (max-width: 768px) {
   .chat-page {
-    height: 92vh;
+    height: 82vh;
     border-radius: 0;
     border: none;
     display: block;
