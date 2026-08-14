@@ -6,6 +6,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { socket } from "@/lib/socket";
+import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import {
   getConversationsApi,
   getMessagessApi,
@@ -566,15 +567,7 @@ export default function ChatPage({ chatList }) {
                       <span className="chat-bubble__time">
                         {msg?.time}
                         {isMe && (
-                          <svg
-                            viewBox="0 0 24 24"
-                            className={`chat-bubble__tick ${
-                              msg?.is_read ? "chat-bubble__tick--read" : ""
-                            }`}
-                            aria-hidden="true"
-                          >
-                            <path d="M2 12l5 5L20 5" />
-                          </svg>
+                        <IoCheckmarkDoneSharp/>
                         )}
                       </span>
                     </div>
