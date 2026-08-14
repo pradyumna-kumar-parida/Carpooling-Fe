@@ -18,71 +18,63 @@ export default function ProfileHeader({
   onFileChange,
 }) {
   const router = useRouter();
+  // console.log("is driver",isDriver);
 
-  const showCompleteProfileCard =
-    isDriver && String(userData.profileCompleted).toLowerCase() === "true";
-console.log("profile data", editData);
+  //   const showCompleteProfileCard =
+  //     isDriver && String(userData.profileCompleted).toLowerCase() !== "true";
+  //   console.log("profile data", showCompleteProfileCard);
 
   return (
     <div className="profile-header">
       <div className="profile-header-content">
         <div className="profile-avatar-section">
-     <div className="profile-avatar-wrapper">
-  {isEditing ? (
-    <div className="profile-avatar-edit">
-      {filePreview?.profilePicture || editData?.profilePicture ? (
-        <Image
-          src={
-            filePreview?.profilePicture || editData?.profilePicture
-          }
-          alt="Profile"
-          className="profile-avatar"
-          width={96}
-          height={96}
-          unoptimized
-        />
-      ) : (
-        <FaUserCircle
-          className="profile-default-avatar"
-         
-        />
-      )}
+          <div className="profile-avatar-wrapper">
+            {isEditing ? (
+              <div className="profile-avatar-edit">
+                {filePreview?.profilePicture || editData?.profilePicture ? (
+                  <Image
+                    src={
+                      filePreview?.profilePicture || editData?.profilePicture
+                    }
+                    alt="Profile"
+                    className="profile-avatar"
+                    width={96}
+                    height={96}
+                    unoptimized
+                  />
+                ) : (
+                  <FaUserCircle className="profile-default-avatar" />
+                )}
 
-      <label
-        htmlFor="profilePicture"
-        className="avatar-upload-btn"
-      >
-        <FiPlus />
-      </label>
+                <label htmlFor="profilePicture" className="avatar-upload-btn">
+                  <FiPlus />
+                </label>
 
-      <input
-        type="file"
-        id="profilePicture"
-        accept="image/*"
-        onChange={(e) => onFileChange(e, "profilePicture")}
-        style={{ display: "none" }}
-      />
-    </div>
-  ) : (
-    <>
-      {userData?.profilePicture ? (
-        <Image
-          src={userData.profilePicture}
-          alt="Profile"
-          className="profile-avatar"
-          width={96}
-          height={96}
-          unoptimized
-        />
-      ) : (
-        <FaUserCircle
-          className="profile-default-avatar"
-          size={96}
-        />
-      )}
-    </>
-  )}
-</div>
+                <input
+                  type="file"
+                  id="profilePicture"
+                  accept="image/*"
+                  onChange={(e) => onFileChange(e, "profilePicture")}
+                  style={{ display: "none" }}
+                />
+              </div>
+            ) : (
+              <>
+                {userData?.profilePicture ? (
+                  <Image
+                    src={userData.profilePicture}
+                    alt="Profile"
+                    className="profile-avatar"
+                    width={96}
+                    height={96}
+                    unoptimized
+                  />
+                ) : (
+                  <FaUserCircle className="profile-default-avatar" size={96} />
+                )}
+              </>
+            )}
+          </div>
 
           <div className="profile-info">
             <h1 className="profile-name">
@@ -90,7 +82,7 @@ console.log("profile data", editData);
             </h1>
             <p className="profile-email">{userData.email || "Not provided"}</p>
             <span className="profile-badge">
-              {userData.is_verified === 1 ? "verified":"Not verified"}
+              {userData.is_verified === 1 ? "verified" : "Not verified"}
             </span>
             <p className="profile-rate">
               <span>
@@ -103,7 +95,7 @@ console.log("profile data", editData);
             </p>
           </div>
 
-          {showCompleteProfileCard && (
+          {userData?.profileCompleted && (
             <div className="profile-progress-card">
               <div className="profile-progress-top">
                 <div>
@@ -140,7 +132,43 @@ console.log("profile data", editData);
             </div>
           )}
         </div>
+        {userData?.profileCompleted && (
+          <div className="profile-progress-card1">
+            <div className="profile-progress-top">
+              <div>
+                <h4 className="profile-progress-title">
+                  Complete your profile
+                </h4>
+                <p className="profile-progress-text">
+                  Complete your profile to build trust and get more ride
+                  bookings.
+                </p>
+              </div>
 
+              <span className="profile-progress-percentage">65%</span>
+            </div>
+
+            <div className="profile-progress-bar">
+              <div
+                className="profile-progress-fill"
+                style={{ width: "65%" }}
+              ></div>
+            </div>
+
+            <div className="profile-progress-footer">
+              <span className="profile-progress-info">
+                8 of 12 profile sections completed
+              </span>
+
+              <button
+                className="profile-progress-btn"
+                onClick={() => router.push("/driver/complete-profile")}
+              >
+                Complete
+              </button>
+            </div>
+          </div>
+        )}
         <div className="profile-actions">
           {!isEditing ? (
             <button type="button" className="btn-edit" onClick={onEditToggle}>

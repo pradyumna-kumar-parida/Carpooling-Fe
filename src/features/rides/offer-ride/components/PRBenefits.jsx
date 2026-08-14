@@ -1,6 +1,7 @@
 import { FaCarAlt } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa6";
-import { MdAttachMoney } from "react-icons/md";
+import { FaIndianRupeeSign } from "react-icons/fa6";
+
 
 const benefits = [
   {
@@ -22,7 +23,8 @@ const benefits = [
     title: "Save.",
     description:
       "Tolls, petrol, electricity... Easily divvy up all the costs with other passengers.",
-    icon: <MdAttachMoney />,
+    icon: <FaIndianRupeeSign />
+,
   },
 ];
 

@@ -155,7 +155,7 @@ const TrackChat = () => {
               <HelpSupportCard />
             </div>
 
-            <ChatPanel driver={rideData} />
+            {/* <ChatPanel driver={rideData} /> */}
           </div>
         )}
       </div>

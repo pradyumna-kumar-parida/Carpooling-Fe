@@ -1,33 +1,35 @@
 "use client";
+
 import { useState } from "react";
-import { useMyRides, RIDES_DATA } from "../hooks/UseMyRides";
+import { useMyRides } from "../hooks/UseMyRides";
 import RideCard from "./RideCard";
 import RideDetailsModal from "./RideDetailsModal";
 import ChatPanel from "@/features/chat/ChatPanel";
-const { requestRides, upcomingRides, completedRides, cancelledRides } =
-  RIDES_DATA;
+import { FaCar } from "react-icons/fa";
 
-const TABS = [
-  { id: "requests", label: "Requests", count: requestRides.length },
-  { id: "upcoming", label: "Upcoming", count: upcomingRides.length },
-  { id: "completed", label: "Completed", count: completedRides.length },
-  { id: "cancelled", label: "Cancelled", count: cancelledRides.length },
+const TAB_CONFIG = [
+  // { id: "requests", label: "Requests" },
+  { id: "upcoming", label: "Upcoming" },
+  { id: "completed", label: "Completed" },
+  { id: "cancelled", label: "Cancelled" },
 ];
 
-export default function MyRides() {
+export default function MyRides({ userRides }) {
   const {
     activeTab,
     setActiveTab,
     selectedRide,
     openDetailsModal,
+    groupedRides,
     getRidesData,
     handleViewDetails,
     handleCloseDetails,
-  } = useMyRides();
+  } = useMyRides(userRides);
 
   const rides = getRidesData();
   const [showChat, setShowChat] = useState(false);
   const [selectedChatRide, setSelectedChatRide] = useState(null);
+
   return (
     <div className="myride-page">
       <div className="myride-container">
@@ -41,7 +43,7 @@ export default function MyRides() {
 
         {/* Tabs */}
         <div className="myride-tabs">
-          {TABS.map((tab) => (
+          {TAB_CONFIG.map((tab) => (
             <button
               key={tab.id}
               className={`myride-tab ${activeTab === tab.id ? "active" : ""}`}
@@ -55,7 +57,7 @@ export default function MyRides() {
                   color: activeTab === tab.id ? "#000000" : "#ffffff",
                 }}
               >
-                {tab.count}
+                {groupedRides[tab.id]?.length || 0}
               </i>
             </button>
           ))}
@@ -65,9 +67,11 @@ export default function MyRides() {
         <div className="myride-grid">
           {rides.length === 0 ? (
             <div className="myride-empty">
-              <div className="empty-icon">🚗</div>
+              <div className="empty-icon">
+                <FaCar />
+              </div>
               <h3>No rides found</h3>
-              <p>You don't have any {activeTab} rides yet.</p>
+              <p>You don&apos;t have any {activeTab} rides yet.</p>
             </div>
           ) : (
             rides.map((ride) => (
@@ -75,8 +79,8 @@ export default function MyRides() {
                 key={ride.id}
                 ride={ride}
                 onViewDetails={handleViewDetails}
-                onOpenChat={(ride) => {
-                  setSelectedChatRide(ride);
+                onOpenChat={(r) => {
+                  setSelectedChatRide(r);
                   setShowChat(true);
                 }}
               />
@@ -86,15 +90,17 @@ export default function MyRides() {
       </div>
 
       {/* Details Modal */}
-      {/* Details Modal */}
       {openDetailsModal && (
         <RideDetailsModal ride={selectedRide} onClose={handleCloseDetails} />
       )}
 
       {/* Chat Panel */}
+      {/* Chat Panel */}
       {showChat && (
         <ChatPanel
           driver={selectedChatRide}
+          bookingId={selectedChatRide?.id}
+          bookingCode={selectedChatRide?.bookingCode}
           defaultOpen={true}
           onClose={() => {
             setShowChat(false);

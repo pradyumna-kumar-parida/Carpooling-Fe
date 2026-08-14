@@ -547,7 +547,10 @@
   .help-how-heading {
     font-size: 1.1rem !important;
   }
-
+    .css-1p2urhn-MuiAccordionDetails-root,
+  .css-1betqn-MuiAccordionSummary-content{
+    font-size: 0.7rem !important;
+  }
   .css-1p2urhn-MuiAccordionDetails-root,
   .css-p7nytx-MuiButtonBase-root-MuiAccordionSummary-root {
     padding: 5px 10px !important;
@@ -561,8 +564,8 @@
   .help-safety-item strong,
   .help-safety-desc,
   .help-safety-badge,
-  .css-1p2urhn-MuiAccordionDetails-root,
-  .css-1betqn-MuiAccordionSummary-content,
+
+
   .help-how-list li,
   .help-how-desc,
   .help-hero-sub {

@@ -80,3 +80,9 @@
   background: rgba(255, 255, 255, 0.6); /* optional overlay */
   z-index: 9999; /* keep above everything */
 }
+@media (max-width: 480px) {
+  .arc-ring {
+  width: 52px;
+  height: 52px;
+}
+}

@@ -32,7 +32,7 @@ export default function LogoutDialog({
       fullWidth
       className="logout-dialog"
     >
-      <DialogContent className="logout-dialog-box"
+      <DialogContent 
         sx={{
           textAlign: "center",
           p: 3,

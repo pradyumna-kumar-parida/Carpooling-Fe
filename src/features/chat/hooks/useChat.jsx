@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import {
   getConversationsApi,
   getMessagessApi,
@@ -6,37 +6,72 @@ import {
 } from "@/services/client/chatService";
 import { socket } from "@/lib/socket";
 import { useSelector } from "react-redux";
-export const useChat = () => {
+
+export const useChat = (bookingId) => {
   const user = useSelector((state) => state.auth.user);
 
   const [conversation, setConversation] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // ---- Load conversation + history ----
   useEffect(() => {
+    // guards against setState firing after unmount, or after a stale
+    // request resolves once bookingId changes (e.g. user switches rides)
+    let ignore = false;
+
     const loadChat = async () => {
+      setLoading(true);
+      setError(null);
+      setConversation(null);
+      setMessages([]);
+
       try {
-        const bookingData = JSON.parse(sessionStorage.getItem("bookingData"));
-        const bookingId = bookingData?.booking?.booking_id;
+        // prefer the bookingId passed in explicitly (e.g. from MyRides ->
+        // RideCard -> ChatPanel). Fall back to sessionStorage only for
+        // pages that don't pass it (e.g. the dedicated track-chat page).
+        let resolvedBookingId = bookingId;
 
-        if (!bookingId) return;
+        if (!resolvedBookingId) {
+          const bookingData = JSON.parse(
+            sessionStorage.getItem("bookingData") || "null",
+          );
+          resolvedBookingId = bookingData?.booking?.booking_id;
+        }
 
-        const conversation = await getConversationsApi(bookingId);
-        setConversation(conversation);
+        if (!resolvedBookingId) {
+          if (!ignore) {
+            setError("No booking found for this chat.");
+            setLoading(false);
+          }
+          return;
+        }
 
-        const messages = await getMessagessApi(conversation.id);
-        setMessages(messages);
+        const conversationRes = await getConversationsApi(resolvedBookingId);
+        if (ignore) return;
+        setConversation(conversationRes);
+
+        const messagesRes = await getMessagessApi(conversationRes?.id);
+        if (ignore) return;
+        setMessages(Array.isArray(messagesRes) ? messagesRes : []);
       } catch (err) {
         console.error(err);
+        if (!ignore) {
+          setError("Could not load this conversation. Please try again.");
+        }
       } finally {
-        setLoading(false);
+        if (!ignore) setLoading(false);
       }
     };
 
     loadChat();
-  }, []);
+
+    return () => {
+      ignore = true;
+    };
+  }, [bookingId]);
 
   // ---- Debug: log every socket event (remove once confirmed working) ----
   useEffect(() => {
@@ -68,7 +103,7 @@ export const useChat = () => {
       socket.emit("leave_conversation", conversation.id);
       socket.off("connect", joinConversation);
     };
-  }, [conversation?.id]);
+  }, [conversation?.id, user?.id]);
 
   // ---- Listen for incoming messages ----
   useEffect(() => {
@@ -127,6 +162,7 @@ export const useChat = () => {
   return {
     conversation,
     loading,
+    error,
     messages,
     inputText,
     setInputText,

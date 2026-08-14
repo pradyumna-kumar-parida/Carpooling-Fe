@@ -1,106 +1,148 @@
 "use client";
-import { ImArrowRight } from "react-icons/im";
-import { ImInfo } from "react-icons/im";
-import { getStatusColor } from "../hooks/UseMyRides";
 
+import { ImArrowRight, ImInfo } from "react-icons/im";
+import { getStatusColor } from "../hooks/UseMyRides";
 import { useRouter } from "next/navigation";
 import { TbRoute } from "react-icons/tb";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { GoDotFill } from "react-icons/go";
+
+// Ride day has arrived if today's local date >= ride's local date (ignores time-of-day)
+function hasRideDayArrived(rawDate) {
+  if (!rawDate) return false;
+  const rideDay = new Date(rawDate);
+  if (isNaN(rideDay.getTime())) return false;
+
+  const today = new Date();
+  const todayStart = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate(),
+  );
+  const rideDayStart = new Date(
+    rideDay.getFullYear(),
+    rideDay.getMonth(),
+    rideDay.getDate(),
+  );
+
+  return rideDayStart <= todayStart;
+}
+
 export default function RideCard({ ride, onViewDetails, onOpenChat }) {
   const router = useRouter();
-  const rideData = {
-    id: 14,
-    source_address: "Vani Vihar, Bhubaneswar, Odisha, India",
-    destination_address: "Jaydev Vihar, Bhubaneswar, Odisha, India",
-    source_lat: "20.3039745",
-    source_lng: "85.8396655",
-    destination_lat: "20.2997267",
-    destination_lng: "85.8172637",
-    ride_date: "2026-06-03",
-    departure_time: "03:30:00",
-    estimated_reach_time: "06:40:00",
-    price_per_seat: "132.00",
-    driver_name: "Suraj Kumar",
-    driver_phone: "1242179918",
-    driver_profile_picture:
-      "https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_640.jpg",
-    brand: "Maruti",
-    model: "Swift Dzire",
-    registration_number: "OD02 AB 1234",
-    vehicle_type: "Car",
-    fuel_type: "Petrol",
+
+  if (!ride) return null;
+
+  const status = (ride.status || "").toLowerCase();
+  const isCancelled = status === "cancelled";
+  const isCompleted = status === "completed";
+  const isScheduled = status === "scheduled";
+  const isExpired = status === "expired";
+
+  // Chat: only for scheduled rides, fully off for cancelled/completed (and anything else)
+  const isChatEnabled = isScheduled;
+
+  // Track: off by default, turns on once the ride day has arrived —
+  // but never for cancelled/completed rides
+  const isTrackEnabled =
+    !isCancelled && !isCompleted && !isExpired && hasRideDayArrived(ride.rawDate);
+  const capitalize = (value) => {
+    if (!value) return "";
+    return value.charAt(0).toUpperCase() + value.slice(1);
   };
-
   return (
-    <>
-      <div className="myride-card">
-        {/* <div className="myride-card-header">
-          <span
-            className="myride-status-chip"
-            style={{
-              color: getStatusColor(ride.status),
-              border: `1px dotted ${getStatusColor(ride.status)}`,
-              backgroundColor: `${getStatusColor(ride.status)}10`, // ~12% opacity
-            }}
-          >
-            {ride.status}
-          </span>
-        </div> */}
+    <div className="myride-card">
+      <div className="myride-card-header">
+        <span
+          className="myride-status-chip"
+          style={{
+            color: getStatusColor(ride.status),
+            border: `1px dotted ${getStatusColor(ride.status)}`,
+            backgroundColor: `${getStatusColor(ride.status)}10`,
+          }}
+        >
+          {capitalize(ride.status)}
+        </span>
+        <span className="info-value-card-date">
+          {ride.date} <GoDotFill className="separtor-dot" />
+          <b>₹{ride.price}</b>
+        </span>
+      </div>
 
-        <div className="myride-route-simple">
-          <div className="route-simple-item">
-            <span className="route-label-head">From:</span>
-            <span className="route-value">{ride.from}</span>
-          </div>
-          <div className="route-arrow">
-            <ImArrowRight />
-          </div>
-          <div className="route-simple-item">
-            <span className="route-label-head">To:</span>
-            <span className="route-value">{ride.to}</span>
-          </div>
+      <div className="myride-route-simple">
+        <div className="route-simple-item">
+          <span className="route-label-head">From:</span>
+          <span className="route-value">{ride.from}</span>
         </div>
-
-        <div className="myride-card-info">
-          <div className="info-row">
-            <span className="info-label">Date:</span>
-            <span className="info-value">{ride.date}</span>
-          </div>
-          <div className="info-row">
-            <span className="info-label">Time:</span>
-            <span className="info-value">{ride.time}</span>
-          </div>
+        <div className="route-arrow">
+          <ImArrowRight />
         </div>
-
-        <div className="myride-card-footer">
-          <div className="myride-price">
-            <span className="price-label">Price:</span>
-            <span className="price-value">₹{ride.price}</span>
-          </div>
-        </div>
-        <div className="myride-card-actions">
-          <button
-            className="myride-details-btn"
-            onClick={() => onViewDetails(ride)}
-          >
-            Details <ImInfo />
-          </button>
-
-          <button
-            className="myride-track-btn"
-            onClick={() => router.push("/passenger/track-chat")}
-          >
-            Track <TbRoute />
-          </button>
-
-          <button
-            className="myride-chat-btn"
-            onClick={() => onOpenChat(rideData)}
-          >
-            Chat <IoChatbubbleEllipsesOutline />
-          </button>
+        <div className="route-simple-item">
+          <span className="route-label-head">To:</span>
+          <span className="route-value">{ride.to}</span>
         </div>
       </div>
-    </>
+
+      {/* <div className="myride-card-info">
+        <div className="info-row">
+          <span className="info-label">Date:</span>
+          <span className="info-value">{ride.date}</span>
+        </div>
+        <div className="info-row">
+          <span className="info-label">Depart:</span>
+          <span className="info-value">{ride.departureTime}</span>
+        </div>
+      </div> */}
+
+      {/* <div className="myride-card-footer">
+        <div className="myride-price">
+          <span className="price-label">Price:</span>
+          <span className="price-value">₹{ride.price}</span>
+        </div>
+      </div> */}
+
+      <div className="myride-card-actions">
+        <button
+          className="myride-details-btn"
+          onClick={() => onViewDetails(ride)}
+        >
+          Details <ImInfo />
+        </button>
+        <button
+          className="myride-track-btn"
+          disabled={!isTrackEnabled}
+          aria-disabled={!isTrackEnabled}
+          title={
+            isTrackEnabled
+              ? "Track this ride"
+              : "Tracking opens once the ride date arrives"
+          }
+          onClick={() => {
+            if (!isTrackEnabled) return;
+            router.push(`/passenger/tracking?bookingId=${ride.id}`);
+          }}
+        >
+          Track <TbRoute />
+        </button>
+
+        <button
+          className="myride-chat-btn"
+          disabled={!isChatEnabled}
+          aria-disabled={!isChatEnabled}
+          title={
+            isChatEnabled
+              ? "Chat with driver"
+              : "Chat is only available for scheduled rides"
+          }
+          onClick={() => {
+            if (!isChatEnabled) return;
+            // ride already carries booking_id -> ride.id and booking_code -> ride.bookingCode
+            onOpenChat(ride);
+          }}
+        >
+          Chat <IoChatbubbleEllipsesOutline />
+        </button>
+      </div>
+    </div>
   );
 }

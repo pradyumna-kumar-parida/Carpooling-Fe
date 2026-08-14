@@ -735,7 +735,43 @@
     transform 0.28s ease,
     opacity 0.28s ease;
 }
+.cp-loading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 32px 16px;
+  color: #6b7280;
+  font-size: 14px;
+}
 
+.cp-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #1a56db;
+  border-radius: 50%;
+  animation: cp-spin 0.7s linear infinite;
+}
+
+@keyframes cp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cp-error-state {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  color: #ef4444;
+  font-size: 14px;
+  text-align: center;
+}
 .cp-container.cp-open.cp-open--active {
   transform: translateY(0);
   opacity: 1;
@@ -855,7 +891,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: #F5F1EB;
+  background: #f5f1eb;
 }
 
 .cp-messages::-webkit-scrollbar {
@@ -921,11 +957,11 @@
   font-size: 10px;
   display: flex;
   justify-self: end;
-  text-align: right ;
+  text-align: right;
   align-items: center;
   gap: 3px;
 }
-.cp-bubble-time >span{
+.cp-bubble-time > span {
   display: flex;
   align-items: flex-end;
 }
@@ -1093,7 +1129,7 @@
     overflow: hidden;
   }
   .leaflet-popup-tip,
-  .leaflet-popup-content-wrapper{
+  .leaflet-popup-content-wrapper {
     display: none !important;
   }
   .tc-wrapper {
@@ -1183,51 +1219,57 @@
 }
 
 @media (max-width: 480px) {
+  .ms-driver-status {
+    display: none;
+  }
+  .ms-driver-avatar {
+    height: 36px;
+    width: 36px;
+  }
   .user-tracking-status {
     height: 37px;
-  
+
     width: 37px;
   }
 
-  .card-title,
-  .ms-driver-name{
+  .card-title {
     font-size: 0.9rem !important;
   }
-  
-.booking-id,
-.stat-val,
-.route-address,
-.ms-driver-vehicle{
-  font-size: 0.7rem !important;
-}
-.support-btn,
+  .ms-driver-name,
+  .booking-id,
+  .stat-val,
+  .route-address {
+    font-size: 0.7rem !important;
+  }
+  .support-btn,
+  .amount-paid,
+  .driver-name,
+  .ms-eta-value {
+    font-size: 0.8rem !important;
+  }
 
-.amount-paid,
-.driver-name,
-.ms-eta-value{
-  font-size: 0.8rem !important;
-}
-
-.stat-label,
-.css-1hv8oq8-MuiStepLabel-label,
-.route-time,
-.badge-blue,
-.meta-label,
-.route-label,
-.ms-eta-label {
-  font-size: 0.6rem !important;
-}
+  .stat-label,
+  .ms-driver-vehicle,
+  .css-1hv8oq8-MuiStepLabel-label,
+  .route-time,
+  .badge-blue,
+  .meta-label,
+  .route-label,
+  .ms-eta-label {
+    font-size: 0.6rem !important;
+  }
   .tc-map-col {
     min-height: 360px;
   }
-  .leaflet-popup-content{
+  .leaflet-popup-content {
     font-size: 0.6rem;
-     margin:7px 14px 7px 10px 
+    margin: 7px 14px 7px 10px;
   }
   .ms-driver-card {
-        gap: 9px;
-    min-width: 300px;
+    gap: 7px;
+    min-width: 250px;
     max-width: 89%;
+    bottom: 5px;
     padding: 12px 10px;
     flex-wrap: wrap;
     justify-content: center;

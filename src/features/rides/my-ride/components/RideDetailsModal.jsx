@@ -3,17 +3,30 @@
 import Image from "next/image";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
-import { FaCar, FaCalendarAlt, FaClock, FaUser, FaStar } from "react-icons/fa";
+import {
+  FaCar,
+  FaCalendarAlt,
+  FaClock,
+  FaUser,
+  FaStar,
+  FaHourglassHalf,
+} from "react-icons/fa";
+import { GrMoney } from "react-icons/gr";
+
 import { MdOutlineCall, MdClose } from "react-icons/md";
 import { getStatusColor } from "../hooks/UseMyRides";
 import { useEffect } from "react";
+import { FaClockRotateLeft } from "react-icons/fa6";
+import { MdOutlineAirlineSeatLegroomReduced } from "react-icons/md";
 
 export default function RideDetailsModal({ ride, onClose }) {
-  if (!ride) return null;
   useEffect(() => {
     document.body.classList.add("modal-open");
     return () => document.body.classList.remove("modal-open");
   }, []);
+
+  if (!ride) return null;
+
   return (
     <div className="myride-modal-overlay" onClick={onClose}>
       <div
@@ -36,7 +49,7 @@ export default function RideDetailsModal({ ride, onClose }) {
         </div>
 
         <div className="myride-modal-content">
-          {/* Status Badge */}
+          {/* Status Badge — exactly what the API returns */}
           <div className="myride-modal-badges">
             <span
               className="myride-status-chip"
@@ -58,7 +71,7 @@ export default function RideDetailsModal({ ride, onClose }) {
                 <div className="step-content">
                   <h4 className="step-city">{ride.from}</h4>
                   <p className="step-address">{ride.fromAddress}</p>
-                  <span className="step-time">{ride.time}</span>
+                  <span className="step-time">{ride.duration}</span>
                 </div>
               </div>
               <div className="route-step">
@@ -87,15 +100,36 @@ export default function RideDetailsModal({ ride, onClose }) {
               <div className="info-item">
                 <FaClock className="item-icon" />
                 <div>
+                  <span className="item-label">Depart Time</span>
+                  <span className="item-value">{ride.departureTime}</span>
+                </div>
+              </div>
+              <div className="info-item">
+                <FaClockRotateLeft className="item-icon" />
+                <div>
+                  <span className="item-label">Arrival Time</span>
+                  <span className="item-value">{ride.arrivalTime}</span>
+                </div>
+              </div>
+              <div className="info-item">
+                <FaHourglassHalf className="item-icon" />
+                <div>
                   <span className="item-label">Duration</span>
                   <span className="item-value">{ride.duration}</span>
                 </div>
               </div>
               <div className="info-item">
-                <FaUser className="item-icon" />
+                <MdOutlineAirlineSeatLegroomReduced className="item-icon" />
                 <div>
-                  <span className="item-label">Passengers</span>
-                  <span className="item-value">{ride.passengers} seats</span>
+                  <span className="item-label">Seats</span>
+                  <span className="item-value">{ride.passengers} </span>
+                </div>
+              </div>
+              <div className="info-item">
+                <GrMoney className="item-icon" />
+                <div>
+                  <span className="item-label">Price</span>
+                  <span className="item-value">{ride.price} </span>
                 </div>
               </div>
             </div>
@@ -117,55 +151,43 @@ export default function RideDetailsModal({ ride, onClose }) {
                 <div className="driver-details">
                   <div className="my-rides-driver-meta">
                     <h4 className="driver-name">{ride.driver.name}</h4>
-                    <span className="driver-rating">
-                      <FaStar className="star-icon" /> {ride.driver.rating}
-                    </span>
+                    {ride.driver.rating != null && (
+                      <span className="driver-rating">
+                        <FaStar className="star-icon" /> {ride.driver.rating}
+                      </span>
+                    )}
                   </div>
-                  <span className="driver-phone">
-                    <MdOutlineCall className="phone-icon" /> {ride.driver.phone}
-                  </span>
+                  {ride.driver.phone && (
+                    <span className="driver-phone">
+                      <MdOutlineCall className="phone-icon" />{" "}
+                      {ride.driver.phone}
+                    </span>
+                  )}
                   <div className="driver-car">
                     <FaCar className="car-icon" />
-                    <span>{ride.driver.car}</span>
+                    <span>
+                      {ride.driver.car}
+                      {ride.driver.color ? ` - ${ride.driver.color}` : ""}
+                      {ride.driver.registrationNumber
+                        ? ` (${ride.driver.registrationNumber})`
+                        : ""}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
           )}
 
-          {/* Booked Passengers */}
-          {ride.bookedSeats && (
-            <div className="myride-modal-passengers">
-              <h3 className="section-title">Booked Passengers</h3>
-              <div className="passengers-grid">
-                {ride.bookedSeats.map((passenger, index) => (
-                  <div key={index} className="passenger-card">
-                    <Image
-                      src={passenger.avatar}
-                      alt={passenger.name}
-                      className="passenger-avatar"
-                      width={40}
-                      height={40}
-                      unoptimized
-                    />
-                    <div className="passenger-details">
-                      <h4 className="passenger-name">{passenger.name}</h4>
-                      <span className="passenger-phone">{passenger.phone}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* Cancellation Info */}
-          {ride.status === "cancelled" && (
+          {(ride.status || "").toLowerCase() === "cancelled" && (
             <div className="myride-modal-cancel">
               <h3 className="section-title">Cancellation Details</h3>
               <div className="cancel-info">
-                <p>
-                  <strong>Cancelled by:</strong> {ride.cancelledBy}
-                </p>
+                {ride.cancelledBy && (
+                  <p>
+                    <strong>Cancelled by:</strong> {ride.cancelledBy}
+                  </p>
+                )}
                 {ride.cancelReason && (
                   <p>
                     <strong>Reason:</strong> {ride.cancelReason}
@@ -182,9 +204,6 @@ export default function RideDetailsModal({ ride, onClose }) {
               <span className="modal-price-value">₹{ride.price}</span>
             </div>
           </div>
-
-          {/* Actions */}
-        
         </div>
       </div>
     </div>

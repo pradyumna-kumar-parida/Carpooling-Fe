@@ -183,10 +183,12 @@
 .ride-publish-filter-bar {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
+  overflow-x: scroll;
   margin-bottom: 24px;
 }
-
+.ride-publish-filter-bar::-webkit-scrollbar {
+  display: none;
+}
 .ride-publish-filter-tab {
   display: inline-flex;
   align-items: center;
@@ -327,7 +329,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #16a34a;
+  background: #a36616;
   animation: ride-publish-pulse 1.5s ease infinite;
   flex-shrink: 0;
 }
@@ -351,7 +353,7 @@
   gap: 12px;
 }
 .right-icon,
-.left-icon{
+.left-icon {
   min-width: 15px;
 }
 .ride-publish-card-city-block {
@@ -789,25 +791,6 @@
   margin: 0 0 24px 0;
 }
 
-.ride-publish-empty-btn {
-  display: inline-block;
-  padding: 11px 28px;
-  background: var(--ride-publish-btn-bg);
-  color: #fff;
-  border-radius: 8px;
-  font-size: 0.875rem;
-  font-weight: 700;
-  text-decoration: none;
-  box-shadow: 0 4px 14px rgba(30, 64, 175, 0.25);
-  transition:
-    opacity 0.15s,
-    transform 0.15s;
-}
-
-.ride-publish-empty-btn:hover {
-  opacity: 0.88;
-  transform: translateY(-1px);
-}
 
 /* ══════════════════════════════════════════════════════════
    DETAIL MODAL
@@ -828,8 +811,9 @@
   background: #fff;
   border-radius: 18px;
   width: 100%;
+
   max-width: 560px;
-  max-height: 90vh;
+  max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.2);
   animation: ride-publish-modal-in 0.22s ease;
@@ -961,31 +945,105 @@
 
 /* info grid */
 .ride-publish-modal-info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   background: #f8faff;
   border: 1px solid #e0eaff;
   border-radius: 10px;
   padding: 16px;
 }
+/* ================================
+   Ride Details - Passenger Section
+   ================================ */
 
-.ride-publish-modal-info-item {
+.ride-details-things-pax-row {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Passenger Header */
+
+.ride-details-things-pax-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+/* Expand Arrow */
+
+.ride-details-things-arrow {
+  color: #94a3b8;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.ride-details-things-arrow-expanded {
+  transform: rotate(90deg);
+}
+
+/* Expanded Passenger Details */
+
+.ride-details-things-expanded {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 10px 12px 12px;
+  border-top: 1px solid #e8edf4;
+}
+
+/* Individual Information */
+
+.ride-details-things-info {
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
 
-.ride-publish-modal-info-label {
-  font-size: 0.68rem;
+/* Labels */
+
+.ride-details-things-label {
+  font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #94a3b8;
 }
 
+/* Values */
+
+.ride-details-things-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ride-publish-modal-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1.5px solid #bebaba;
+}
+
+.ride-publish-modal-info-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+  color: #94a3b8;
+}
+
 .ride-publish-modal-info-val {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #0f172a;
 }
@@ -1020,13 +1078,15 @@
   border-radius: 8px;
   border: 1px solid #e8edf4;
   cursor: pointer;
-   transition: color 0.25s ease, transform 0.25s ease;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
 }
-.ride-publish-modal-pax-row:hover{
-  background-color:#f7f3f3;
+.ride-publish-modal-pax-row:hover {
+  background-color: #f7f3f3;
 }
-.ride-publish-modal-pax-row:active{
-    transform: scale(0.95);
+.ride-publish-modal-pax-row:active {
+  transform: scale(0.95);
 }
 .ride-publish-modal-pax-info {
   display: flex;
@@ -1051,7 +1111,7 @@
   color: #fff;
   background: #22c55e; /* Green */
   border: 1px solid #16a34a;
-  
+
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1125,14 +1185,15 @@
   font-size: 15px;
   color: var(--ride-publish-blue);
   cursor: pointer;
-  transition: color 0.25s ease, transform 0.25s ease;
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
 }
 
 .pas-info:hover {
   color: #2563eb; /* Slightly darker blue */
   transform: scale(1.15);
 }
-
 
 .ride-publish-modal-btn-cancel {
   flex: 1;
@@ -1217,6 +1278,18 @@
   margin: 0 auto 16px;
   color: #f97316;
 }
+.ride-start-confirm-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #f1ffed;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  color: green;
+}
 
 .ride-publish-confirm-icon svg {
   width: 26px;
@@ -1274,6 +1347,19 @@
   cursor: pointer;
   transition: opacity 0.15s;
 }
+.ride-start-confirm-btn-yes {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: green;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--ride-publish-body-font);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
 
 .ride-publish-confirm-btn-yes:hover {
   opacity: 0.88;
@@ -1294,7 +1380,7 @@
     align-items: flex-start;
     gap: 16px;
   }
-
+  
   .ride-publish-post-btn {
     width: 100%;
     justify-content: center;
@@ -1332,7 +1418,14 @@
     height: 12px;
     width: 12px;
   }
-
+  .ride-publish-empty{
+    padding: 30px 18px;
+  }
+  .ride-details-things-label {
+    font-size: 0.5rem !important;
+  }
+  .ride-publish-modal-pax-seat,
+  .ride-details-things-value,
   .ride-publish-modal-btn-cancel,
   .ride-publish-modal-btn-start,
   .ride-publish-pax-paid,
@@ -1344,10 +1437,13 @@
   .ride-publish-status-badge,
   .ride-publish-summary-label,
   .ride-publish-header-eyebrow {
-    font-size: 0.6rem;
+    font-size: 0.6rem !important;
+  }
+  .ride-details-things-pax-header {
+    gap: 5px !important;
   }
 
-  .ride-publish-card-addr{
+  .ride-publish-card-addr {
     max-width: 100px !important;
   }
   .ride-publish-header-title {
@@ -1374,7 +1470,6 @@
   }
   .ride-publish-modal-earn-val,
   .ride-publish-modal-earn-label,
-  .ride-publish-modal-pax-seat,
   .ride-publish-modal-section-title,
   .ride-publish-modal-pax-name,
   .ride-publish-modal-info-val,
@@ -1387,6 +1482,7 @@
   .ride-publish-header-inner {
     padding: 30px 24px;
   }
+
   .ride-publish-confirm-btn-yes,
   .ride-publish-confirm-btn-no,
   .ride-publish-confirm-text,
@@ -1399,12 +1495,14 @@
     font-size: 0.8rem;
   }
 
-  .ride-publish-post-btn {
+  /* .ride-publish-post-btn {
     padding: 9px 10px;
     font-size: 0.8rem;
-  }
+  } */
+  .ride-publish-post-btn,
   .ride-publish-summary-inner {
-    gap: 0px;
+    /* gap: 0px; */
+    display: none;
   }
   .ride-publish-filter-tab {
     min-width: max-content;

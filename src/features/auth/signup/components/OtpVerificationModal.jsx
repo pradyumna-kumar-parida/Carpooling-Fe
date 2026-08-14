@@ -1,14 +1,21 @@
 // src/pages/Auth/signup/components/OtpVerificationModal.jsx
 
 import {
-  Dialog, DialogContent, Typography,
-  TextField, Button, Alert, Stack,
+  Dialog,
+  DialogContent,
+  Typography,
+  TextField,
+  Button,
+  Alert,
+  Stack,
 } from "@mui/material";
 
 export default function OtpVerificationModal({
-  open, onClose,
+  open,
+  onClose,
   phone,
-  otp, setOtp,
+  otp,
+  setOtp,
   isVerified,
   onVerify,
 }) {
@@ -18,16 +25,17 @@ export default function OtpVerificationModal({
   };
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      PaperProps={{ style: { borderRadius: 12, padding: 8, minWidth: 360 } }}
-    >
+    <Dialog open={open} onClose={onClose}>
       <DialogContent>
         <Typography variant="h6" fontWeight={700} mb={1}>
           Verify Phone Number
         </Typography>
-        <Typography variant="body2" color="text.secondary" mb={2}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          mb={2}
+          className="otp-desc"
+        >
           An OTP has been sent to <strong>+91 {phone}</strong>
         </Typography>
 
@@ -54,7 +62,9 @@ export default function OtpVerificationModal({
               sx={{
                 backgroundColor: "#0033a1",
                 "&:hover": { backgroundColor: "#002280" },
-                borderRadius: 2, py: 1.2, fontWeight: 700,
+                borderRadius: 2,
+                py: 1.2,
+                fontWeight: 600,
               }}
             >
               Verify OTP

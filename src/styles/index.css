@@ -66,7 +66,9 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
-
+.otp-desc{
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
 /* ===========================
    HEADER — fully solid + stacking context fix
    =========================== */
@@ -2254,10 +2256,6 @@ footer {
   border-radius: var(--fr-radius) !important;
 }
 
-.MuiMenuItem-root,
-.MuiTypography-root {
-  font-family: "Vollkorn", serif !important;
-}
 
 /* ===========================
    ANIMATIONS
@@ -2747,6 +2745,7 @@ footer {
     left: 12px !important;
     width: auto !important;
   }
+
   .profile-rate,
   .avl-rides-when,
   .footer-links a {
@@ -2812,6 +2811,17 @@ footer {
     padding-top: 24px;
     padding-bottom: 40px;
     min-height: 340px !important;
+        /* background:
+      linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.514) 0%,
+        rgba(255, 255, 255, 0.514) 25%,
+        rgba(255, 255, 255, 0.473) 45%,
+        rgba(255, 255, 255, 0.35) 65%,
+        rgba(255, 255, 255, 0.185) 100%
+      ),
+      url("../assets/images/hero-Img.png");
+     */
   }
   .hero-content {
     grid-template-columns: 280px;
@@ -2835,6 +2845,7 @@ footer {
     font-size: 0.9rem !important;
     margin-bottom: 16px !important;
   }
+    footer,
   .ride-com-role-tag,
   .ride-card__status,
   .hero-image {
@@ -2999,7 +3010,7 @@ footer {
   .ride-com-stat {
     gap: 3px !important;
   }
-
+  .otp-desc,
   .logout-confirm,
   .profile-avatar-wrapper,
   .profile-default-avatar,
@@ -3035,10 +3046,10 @@ footer {
   .form-group label {
     font-size: 0.8rem !important;
   }
-  .logout-dialog-box {
-    padding: 20px 15px !important;
-  }
 
+.logout-icon{
+      margin: 0 auto -9px !important;
+}
   .document-title,
   .ride-com-nudge,
   .ride-com-view-all,
@@ -3098,13 +3109,13 @@ footer {
   }
   .chat-icon-btn svg,
   .check-icon {
-    height: 14px !important;
-    width: 14px !important;
+    height: 17px !important;
+    width: 17px !important;
   }
   .ntfy-avatar,
   .chat-icon-btn {
-    height: 30px !important;
-    width: 30px !important;
+    height: 38px !important;
+    width: 38px !important;
   }
   .form-input,
   .form-textarea,
@@ -3214,7 +3225,7 @@ footer {
     font-size: 0.8rem !important;
   }
   .profile-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 5px;
   }
 
@@ -4472,7 +4483,13 @@ footer {
   .location-overlay {
     padding: 16px;
   }
-
+  .cp-pending-icon{
+    height: 50px !important; 
+    width: 50px !important;
+  }
+.cp-pending-wrap{
+  min-height: 80vh !important;
+}
   .back-to-top {
     display: none !important;
   }
@@ -4509,6 +4526,7 @@ footer {
     --scanner-overlap: 46px;
     padding: 10px 0;
   }
+
   .reviewer-info .name,
   .reviewer-info .name span,
   .ridetail-date-route,
@@ -4660,13 +4678,27 @@ footer {
 
   display: flex;
   gap: 10px;
+
   overflow-x: auto;
   overflow-y: hidden;
+
   padding: 2px 2px 16px;
+
   border-bottom: 1px solid var(--ntfy-border);
-  scrollbar-width: thin;
+
+  /* Hide scrollbar - Firefox */
+  scrollbar-width: none;
+
+  /* Hide scrollbar - IE/old Edge */
+  -ms-overflow-style: none;
 }
 
+/* Hide scrollbar - Chrome, Edge, Safari */
+.ntfy-tabs::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
 .ntfy-tab {
   flex-shrink: 0;
   font-family: inherit;
@@ -5656,7 +5688,7 @@ footer {
 /* ---------- Responsive: mobile ---------- */
 @media (max-width: 768px) {
   .chat-page {
-    height: 100vh;
+    height: 92vh;
     border-radius: 0;
     border: none;
     display: block;

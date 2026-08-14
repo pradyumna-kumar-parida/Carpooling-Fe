@@ -6,6 +6,7 @@ import { Alert, Snackbar } from "@mui/material";
 import "../../../styles/ride-published.css";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
+import { FiAlertCircle } from "react-icons/fi";
 
 import { BsCheck2Circle } from "react-icons/bs";
 import { FaHourglassEnd } from "react-icons/fa";
@@ -221,7 +222,7 @@ console.log("ride datassss alll",ride);
               <div>
                 <p className="ride-publish-modal-city">{ride.from}</p>
                 <p className="ride-publish-modal-addr">{ride.fromAddress}</p>
-                <p className="ride-publish-modal-time-tag">{ride.time}</p>
+                <p className="ride-publish-modal-time-tag">{ride.duration}</p>
               </div>
             </div>
             <div className="ride-publish-modal-route-line" />
@@ -277,187 +278,111 @@ console.log("ride datassss alll",ride);
           </div>
 
           {/* Passengers */}
-          <div className="ride-publish-modal-section">
-            <h3 className="ride-publish-modal-section-title">
-              Booked Passengers
-            </h3>
-            {ride.passengers.length === 0 ? (
-              <p className="ride-publish-modal-empty">No passengers yet.</p>
-            ) : (
-              <div className="ride-publish-modal-pax-list">
-                {ride.passengers.map((p, i) => {
-                  const expanded = expandedPax === i;
-                  return (
-                    <div
-                      key={i}
-                      className="ride-publish-modal-pax-row"
-                      style={{
-                        flexDirection: "column",
-                        alignItems: "stretch",
-                        padding: 0,
-                        overflow: "hidden",
-                      }}
-                    >
-                      <div
-                        onClick={() => setExpandedPax(expanded ? null : i)}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 12,
-                          padding: "10px 12px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <div className="ride-publish-avatar">{p.avatar}</div>
-                        <div className="ride-publish-modal-pax-info">
-                          <span className="ride-publish-modal-pax-name">
-                            {p.name}
-                          </span>
-                        </div>
-                        <Link
-                          className="ride-publish-modal-pax-seat"
-                          href="/driver/chats"
-                        >
-                          Chat
-                        </Link>
-                        <span
-                          className={`ride-publish-pax-paid ${
-                            p.paid
-                              ? "ride-publish-pax-paid-yes"
-                              : "ride-publish-pax-paid-no"
-                          }`}
-                        >
-                          {p.paid ? (
-                            <>
-                              <BsCheck2Circle />
-                              <span>Paid</span>
-                            </>
-                          ) : (
-                            <>
-                              <FaHourglassEnd />
-                              <span>Pending</span>
-                            </>
-                          )}
-                        </span>
+        <div className="ride-publish-modal-section">
+  <h3 className="ride-publish-modal-section-title">
+    Booked Passengers
+  </h3>
 
-                        <FaAngleRight
-                          style={{
-                            color: "#94a3b8",
-                            flexShrink: 0,
-                            transform: expanded
-                              ? "rotate(90deg)"
-                              : "rotate(0deg)",
-                            transition: "transform 0.15s ease",
-                          }}
-                        />
-                      </div>
+  {ride.passengers.length === 0 ? (
+    <p className="ride-publish-modal-empty">No passengers yet.</p>
+  ) : (
+    <div className="ride-publish-modal-pax-list">
+      {ride.passengers.map((p, i) => {
+        const expanded = expandedPax === i;
 
-                      {expanded && (
-                        <div
-                          style={{
-                            display: "grid",
-                            gridTemplateColumns: "1fr 1fr 1fr",
-                            gap: 10,
-                            padding: "10px 12px 12px",
-                            borderTop: "1px solid #e8edf4",
-                          }}
-                        >
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 3,
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontSize: "0.65rem",
-                                fontWeight: 700,
-                                textTransform: "uppercase",
-                                letterSpacing: "0.5px",
-                                color: "#94a3b8",
-                              }}
-                            >
-                              Phone
-                            </span>
-                            <span
-                              style={{
-                                fontSize: "0.85rem",
-                                fontWeight: 600,
-                                color: "#0f172a",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 6,
-                              }}
-                            >
-                              <FiPhone size={13} color="#1e40af" />
-                              {p.phone}
-                            </span>
-                          </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 3,
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontSize: "0.65rem",
-                                fontWeight: 700,
-                                textTransform: "uppercase",
-                                letterSpacing: "0.5px",
-                                color: "#94a3b8",
-                              }}
-                            >
-                              Seats Booked
-                            </span>
-                            <span
-                              style={{
-                                fontSize: "0.85rem",
-                                fontWeight: 600,
-                                color: "#0f172a",
-                              }}
-                            >
-                              {p.seatsBooked}
-                            </span>
-                          </div>
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 3,
-                            }}
-                          >
-                            <span
-                              style={{
-                                fontSize: "0.65rem",
-                                fontWeight: 700,
-                                textTransform: "uppercase",
-                                letterSpacing: "0.5px",
-                                color: "#94a3b8",
-                              }}
-                            >
-                              Amount Received
-                            </span>
-                            <span
-                              style={{
-                                fontSize: "0.85rem",
-                                fontWeight: 600,
-                                color: "#0f172a",
-                              }}
-                            >
-                              {p.amount}
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+        return (
+          <div
+            key={i}
+            className="ride-publish-modal-pax-row ride-details-things-pax-row"
+          >
+            <div
+              className="ride-details-things-pax-header"
+              onClick={() => setExpandedPax(expanded ? null : i)}
+            >
+              <div className="ride-publish-avatar">
+                {p.avatar}
+              </div>
+
+              <div className="ride-publish-modal-pax-info">
+                <span className="ride-publish-modal-pax-name">
+                  {p.name}
+                </span>
+              </div>
+
+              <Link
+                className="ride-publish-modal-pax-seat"
+                href="/driver/chats"
+              >
+                Chat
+              </Link>
+
+              <span
+                className={`ride-publish-pax-paid ${
+                  p.paid
+                    ? "ride-publish-pax-paid-yes"
+                    : "ride-publish-pax-paid-no"
+                }`}
+              >
+                {p.paid ? (
+                  <>
+                    <BsCheck2Circle />
+                    <span>Paid</span>
+                  </>
+                ) : (
+                  <>
+                    <FaHourglassEnd />
+                    <span>Pending</span>
+                  </>
+                )}
+              </span>
+
+              <FaAngleRight
+                className={`ride-details-things-arrow ${
+                  expanded ? "ride-details-things-arrow-expanded" : ""
+                }`}
+              />
+            </div>
+
+            {expanded && (
+              <div className="ride-details-things-expanded">
+                <div className="ride-details-things-info">
+                  <span className="ride-details-things-label">
+                    Phone
+                  </span>
+
+                  <span className="ride-details-things-value">
+                    {/* <FiPhone size={13} color="#1e40af" /> */}
+                    {p.phone}
+                  </span>
+                </div>
+
+                <div className="ride-details-things-info">
+                  <span className="ride-details-things-label">
+                    Seats Booked
+                  </span>
+
+                  <span className="ride-details-things-value">
+                    {p.seatsBooked}
+                  </span>
+                </div>
+
+                <div className="ride-details-things-info">
+                  <span className="ride-details-things-label">
+                    Amount Received
+                  </span>
+
+                  <span className="ride-details-things-value">
+                    {p.amount}
+                  </span>
+                </div>
               </div>
             )}
           </div>
+        );
+      })}
+    </div>
+  )}
+</div>
 
           {/* Earnings summary */}
           <div className="ride-publish-modal-earn-box">
@@ -739,14 +664,8 @@ export default function PublishedRides({ publishedRide }) {
           {filtered.length === 0 ? (
             <div className="ride-publish-empty">
               <div className="ride-publish-empty-icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <path d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
-                </svg>
+                <FiAlertCircle />
+
               </div>
               <h3 className="ride-publish-empty-title">No rides found</h3>
               <p className="ride-publish-empty-sub">
@@ -754,9 +673,7 @@ export default function PublishedRides({ publishedRide }) {
                 {activeFilter !== "All" ? activeFilter.toLowerCase() : ""} rides
                 yet.
               </p>
-              <a href="/offer-ride" className="ride-publish-empty-btn">
-                Post Your First Ride
-              </a>
+           
             </div>
           ) : (
             <div className="ride-publish-grid">
@@ -1123,7 +1040,7 @@ export default function PublishedRides({ publishedRide }) {
             className="ride-publish-confirm-dialog"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="ride-publish-confirm-icon ride-publish-confirm-icon-start">
+            <div className="ride-start-confirm-icon ride-publish-confirm-icon-start">
               <BsCheck2Circle />
             </div>
             <h3 className="ride-publish-confirm-title">Start this ride?</h3>
@@ -1142,7 +1059,7 @@ export default function PublishedRides({ publishedRide }) {
                 Not Yet
               </button>
               <button
-                className="ride-publish-confirm-btn-yes ride-publish-confirm-btn-start"
+                className="ride-start-confirm-btn-yes ride-publish-confirm-btn-start"
                 onClick={() => handleStart(confirmStart)}
               >
                 Yes, Start Ride

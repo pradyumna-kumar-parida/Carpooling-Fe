@@ -933,6 +933,7 @@ html {
 .pr-step {
   display: flex;
   gap: 20px;
+      border: 2px solid var(--pr-border);
   align-items: flex-start;
   transition: all 0.3s ease;
 }
@@ -1293,7 +1294,7 @@ html {
   .pr-how-it-works,
   .pr-support,
   .pr-faq {
-    padding: 30px 10px !important;
+    padding: 30px 18px !important;
   }
 
   .pr-support-icon,
@@ -1325,6 +1326,7 @@ html {
         width: 17px !important;
     height: 17px !important;
   }
+  .pr-how-steps,
   .pr-benefits-grid,
   .pr-support-grid {
     gap: 20px;

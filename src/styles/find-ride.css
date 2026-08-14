@@ -1334,7 +1334,12 @@
   display: flex;
   flex-direction: column;
 }
-
+.myride-track-btn:disabled,
+.myride-chat-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 .detail-item {
   display: flex;
   align-items: center;
@@ -1593,12 +1598,23 @@
 
 .myride-tabs {
   display: flex;
+  justify-content: center !important;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   gap: 1rem;
   margin-bottom: 2rem;
-  justify-content: center;
-  flex-wrap: wrap;
+  width: 100%;
+  padding: 0 4px;
+  scrollbar-width: none;
 }
 
+.myride-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.myride-tabs > * {
+  flex: 0 0 auto;
+}
 .myride-tab {
   padding: 0.75rem 2rem;
   background: var(--fr-bg-white);
@@ -1745,14 +1761,22 @@
   color: var(--fr-text-light);
   font-weight: 500;
 }
-
+.info-value-card-date,
 .info-value {
   font-size: 0.845rem;
   color: var(--fr-text-dark);
   font-weight: 600;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
+.info-value-card-date{
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
 
+.separtor-dot{
+  font-size: 8px;
+}
 .myride-card-footer {
   display: flex;
   justify-content: space-between;
@@ -1777,21 +1801,7 @@
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
-.myride-details-btn {
-  padding: 10px 14px;
-  background: #ffffff;
-  color: #000000;
 
-  border: none;
-  border-radius: var(--fr-radius);
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
 .myride-chat-btn:hover,
 .myride-track-btn:hover,
 .myride-details-btn:hover {
@@ -1909,8 +1919,8 @@
 }
 
 .info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+display: grid;
+grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
@@ -1946,7 +1956,6 @@
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
 
-.myride-modal-driver,
 .myride-modal-passengers {
   margin-bottom: 1.5rem;
 }
@@ -1990,7 +1999,7 @@
 
 .driver-car {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.5rem;
   font-size: 0.875rem;
   color: var(--fr-text-gray);
@@ -2445,7 +2454,7 @@
 .bookconf-success-text {
   font-size: 1.2rem;
   color: var(--fr-text-gray);
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 0.7rem 0;
   line-height: 1.6;
 }
 
@@ -2556,8 +2565,8 @@
 }
 
 .bookconf-info-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
   gap: 1.25rem;
 }
 
@@ -2811,7 +2820,7 @@
   transform: translateY(-2px);
   box-shadow: var(--fr-shadow-lg);
 }
-.ticket-download{
+.ticket-download {
   background-color: var(--fr-text-gray) !important;
   color: white !important;
 }
@@ -2820,7 +2829,6 @@
   color: var(--fr-text-dark);
   border: 2px solid var(--fr-border);
 }
-
 
 /* ==========================================
    VEHICLE DETAILS PAGE
@@ -3345,7 +3353,8 @@
   .driver-details {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    gap: 5px;
+    align-items: baseline;
   }
   .fr-field {
     min-width: calc(50% - 0.5px);
@@ -3660,9 +3669,11 @@
   }
 
   .bookconf-info-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
-
+  .car-icon{
+    font-size:14px !important;
+  }
   .bookconf-driver-avatar {
     width: 64px;
     height: 64px;
@@ -3717,14 +3728,28 @@
    ========================================== */
 
 @media (max-width: 480px) {
+  .separtor-dot{
+  font-size: 4px;
+}
   .approval-image {
     max-width: 320px;
+  }
+  .info-value-card-date, .info-value{
+    font-weight: 400 !important;
   }
   .modal-price {
     gap: 8px;
     text-align: center;
   }
-
+  .driver-card,
+  .driver-info{
+    gap: 0.7rem !important;
+  }
+   .bookconf-step-city,
+    .section-title{
+      font-size: 0.9rem !important;
+    }
+ 
   .myride-modal-actions {
     grid-template-columns: 1fr;
   }
@@ -3757,10 +3782,11 @@
     width: 100%;
     text-align: center;
   }
+    .driver-car,
   .rating-modal-subtitle,
   .vehicle-detl-subtitle,
   .cancel-info p,
-  .driver-car,
+
   .driver-phone,
   .item-value,
   .step-address,
@@ -3780,7 +3806,7 @@
   }
   .myride-card-actions {
     margin-top: 10px !important;
-    padding: 12px !important;
+    /* padding: 12px !important; */
   }
   .myride-modal-price-section,
   .cancel-info,
@@ -3792,29 +3818,33 @@
   .myride-track-btn,
   .myride-details-btn {
     padding: 7px 10px !important;
-    font-size: 0.7rem !important;
+    font-size: 0.78rem !important;
   }
   .rating-modal-box {
-    padding: 20px 15px  !important;
-  }
-.ridepay-payment-alert h4,
- .vehicle-detl-card-name,
- .vehicle-detl-panel-title,
- .vehicle-detl-panel-reg,
- .fr-rides-driver-name,
-  .vehicle-detl-add-btn{
-    font-size: 0.8rem !important
+    padding: 20px 15px !important;
   }
   
-    .rating-modal-feedback,
+.bookconf-info-value,
+.bookconf-step-address,
+  .ridepay-payment-alert h4,
+  .vehicle-detl-card-name,
+  .vehicle-detl-panel-title,
+  .vehicle-detl-panel-reg,
+  .fr-rides-driver-name,
+  .vehicle-detl-add-btn {
+    font-size: 0.8rem !important;
+  }
+  .bookconf-step-time,
+.info-value-card-date,
+  .rating-modal-feedback,
   .fr-rides-rating,
   .fr-rides-distance,
   .fr-rides-subtitle,
   .vehicle-detl-doc-btn,
-.vehicle-detl-card-reg,
-.vehicle-detl-card-meta,
-   .vehicle-detl-sidebar-label,
-   .vehicle-detl-badge,
+  .vehicle-detl-card-reg,
+  .vehicle-detl-card-meta,
+  .vehicle-detl-sidebar-label,
+  .vehicle-detl-badge,
   .sucess-status-badge,
   .step-time,
   .info-label,
@@ -3822,31 +3852,57 @@
   .myride-status-chip,
   .bookconf-payment-chip,
   .css-6od3lo-MuiChip-label,
-
   .css-wjsjww-MuiChip-label {
     font-size: 0.6rem !important;
   }
   .myride-modal-badges {
     margin-bottom: 10px !important;
   }
-  .fr-rides-avatar{
+  .fr-rides-avatar {
     height: 28px !important;
-    
+
     width: 28px !important;
   }
   .bookconf-driver-phone {
     justify-content: center;
   }
+  .myride-card-footer,
+  .myride-modal-badges,
+  /* .step-city, */
   .back-to-top {
     display: none;
   }
+  .bookconf-info-grid,
+  .bookconf-price-breakdown,
+  .bookconf-booking-info,
+  .dm-header{
+    gap: 0.7rem !important;
+  }
+  .bookconf-btn-primary, .bookconf-btn-secondary{
+    padding: 13px 12px !important;
+  }
+  .bookconf-success-header{
+    margin-bottom: 10px !important;
+  }
+  .bookconf-success-text{
+    margin-bottom: 10px !important;
+  }
+  .bookconf-driver-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   .ridepay-payment {
     gap: 0.2rem;
+  }
+  .route-step{
+    gap: 0.5rem !important;
   }
   /* Search */
   .fr-page-title {
     font-size: 1.9rem;
   }
+  .bookconf-step-icon,
   .ridepay-payment-icon,
   .vehicle-detl-title,
   .ride-confirm-title {
@@ -3870,23 +3926,27 @@
     height: 40px !important;
     width: 40px !important;
   }
-.vehicle-detl-section-title,
+    .driver-name,
+    .ridepay-driver-name{
+      font-size: 0.9rem !important;
+    }
+  .vehicle-detl-section-title,
   .item-icon,
-  
   .myride-modal-title h2,
   .bookconf-driver-name,
-  .bookconf-step-city,
+ 
   .ridepay-driver-title,
   .ridepay-summary-title,
+  
   .ridepay-payment-title,
   .dm-driver-name,
   .passengers-title,
-  .driver-name,
+
   .ride-price-total span:first-child {
     font-size: 1rem !important ;
   }
-  .show-map-btn{
-height: 38px !important;
+  .show-map-btn {
+    height: 38px !important;
   }
   .ridepay-btn-primary,
   .show-map-btn,
@@ -3900,14 +3960,14 @@ height: 38px !important;
   .vehicledetails-photo-label span,
   .modal-price-value,
   .modal-price-label,
-  .driver-name,
-  .section-title,
+
+.bookconf-btn-primary, .bookconf-btn-secondary,
   .vehicledetails-subtitle,
   .bookconf-booking-value,
   .bookconf-booking-label,
   .bookconf-price-value,
   .bookconf-price-label,
-  .ridepay-driver-name,
+
   .ridepay-route-value,
   .ridepay-amount-value,
   .ridepay-amount-label,
@@ -3921,7 +3981,7 @@ height: 38px !important;
     border-radius: 14px 14px 0 0 !important;
   }
   .ridepay-secure-note,
-  .ridepay-payment-alert p{
+  .ridepay-payment-alert p {
     font-size: 0.7rem !important;
   }
   .vehicledetails-btn-next,
@@ -3983,9 +4043,9 @@ height: 38px !important;
     margin-bottom: 10px;
     padding: 0 10px;
   }
-.fr-rides-section{
-      margin: 24px auto 24px !important;
-}
+  .fr-rides-section {
+    margin: 24px auto 24px !important;
+  }
   .fr-route-item {
     padding: 16px;
     flex-direction: row;
@@ -4109,13 +4169,15 @@ height: 38px !important;
 
   /* My rides */
   .myride-page {
-    padding: 1rem 0.5rem;
+    padding: 1rem 1rem;
   }
 
   .myride-tabs {
     gap: 0.5rem;
   }
-
+  .myride-header {
+    margin-bottom: 1rem !important;
+  }
   .msg-count {
     padding: 2px 4px !important;
     font-size: 0.5rem !important;
@@ -4132,9 +4194,7 @@ height: 38px !important;
     min-height: 170px;
   }
 
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
+ 
 
   .passengers-grid {
     grid-template-columns: 1fr;
@@ -4145,11 +4205,16 @@ height: 38px !important;
   .ridepay-payment-title {
     font-size: 1.25rem;
   }
-
+  .myride-card-info,
+  .vehicledetails-subtitle {
+    display: none !important;
+  }
   .ridepay-success-icon {
     font-size: 4rem;
   }
-
+  .myride-card-header {
+    margin-bottom: 0 !important;
+  }
   .ridepay-success-title {
     font-size: 1.5rem;
   }
@@ -4268,8 +4333,6 @@ height: 38px !important;
   text-transform: capitalize;
   color: #111827;
 }
-
-
 
 /* ── Body (everything below the header) ── */
 .dm-body {
@@ -5104,11 +5167,11 @@ height: 38px !important;
   margin: 12px 0 20px;
 }
 .track-chat-btn {
- background-color:rgb(201, 16, 16);
- color:white;
+  background-color: rgb(201, 16, 16);
+  color: white;
 }
-.chat-btn-driver{
- background: #2e7d32;
+.chat-btn-driver {
+  background: #2e7d32;
   color: white;
   border: none;
 }
@@ -5119,7 +5182,7 @@ height: 38px !important;
 
 /* Driver Card Section */
 .myride-modal-driver {
-  margin-bottom: 28px;
+  margin-bottom: 20px;
   padding: 16px;
   background: #f7f9fb;
   border-radius: 10px;
@@ -5165,7 +5228,6 @@ height: 38px !important;
 
 /* Price Section */
 .myride-modal-price-section {
-  margin-bottom: 20px;
   padding: 16px;
   background: linear-gradient(135deg, #f0f7ff 0%, #e8f4ff 100%);
   border-radius: 10px;
@@ -5189,8 +5251,8 @@ height: 38px !important;
 @media (max-width: 768px) {
   .driver-card {
     flex-direction: column;
-    align-items: center;
-    text-align: center;
+    align-items: baseline;
+    text-align: start;
   }
 
   .driver-meta {
@@ -5337,7 +5399,7 @@ body.modal-open {
 .rating-modal-label {
   font-weight: 600 !important;
   margin-bottom: 8px !important;
-   font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
 }
 
 .rating-modal-stars {
@@ -5355,49 +5417,129 @@ body.modal-open {
   margin-top: 24px;
 }
 .myride-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+
+  margin-top: 14px;
+  padding-top: 12px;
+
+  border-top: 1px solid #e5e7eb;
+}
+.myride-card-actions {
   display: flex;
-  justify-content: space-evenly;
-  background-color: var(--fr-text-dark);
+  align-items: center;
   gap: 10px;
-  margin-top: 15px;
-  padding: 15px 10px;
-  border-radius: var(--fr-radius);
-  align-items: center;
+
+  margin-top: 16px;
+  padding-top: 14px;
+
+  border-top: 1px solid #edf0f4;
 }
 
-/* Track Ride */
+/* Common */
+.myride-card-actions button {
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  border-radius: 9px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Details - secondary */
+.myride-details-btn {
+  flex: 1.2;
+  padding: 0 12px;
+
+  background: #fff7ed;
+  color: #c2410c;
+
+  border: 1px solid #fed7aa;
+  border-radius: 9px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.myride-details-btn:hover {
+  background: #ffedd5;
+  border-color: #fdba74;
+}
+
+
+/* Track - primary blue */
 .myride-track-btn {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 8px;
-  border: none;
-  background: var(--fr-primary);
-  color: #ffffff;
-  font-size: 13px;
-  font-weight: 600;
-  box-shadow: 0px 0px 2px white inset;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  flex: 1;
+
+  padding: 0 12px;
+
+  background: var(--fr-text-dark);
+  color: #fff;
+
+  border: 1px solid var(--fr-text-dark);
+
+  box-shadow: none;
 }
 
-/* Chat */
+.myride-track-btn:hover:not(:disabled) {
+   background: var(--fr-text-dark);
+}
+
+/* Track disabled */
+.myride-track-btn:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+
+  border: 1px solid #e2e8f0;
+
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+/* Chat - green */
 .myride-chat-btn {
-  padding: 10px 18px;
-  border: none;
-  border-radius: 8px;
-  background: green;
-  color: #ffffff;
-  display: flex;
-  box-shadow: 0px 0px 2px white inset;
-  align-items: center;
-  gap: 7px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  flex: 1;
+
+  padding: 0 12px;
+
+  background: #16a34a;
+  color: #fff;
+
+  border: 1px solid #16a34a;
+
+  box-shadow: none;
+}
+
+.myride-chat-btn:hover:not(:disabled) {
+  background: #15803d;
+}
+
+/* Chat disabled */
+.myride-chat-btn:disabled {
+  background: #f1f5f9;
+  color: #94a3b8;
+
+  border: 1px solid #e2e8f0;
+
+  cursor: not-allowed;
+  opacity: 1;
 }
 .msg-count {
   border-radius: 50%;
@@ -5808,7 +5950,7 @@ body.modal-open {
 }
 
 @media (max-width: 480px) {
-  .fr-rides-sort-chip{
+  .fr-rides-sort-chip {
     font-size: 0.7rem !important;
     padding: 6px 12px !important;
   }
@@ -6121,7 +6263,7 @@ body.modal-open {
 .ridepay-payment-icon {
   font-size: 26px;
   line-height: 1;
-    color: #d32f2f;
+  color: #d32f2f;
 }
 
 .ridepay-payment-alert h4 {
@@ -6142,18 +6284,18 @@ body.modal-open {
   color: #d32f2f;
   font-weight: 700;
 }
-.ridetail-avatar-img{
-background: var(--black);
-    color: #fff;
-    border-radius: 50%;
-    flex: none;
-    justify-content: center;
-    align-items: center;
-    width: 30px;
-    height: 30px;
-    font-size: 12.5px;
-    font-weight: 700;
-    display: flex;
+.ridetail-avatar-img {
+  background: var(--black);
+  color: #fff;
+  border-radius: 50%;
+  flex: none;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: flex;
 }
 .ride-map-preview {
   width: 100%;

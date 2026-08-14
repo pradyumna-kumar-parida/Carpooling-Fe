@@ -61,8 +61,8 @@ const Confirmation = () => {
               <Image
                 src={sucessBedge}
                 alt="success-badge"
-                width={100}
-                height={100}
+                width={90}
+                height={90}
               />
             </div>
             <h1 className="bookconf-success-title">Booking Confirmed!</h1>
@@ -97,7 +97,15 @@ const Confirmation = () => {
           </div>
         </div>
       </div>
-      {showChat && <ChatPanel />}
+      {showChat && (
+        <ChatPanel
+          driver={bookingRideDetails}
+          bookingId={bookingRideDetails?.bookingDetails?.booking_id}
+          bookingCode={bookingRideDetails?.bookingDetails?.booking_code}
+          defaultOpen={true}
+          onClose={() => setShowChat(false)}
+        />
+      )}
     </>
   );
 };

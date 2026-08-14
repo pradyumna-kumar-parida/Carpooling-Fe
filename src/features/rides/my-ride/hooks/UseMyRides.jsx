@@ -1,215 +1,152 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-const upcomingRides = [
-  {
-    id: 1,
-    from: "Mumbai",
-    to: "Pune",
-    date: "April 25, 2026",
-    time: "11:00 AM",
-    duration: "3h 10m",
-    fromAddress:
-      "Terminal 2, International APT, Metro Stn, Navpada, Marol, Andheri(E)",
-    toAddress: "FR6C+9WF, Navale Brg, Kudale Baug, Vadgaon Budruk, Maharashtra",
-    driver: {
-      name: "Suraj Kumar",
-      avatar: "https://i.pravatar.cc/150?img=33",
-      rating: 4.8,
-      car: "Maruti Swift Dzire - White",
-      phone: "+91 9876543210",
-    },
-    price: 600,
-    passengers: 2,
-    status: "confirmed",
-  },
-  {
-    id: 2,
-    from: "Delhi",
-    to: "Agra",
-    date: "April 28, 2026",
-    time: "06:00 AM",
-    duration: "4h 30m",
-    fromAddress: "Connaught Place, New Delhi",
-    toAddress: "Taj Mahal Road, Agra",
-    passengers: 3,
-    price: 450,
-    status: "confirmed",
-    bookedSeats: [
-      {
-        name: "Rahul Singh",
-        avatar: "https://i.pravatar.cc/150?img=12",
-        phone: "+91 9876543211",
-      },
-      {
-        name: "Priya Sharma",
-        avatar: "https://i.pravatar.cc/150?img=45",
-        phone: "+91 9876543212",
-      },
-    ],
-  },
-  {
-    id: 3,
-    from: "Bangalore",
-    to: "Mysore",
-    date: "May 2, 2026",
-    time: "09:30 AM",
-    duration: "2h 45m",
-    fromAddress: "MG Road, Bangalore",
-    toAddress: "Mysore Palace Road",
-    driver: {
-      name: "Amit Patel",
-      avatar: "https://i.pravatar.cc/150?img=68",
-      rating: 4.9,
-      car: "Honda City - Silver",
-      phone: "+91 9876543213",
-    },
-    price: 350,
-    passengers: 1,
-    status: "confirmed",
-  },
-];
+/* ---------- helpers ---------- */
 
-const completedRides = [
-  {
-    id: 4,
-    from: "Chennai",
-    to: "Pondicherry",
-    date: "April 10, 2026",
-    time: "02:00 PM",
-    duration: "3h 00m",
-    fromAddress: "Chennai Central Railway Station",
-    toAddress: "Beach Road, Pondicherry",
-    driver: {
-      name: "Vijay Kumar",
-      avatar: "https://i.pravatar.cc/150?img=56",
-      rating: 4.7,
-      car: "Hyundai Creta - Red",
-      phone: "+91 9876543214",
-    },
-    price: 500,
-    passengers: 2,
-    status: "completed",
-  },
-  {
-    id: 5,
-    from: "Kolkata",
-    to: "Darjeeling",
-    date: "March 20, 2026",
-    time: "05:00 AM",
-    duration: "12h 00m",
-    fromAddress: "Howrah Station, Kolkata",
-    toAddress: "Mall Road, Darjeeling",
-    passengers: 4,
-    price: 1200,
-    status: "completed",
-    bookedSeats: [
-      {
-        name: "Sneha Das",
-        avatar: "https://i.pravatar.cc/150?img=23",
-        phone: "+91 9876543215",
-      },
-      {
-        name: "Arjun Roy",
-        avatar: "https://i.pravatar.cc/150?img=67",
-        phone: "+91 9876543216",
-      },
-      {
-        name: "Meera Sen",
-        avatar: "https://i.pravatar.cc/150?img=89",
-        phone: "+91 9876543217",
-      },
-    ],
-  },
-];
+// "Jaydev Vihar, Bhubaneswar, Odisha, India" -> "Jaydev Vihar"
+function getFirstLocationPart(address) {
+  if (!address) return "";
+  return address.split(",")[0].trim();
+}
 
-const cancelledRides = [
-  {
-    id: 6,
-    from: "Hyderabad",
-    to: "Vijayawada",
-    date: "April 5, 2026",
-    time: "08:00 AM",
-    duration: "5h 30m",
-    fromAddress: "HITEC City, Hyderabad",
-    toAddress: "MG Road, Vijayawada",
-    driver: {
-      name: "Rajesh Reddy",
-      avatar: "https://i.pravatar.cc/150?img=15",
-      rating: 4.5,
-      car: "Toyota Innova - White",
-      phone: "+91 9876543218",
-    },
-    price: 700,
-    passengers: 1,
-    status: "cancelled",
-    cancelledBy: "You",
-    cancelReason: "Change of plans",
-  },
-];
-const requestRides = [
-  {
-    id: 101,
-    from: "Hyderabad",
-    to: "Vijayawada",
-    date: "July 5, 2026",
-    time: "08:30 AM",
-    duration: "5h 20m",
-    fromAddress: "Miyapur Metro Station, Hyderabad",
-    toAddress: "Benz Circle, Vijayawada",
-    driver: {
-      name: "Rakesh Verma",
-      avatar: "https://i.pravatar.cc/150?img=22",
-      rating: 4.7,
-      car: "Hyundai Creta - Black",
-      phone: "+91 9876543201",
-    },
-    price: 700,
-    passengers: 2,
-    status: "waiting for approval", // waiting | approved
-    requestedAt: "July 2, 2026 • 10:15 AM",
-  },
+// "2026-08-27T18:30:00.000Z" -> "27 August 2026"
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
-  {
-    id: 102,
-    from: "Chennai",
-    to: "Pondicherry",
-    date: "July 8, 2026",
-    time: "07:00 AM",
-    duration: "3h 15m",
-    fromAddress: "Guindy, Chennai",
-    toAddress: "Rock Beach, Pondicherry",
+// "05:55:00" -> "5:55 AM"
+function formatTime(timeStr) {
+  if (!timeStr) return "";
+  const [h, m] = timeStr.split(":");
+  const hour = parseInt(h, 10);
+  if (isNaN(hour)) return "";
+  const ampm = hour >= 12 ? "PM" : "AM";
+  const hour12 = hour % 12 === 0 ? 12 : hour % 12;
+  return `${hour12}:${m} ${ampm}`;
+}
+
+// 828 -> "13m", 5400 -> "1h 30m"
+function formatDuration(seconds) {
+  if (seconds === null || seconds === undefined) return "";
+  const totalMinutes = Math.round(seconds / 60);
+  const h = Math.floor(totalMinutes / 60);
+  const m = totalMinutes % 60;
+  if (h > 0) return `${h}h ${m}m`;
+  return `${m}m`;
+}
+
+/**
+ * Normalizes a raw booking object from the API into the shape
+ * used by RideCard / RideDetailsModal.
+ */
+export function mapBookingToRide(booking) {
+  if (!booking) return null;
+  console.log("ride details", booking);
+
+  return {
+    id: booking.booking_id,
+    bookingCode: booking.booking_code,
+    rideId: booking.ride_id,
+
+    // locations
+    from: getFirstLocationPart(booking.ride_source),
+    to: getFirstLocationPart(booking.ride_destination),
+    fromAddress: booking.ride_source || "",
+    toAddress: booking.ride_destination || "",
+    fromLat: booking.ride_source_lat,
+    fromLng: booking.ride_source_lng,
+    toLat: booking.ride_destination_lat,
+    toLng: booking.ride_destination_lng,
+
+    // schedule
+    date: formatDate(booking.ride_date),
+    departureTime: formatTime(booking.departure_time),
+    arrivalTime: formatTime(booking.estimated_reach_time),
+    duration: formatDuration(booking.duration_seconds),
+
+    // status — shown exactly as received from the API
+    status: booking.ride_status || "",
+    bookingStatus: booking.booking_status || "",
+    paymentStatus: booking.payment_status || "",
+
+    // booking
+    seats: booking.seats,
+    passengers: booking.seats,
+    pricePerSeat: booking.price_per_seat,
+    price: booking.total_price ?? booking.price_per_seat,
+    bookedAt: booking.booked_at,
+// schedule
+    date: formatDate(booking.ride_date),
+    rawDate: booking.ride_date, // <-- ADD THIS: raw ISO date, needed for Track button logic
+    departureTime: formatTime(booking.departure_time),
+    // driver + vehicle
     driver: {
-      name: "Ankit Sharma",
-      avatar: "https://i.pravatar.cc/150?img=51",
-      rating: 4.9,
-      car: "Toyota Glanza - White",
-      phone: "+91 9876543202",
+      id: booking.driver_id,
+      name: booking.driver_name || "N/A",
+      phone: booking.driver_phone || "",
+      avatar: booking.driver_profile_picture || "/default-avatar.png",
+      car: [booking.vehicle_brand, booking.vehicle_model]
+        .filter(Boolean)
+        .join(" "),
+      registrationNumber: booking.vehicle_registration_number || "",
+      color: booking.vehicle_color || "",
+      fuelType: booking.vehicle_fuel_type || "",
+      vehicleType: booking.vehicle_type || "",
+      // API sample has no driver rating field — guard for it if it's added later
+      rating: booking.driver_rating ?? null,
     },
-    price: 550,
-    passengers: 1,
-    status: "approved", // waiting | approved
-    requestedAt: "July 3, 2026 • 09:40 AM",
-  },
-];
-export const RIDES_DATA = {
-  requestRides,
-  upcomingRides,
-  completedRides,
-  cancelledRides,
-};
+  };
+}
+
+/**
+ * Buckets normalized rides into tabs.
+ * Adjust the status strings here if your backend uses different values.
+ */
+function groupRidesIntoTabs(rides) {
+  const groups = { upcoming: [], completed: [], cancelled: [] };
+
+  rides.forEach((ride) => {
+    const bookingStatus = (ride.bookingStatus || "").toLowerCase();
+    const rideStatus = (ride.status || "").toLowerCase();
+
+    if (bookingStatus === "cancelled" || rideStatus === "cancelled") {
+      groups.cancelled.push(ride);
+    } else if (bookingStatus === "pending") {
+      groups.requests.push(ride);
+    } else if (rideStatus === "completed") {
+      groups.completed.push(ride);
+    } else {
+      // scheduled / ongoing / confirmed etc.
+      groups.upcoming.push(ride);
+    }
+  });
+
+  return groups;
+}
 
 export function getStatusColor(status) {
-  switch (status) {
-    case "confirmed":
-      return "#008221";
+  switch ((status || "").toLowerCase()) {
+    case "pending":
     case "waiting for approval":
       return "#ff9d00";
+    case "confirmed":
     case "approved":
       return "#9500ff";
+    case "scheduled":
+      return "#15803d";
+    case "ongoing":
+    case "in_progress":
+      return "#1b70ff";
     case "completed":
-      return "#1b3dff";
+      return " #2563eb";
     case "cancelled":
       return "#ef4444";
     default:
@@ -217,25 +154,22 @@ export function getStatusColor(status) {
   }
 }
 
-export function useMyRides() {
-  const [activeTab, setActiveTab] = useState("requests");
+export function useMyRides(userRides = []) {
+  const [activeTab, setActiveTab] = useState("upcoming");
   const [selectedRide, setSelectedRide] = useState(null);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
 
-  const getRidesData = () => {
-    switch (activeTab) {
-      case "requests":
-        return requestRides;
-      case "upcoming":
-        return upcomingRides;
-      case "completed":
-        return completedRides;
-      case "cancelled":
-        return cancelledRides;
-      default:
-        return requestRides;
-    }
-  };
+  const normalizedRides = useMemo(
+    () => (userRides || []).map(mapBookingToRide).filter(Boolean),
+    [userRides],
+  );
+
+  const groupedRides = useMemo(
+    () => groupRidesIntoTabs(normalizedRides),
+    [normalizedRides],
+  );
+
+  const getRidesData = () => groupedRides[activeTab] || [];
 
   const handleViewDetails = (ride) => {
     setSelectedRide(ride);
@@ -252,6 +186,7 @@ export function useMyRides() {
     setActiveTab,
     selectedRide,
     openDetailsModal,
+    groupedRides,
     getRidesData,
     handleViewDetails,
     handleCloseDetails,

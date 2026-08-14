@@ -1,10 +1,11 @@
 import MyRides from "./components/MyRides";
-import "../../../styles/find-ride.css"
+import "../../../styles/find-ride.css";
 export const metadata = {
   title: "My Rides",
   description: "Manage your carpooling journeys",
 };
 
-export default function MyRidesPage() {
-  return <MyRides />;
+export default function MyRidesPage({ userRides }) {
+  return <MyRides userRides={userRides} />;
 }
+  
