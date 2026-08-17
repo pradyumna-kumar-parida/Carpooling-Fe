@@ -17,7 +17,7 @@ export default function NotificationToast({
   const [role, setRole] = useState(null);
 
   const router = useRouter();
-
+  
   useEffect(() => {
     const storedRole = getRole();
     setRole(storedRole);
