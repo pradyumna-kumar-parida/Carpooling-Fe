@@ -5,6 +5,9 @@ import PageTransition from "@/components/PageTransition";
 import { getMe } from "@/services/server/authService";
 import LocationPermissionModal from "@/components/LocationAcess";
 import ReactQueryProvider from "@/components/QueryProvider";
+import NotificationProvider from "@/components/notifications/NotificationProvider";
+import { Toaster } from "sonner";
+import "@/styles/notification-toast.css";
 
 const vollkorn = Vollkorn({
   subsets: ["latin"],
@@ -41,7 +44,16 @@ export default async function RootLayout({ children }) {
         <ReactQueryProvider>
           <Providers userData={userData}>
             <LocationPermissionModal />
-            <PageTransition>{children}</PageTransition>
+            <PageTransition>
+              <NotificationProvider />
+              {children}
+              <Toaster
+                    position="top-right"
+                    richColors
+                    closeButton
+                    duration={5000}
+                />
+            </PageTransition>
           </Providers>
         </ReactQueryProvider>
       </body>
