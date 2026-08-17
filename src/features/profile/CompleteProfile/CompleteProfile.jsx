@@ -9,6 +9,8 @@ import {
   IoCloudUploadOutline,
   IoCheckmarkCircle,
 } from "react-icons/io5";
+import { IoInformationCircleOutline } from "react-icons/io5";
+
 import { CiGlobe } from "react-icons/ci";
 import { PiBankLight, PiHashStraightLight } from "react-icons/pi";
 
@@ -331,6 +333,8 @@ function PendingVerification() {
           your account is approved.
         </p>
         <p className="cp-pending-note">
+          <IoInformationCircleOutline />
+
           You won't be able to publish rides until verification is complete.
         </p>
         <Link href="/" className="register-btn cp-pending-btn">

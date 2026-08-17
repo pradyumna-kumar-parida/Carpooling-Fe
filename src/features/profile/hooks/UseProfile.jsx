@@ -12,8 +12,6 @@ const initialUserData = {
   confirmPassword: "",
   terms: false,
 
-  completeProfile: "no", // "yes" | "no" — from API
-
   city: "",
   state: "",
   country: "",

@@ -24,6 +24,8 @@ export default function ProfileHeader({
   //     isDriver && String(userData.profileCompleted).toLowerCase() !== "true";
   //   console.log("profile data", showCompleteProfileCard);
 
+  console.log("userdata profile check", userData);
+
   return (
     <div className="profile-header">
       <div className="profile-header-content">
@@ -95,7 +97,7 @@ export default function ProfileHeader({
             </p>
           </div>
 
-          {userData?.profileCompleted && (
+          {!userData?.profileCompleted && (
             <div className="profile-progress-card">
               <div className="profile-progress-top">
                 <div>
@@ -132,7 +134,7 @@ export default function ProfileHeader({
             </div>
           )}
         </div>
-        {userData?.profileCompleted && (
+        {!userData?.profileCompleted && (
           <div className="profile-progress-card1">
             <div className="profile-progress-top">
               <div>

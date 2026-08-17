@@ -2978,6 +2978,7 @@ footer {
 .mobile-menus{
   font-size: 2rem !important;
 }
+.cp-pending-title,
   .signup-title,
   .footer-logo-div,
   .footer-logo,
@@ -3048,6 +3049,7 @@ footer {
   .chat-list__name{
     font-size: 0.9rem !important;
   }
+  .cp-pending-text,
   .otp-desc,
   .logout-confirm,
   .profile-avatar-wrapper,
@@ -3101,7 +3103,7 @@ footer {
   .document-card {
     gap: 10px !important;
   }
-
+.cp-pending-note,
   .status-uploaded,
   .sos-location-box,
   .driver-track-chip-label,
