@@ -133,7 +133,7 @@ export default function OfferRideStatus({
                     className="ors-btn"
                     onClick={onLoginRedirect}
                   >
-                    Log in →
+                    Log in 
                   </button>
                 </div>
               )}

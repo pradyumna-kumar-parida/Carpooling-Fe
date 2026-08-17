@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { FaLocationDot, FaCheck, FaUserGroup } from "react-icons/fa6";
-import { FaCarAlt, FaInfoCircle } from "react-icons/fa";
+import { FaCarAlt, FaInfoCircle, FaChevronDown } from "react-icons/fa";
 import { CgArrowsExchangeV } from "react-icons/cg";
 import { MdAirlineSeatLegroomReduced, MdMyLocation } from "react-icons/md";
 import { IoFastFoodSharp } from "react-icons/io5";
@@ -274,6 +274,104 @@ function LocationDropdown({
   );
 }
 
+// ── Vehicle picker as a dropdown: closed state shows the selected
+// vehicle's card (icon, name, plate, status badge); clicking it opens a
+// scrollable panel with the same card style for every vehicle. Keeps the
+// UI compact and clean regardless of whether a driver has 1 or 20+
+// vehicles registered. ─────────────────────────────────────────────────
+function VehicleDropdown({
+  approvedVehicles,
+  otherVehicles,
+  selectedId,
+  onSelect,
+  vehicleStatusLabel,
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const allVehicles = [...approvedVehicles, ...otherVehicles];
+  const selectedVehicle = allVehicles.find(
+    (v) => String(v.id) === String(selectedId),
+  );
+
+  return (
+    <div className="prh-vehicle-dropdown" ref={ref}>
+      <button
+        type="button"
+        className={`prh-vehicle-trigger${open ? " prh-vehicle-trigger--open" : ""}`}
+        onClick={() => setOpen((o) => !o)}
+      >
+        {selectedVehicle ? (
+          <>
+            <span className="prh-vehicle-icon">
+              <FaCarAlt />
+            </span>
+            <span className="prh-vehicle-info">
+              <span className="prh-vehicle-name">
+                {selectedVehicle.brand}
+                {selectedVehicle.model ? ` ${selectedVehicle.model}` : ""}
+              </span>
+              <span className="prh-vehicle-plate">{selectedVehicle.plate}</span>
+            </span>
+            <span className={`vh-badge vh-badge--${selectedVehicle.status}`}>
+              {vehicleStatusLabel(selectedVehicle.status)}
+            </span>
+          </>
+        ) : (
+          <span className="prh-vehicle-placeholder">Select vehicle</span>
+        )}
+        <FaChevronDown className="prh-vehicle-chevron" />
+      </button>
+
+      {open && (
+        <div className="prh-vehicle-panel">
+          {allVehicles.map((v) => {
+            const isApproved = v.status === "active";
+            const isSelected = String(selectedId) === String(v.id);
+            return (
+              <div
+                key={v.id}
+                role="button"
+                aria-disabled={!isApproved}
+                className={`prh-vehicle-item${
+                  isSelected ? " prh-vehicle-item--on" : ""
+                }${!isApproved ? " prh-vehicle-item--disabled" : ""}`}
+                onClick={() => {
+                  if (!isApproved) return;
+                  onSelect(v);
+                  setOpen(false);
+                }}
+              >
+                <span className="prh-vehicle-icon">
+                  <FaCarAlt />
+                </span>
+                <span className="prh-vehicle-info">
+                  <span className="prh-vehicle-name">
+                    {v.brand}
+                    {v.model ? ` ${v.model}` : ""}
+                  </span>
+                  <span className="prh-vehicle-plate">{v.plate}</span>
+                </span>
+                <span className={`vh-badge vh-badge--${v.status}`}>
+                  {vehicleStatusLabel(v.status)}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 const PREFS = [
   { key: "pets", icon: <IoFastFoodSharp />, label: "Pets allowed" },
   { key: "smoking", icon: <FaSmoking />, label: "Smoking allowed" },
@@ -291,11 +389,25 @@ const DEFAULT_PREFS = {
 // ── Must match the key used in useLoginForm / useSignupForm ──────────────
 const SAVED_FORM_KEY = "offerRideSavedForm";
 
+// ── "22:01" -> "10:01 PM" (used to display the native <input type="time">
+// value in 12-hour AM/PM format, since the native input's own on-screen
+// format is locale/browser dependent and can't be forced otherwise). ────
+const formatTime12 = (t) => {
+  if (!t) return "";
+  const [hStr, mStr] = t.split(":");
+  let h = parseInt(hStr, 10);
+  if (Number.isNaN(h)) return "";
+  const ampm = h >= 12 ? "PM" : "AM";
+  h = h % 12;
+  if (h === 0) h = 12;
+  return `${h}:${mStr} ${ampm}`;
+};
+
 const PRHero = ({ vehiclesFetch, profileData }) => {
   const user = useSelector((state) => state.auth.user);
   const vehicleList = vehiclesFetch || [];
-  console.log("vehicle list status",vehicleList);
-  
+  console.log("vehicle list status", vehicleList);
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -316,8 +428,9 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
   });
 
   const datePickerRef = useRef(null);
+  const timePickerRef = useRef(null);
   const alertTimerRef = useRef(null);
-console.log("profile complted",profileData);
+  console.log("profile complted", profileData);
 
   const token = getToken();
   const profileCompleted = profileData?.profileCompleted;
@@ -329,9 +442,7 @@ console.log("profile complted",profileData);
   // at least one registered vehicle must also be active. Once that's true,
   // the vehicle picker below still lets pending/blocked vehicles show up
   // (disabled) alongside active ones for multi-vehicle drivers.
-  const approvedVehicles = vehicleList.filter(
-    (v) => v.status === "active",
-  );
+  const approvedVehicles = vehicleList.filter((v) => v.status === "active");
   const otherVehicles = vehicleList.filter((v) => v.status !== "active");
   const vehicleVerified = vehicleList.length > 0 && approvedVehicles.length > 0;
   // If every registered vehicle was blocked (none pending, none active),
@@ -452,7 +563,7 @@ console.log("profile complted",profileData);
       );
       return;
     }
-console.log("profile startus",profileStatus);
+    console.log("profile startus", profileStatus);
 
     if (!from) return showAlert("error", "Please select a departure location.");
     if (!to) return showAlert("error", "Please select a destination.");
@@ -633,18 +744,35 @@ console.log("profile startus",profileStatus);
                   </div>
                   <div className="underFields">
                     <p className="prh-prefs-label">TIME</p>
-                    <div className="prh-field prh-field--inline prh-field--focusable">
+                    <div
+                      className="prh-field prh-field--inline prh-field--focusable"
+                      style={{ position: "relative" }}
+                      onClick={() =>
+                        timePickerRef.current?.showPicker?.() ||
+                        timePickerRef.current?.focus?.()
+                      }
+                    >
                       <input
                         className="prh-input"
+                        type="text"
+                        placeholder="--:-- --"
+                        value={formatTime12(time)}
+                        readOnly
+                      />
+                      <input
+                        ref={timePickerRef}
                         type="time"
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
+                        tabIndex={-1}
+                        aria-hidden="true"
+                        className="date-picker-format"
                       />
                     </div>
                   </div>
                 </div>
 
-                {/* ── Vehicle picker: soft gate, per-vehicle status ── */}
+                {/* ── Vehicle picker: dropdown, soft gate, per-vehicle status ── */}
                 <div className="prh-vehicle-group">
                   <p className="prh-prefs-label">Select vehicle</p>
 
@@ -659,70 +787,28 @@ console.log("profile startus",profileStatus);
                           redirectWithSavedForm("/driver/vehicle-registration")
                         }
                       >
-                        Register Vehicle 
+                        Register Vehicle
                       </button>
                     </div>
                   ) : (
-                    <>
-                      <div className="prh-vehicle-list">
-                        {[...approvedVehicles, ...otherVehicles].map((v) => {
-                          const isApproved = v.status === "active";
-                          const isSelected =
-                            String(selectedVehicle) === String(v.id);
-                          return (
-                            <label
-                              key={v.id}
-                              className={`prh-vehicle-item${
-                                isSelected ? " prh-vehicle-item--on" : ""
-                              }${!isApproved ? " prh-vehicle-item--disabled" : ""}`}
-                            >
-                              <input
-                                type="radio"
-                                name="offerRideVehicle"
-                                className="prh-pref-hidden-check"
-                                checked={isSelected}
-                                disabled={!isApproved}
-                                onChange={() => handleVehicleSelect(v)}
-                              />
-                              <span className="prh-vehicle-icon">
-                                <FaCarAlt />
-                              </span>
-                              <span className="prh-vehicle-info">
-                                <span className="prh-vehicle-name">
-                                  {v.brand}
-                                  {v.model ? ` ${v.model}` : ""}
-                                </span>
-                                <span className="prh-vehicle-plate">
-                                  {v.plate}
-                                </span>
-                              </span>
-                              <span
-                                className={`vh-badge vh-badge--${v.status}`}
-                              >
-                                {vehicleStatusLabel(v.status)}
-                              </span>
-                            </label>
-                          );
-                        })}
-                      </div>
-                      <p className="prh-vehicle-summary">
-                        {approvedVehicles.length} verified vehicle
-                        {approvedVehicles.length === 1 ? "" : "s"} available.
-                        {otherVehicles.length > 0 &&
-                          " Vehicles under review or rejected can't be selected."}
-                      </p>
-                    </>
+                    <VehicleDropdown
+                      approvedVehicles={approvedVehicles}
+                      otherVehicles={otherVehicles}
+                      selectedId={selectedVehicle}
+                      onSelect={handleVehicleSelect}
+                      vehicleStatusLabel={vehicleStatusLabel}
+                    />
                   )}
                 </div>
 
-                {selectedVehicleData && (
+                {/* {selectedVehicleData && (
                   <small className="seat-info">
                     <p>
                       <FaInfoCircle />
                     </p>
                     Maximum available seats: {maxSeats}
                   </small>
-                )}
+                )} */}
 
                 <div className="prh-seats-row">
                   <span className="prh-seats-label">

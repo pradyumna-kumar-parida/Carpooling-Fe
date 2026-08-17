@@ -933,7 +933,7 @@ html {
 .pr-step {
   display: flex;
   gap: 20px;
-      border: 2px solid var(--pr-border);
+  border: 2px solid var(--pr-border);
   align-items: flex-start;
   transition: all 0.3s ease;
 }
@@ -1302,8 +1302,8 @@ html {
     margin-bottom: 20px;
     font-size: 1.3rem !important;
   }
-.ors-step-label,
-.ors-card-head p,
+  .ors-step-label,
+  .ors-card-head p,
   .pr-faq-answer p,
   .pr-benefit-desc,
   .pr-step-desc,
@@ -1314,16 +1314,16 @@ html {
   .prh-loc-name {
     font-size: 0.8rem !important;
   }
-      .prh-inner {
-        gap: 30px !important;
-      }
-  .ors-step:not(:last-child):after{
+  .prh-inner {
+    gap: 30px !important;
+  }
+  .ors-step:not(:last-child):after {
     top: 16px !important;
     bottom: -22px;
     left: 8px !important;
   }
-  .ors-step-marker{
-        width: 17px !important;
+  .ors-step-marker {
+    width: 17px !important;
     height: 17px !important;
   }
   .pr-how-steps,
@@ -1338,9 +1338,9 @@ html {
     font-size: 1rem;
   }
   .ors-btn,
-.ors-step-caption{
-  font-size: 0.7rem !important;
-}
+  .ors-step-caption {
+    font-size: 0.7rem !important;
+  }
   .pr-benefit-icon {
     height: 40px;
     width: 40px;
@@ -1353,7 +1353,7 @@ html {
   .pr-testimonial-dots {
     margin-top: 18px;
   }
-  
+
   .prh-card-badge,
   .pr-faq-link,
   .prh-pref-text,
@@ -1442,7 +1442,7 @@ html {
   .ors-card {
     padding: 18px 16px;
   }
-  .prh-vehicle-list {
+  .prh-vehicle-panel {
     max-height: 180px;
   }
 }
@@ -1705,7 +1705,7 @@ html {
 }
 
 /* ==========================================
-   VEHICLE PICKER - soft gate, per-vehicle status
+   VEHICLE PICKER - dropdown, per-vehicle status
    ========================================== */
 
 .prh-vehicle-group {
@@ -1714,13 +1714,78 @@ html {
   gap: 10px;
 }
 
-.prh-vehicle-list {
+/* Closed dropdown: shows the selected vehicle as a card, or a placeholder.
+   Reuses the same visual language (icon circle, name/plate, badge) as the
+   items in the open panel below so it reads as one consistent component. */
+.prh-vehicle-dropdown {
+  position: relative;
+}
+
+.prh-vehicle-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1.5px solid var(--pr-border);
+  background: #f8faff;
+  cursor: pointer;
+  transition:
+    border-color 0.18s,
+    background 0.18s,
+    box-shadow 0.2s;
+  font-family: inherit;
+  text-align: left;
+}
+.prh-vehicle-trigger:hover {
+  border-color: var(--pr-primary-light);
+}
+.prh-vehicle-trigger--open {
+  border-color: var(--pr-primary);
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
+  background: #eff6ff;
+}
+
+.prh-vehicle-placeholder {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--pr-text-light);
+  font-weight: 400;
+}
+
+.prh-vehicle-chevron {
+  flex-shrink: 0;
+  color: var(--pr-text-gray);
+  font-size: 12px;
+  transition: transform 0.2s;
+}
+.prh-vehicle-trigger--open .prh-vehicle-chevron {
+  transform: rotate(180deg);
+  color: var(--pr-primary);
+}
+
+/* Open panel: scrollable list of vehicle cards, so it stays compact even
+   with 10+ registered vehicles instead of pushing the rest of the form
+   down the page. */
+.prh-vehicle-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.14),
+    0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 8px;
+  max-height: 260px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  max-height: 240px;
-  overflow-y: auto;
-  padding-right: 2px;
+  gap: 6px;
 }
 
 .prh-vehicle-item {
@@ -1793,7 +1858,7 @@ html {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.vh-badge--approved {
+.vh-badge--active {
   background: var(--status-success-bg);
   color: var(--status-success);
 }
@@ -1801,7 +1866,7 @@ html {
   background: var(--status-pending-bg);
   color: var(--status-pending);
 }
-.vh-badge--rejected {
+.vh-badge--blocked {
   background: var(--status-rejected-bg);
   color: var(--status-rejected);
 }
