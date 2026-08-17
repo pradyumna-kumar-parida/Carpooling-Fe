@@ -1,51 +1,70 @@
 "use client";
 
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { getRole } from "@/lib/cookie";
 
-import { registerBrowserForNotifications } from "@/lib/notifications/register";
+export default function NotificationToast({
+  toastId,
+  icon,
+  iconColor,
+  iconBg,
+  title,
+  body,
+  onView,
+}) {
+  const [role, setRole] = useState(null);
 
-export default function NotificationTest() {
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
+  const router = useRouter();
 
-  const handleEnableNotifications = async () => {
-    try {
-      setLoading(true);
-      setResult(null);
-
-      const response = await registerBrowserForNotifications();
-
-      console.log("Notification registration:", response);
-
-      setResult(response);
-    } catch (error) {
-      console.error(error);
-
-      setResult({
-        success: false,
-        message: error.message,
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    const storedRole = getRole();
+    setRole(storedRole);
+  }, []);
 
   return (
-    <div className="space-y-4">
-      <button
-        type="button"
-        onClick={handleEnableNotifications}
-        disabled={loading}
-        className="rounded-lg bg-blue-600 px-5 py-3 text-white disabled:opacity-50"
+    <div className="notification-toast">
+      <div
+        className="notification-toast__icon"
+        style={{
+          color: iconColor || "#2563eb",
+          backgroundColor: iconBg || "#eff6ff",
+        }}
       >
-        {loading ? "Setting up..." : "Enable Notifications"}
-      </button>
+        {icon}
+      </div>
 
-      {result && (
-        <pre className="max-w-3xl overflow-auto rounded-lg bg-gray-100 p-4 text-sm">
-          {JSON.stringify(result, null, 2)}
-        </pre>
-      )}
+      <div className="notification-toast__content">
+        <div className="notification-toast__header">
+          <h4 className="notification-toast__title">{title}</h4>
+
+          <button
+            type="button"
+            className="notification-toast__close"
+            onClick={() => toast.dismiss(toastId)}
+            aria-label="Close notification"
+          >
+            ×
+          </button>
+        </div>
+
+        <p className="notification-toast__body">{body}</p>
+
+        <button
+          type="button"
+          className="notification-toast__action"
+          onClick={() => {
+            toast.dismiss(toastId);
+
+            if (onView) {
+              onView();
+            }
+          }}
+        >
+          View notification
+        </button>
+      </div>
     </div>
   );
 }

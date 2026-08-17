@@ -93,7 +93,7 @@ const getAccountLinks = (role) => [
         {
           label: "Offer Ride",
           path: "/offer-ride",
-          icon: <SiCardmarket size={17} />,
+          icon: <SiCardmarket size={15} />,
         },
         {
           label: "Booking Requests",
@@ -113,7 +113,7 @@ const getAccountLinks = (role) => [
         {
           label: "Earnings",
           path: "/driver/earnings",
-          icon: <GiTakeMyMoney size={22} />,
+          icon: <GiTakeMyMoney size={20} />,
         },
       ]
     : []),
@@ -387,7 +387,7 @@ const Header = () => {
                           <LiaAngleRightSolid />
                         </div>
                       </MenuItem>
-                      <Divider />
+                      {/* <Divider /> */}
                     </div>
                   ))}
                   <MenuItem
