@@ -13,6 +13,7 @@ import {
 import { useDispatch } from "react-redux";
 import { loginUser } from "@/redux/slices/authSlice";
 import { setAuthCookies } from "@/lib/cookie";
+import { registerBrowserForNotifications } from "@/lib/notifications/register";
 
 export function useSignupForm(roles) {
   const router = useRouter();
@@ -149,6 +150,9 @@ export function useSignupForm(roles) {
           // send drivers there instead of home so they can add docs
           // and wait for verification before publishing rides:
           // router.replace(role === "driver" ? "/complete-profile" : "/");
+              registerBrowserForNotifications().catch((error) => {
+      console.error("Notification registration failed:", error);
+    });
           router.replace("/");
         }, 500);
       }

@@ -216,10 +216,10 @@ const Header = () => {
                 <LiaAngleRightSolid className="move-forward" />
               </ListItemButton>
             </ListItem>
-            <Divider />
           </div>
         ))}
       </List>
+        <Divider />
 
       {isLoggedIn ? (
         <List>
@@ -235,7 +235,7 @@ const Header = () => {
                   <LiaAngleRightSolid className="move-forward" />
                 </ListItemButton>
               </ListItem>
-              <Divider />
+              {/* <Divider /> */}
             </div>
           ))}
           <ListItemButton
@@ -381,7 +381,7 @@ const Header = () => {
                       >
                         <div className="menu-lables">
                           {item.icon}
-                          <span>{item.label}</span>
+                          <span className="mobile-menus-desktop">{item.label}</span>
                         </div>
                         <div className="move-forward">
                           <LiaAngleRightSolid />

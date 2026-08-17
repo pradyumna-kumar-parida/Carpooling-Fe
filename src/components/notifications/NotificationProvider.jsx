@@ -4,9 +4,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 import { listenForForegroundMessages } from "@/lib/firebase/messaging";
-
 import { notificationUI } from "@/lib/notifications/notification-ui";
-
 import NotificationToast from "../../components/NotificationToast";
 
 export default function NotificationProvider() {

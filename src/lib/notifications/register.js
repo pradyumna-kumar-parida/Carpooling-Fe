@@ -3,8 +3,9 @@
 import { getFCMToken } from "@/lib/firebase/messaging";
 
 import { getInstallationId } from "./installation";
+import { registerNotificationDevice } from "@/services/client/notificationService";
 
-import { registerNotificationDevice } from "@/services/notification.service";
+
 
 export const registerBrowserForNotifications = async () => {
   try {

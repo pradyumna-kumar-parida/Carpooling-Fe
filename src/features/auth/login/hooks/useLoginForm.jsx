@@ -12,6 +12,7 @@ import {
   mapRole,
 } from "../utils/loginHelpers";
 import { setAuthCookies } from "@/lib/cookie";
+import { registerBrowserForNotifications } from "@/lib/notifications/register";
 
 export function useLoginForm() {
   const dispatch = useDispatch();
@@ -76,7 +77,7 @@ export function useLoginForm() {
     const role = mapRole(userData.role);
     const userObj = { ...userData, role, token: token || null };
 
-    dispatch(loginUser({userData: userObj }));
+    dispatch(loginUser({ userData: userObj }));
 
     setAuthCookies(token, role);
     if (rememberMe) localStorage.setItem("rememberedUser", formData.identifier);
@@ -135,6 +136,12 @@ export function useLoginForm() {
       if (status === "success") {
         persistUser(user, token);
         setFormData({ identifier: "", password: "" });
+
+        // Register this browser/device for notifications
+        registerBrowserForNotifications().catch((error) => {
+          console.error("Notification registration failed:", error);
+        });
+
         setTimeout(redirectAfterLogin, 500);
       }
     } catch (err) {

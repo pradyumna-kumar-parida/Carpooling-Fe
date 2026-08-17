@@ -17,13 +17,21 @@ import { FaAngleRight } from "react-icons/fa6";
 import Link from "next/link";
 import { cancelRideApi, startRideApi } from "@/services/client/rideService";
 
-const STATUS_FILTERS = ["All", "Upcoming", "Ongoing", "Completed", "Cancelled"];
+const STATUS_FILTERS = [
+  "All",
+  "Upcoming",
+  "Ongoing",
+  "Completed",
+  "Cancelled",
+  "Expired",
+];
 
 const STATUS_META = {
   upcoming: { label: "Upcoming", color: "blue" },
   ongoing: { label: "Ongoing", color: "orange" },
   completed: { label: "Completed", color: "grey" },
   cancelled: { label: "Cancelled", color: "red" },
+  expired: { label: "Expired", color: "slate" }, // new
 };
 
 /* ─── API → UI mapping helpers ──────────────────────────────────────── */
@@ -75,7 +83,9 @@ function formatApiTime(timeStr) {
 function normalizeApiStatus(apiStatus) {
   const s = String(apiStatus || "").toLowerCase();
   if (s === "scheduled") return "upcoming";
-  if (["upcoming", "ongoing", "completed", "cancelled"].includes(s)) {
+  if (
+    ["upcoming", "ongoing", "completed", "cancelled", "expired"].includes(s)
+  ) {
     return s;
   }
   return "upcoming";
@@ -134,7 +144,7 @@ function mapApiRideToUIRide(apiRide) {
     rideDateRaw: apiRide.ride_date,
     time: formatApiTime(apiRide.departure_time),
     arrivalTime: formatApiTime(apiRide.estimated_reach_time), // ← new
-    duration: formatDuration(apiRide.duration_seconds),        // ← new
+    duration: formatDuration(apiRide.duration_seconds), // ← new
     totalSeats: apiRide.total_seats,
     bookedSeats: apiRide.total_seats - apiRide.available_seats,
     pricePerSeat: Number(apiRide.price_per_seat),
@@ -186,7 +196,7 @@ function PassengerAvatar({ initials, paid }) {
 // the parent shows a confirm dialog and only calls the API after "Yes".
 function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
   const [expandedPax, setExpandedPax] = useState(null);
-console.log("ride datassss alll",ride);
+  console.log("ride datassss alll", ride);
 
   const earned =
     ride.passengers.filter((p) => p.paid).length * ride.pricePerSeat;
@@ -263,126 +273,132 @@ console.log("ride datassss alll",ride);
                 {ride.bookedSeats} / {ride.totalSeats}
               </span>
             </div>
-              <div className="ride-publish-modal-info-item">
-    <span className="ride-publish-modal-info-label">Departure Time</span>
-    <span className="ride-publish-modal-info-val">{ride.time}</span>
-  </div>
-  <div className="ride-publish-modal-info-item">
-    <span className="ride-publish-modal-info-label">Estimated Arrival</span>
-    <span className="ride-publish-modal-info-val">{ride.arrivalTime}</span>
-  </div>
-  <div className="ride-publish-modal-info-item">
-    <span className="ride-publish-modal-info-label">Duration</span>
-    <span className="ride-publish-modal-info-val">{ride.duration}</span>
-  </div>
+            <div className="ride-publish-modal-info-item">
+              <span className="ride-publish-modal-info-label">
+                Departure Time
+              </span>
+              <span className="ride-publish-modal-info-val">{ride.time}</span>
+            </div>
+            <div className="ride-publish-modal-info-item">
+              <span className="ride-publish-modal-info-label">
+                Estimated Arrival
+              </span>
+              <span className="ride-publish-modal-info-val">
+                {ride.arrivalTime}
+              </span>
+            </div>
+            <div className="ride-publish-modal-info-item">
+              <span className="ride-publish-modal-info-label">Duration</span>
+              <span className="ride-publish-modal-info-val">
+                {ride.duration}
+              </span>
+            </div>
           </div>
 
           {/* Passengers */}
-        <div className="ride-publish-modal-section">
-  <h3 className="ride-publish-modal-section-title">
-    Booked Passengers
-  </h3>
+          <div className="ride-publish-modal-section">
+            <h3 className="ride-publish-modal-section-title">
+              Booked Passengers
+            </h3>
 
-  {ride.passengers.length === 0 ? (
-    <p className="ride-publish-modal-empty">No passengers yet.</p>
-  ) : (
-    <div className="ride-publish-modal-pax-list">
-      {ride.passengers.map((p, i) => {
-        const expanded = expandedPax === i;
+            {ride.passengers.length === 0 ? (
+              <p className="ride-publish-modal-empty">No passengers yet.</p>
+            ) : (
+              <div className="ride-publish-modal-pax-list">
+                {ride.passengers.map((p, i) => {
+                  const expanded = expandedPax === i;
 
-        return (
-          <div
-            key={i}
-            className="ride-publish-modal-pax-row ride-details-things-pax-row"
-          >
-            <div
-              className="ride-details-things-pax-header"
-              onClick={() => setExpandedPax(expanded ? null : i)}
-            >
-              <div className="ride-publish-avatar">
-                {p.avatar}
-              </div>
+                  return (
+                    <div
+                      key={i}
+                      className="ride-publish-modal-pax-row ride-details-things-pax-row"
+                    >
+                      <div
+                        className="ride-details-things-pax-header"
+                        onClick={() => setExpandedPax(expanded ? null : i)}
+                      >
+                        <div className="ride-publish-avatar">{p.avatar}</div>
 
-              <div className="ride-publish-modal-pax-info">
-                <span className="ride-publish-modal-pax-name">
-                  {p.name}
-                </span>
-              </div>
+                        <div className="ride-publish-modal-pax-info">
+                          <span className="ride-publish-modal-pax-name">
+                            {p.name}
+                          </span>
+                        </div>
 
-              <Link
-                className="ride-publish-modal-pax-seat"
-                href="/driver/chats"
-              >
-                Chat
-              </Link>
+                        <Link
+                          className="ride-publish-modal-pax-seat"
+                          href="/driver/chats"
+                        >
+                          Chat
+                        </Link>
 
-              <span
-                className={`ride-publish-pax-paid ${
-                  p.paid
-                    ? "ride-publish-pax-paid-yes"
-                    : "ride-publish-pax-paid-no"
-                }`}
-              >
-                {p.paid ? (
-                  <>
-                    <BsCheck2Circle />
-                    <span>Paid</span>
-                  </>
-                ) : (
-                  <>
-                    <FaHourglassEnd />
-                    <span>Pending</span>
-                  </>
-                )}
-              </span>
+                        <span
+                          className={`ride-publish-pax-paid ${
+                            p.paid
+                              ? "ride-publish-pax-paid-yes"
+                              : "ride-publish-pax-paid-no"
+                          }`}
+                        >
+                          {p.paid ? (
+                            <>
+                              <BsCheck2Circle />
+                              <span>Paid</span>
+                            </>
+                          ) : (
+                            <>
+                              <FaHourglassEnd />
+                              <span>Pending</span>
+                            </>
+                          )}
+                        </span>
 
-              <FaAngleRight
-                className={`ride-details-things-arrow ${
-                  expanded ? "ride-details-things-arrow-expanded" : ""
-                }`}
-              />
-            </div>
+                        <FaAngleRight
+                          className={`ride-details-things-arrow ${
+                            expanded ? "ride-details-things-arrow-expanded" : ""
+                          }`}
+                        />
+                      </div>
 
-            {expanded && (
-              <div className="ride-details-things-expanded">
-                <div className="ride-details-things-info">
-                  <span className="ride-details-things-label">
-                    Phone
-                  </span>
+                      {expanded && (
+                        <div className="ride-details-things-expanded">
+                          <div className="ride-details-things-info">
+                            <span className="ride-details-things-label">
+                              Phone
+                            </span>
 
-                  <span className="ride-details-things-value">
-                    {/* <FiPhone size={13} color="#1e40af" /> */}
-                    {p.phone}
-                  </span>
-                </div>
+                            <span className="ride-details-things-value">
+                              {/* <FiPhone size={13} color="#1e40af" /> */}
+                              {p.phone}
+                            </span>
+                          </div>
 
-                <div className="ride-details-things-info">
-                  <span className="ride-details-things-label">
-                    Seats Booked
-                  </span>
+                          <div className="ride-details-things-info">
+                            <span className="ride-details-things-label">
+                              Seats Booked
+                            </span>
 
-                  <span className="ride-details-things-value">
-                    {p.seatsBooked}
-                  </span>
-                </div>
+                            <span className="ride-details-things-value">
+                              {p.seatsBooked}
+                            </span>
+                          </div>
 
-                <div className="ride-details-things-info">
-                  <span className="ride-details-things-label">
-                    Amount Received
-                  </span>
+                          <div className="ride-details-things-info">
+                            <span className="ride-details-things-label">
+                              Amount Received
+                            </span>
 
-                  <span className="ride-details-things-value">
-                    {p.amount}
-                  </span>
-                </div>
+                            <span className="ride-details-things-value">
+                              {p.amount}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
-        );
-      })}
-    </div>
-  )}
-</div>
 
           {/* Earnings summary */}
           <div className="ride-publish-modal-earn-box">
@@ -488,6 +504,7 @@ export default function PublishedRides({ publishedRide }) {
     if (activeFilter === "Ongoing") return r.status === "ongoing";
     if (activeFilter === "Completed") return r.status === "completed";
     if (activeFilter === "Cancelled") return r.status === "cancelled";
+    if (activeFilter === "Expired") return r.status === "expired";
     return true;
   });
 
@@ -505,7 +522,7 @@ export default function PublishedRides({ publishedRide }) {
   const handleCancel = (id) => {
     // Show toast immediately
     showToast("Ride cancelled", "error");
-    
+
     // Close the confirm dialog immediately
     setConfirmCancel(null);
 
@@ -531,7 +548,7 @@ export default function PublishedRides({ publishedRide }) {
   const handleStart = (id) => {
     // Show toast immediately
     showToast("Ride started", "success");
-    
+
     // Close the confirm dialog immediately
     setConfirmStart(null);
 
@@ -554,8 +571,8 @@ export default function PublishedRides({ publishedRide }) {
     Ongoing: rides.filter((r) => r.status === "ongoing").length,
     Completed: rides.filter((r) => r.status === "completed").length,
     Cancelled: rides.filter((r) => r.status === "cancelled").length,
+    Expired: rides.filter((r) => r.status === "expired").length, // new
   };
-
   const rideBeingCancelled = rides.find((r) => r.id === confirmCancel);
   const rideBeingStarted = rides.find((r) => r.id === confirmStart);
 
@@ -665,7 +682,6 @@ export default function PublishedRides({ publishedRide }) {
             <div className="ride-publish-empty">
               <div className="ride-publish-empty-icon">
                 <FiAlertCircle />
-
               </div>
               <h3 className="ride-publish-empty-title">No rides found</h3>
               <p className="ride-publish-empty-sub">
@@ -673,7 +689,6 @@ export default function PublishedRides({ publishedRide }) {
                 {activeFilter !== "All" ? activeFilter.toLowerCase() : ""} rides
                 yet.
               </p>
-           
             </div>
           ) : (
             <div className="ride-publish-grid">
@@ -693,9 +708,7 @@ export default function PublishedRides({ publishedRide }) {
                   >
                     {/* Card top bar */}
                     <div className="ride-publish-card-topbar">
-                      <span className="ride-publish-card-id">
-                    {ride.date}
-                      </span>
+                      <span className="ride-publish-card-id">{ride.date}</span>
                       <span
                         className={`ride-publish-status-badge ride-publish-status-badge-${meta.color}`}
                       >
@@ -863,23 +876,23 @@ export default function PublishedRides({ publishedRide }) {
                           {/* <button className="ride-publish-action-btn ride-publish-action-btn-edit">
                             Edit Ride
                           </button> */}
-                         <button
-  className="ride-publish-action-btn ride-publish-action-btn-start"
-  disabled={!startEnabled}
-  title={
-    startEnabled
-      ? ""
-      : "You can start this ride on the scheduled date"
-  }
-  style={{
-    opacity: startEnabled ? 1 : 0.5,
-    cursor: startEnabled ? "pointer" : "not-allowed",
-    pointerEvents: startEnabled ? "auto" : "none",
-  }}
-  onClick={() => setConfirmStart(ride.id)}
->
-  Start Ride
-</button>
+                          <button
+                            className="ride-publish-action-btn ride-publish-action-btn-start"
+                            disabled={!startEnabled}
+                            title={
+                              startEnabled
+                                ? ""
+                                : "You can start this ride on the scheduled date"
+                            }
+                            style={{
+                              opacity: startEnabled ? 1 : 0.5,
+                              cursor: startEnabled ? "pointer" : "not-allowed",
+                              pointerEvents: startEnabled ? "auto" : "none",
+                            }}
+                            onClick={() => setConfirmStart(ride.id)}
+                          >
+                            Start Ride
+                          </button>
                           <button
                             className="ride-publish-action-btn ride-publish-action-btn-cancel"
                             onClick={() => setConfirmCancel(ride.id)}
@@ -913,6 +926,15 @@ export default function PublishedRides({ publishedRide }) {
                           disabled
                         >
                           Cancelled
+                        </button>
+                      )}
+
+                      {ride.status === "expired" && (
+                        <button
+                          className="ride-publish-action-btn ride-publish-action-btn-expired"
+                          disabled
+                        >
+                          Expired
                         </button>
                       )}
                     </div>
@@ -976,7 +998,8 @@ export default function PublishedRides({ publishedRide }) {
                   color: "#0f172a",
                 }}
               >
-                Reason for cancellation <span style={{ color: "#dc2626" }}>*</span>
+                Reason for cancellation{" "}
+                <span style={{ color: "#dc2626" }}>*</span>
               </label>
               <textarea
                 placeholder="Please provide a reason for cancelling this ride..."

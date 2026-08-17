@@ -389,20 +389,6 @@ const DEFAULT_PREFS = {
 // ── Must match the key used in useLoginForm / useSignupForm ──────────────
 const SAVED_FORM_KEY = "offerRideSavedForm";
 
-// ── "22:01" -> "10:01 PM" (used to display the native <input type="time">
-// value in 12-hour AM/PM format, since the native input's own on-screen
-// format is locale/browser dependent and can't be forced otherwise). ────
-const formatTime12 = (t) => {
-  if (!t) return "";
-  const [hStr, mStr] = t.split(":");
-  let h = parseInt(hStr, 10);
-  if (Number.isNaN(h)) return "";
-  const ampm = h >= 12 ? "PM" : "AM";
-  h = h % 12;
-  if (h === 0) h = 12;
-  return `${h}:${mStr} ${ampm}`;
-};
-
 const PRHero = ({ vehiclesFetch, profileData }) => {
   const user = useSelector((state) => state.auth.user);
   const vehicleList = vehiclesFetch || [];
@@ -428,7 +414,6 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
   });
 
   const datePickerRef = useRef(null);
-  const timePickerRef = useRef(null);
   const alertTimerRef = useRef(null);
   console.log("profile complted", profileData);
 
@@ -744,29 +729,12 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
                   </div>
                   <div className="underFields">
                     <p className="prh-prefs-label">TIME</p>
-                    <div
-                      className="prh-field prh-field--inline prh-field--focusable"
-                      style={{ position: "relative" }}
-                      onClick={() =>
-                        timePickerRef.current?.showPicker?.() ||
-                        timePickerRef.current?.focus?.()
-                      }
-                    >
+                    <div className="prh-field prh-field--inline prh-field--focusable">
                       <input
                         className="prh-input"
-                        type="text"
-                        placeholder="--:-- --"
-                        value={formatTime12(time)}
-                        readOnly
-                      />
-                      <input
-                        ref={timePickerRef}
                         type="time"
                         value={time}
                         onChange={(e) => setTime(e.target.value)}
-                        tabIndex={-1}
-                        aria-hidden="true"
-                        className="date-picker-format"
                       />
                     </div>
                   </div>

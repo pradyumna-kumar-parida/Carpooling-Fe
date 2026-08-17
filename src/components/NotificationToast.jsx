@@ -1,17 +1,32 @@
 "use client";
 
+import { getRole } from "@/lib/cookie";
+import { useRouter } from "next/router";
 import { toast } from "sonner";
 
 export default function NotificationToast({
   toastId,
-  icon,
+  icon: Icon,
   title,
   body,
   onView,
 }) {
+  const [role, setRole] = useState(null);
+  const router = useRouter();
+  useEffect(() => {
+    setRole(getRole());
+  }, []);
+  const handleTransfer = () => {
+    if (role === "driver") {
+      router.push("/driver/notification");
+    }
+    router.push("/passenger/notification");
+  };
   return (
     <div className="notification-toast">
-      <div className="notification-toast__icon">{icon}</div>
+      <div className="notification-toast__icon">
+        {Icon && <Icon size={21} />}
+      </div>
 
       <div className="notification-toast__content">
         <div className="notification-toast__header">
@@ -32,13 +47,7 @@ export default function NotificationToast({
         <button
           type="button"
           className="notification-toast__action"
-          onClick={() => {
-            toast.dismiss(toastId);
-
-            if (onView) {
-              onView();
-            }
-          }}
+          onClick={handleTransfer}
         >
           View notification
         </button>
