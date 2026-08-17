@@ -338,6 +338,7 @@ export default function ChatPage({ chatList }) {
 
   // true only while we have nothing to show yet for the selected chat
   const showFullPanelLoading = conversationLoading && !conversation;
+  console.log("user details", conversation);
 
   return (
     <div
@@ -379,7 +380,13 @@ export default function ChatPage({ chatList }) {
                 onClick={() => openChat(chat)}
               >
                 <span className="chat-avatar">
-                  <img src={chat?.profile_picture} alt={chat?.user_name} />
+                  {chat?.profile_picture ? (
+                    <img src={chat.profile_picture} alt={chat?.user_name} />
+                  ) : (
+                    <div className="profile-placeholder-list">
+                      {chat?.user_name?.split(" ")[0]?.charAt(0)?.toUpperCase()}
+                    </div>
+                  )}
                   {/* online status per passenger isn't provided by the chat-list API yet */}
                   {/* <span className={`chat-status-dot ${chat.online ? "chat-status-dot--online" : ""}`} /> */}
                 </span>
@@ -441,10 +448,19 @@ export default function ChatPage({ chatList }) {
               </button>
 
               <span className="chat-avatar chat-avatar--header">
-                <img
-                  src={conversation?.userDetails?.profile_picture}
-                  alt={conversation?.userDetails?.name}
-                />
+                {conversation?.userDetails?.profile_picture ? (
+                  <img
+                    src={conversation.userDetails.profile_picture}
+                    alt={conversation?.userDetails?.name}
+                  />
+                ) : (
+                  <div className="profile-placeholder">
+                    {conversation?.userDetails?.name
+                      ?.split(" ")[0]
+                      ?.charAt(0)
+                      ?.toUpperCase()}
+                  </div>
+                )}
               </span>
 
               <span className="chat-window__title">
@@ -499,7 +515,7 @@ export default function ChatPage({ chatList }) {
 
               <div className="ride-card__details">
                 <p className="ride-card__route">
-               {" "}
+                  {" "}
                   <strong>
                     {conversation?.rideDetails?.source_address} →{" "}
                     {conversation?.rideDetails?.destination_address}
@@ -511,9 +527,7 @@ export default function ChatPage({ chatList }) {
                     conversation?.rideDetails?.departure_time,
                   )}
                   <br className="ride-card__break" />
-                  <span className="ride-card__vehicle">
-                  •{" "}{vehicleLabel}
-                  </span>
+                  <span className="ride-card__vehicle">• {vehicleLabel}</span>
                 </p>
               </div>
 
@@ -547,7 +561,7 @@ export default function ChatPage({ chatList }) {
                       isMe ? "chat-bubble-row--me" : ""
                     }`}
                   >
-                    {!isMe && (
+                    {/* {!isMe && (
                       <span className="chat-avatar chat-avatar--small">
                         <img
                           src={
@@ -557,7 +571,7 @@ export default function ChatPage({ chatList }) {
                           alt={msg?.sender_name}
                         />
                       </span>
-                    )}
+                    )} */}
                     <div
                       className={`chat-bubble ${
                         isMe ? "chat-bubble--me" : "chat-bubble--them"
@@ -566,9 +580,7 @@ export default function ChatPage({ chatList }) {
                       <p className="chat-bubble__text">{msg?.message}</p>
                       <span className="chat-bubble__time">
                         {msg?.time}
-                        {isMe && (
-                        <IoCheckmarkDoneSharp/>
-                        )}
+                        {isMe && <IoCheckmarkDoneSharp />}
                       </span>
                     </div>
                   </div>

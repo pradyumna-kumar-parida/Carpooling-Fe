@@ -82,7 +82,7 @@ const getAccountLinks = (role) => [
         {
           label: "Messages",
           path: "/driver/chats",
-          icon: <LuMessageSquareMore size={16}/>,
+          icon: <LuMessageSquareMore size={16} />,
         },
         { label: "My Rides", path: "/driver/my-rides", icon: <FaRoute /> },
         // {
@@ -177,7 +177,7 @@ const Header = () => {
     profilePicture ? (
       <Image src={profilePicture} alt="user" fill unoptimized />
     ) : (
-      <FaUserCircle size={51} />
+      <FaUserCircle size={51} color="#1e40af"/>
     );
 
   const DrawerContent = (
@@ -192,7 +192,7 @@ const Header = () => {
                   <span className="user-role">{firstName || "Guest"}</span>
                 </div>
                 <div className="profile-img">
-                  <ProfileAvatar />
+                  <ProfileAvatar  />
                 </div>
               </div>
             </ListItemButton>
@@ -211,7 +211,7 @@ const Header = () => {
               >
                 {item.icon}
 
-                <ListItemText primary={item.label} sx={{ ml: 1 }} />
+                <ListItemText primary={item.label} sx={{ ml: 1 }}  className="mobile-menus"/>
 
                 <LiaAngleRightSolid className="move-forward" />
               </ListItemButton>
@@ -231,7 +231,7 @@ const Header = () => {
                   onClick={() => navTo(item.path)}
                 >
                   {item.icon}
-                  <ListItemText primary={item.label} sx={{ ml: 1 }} />
+                  <ListItemText primary={item.label} sx={{ ml: 1 }} className="mobile-menus" />
                   <LiaAngleRightSolid className="move-forward" />
                 </ListItemButton>
               </ListItem>

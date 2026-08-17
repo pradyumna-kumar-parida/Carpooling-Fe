@@ -14,7 +14,10 @@ body {
   scroll-behavior: smooth;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
-
+.mobile-menus{
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+    
+}
 :root {
   --btn-bg: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
   --section-cardBg: #f7f9fb;
@@ -874,7 +877,9 @@ nav a.active::after {
   color: #111;
   margin: 0 0 6px;
 }
-
+.css-9mgopn-MuiDivider-root{
+  margin: 0 10px !important;
+}
 .step-desc {
   font-size: 15px;
   color: #555;
@@ -1995,7 +2000,30 @@ footer {
   margin: 0;
   font-size: 0.9375rem;
 }
-
+.profile-placeholder {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--custom-one);
+  color: var(--ntfy-gray-bg);
+  font-size: 18px;
+  font-weight: 600;
+}
+.profile-placeholder-list {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--custom-one);
+  color: var(--ntfy-gray-bg);
+  font-size: 18px;
+  font-weight: 600;
+}
 .status-uploaded {
   color: #10b981;
   background: #dbfedd;
@@ -2930,9 +2958,12 @@ footer {
     padding: 12px 15px 12px 44px;
     font-size: 0.8rem !important;
   }
+    .MuiTypography-root{
+      font-size: 0.87rem !important;
+    }
   .ride-com-card-title,
   .sos-btn > span,
-  .MuiTypography-root,
+
   .input-icon,
   .why-card h3 {
     font-size: 1rem !important;
@@ -2944,7 +2975,9 @@ footer {
   .ride-com-card {
     padding: 16px 20px !important;
   }
-
+.mobile-menus{
+  font-size: 2rem !important;
+}
   .signup-title,
   .footer-logo-div,
   .footer-logo,
@@ -2965,6 +2998,8 @@ footer {
     margin-top: 11px !important;
   }
   /* Brand */
+  .profile-placeholder,
+  .profile-placeholder-list ,
   .chat-avatar,
   .logo-icon {
     height: 45px !important;
@@ -3009,6 +3044,9 @@ footer {
   }
   .ride-com-stat {
     gap: 3px !important;
+  }
+  .chat-list__name{
+    font-size: 0.9rem !important;
   }
   .otp-desc,
   .logout-confirm,
