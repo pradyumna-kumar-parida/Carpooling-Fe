@@ -21,4 +21,8 @@ export const UpdateProfilepApi = (data) =>
   });
 
 export const uploadProfileApi = (data) =>
-  getClientAxios.post("/upload-profile-image", data);
+  getClientAxios.post("/upload-profile-image", data, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });

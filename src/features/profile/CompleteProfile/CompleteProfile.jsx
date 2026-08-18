@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaCarAlt, FaUserAlt } from "react-icons/fa";
@@ -146,8 +146,8 @@ const INITIAL_FORM = {
 };
 
 // ── Validation ───────────────────────────────────────────────────────────
-function validateStepFields(stepIndex, formData) {
-  const step = STEPS[stepIndex];
+function validateStepFields(stepIndex, formData, steps) {
+  const step = steps[stepIndex];
   for (const fieldId of step.fields) {
     const meta = FIELD_META[fieldId];
     if (!meta) continue;
@@ -283,11 +283,19 @@ function FileField({ id, label, value, onChange }) {
 }
 
 // ── Step content renderer ─────────────────────────────────────────────────
-function StepContent({ step, formData, onChange }) {
-  const currentStep = STEPS[step];
+function StepContent({ currentStep, formData, onChange, hasProfilePicture }) {
+  console.log("has profile",hasProfilePicture);
+  
   return (
     <>
       <p className="cp-step-subtitle">{currentStep.subtitle}</p>
+
+      {/* {hasProfilePicture && currentStep.title === "Upload Documents" && (
+        <p className="cp-step-subtitle" style={{ marginTop: -8 }}>
+          Your profile photo is already uploaded — no need to add it again.
+        </p>
+      )} */}
+
       <div className="signup-form-grid">
         {currentStep.fields.map((fieldId) => {
           const meta = FIELD_META[fieldId];
@@ -333,8 +341,7 @@ function PendingVerification() {
           your account is approved.
         </p>
         <p className="cp-pending-note">
-          <IoInformationCircleOutline />
-
+          {/* <IoInformationCircleOutline  size={18}/> */}
           You won't be able to publish rides until verification is complete.
         </p>
         <Link href="/" className="register-btn cp-pending-btn">
@@ -346,7 +353,7 @@ function PendingVerification() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-export default function CompleteProfile() {
+export default function CompleteProfile({ hasProfilePicture = true }) {
   const router = useRouter();
   const [formData, setFormData] = useState(INITIAL_FORM);
   const [step, setStep] = useState(0);
@@ -357,7 +364,18 @@ export default function CompleteProfile() {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("info");
 
-  const totalSteps = STEPS.length;
+  // Skip the "profilePicture" field entirely if the user already uploaded
+  // one via the profile page's quick-upload (+) flow.
+  const steps = useMemo(() => {
+    if (!hasProfilePicture) return STEPS;
+    return STEPS.map((s, idx) =>
+      idx === 2
+        ? { ...s, fields: s.fields.filter((f) => f !== "profilePicture") }
+        : s,
+    );
+  }, [hasProfilePicture]);
+
+  const totalSteps = steps.length;
   const isFinalStep = step === totalSteps - 1;
 
   const showAlert = (severity, message) => {
@@ -376,7 +394,7 @@ export default function CompleteProfile() {
 
   const handleNext = (e) => {
     e.preventDefault();
-    const err = validateStepFields(step, formData);
+    const err = validateStepFields(step, formData, steps);
     if (err) {
       showAlert("error", err);
       return;
@@ -397,7 +415,7 @@ export default function CompleteProfile() {
       return;
     }
 
-    const err = validateStepFields(step, formData);
+    const err = validateStepFields(step, formData, steps);
     if (err) {
       showAlert("error", err);
       return;
@@ -454,39 +472,40 @@ export default function CompleteProfile() {
         ) : (
           <>
             {/* ── Left decorative panel ── */}
-         <div className="image-section">
-          <div className="floating-shapes">
-            <div className="shape" />
-            <div className="shape" />
-            <div className="shape" />
-          </div>
-          <div className="image-overlay">
-            <div className="auth-logo">
-              <div className="auth-logo-icon">
-                <FaCarAlt />
+            <div className="image-section">
+              <div className="floating-shapes">
+                <div className="shape" />
+                <div className="shape" />
+                <div className="shape" />
               </div>
-              <h2>Carpooling</h2>
+              <div className="image-overlay">
+                <div className="auth-logo">
+                  <div className="auth-logo-icon">
+                    <FaCarAlt />
+                  </div>
+                  <h2>Carpooling</h2>
+                </div>
+                <h1>Complete Your Driver Profile</h1>
+                <p>
+                  Add your location, bank details and documents so we can verify
+                  your account and get you on the road.
+                </p>
+              </div>
+              <Link href="/" className="back-btn">
+                <FaArrowLeft /> Back
+              </Link>
             </div>
-            <h1>Complete Your Driver Profile</h1>
-            <p>
-             Add your location, bank details and documents so we can verify your account and get you on the road.
-            </p>
-          </div>
-          <Link href="/" className="back-btn">
-            <FaArrowLeft /> Back
-          </Link>
-        </div>
 
             {/* ── Right form panel ── */}
             <div className="cp-form-panel">
               <div className="cp-form-wrapper">
                 <div className="logo-section">
-              <div className="logo-icon">
-                <FaUserAlt />
-              </div>
-            </div>
+                  <div className="logo-icon">
+                    <FaUserAlt />
+                  </div>
+                </div>
                 <h2 className="cp-title">Complete Your Profile</h2>
-                <p className="cp-desc">{STEPS[step].title}</p>
+                <p className="cp-desc">{steps[step].title}</p>
 
                 <StepDots total={totalSteps} current={step} />
 
@@ -496,9 +515,10 @@ export default function CompleteProfile() {
                   autoComplete="off"
                 >
                   <StepContent
-                    step={step}
+                    currentStep={steps[step]}
                     formData={formData}
                     onChange={handleChange}
+                    hasProfilePicture={hasProfilePicture}
                   />
 
                   <div style={{ display: "flex", gap: 12 }}>

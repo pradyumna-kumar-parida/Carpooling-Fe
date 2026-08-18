@@ -20,7 +20,7 @@ body {
 }
 .mobile-menus-desktop {
   font-size: 0.92rem !important;
-padding: 3px 0 !important;
+  padding: 3px 0 !important;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
 }
 :root {
@@ -1742,7 +1742,6 @@ footer {
 }
 
 .profile-info {
-  
   flex: 1;
   align-self: center;
 }
@@ -1876,9 +1875,7 @@ footer {
 }
 
 .profile-content {
-
-  padding: 1rem 0rem ;
-
+  padding: 1rem 0rem;
 }
 
 .profile-section {
@@ -2724,7 +2721,6 @@ footer {
 
   .edit-actions {
     width: 100%;
-
   }
 
   .btn-edit,
@@ -2772,30 +2768,30 @@ footer {
    RESPONSIVE — ≤ 480px — FIX 3 (mobile)
    =========================== */
 @media (max-width: 480px) {
-  .mobile-menu-sidebar{
+  .mobile-menu-sidebar {
     gap: 0px !important;
   }
-  .avl-rides-header{
+  .avl-rides-header {
     margin-bottom: 12px !important;
   }
-  .cred-menu{
+  .cred-menu {
     gap: 5px !important;
   }
-.hero-head-title {
-color: var(--custom-one);
-  animation: fadeInScale 0.5s ease-out 0.6s forwards;
-}
+  .hero-head-title {
+    color: var(--custom-one);
+    animation: fadeInScale 0.5s ease-out 0.6s forwards;
+  }
   .hero-text h1 > span {
     line-height: 25px;
-  background:#1a1a1a;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
-  opacity: 0;
-  transform: scale(0.95);
-  animation: fadeInScale 0.5s ease-out 0.6s forwards;
-}
-  .logout{
+    background: #1a1a1a;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    opacity: 0;
+    transform: scale(0.95);
+    animation: fadeInScale 0.5s ease-out 0.6s forwards;
+  }
+  .logout {
     gap: 7px !important;
   }
   /* Notification panel */
@@ -2868,19 +2864,24 @@ color: var(--custom-one);
   }
 
   /* Hero */
-  .hero-child{
-         padding-bottom: 0px !important;
+  .hero-child {
+    padding-bottom: 0px !important;
   }
   .hero {
-    
     background:
-     linear-gradient(to right, #ffffff96 0% 25%, #ffffff69 45%, #ffffff00 65%, #ffffff00 100%),
+      linear-gradient(
+        to right,
+        #ffffff96 0% 25%,
+        #ffffff69 45%,
+        #ffffff00 65%,
+        #ffffff00 100%
+      ),
       url("../assets/images/bannerImg-carRide.png");
-      background-size: 112% 100%;
+    background-size: 112% 100%;
     /* padding-top: 24px;
     padding-bottom: 40px; */
     min-height: 200px !important;
-     padding-bottom: 40px;
+    padding-bottom: 40px;
     /* background:
       linear-gradient(
         to right,
@@ -4585,9 +4586,9 @@ color: var(--custom-one);
     border-radius: 16px;
   }
   .profile-header,
-.profile-tabs{
-  margin-bottom: 1rem !important;
-}
+  .profile-tabs {
+    margin-bottom: 1rem !important;
+  }
   .location-icon {
     width: 54px;
     height: 54px;
@@ -7746,6 +7747,7 @@ color: var(--custom-one);
   border-radius: var(--radius);
   padding: 10px 14px;
   margin: 0 0 28px;
+
 }
 
 .cp-pending-btn {
@@ -8151,8 +8153,6 @@ color: var(--custom-one);
   text-align: center;
   padding: 40px 25px;
 
-
-
   box-sizing: border-box;
 }
 
@@ -8239,7 +8239,7 @@ color: var(--custom-one);
   }
 
   .error-page__content h2 {
-    font-size:1.3rem !important;
+    font-size: 1.3rem !important;
     line-height: 1.2;
   }
 
@@ -8256,4 +8256,3 @@ color: var(--custom-one);
     font-size: 0.8rem !important;
   }
 }
-

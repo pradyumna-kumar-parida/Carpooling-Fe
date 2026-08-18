@@ -5,6 +5,8 @@ import { FiUser } from "react-icons/fi";
 import { PiBankBold } from "react-icons/pi";
 import { IoDocuments } from "react-icons/io5";
 import { RiUserLocationFill } from "react-icons/ri";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 import { useProfile } from "../hooks/UseProfile";
 import ProfileHeader from "./ProfileHeader";
@@ -23,10 +25,13 @@ const ALL_TABS = [
 export default function ProfilePage({ profileData }) {
   const {
     isEditing,
+    saving,
     userData,
     editData,
     filePreview,
     isDriver,
+    toast,
+    closeToast,
     handleEditToggle,
     handleSave,
     handleInputChange,
@@ -43,9 +48,27 @@ export default function ProfilePage({ profileData }) {
 
   return (
     <div className="profile-page">
+      <Snackbar
+        open={toast.open}
+        autoHideDuration={4000}
+        onClose={closeToast}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        sx={{ zIndex: 9999 }}
+      >
+        <Alert
+          severity={toast.type}
+          variant="filled"
+          onClose={closeToast}
+          sx={{ width: "100%" }}
+        >
+          {toast.message}
+        </Alert>
+      </Snackbar>
+
       <div className="container">
         <ProfileHeader
           isEditing={isEditing}
+          saving={saving}
           userData={userData}
           editData={editData}
           filePreview={filePreview}

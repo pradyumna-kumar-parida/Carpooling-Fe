@@ -6,7 +6,7 @@ export default function BankingTab({ isEditing, userData, editData, onChange }) 
     { name: "bankAccountNumber", label: "Account Number" },
     { name: "bankIFSC", label: "IFSC Code" },
     { name: "bankBranchName", label: "Branch Name" },
-    { name: "bankBranchCode", label: "Branch Code" },
+    // { name: "bankBranchCode", label: "Branch Code" },
   ];
 
   return (
