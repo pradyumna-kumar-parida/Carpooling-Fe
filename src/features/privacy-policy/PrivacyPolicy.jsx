@@ -106,7 +106,7 @@ export default function PrivacyPolicyPage() {
             How Carpooling collects, uses and protects your information —
             written in plain language, for drivers and passengers alike.
           </p>
-          <p className="privacy-hero-meta">Last updated: June 2026</p>
+          {/* <p className="privacy-hero-meta">Last updated: June 2026</p> */}
         </Container>
         <div className="privacy-hero-overlay"></div>
       </section>

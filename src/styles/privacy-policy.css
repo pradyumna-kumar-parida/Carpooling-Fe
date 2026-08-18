@@ -181,7 +181,7 @@
 }
 
 /* ---------- Responsive ---------- */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .privacy-toc {
     grid-template-columns: 1fr;
   }
@@ -192,5 +192,46 @@
 
   .privacy-hero {
     padding: 56px 0 40px;
+  }
+}
+@media (max-width: 480px) {
+  .privacy-hero-chip {
+    display: none !important;
+  }
+  .privacy-contact-btn,
+  .privacy-contact-text {
+    font-size: 0.7rem !important;
+  }
+  .privacy-hero-title {
+    font-size: 1.3rem !important;
+  }
+  .privacy-hero-subtitle {
+    font-size: 0.8rem !important;
+  }
+  .privacy-hero {
+    min-height: 190px !important;
+  }
+  .privacy-hero {
+    padding: 20px 10px !important;
+  }
+  .privacy-intro {
+    margin: 0 0 20px !important;
+  }
+  .privacy-content {
+    padding: 20px 0;
+  }
+  .privacy-card-body p,
+  .privacy-intro {
+    font-size: 0.8rem !important;
+  }
+  .privacy-card-title {
+    font-size: 1.1rem !important;
+  }
+  .privacy-contact-title {
+    font-size: 1rem !important;
+  }
+  .privacy-contact-box {
+    margin-top: 20px !important;
+    padding: 20px !important;
   }
 }

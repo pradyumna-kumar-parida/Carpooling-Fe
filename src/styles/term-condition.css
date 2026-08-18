@@ -70,8 +70,6 @@
   margin: 0 0 12px 0;
 }
 
-
-
 .terms-condition-hero-sub {
   color: rgba(255, 255, 255, 0.8);
   font-size: 1rem;
@@ -141,7 +139,7 @@
   margin-top: 2px;
 }
 .terms-condition-intro-text {
-  font-size:1rem;
+  font-size: 1rem;
   color: #1e3a8a;
   line-height: 1.7;
   margin: 0;
@@ -283,7 +281,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .terms-condition-hero {
     min-height: 240px;
   }
@@ -298,5 +296,49 @@
 
   .terms-condition-section-title {
     font-size: 1.15rem;
+  }
+}
+@media (max-width: 480px) {
+  .terms-condition-eyebrow {
+    display: none;
+  }
+  .terms-condition-accept-title {
+    font-size: 0.9rem !important;
+  }
+  .terms-condition-section-title {
+    font-size: 1.1rem !important;
+  }
+  .terms-condition-hero {
+    min-height: 170px !important;
+  }
+  .terms-condition-hero-content {
+    padding: 0px 20px !important;
+  }
+  .terms-condition-hero-meta {
+    display: none !important;
+  }
+  .terms-condition-accept-text,
+  .terms-condition-link-btn,
+  .terms-condition-link-outline,
+  .terms-condition-intro-text,
+  .terms-condition-eyebrow {
+    font-size: 0.6rem !important;
+  }
+  .terms-condition-hero-title {
+    font-size: 1.3rem !important;
+  }
+
+  .terms-condition-para,
+  .terms-condition-hero-sub {
+    font-size: 0.8rem !important ;
+  }
+  .terms-condition-section {
+    margin-bottom: 21px !important;
+  }
+  .terms-condition-accept-box {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    text-align: center;
   }
 }
