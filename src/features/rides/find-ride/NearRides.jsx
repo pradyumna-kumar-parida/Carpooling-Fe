@@ -180,7 +180,7 @@ function SeatPips({ total, left }) {
 function RideRow({ ride }) {
   const router = useRouter();
   const [seatCount, setSeatCount] = useState(1);
-console.log("roides",ride);
+  console.log("roides", ride);
 
   const urgency =
     ride.seatsLeft === 1
@@ -231,13 +231,19 @@ console.log("roides",ride);
 
         <div className="fr-rides-driver-col">
           {/* <span className="fr-rides-avatar">{initials(ride.driver)}</span> */}
-          <Image
-            src={ride.driver_profile_picture }
-            alt={ride.driverName || "Driver"}
-            width={40}
-            height={40}
-            className="fr-rides-avatar"
-          />
+          {ride.driver_profile_picture ? (
+            <Image
+              src={ride.driver_profile_picture}
+              alt={ride.driverName || "Driver"}
+              width={40}
+              height={40}
+              className="fr-rides-avatar"
+            />
+          ) : (
+            <div className="fr-rides-avatar fr-rides-avatar-placeholder">
+              {ride.driverName?.charAt(0)?.toUpperCase() || "D"}
+            </div>
+          )}
           <div className="fr-rides-driver-meta">
             <span className="fr-rides-driver-name">{ride.driver}</span>
             <span className="fr-rides-rating">

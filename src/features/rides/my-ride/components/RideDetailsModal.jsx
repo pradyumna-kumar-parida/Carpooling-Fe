@@ -26,6 +26,7 @@ export default function RideDetailsModal({ ride, onClose }) {
   }, []);
 
   if (!ride) return null;
+console.log("ride canxcelled",ride);
 
   return (
     <div className="myride-modal-overlay" onClick={onClose}>
@@ -183,11 +184,10 @@ export default function RideDetailsModal({ ride, onClose }) {
             <div className="myride-modal-cancel">
               <h3 className="section-title">Cancellation Details</h3>
               <div className="cancel-info">
-                {ride.cancelledBy && (
-                  <p>
-                    <strong>Cancelled by:</strong> {ride.cancelledBy}
-                  </p>
-                )}
+                {/* <p>
+                  <strong>Cancelled </strong>
+                </p> */}
+
                 {ride.cancelReason && (
                   <p>
                     <strong>Reason:</strong> {ride.cancelReason}

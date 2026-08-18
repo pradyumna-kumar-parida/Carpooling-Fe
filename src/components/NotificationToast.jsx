@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { getRole } from "@/lib/cookie";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export default function NotificationToast({
@@ -16,6 +17,8 @@ export default function NotificationToast({
   useEffect(() => {
     setRole(getRole());
   }, []);
+  console.log("role", role);
+
   const handleTransfer = () => {
     if (role === "driver") {
       router.push("/driver/notification");

@@ -76,7 +76,7 @@ export function mapBookingToRide(booking) {
     status: booking.ride_status || "",
     bookingStatus: booking.booking_status || "",
     paymentStatus: booking.payment_status || "",
-
+    cancelReason : booking?.reason_of_cancel || "",
     // booking
     seats: booking.seats,
     passengers: booking.seats,

@@ -1724,13 +1724,13 @@
 }
 
 .route-label-head {
-  font-size: 0.95rem;
+  font-size: 0.8rem;
   color: var(--fr-text-light);
   font-weight: 500;
 }
 
 .route-value {
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--fr-text-dark);
 }
