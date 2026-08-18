@@ -169,10 +169,7 @@ function RideCard({ ride }) {
           <div className="avl-rides-driver-meta">
             <span className="avl-rides-driver-name">
               {ride.driver}
-              {ride.verified && (
-              <MdVerified  className="verify-driver"/>
-
-              )}
+              {ride.verified && <MdVerified className="verify-driver" />}
             </span>
             {/* {ride.vehicle && (
               <span className="avl-rides-vehicle">{ride.vehicle}</span>
@@ -286,40 +283,40 @@ export default function AvailableRides() {
   }, []);
 
   return (
-    <section
-      className="avl-rides-section container"
-      aria-labelledby="avl-rides-heading"
-    >
-      <div className="avl-rides-header">
-        <div>
-          <span className="avl-rides-eyebrow">
-            <span className="avl-rides-pulse" aria-hidden="true" />
-            Rides near you
-          </span>
-          {/* <h2 id="avl-rides-heading" className="avl-rides-title">
-            Rides leaving soon
-          </h2> */}
-        </div>
-        <Link href="/find-ride" className="avl-rides-viewall">
-          View all rides
-          <svg viewBox="0 0 20 20" aria-hidden="true">
-            <path
-              d="M7 4l6 6-6 6"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Link>
-      </div>
+    rides.length > 0 && (
+      <section
+        className="avl-rides-section container"
+        aria-labelledby="avl-rides-heading"
+      >
+        <div className="avl-rides-header">
+          <div>
+            <span className="avl-rides-eyebrow">
+              <span className="avl-rides-pulse" aria-hidden="true" />
+              Rides near you
+            </span>
+          </div>
 
-      <div className="avl-rides-grid">
-        {rides.slice(0, 4).map((ride) => (
-          <RideCard key={ride.id} ride={ride} />
-        ))}
-      </div>
-    </section>
+          <Link href="/find-ride" className="avl-rides-viewall">
+            View all rides
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path
+                d="M7 4l6 6-6 6"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+        </div>
+
+        <div className="avl-rides-grid">
+          {rides.slice(0, 4).map((ride) => (
+            <RideCard key={ride.id} ride={ride} />
+          ))}
+        </div>
+      </section>
+    )
   );
 }

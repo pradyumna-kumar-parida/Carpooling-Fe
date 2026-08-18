@@ -21,7 +21,7 @@ export default function ProfileHeader({
 }) {
   const router = useRouter();
 
-  console.log("userdata", userData);
+  console.log("userdata", editData);
   const [role, setRole] = useState(null);
   useEffect(() => {
     const storedRole = getRole();
@@ -75,6 +75,24 @@ export default function ProfileHeader({
                 ) : (
                   <FaUserCircle className="profile-default-avatar" size={96} />
                 )}
+                {!editData?.profilePicture && (
+                    <>
+                      <label
+                        htmlFor="profilePicture"
+                        className="avatar-upload-btn"
+                      >
+                        <FiPlus />
+                      </label>
+
+                      <input
+                        type="file"
+                        id="profilePicture"
+                        accept="image/*"
+                        onChange={(e) => onFileChange(e, "profilePicture")}
+                        style={{ display: "none" }}
+                      />
+                    </>
+                  )}
               </>
             )}
           </div>
@@ -112,13 +130,13 @@ export default function ProfileHeader({
                     bookings.
                   </p>
                 </div>
-                <span className="profile-progress-percentage">65%</span>
+                <span className="profile-progress-percentage">25%</span>
               </div>
 
               <div className="profile-progress-bar">
                 <div
                   className="profile-progress-fill"
-                  style={{ width: "65%" }}
+                  style={{ width: "25%" }}
                 ></div>
               </div>
 
@@ -150,13 +168,13 @@ export default function ProfileHeader({
                 </p>
               </div>
 
-              <span className="profile-progress-percentage">65%</span>
+              <span className="profile-progress-percentage">25%</span>
             </div>
 
             <div className="profile-progress-bar">
               <div
                 className="profile-progress-fill"
-                style={{ width: "65%" }}
+                style={{ width: "25%" }}
               ></div>
             </div>
 
@@ -174,11 +192,11 @@ export default function ProfileHeader({
             </div>
           </div>
         )}
-        {/* <div className="profile-actions">
+        <div className="profile-actions">
           {!isEditing ? (
             <button type="button" className="btn-edit" onClick={onEditToggle}>
               <FaEdit />
-              Edit Profile
+              Edit
             </button>
           ) : (
             <div className="edit-actions">
@@ -191,11 +209,11 @@ export default function ProfileHeader({
               </button>
               <button type="button" className="btn-save" onClick={onSave}>
                 <MdOutlineSave />
-                Save Changes
+                Save
               </button>
             </div>
           )}
-        </div> */}
+        </div>
       </div>
     </div>
   );

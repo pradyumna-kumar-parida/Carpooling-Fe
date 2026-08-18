@@ -19,3 +19,6 @@ export const UpdateProfilepApi = (data) =>
       "Content-Type": "multipart/form-data",
     },
   });
+
+export const uploadProfileApi = (data) =>
+  getClientAxios.post("/upload-profile-image", data);

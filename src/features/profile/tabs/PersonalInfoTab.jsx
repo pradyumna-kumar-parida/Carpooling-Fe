@@ -59,7 +59,7 @@ export default function PersonalInfoTab({
           )}
         </div>
 
-        <div className="form-group">
+        {/* <div className="form-group">
           <label className="form-label">User Type</label>
           {isEditing ? (
             <select
@@ -76,9 +76,9 @@ export default function PersonalInfoTab({
           ) : (
             <p className="form-value">{userData.usertype === "2" ? "driver" : "passenger"|| "Not provided"}</p>
           )}
-        </div>
+        </div> */}
 
-        {isEditing && (
+        {/* {isEditing && (
           <>
             <div className="form-group">
               <label className="form-label">New Password</label>
@@ -104,7 +104,7 @@ export default function PersonalInfoTab({
               />
             </div>
           </>
-        )}
+        )} */}
       </div>
     </div>
   );
