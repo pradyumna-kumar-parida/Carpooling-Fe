@@ -146,15 +146,7 @@ const Header = () => {
     setPanelOpen(true);
   };
 
-  // const handleClosePanel = () => {
-  //   setPanelOpen(false);
-  // };
 
-  // const handleUpdateNotification = (id, updates) => {
-  //   setNotifications((prev) =>
-  //     prev.map((n) => (n.id === id ? { ...n, ...updates } : n)),
-  //   );
-  // };
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -255,17 +247,17 @@ const Header = () => {
           <ListItem disablePadding>
             <ListItemButton
               onClick={() => navTo("/login")}
-              className="mobile-menu-sidebar"
+              className="cred-menu"
             >
               <RiLoginCircleLine />
               <ListItemText primary="Log in" />
             </ListItemButton>
           </ListItem>
-          <Divider />
+          {/* <Divider />  */}
           <ListItem disablePadding>
             <ListItemButton
               onClick={() => navTo("/signup")}
-              className="mobile-menu-sidebar"
+              className="cred-menu"
             >
               <FaUserPlus />
               <ListItemText primary="Sign up" />

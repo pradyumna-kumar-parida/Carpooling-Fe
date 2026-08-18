@@ -51,8 +51,6 @@ const getSlidesForRole = (role, token) => {
   if (!isLoggedIn) return slides;
 
   const filtered = slides.filter((slide) => slide.role === role);
-  // Fallback: logged in but role is missing/unrecognized — show everything
-  // rather than rendering a blank hero.
   return filtered.length > 0 ? filtered : slides;
 };
 
@@ -61,8 +59,6 @@ const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const router = useRouter();
 
-  // getRole()/getToken() read from cookies, which aren't reliably available
-  // during SSR, so we read them after mount to avoid a hydration mismatch.
   useEffect(() => {
     setAuthState({
       role: getRole(),
@@ -71,9 +67,6 @@ const Hero = () => {
   }, []);
 
   const visibleSlides = getSlidesForRole(authState.role, authState.token);
-
-  // Reset to the first slide whenever the visible slide set changes (e.g.
-  // once auth state loads after mount) so we never point past the end.
   useEffect(() => {
     setCurrentSlide(0);
   }, [visibleSlides.length]);
@@ -87,9 +80,9 @@ const Hero = () => {
   }, [visibleSlides.length]);
 
   const slide = visibleSlides[currentSlide];
-
+  const isDriver = authState.role === "driver";
   return (
-    <section className="hero">
+    <section className={isDriver ? " hero hero-child" : "hero"}>
       <div className="hero-content">
         <div key={slide.id} className="hero-text hero-slide">
           <h1 className="hero-head-title">
