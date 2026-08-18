@@ -7,7 +7,7 @@ import { LuUsers } from "react-icons/lu";
 import { FaRightLong } from "react-icons/fa6";
 import { FiMaximize } from "react-icons/fi";
 import { GiRailRoad } from "react-icons/gi";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import trackingCar from "@/assets/images/trackingCar.png";
 import {
@@ -23,6 +23,7 @@ import {
 import { FaCarSide, FaFlagCheckered } from "react-icons/fa";
 
 import SosFloating from "@/components/SOS";
+import { completeRideApi } from "@/services/client/rideService";
 
 const RIDE_DATA = {
   rideId: "#BKGC8364",
@@ -104,6 +105,9 @@ function bearingBetween(lat1, lon1, lat2, lon2) {
 
 export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const rideId = searchParams.get("rideId");
+
   const mapElRef = useRef(null);
   const mapRotorRef = useRef(null); // oversized div that gets CSS-rotated
   const mapRef = useRef(null);
@@ -120,9 +124,19 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
 
   const [mapReady, setMapReady] = useState(false);
   const [rideCompleted, setRideCompleted] = useState(false);
+  const [completing, setCompleting] = useState(false);
+  const [completeError, setCompleteError] = useState(null);
 
   // eslint-disable-next-line no-unused-vars
   const currentStepIndex = STEPS.findIndex((s) => s.key === ride.status);
+
+  useEffect(() => {
+    if (!rideId) {
+      console.warn(
+        "DriverActiveRide: no rideId found in URL — /driver/tracking must be opened as /driver/tracking?rideId=<id>",
+      );
+    }
+  }, [rideId]);
 
   const updateCarMarkerRotation = (bearing) => {
     const el = carMarkerRef.current?.getElement();
@@ -392,17 +406,44 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
   const swipeStartX = useRef(0);
   const isSwiping = useRef(false);
 
-  /* Stops the live-position interval and marks the ride complete.
-     Wired up to the swipe-to-complete control below. */
-  const handleCompleteRide = useCallback(() => {
-    if (carIntervalRef.current) {
-      clearInterval(carIntervalRef.current);
-      carIntervalRef.current = null;
+  /* Fires once the swipe gesture crosses the completion threshold.
+     Calls the real complete-ride API with the rideId from the URL,
+     stops the live-position interval, then navigates to the
+     ride-complete screen — only on success. On failure the thumb
+     resets so the driver can try again. */
+  const handleCompleteRide = useCallback(async () => {
+    if (!rideId) {
+      console.error("Cannot complete ride: missing rideId in URL");
+      setCompleteError("Missing ride reference. Please reopen this ride.");
+      setSwipePosition(0);
+      return;
     }
-    setRideCompleted(true);
-    onRideComplete?.(ride);
-    setTimeout(() => router.push("/driver/ride-complete"), 400);
-  }, [onRideComplete, ride, router]); // add router to the dependency array
+    if (completing || rideCompleted) return;
+
+    setCompleting(true);
+    setCompleteError(null);
+
+    try {
+      const { data } = await completeRideApi(rideId);
+      const completedRideId = data?.data?.rideId ?? rideId;
+
+      if (carIntervalRef.current) {
+        clearInterval(carIntervalRef.current);
+        carIntervalRef.current = null;
+      }
+
+      setRideCompleted(true);
+      onRideComplete?.(ride);
+
+      router.push(`/driver/ride-complete?rideId=${completedRideId}`);
+    } catch (err) {
+      console.error("Failed to complete ride:", err);
+      setCompleteError("Failed to complete the ride. Please try again.");
+      setSwipePosition(0); // reset thumb so the driver can retry
+    } finally {
+      setCompleting(false);
+    }
+  }, [rideId, completing, rideCompleted, onRideComplete, ride, router]);
 
   const handleSwipeStart = (e) => {
     e.preventDefault();
@@ -432,7 +473,6 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
       if (diff >= 190) {
         // Swipe completed
         setSwipePosition(220);
-
         handleCompleteRide();
       } else {
         // Not enough → reset
@@ -440,14 +480,18 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
       }
 
       window.removeEventListener("pointermove", handlePointerMove);
-
       window.removeEventListener("pointerup", handlePointerUp);
     };
 
     window.addEventListener("pointermove", handlePointerMove);
-
     window.addEventListener("pointerup", handlePointerUp);
   };
+
+  const swipeLabel = rideCompleted
+    ? "Ride Completed"
+    : completing
+      ? "Completing…"
+      : "Complete Ride";
 
   return (
     <div className="driver-track-page">
@@ -478,21 +522,29 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
                   opacity: Math.max(0, 1 - swipePosition / 70),
                 }}
               >
-                {rideCompleted ? "Ride Completed" : "Complete Ride"}
+                {swipeLabel}
               </span>
 
               <div
                 className="swipe-end-ride-thumb"
                 style={{
                   transform: `translateX(${swipePosition}px)`,
+                  opacity: completing ? 0.7 : 1,
+                  cursor: rideCompleted || completing ? "default" : "grab",
                 }}
-                onPointerDown={rideCompleted ? undefined : handleSwipeStart}
+                onPointerDown={
+                  rideCompleted || completing ? undefined : handleSwipeStart
+                }
               >
                 <BiSolidSend size={22} />
               </div>
             </div>
           </div>
         </section>
+
+        {completeError && (
+          <p className="driver-track-complete-error">{completeError}</p>
+        )}
 
         {/* ---------------- Map ---------------- */}
         <section className="driver-track-card driver-track-map-card">

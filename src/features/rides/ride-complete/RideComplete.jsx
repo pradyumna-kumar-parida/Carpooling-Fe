@@ -15,14 +15,7 @@ import { IoLocationSharp } from "react-icons/io5";
 
 import RatingModal from "@/components/Rating";
 import rideComplete from "@/assets/images/ride-complete.png";
-/**
- * ---------------------------------------------------------------------------
- * STATIC DEMO DATA — swap this out for the real ride payload later.
- * `role` decides which version of the screen renders:
- *   "driver"    -> driver sees the passenger list + "Rate Passengers"
- *   "passenger" -> passenger sees the driver card + "Rate Driver"
- * ---------------------------------------------------------------------------
- */
+
 const DEMO_RIDE_DATA = {
   role: "driver", // "driver" | "passenger"
   route: { from: "KIIT Square", to: "Puri" },
@@ -125,7 +118,7 @@ export default function RideCompleted({
               width={400}
               height={300}
               priority
-              className= "ride-complete-img"
+              className="ride-complete-img"
             />
             <span className="ride-com-confetti c1" />
             <span className="ride-com-confetti c2" />
@@ -155,14 +148,20 @@ export default function RideCompleted({
 
             <div className="ride-com-route">
               <span className="ride-com-route-dot" />
-              <span className="ride-com-route-point"> 
-                <p className="source"><IoLocationSharp />
-</p>
-                {route.from}</span>
-                
+              <span className="ride-com-route-point">
+                <p className="source">
+                  <IoLocationSharp />
+                </p>
+                {route.from}
+              </span>
+
               <span className="ride-com-route-line" />
-              <span className="ride-com-route-point">{route.to}            <p className="destination"><IoLocationSharp />
-</p></span>
+              <span className="ride-com-route-point">
+                {route.to}{" "}
+                <p className="destination">
+                  <IoLocationSharp />
+                </p>
+              </span>
             </div>
 
             <div className="ride-com-stats">

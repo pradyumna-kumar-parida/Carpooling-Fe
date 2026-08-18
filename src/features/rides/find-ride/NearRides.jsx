@@ -180,7 +180,7 @@ function SeatPips({ total, left }) {
 function RideRow({ ride }) {
   const router = useRouter();
   const [seatCount, setSeatCount] = useState(1);
-  console.log("roides", ride);
+
 
   const urgency =
     ride.seatsLeft === 1

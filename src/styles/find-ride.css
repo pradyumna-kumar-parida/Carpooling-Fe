@@ -3823,7 +3823,14 @@ grid-template-columns: 1fr 1fr 1fr;
   .rating-modal-box {
     padding: 20px 15px !important;
   }
-  
+  .bkf-ref-chip{
+    margin-bottom: 30px !important;
+  }
+ .bkf-journey-label,
+ .bkf-journey-value,
+ .bkf-status-label,
+ .bkf-status-badge,
+  .bkf-subtitle,
 .bookconf-info-value,
 .bookconf-step-address,
   .ridepay-payment-alert h4,
@@ -3834,6 +3841,7 @@ grid-template-columns: 1fr 1fr 1fr;
   .vehicle-detl-add-btn {
     font-size: 0.8rem !important;
   }
+   .bkf-ref-chip,
   .bookconf-step-time,
 .info-value-card-date,
   .rating-modal-feedback,
@@ -3899,9 +3907,11 @@ grid-template-columns: 1fr 1fr 1fr;
     gap: 0.5rem !important;
   }
   /* Search */
-  .fr-page-title {
-    font-size: 1.9rem;
+  .fr-page-title ,
+  .bkf-icon{
+    font-size: 1.9rem !important;
   }
+ .bkf-title,
   .bookconf-step-icon,
   .ridepay-payment-icon,
   .vehicle-detl-title,
@@ -3911,6 +3921,7 @@ grid-template-columns: 1fr 1fr 1fr;
   .ridepay-payment-alert-top {
     gap: 8px !important;
   }
+ 
   .sucess-heading,
   .step-icon,
   .bookconf-card-title,
@@ -4066,9 +4077,12 @@ grid-template-columns: 1fr 1fr 1fr;
     width: 16px;
     height: 16px;
   }
-
+.bkf-icon-wrap{
+  height: 50px !important;
+  width: 50px !important;
+}
   .fr-route-btn {
-    width: 32px;
+    width: 32px !important;
     height: 32px;
   }
 
@@ -6220,14 +6234,11 @@ body.modal-open {
 }
 
 .bkf-btn--rebook {
-  background: var(--fr-bg-white);
-  border-color: var(--fr-primary-light);
-  color: var(--fr-secondary);
+  background: var(--fr-primary);
+
+  color: var(--fr-bg-light);
 }
 
-.bkf-btn--rebook:hover {
-  background: var(--fr-bg-light);
-}
 
 .bkf-btn--support {
   background: var(--fr-bg-white);
@@ -6244,7 +6255,7 @@ body.modal-open {
 .bkf-btn--home:hover {
   opacity: 0.9;
 }
-/* ================= Payment Timer ================= */
+
 
 .ridepay-payment-alert {
   background: #fff8e8;

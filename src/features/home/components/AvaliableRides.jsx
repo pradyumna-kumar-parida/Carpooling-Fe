@@ -296,9 +296,9 @@ export default function AvailableRides() {
             <span className="avl-rides-pulse" aria-hidden="true" />
             Rides near you
           </span>
-          <h2 id="avl-rides-heading" className="avl-rides-title">
+          {/* <h2 id="avl-rides-heading" className="avl-rides-title">
             Rides leaving soon
-          </h2>
+          </h2> */}
         </div>
         <Link href="/find-ride" className="avl-rides-viewall">
           View all rides

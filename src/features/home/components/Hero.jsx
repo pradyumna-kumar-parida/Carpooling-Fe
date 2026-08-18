@@ -92,7 +92,7 @@ const Hero = () => {
     <section className="hero">
       <div className="hero-content">
         <div key={slide.id} className="hero-text hero-slide">
-          <h1>
+          <h1 className="hero-head-title">
             {slide.title}
             <br />
             <span>{slide.subtitle}</span>

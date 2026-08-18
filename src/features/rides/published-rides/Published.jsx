@@ -545,24 +545,24 @@ export default function PublishedRides({ publishedRide }) {
 
   // Actual API call — only fires after the start confirm dialog says "Yes"
   // Now shows toast first, then executes after 2 seconds
-  const handleStart = (id) => {
-    // Show toast immediately
-    showToast("Ride started", "success");
+const handleStart = (id) => {
+  // Show toast immediately
+  showToast("Ride started", "success");
 
-    // Close the confirm dialog immediately
-    setConfirmStart(null);
+  // Close the confirm dialog immediately
+  setConfirmStart(null);
 
-    // Execute the API call after 2 seconds
-    toastTimerRef.current = setTimeout(async () => {
-      try {
-        await startRideApi(id);
-        router.push("/driver/tracking");
-      } catch (err) {
-        console.error("Failed to start ride:", err);
-        showToast("Failed to start ride", "error");
-      }
-    }, 2000);
-  };
+  // Execute the API call after 2 seconds
+  toastTimerRef.current = setTimeout(async () => {
+    try {
+      await startRideApi(id);
+      router.push(`/driver/tracking?rideId=${id}`); // ← changed
+    } catch (err) {
+      console.error("Failed to start ride:", err);
+      showToast("Failed to start ride", "error");
+    }
+  }, 2000);
+};
 
   // counts for tabs
   const counts = {

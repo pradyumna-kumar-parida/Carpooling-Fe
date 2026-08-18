@@ -7,6 +7,8 @@ import { MdOutlineSave } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import { IoStar } from "react-icons/io5";
 import { FaUserCircle } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { getRole } from "@/lib/cookie";
 export default function ProfileHeader({
   isEditing,
   userData,
@@ -18,14 +20,13 @@ export default function ProfileHeader({
   onFileChange,
 }) {
   const router = useRouter();
-  // console.log("is driver",isDriver);
 
-  //   const showCompleteProfileCard =
-  //     isDriver && String(userData.profileCompleted).toLowerCase() !== "true";
-  //   console.log("profile data", showCompleteProfileCard);
-
-  console.log("userdata profile check", userData);
-
+  console.log("userdata", userData);
+  const [role, setRole] = useState(null);
+  useEffect(() => {
+    const storedRole = getRole();
+    setRole(storedRole);
+  }, []);
   return (
     <div className="profile-header">
       <div className="profile-header-content">
@@ -83,9 +84,12 @@ export default function ProfileHeader({
               {userData.fullname || "Not provided"}
             </h1>
             <p className="profile-email">{userData.email || "Not provided"}</p>
-            <span className="profile-badge">
-              {userData.is_verified === 1 ? "verified" : "Not verified"}
-            </span>
+            {role === "driver" ? (
+              <span className="profile-badge">verified</span>
+            ) : (
+              ""
+            )}
+
             <p className="profile-rate">
               <span>
                 <IoStar color="#e4ce0d" />
@@ -96,8 +100,7 @@ export default function ProfileHeader({
               4.8 rating{" "}
             </p>
           </div>
-
-          {!userData?.profileCompleted && (
+          {role === "driver" && !userData?.profileCompleted && (
             <div className="profile-progress-card">
               <div className="profile-progress-top">
                 <div>
@@ -134,7 +137,7 @@ export default function ProfileHeader({
             </div>
           )}
         </div>
-        {!userData?.profileCompleted && (
+        {role === "driver" && !userData?.profileCompleted && (
           <div className="profile-progress-card1">
             <div className="profile-progress-top">
               <div>
@@ -171,7 +174,7 @@ export default function ProfileHeader({
             </div>
           </div>
         )}
-        <div className="profile-actions">
+        {/* <div className="profile-actions">
           {!isEditing ? (
             <button type="button" className="btn-edit" onClick={onEditToggle}>
               <FaEdit />
@@ -192,7 +195,7 @@ export default function ProfileHeader({
               </button>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );

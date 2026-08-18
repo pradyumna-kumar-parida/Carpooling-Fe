@@ -94,8 +94,11 @@ const RidePayment = () => {
         const res = await paymentFailedApi(payload);
 
         console.log("Payment Failed Response:", res);
+
+        // Store booking failed response
+        sessionStorage.setItem("bookingFailed", JSON.stringify(res.data));
       } catch (err) {
-        console.error(err);
+        console.error("Payment Failed API Error:", err);
       } finally {
         router.replace("/passenger/booking-failed");
       }
