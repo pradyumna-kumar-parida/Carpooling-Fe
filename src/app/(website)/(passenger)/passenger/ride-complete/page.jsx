@@ -1,4 +1,3 @@
-
 import RideCompleted from "@/features/rides/ride-complete/RideComplete";
 import React from "react";
 

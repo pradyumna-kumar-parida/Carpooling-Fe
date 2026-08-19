@@ -1,7 +1,5 @@
 import getServerAxios from "@/lib/axiosServer";
 
-
-
 export const getRideDetails = async (rideId) => {
   const axios = await getServerAxios();
   const { data } = await axios.get(`/get-ride-data/${rideId}`);
@@ -14,6 +12,13 @@ export const getPublishedRides = async () => {
 export const getUserBookings = async () => {
   const axios = await getServerAxios();
   const response = await axios.get("/my-bookings");
+
+  return response.data;
+};
+
+export const getBookingDetailsTrack = async (bookingId) => {
+  const axios = await getServerAxios();
+  const response = await axios.get(`/get-booking-details/${bookingId}`);
 
   return response.data;
 };

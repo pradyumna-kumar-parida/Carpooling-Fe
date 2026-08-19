@@ -1,5 +1,5 @@
 import MyRides from "./components/MyRides";
-import "../../../styles/find-ride.css";
+import "@/styles/find-ride.css";
 export const metadata = {
   title: "My Rides",
   description: "Manage your carpooling journeys",

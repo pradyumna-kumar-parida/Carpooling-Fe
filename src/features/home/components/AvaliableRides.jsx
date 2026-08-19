@@ -256,6 +256,9 @@ export default function AvailableRides() {
       rides.forEach((ride) => {
         console.log("Joining ride room:", ride.id);
         socket.emit("join_ride", ride.id);
+        socket.on("ride_joined", (response) => {
+          console.log("Joined ride room successfully:", response);
+        });
       });
     };
 

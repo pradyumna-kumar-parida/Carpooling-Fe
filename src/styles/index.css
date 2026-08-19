@@ -3069,10 +3069,7 @@ footer {
     height: 14px !important;
     font-size: 9px !important;
   }
-  .ride-com-rate-btn {
-    padding: 12px 14px !important;
-    font-size: 0.8rem !important;
-  }
+
   .ride-complete-img {
     height: 200px;
   }
@@ -7288,49 +7285,7 @@ footer {
 
 /* CTA */
 
-.ride-com-rate-btn {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  border: none;
-  cursor: pointer;
-  background: var(--btn-bg);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  padding: 16px 20px;
-  border-radius: var(--radius);
-  box-shadow: var(--fr-shadow);
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
-}
 
-.ride-com-rate-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(30, 64, 175, 0.28);
-}
-
-.ride-com-rate-btn:active {
-  transform: translateY(0);
-}
-
-.ride-com-rate-btn-timer {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 3px;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.75);
-  transform-origin: left center;
-  animation-name: ride-com-timer-shrink;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards;
-}
 
 @keyframes ride-com-timer-shrink {
   from {
@@ -7371,11 +7326,7 @@ footer {
     top: 32px;
   }
 
-  .ride-com-rate-btn {
-    width: auto;
-    align-self: flex-start;
-    padding: 16px 32px;
-  }
+ 
 }
 
 /* Respect reduced-motion preferences */
@@ -7747,7 +7698,6 @@ footer {
   border-radius: var(--radius);
   padding: 10px 14px;
   margin: 0 0 28px;
-
 }
 
 .cp-pending-btn {
@@ -8255,4 +8205,271 @@ footer {
     padding: 8px 10px !important;
     font-size: 0.8rem !important;
   }
+}
+/* ==========================================================================
+   Booking Details section — extracted from the old UserRideCompleted styles.
+   Desktop/tablet: shows an inline card.
+   Mobile: card is hidden, a trigger button is shown instead, tapping it
+   opens the same details in a bottom-sheet modal.
+   Append this into your existing global stylesheet (e.g. find-ride.css),
+   or import it directly wherever RideCompleted.jsx is rendered.
+   ========================================================================== */
+
+.user-ride-complete-card-title {
+  font-family: var(--heading);
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+/* ---------------------------- Inline card (desktop/tablet) ---------------------------- */
+
+.user-ride-complete-booking-card {
+  background: #fff;
+  border: 1px solid var(--ntfy-border);
+  border-radius: var(--radius);
+  box-shadow: var(--fr-shadow);
+  padding: 22px 24px;
+  display: none; /* revealed from tablet width up */
+}
+
+.user-ride-complete-booking-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-ride-complete-booking-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 14px;
+  border-bottom: 1px solid var(--ntfy-border);
+}
+
+.user-ride-complete-booking-row:last-child {
+  border-bottom: none;
+}
+
+.user-ride-complete-booking-row span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--desc);
+}
+
+.user-ride-complete-booking-row span:last-child {
+  font-weight: 700;
+}
+
+.user-ride-complete-booking-row-highlight {
+  background: var(--ntfy-success-bg);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  border-bottom: none;
+}
+
+.user-ride-complete-booking-row-highlight span:last-child {
+  color: var(--ntfy-success);
+}
+
+.user-ride-complete-paid-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--ntfy-success) !important;
+}
+
+/* ---------------------------- Mobile-only trigger button ---------------------------- */
+
+.user-ride-complete-booking-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #fff;
+  border: 1px solid var(--ntfy-border);
+  border-radius: var(--radius);
+  box-shadow: var(--fr-shadow);
+  padding: 16px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black);
+  cursor: pointer;
+}
+
+.user-ride-complete-booking-trigger span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--custom-one);
+}
+
+/* ---------------------------- Booking details modal (mobile) ---------------------------- */
+
+.user-ride-complete-booking-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1000;
+  padding: 0;
+  animation: user-ride-complete-fade-in 0.2s ease both;
+}
+
+.user-ride-complete-booking-modal {
+  background: #fff;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px 16px 0 0;
+  padding: 20px 22px 28px;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.18);
+  animation: user-ride-complete-slide-up 0.25s ease both;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.user-ride-complete-booking-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.user-ride-complete-booking-modal-header h3 {
+  font-family: var(--heading);
+  font-size: 18px;
+  margin: 0;
+}
+
+.user-ride-complete-booking-modal-close {
+  background: var(--ntfy-gray-bg);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--desc);
+  cursor: pointer;
+}
+
+@keyframes user-ride-complete-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes user-ride-complete-slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ============================== Responsive ============================== */
+
+/* Tablet and up: show the inline card, hide the mobile trigger and modal */
+@media (min-width: 768px) {
+  .user-ride-complete-booking-card {
+    display: block;
+  }
+
+  .user-ride-complete-booking-trigger {
+    display: none;
+  }
+
+  .user-ride-complete-booking-modal-overlay,
+  .user-ride-complete-booking-modal {
+    display: none;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .user-ride-complete-booking-modal-overlay,
+  .user-ride-complete-booking-modal {
+    animation: none !important;
+  }
+}
+
+.user-ride-complete-help-bar {
+  background: var(--ntfy-danger-bg);
+  border-radius: var(--radius);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 14px;
+}
+
+.user-ride-complete-help-icon {
+  color: var(--ntfy-danger);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.user-ride-complete-help-text {
+  font-weight: 600;
+  margin-right: auto;
+}
+
+.user-ride-complete-help-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--custom-one);
+  font-weight: 600;
+}
+
+.user-ride-complete-help-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--custom-one);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.user-ride-complete-help-link:hover {
+  text-decoration: underline;
+}
+
+.user-ride-complete-help-divider {
+  color: var(--ntfy-border);
+}
+
+/* -------------------------------- Back home -------------------------------- */
+
+.user-ride-complete-back-home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--ntfy-blue-bg);
+  color: var(--custom-one);
+  border: none;
+  border-radius: var(--radius);
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.user-ride-complete-back-home:hover {
+  background: rgba(30, 64, 175, 0.14);
 }

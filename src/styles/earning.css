@@ -1,26 +1,43 @@
 /* =============================================
-   EarningsPage.module.css
-   All classes prefixed: earning-
+   earning.css
+   Mobile-first. All classes prefixed: earning-
+   Breakpoints: base = phone, 640px = tablet, 1024px = desktop
    ============================================= */
 
 :root {
-  --btn-bg: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
-  --section-cardBg: #f7f9fb;
-  --heading: "Vollkorn", serif;
-  --custom-one: #1e40af;
-  --black: #000000;
-  --desc: #666;
-  --radius: 10px;
-  --fr-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  --value-text: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+  --primary: #1e40af;
+  --primary-light: #3b5fd9;
+  --btn-gradient: linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
+  --bg-page: #f0f4f8;
+  --card-bg: #ffffff;
+  --card-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-soft: #e6ebf3;
+  --success-bg: #dcfce7;
+  --success-text: #16a34a;
+  --danger-bg: #fee2e2;
+  --danger-text: #dc2626;
+  --warning-bg: #fef3c7;
+  --warning-text: #b45309;
+  --font-heading: "Vollkorn", serif;
+  --font-body: "Roboto", "Helvetica", "Arial", sans-serif;
+  --font-value: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 /* ─── Page Wrapper ─── */
 .earning-page {
   min-height: 100vh;
-  background: #f0f4f8;
-  padding: 36px 40px 60px;
-  font-family: "Inter", sans-serif;
+  background: var(--bg-page);
+  padding: 20px 16px 48px;
+  font-family: var(--font-body);
   max-width: 1240px;
   margin: 0 auto;
 }
@@ -28,51 +45,62 @@
 /* ─── Header ─── */
 .earning-header {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 32px;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 16px;
+  margin-bottom: 20px;
+}
+
+.earning-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .earning-title {
-  font-family: var(--heading);
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--custom-one);
-  margin: 0 0 4px;
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.02em;
 }
 
 .earning-subtitle {
-  font-size: 0.92rem;
-  color: var(--desc);
+  font-size: 0.85rem;
+  color: var(--text-muted);
   margin: 0;
 }
 
 .earning-filter-row {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+
+.earning-filter-row::-webkit-scrollbar {
+  display: none;
 }
 
 .earning-filter-btn {
-  padding: 8px 18px;
-  border: 1.5px solid #d1d9e8;
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border: 1.5px solid var(--border-soft);
   border-radius: 999px;
   background: #fff;
-  font-size: 0.82rem;
-  color: var(--desc);
+  font-size: 0.8rem;
+  color: var(--text-muted);
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  white-space: nowrap;
   transition: all 0.18s ease;
 }
 
-.earning-filter-btn:hover {
-  border-color: var(--custom-one);
-}
+
 
 .earning-filter-btn--active {
-  background: var(--btn-bg);
+  background: var(--btn-gradient);
   border-color: transparent;
   color: #fff;
 }
@@ -80,16 +108,16 @@
 /* ─── Stat Cards Grid ─── */
 .earning-stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 28px;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
 }
 
 .earning-stat-card {
-  background: #fff;
-  border-radius: var(--radius);
-  box-shadow: var(--fr-shadow);
-  padding: 22px 20px;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 18px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -104,13 +132,12 @@
   left: 0;
   width: 4px;
   height: 100%;
-  background: var(--btn-bg);
-  border-radius: 4px 0 0 4px;
+  background: var(--btn-gradient);
 }
 
 .earning-stat-icon-wrap {
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   border-radius: 12px;
   background: linear-gradient(135deg, #eff6ff, #dbeafe);
   display: flex;
@@ -120,8 +147,8 @@
 }
 
 .earning-stat-icon {
-  color: var(--custom-one);
-  font-size: 1.2rem;
+  color: var(--primary);
+  font-size: 1.15rem;
 }
 
 .earning-stat-body {
@@ -129,179 +156,188 @@
   flex-direction: column;
   gap: 2px;
   flex: 1;
+  min-width: 0;
 }
 
 .earning-stat-label {
-  font-size: 0.78rem;
-  color: var(--desc);
-  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
 .earning-stat-value {
-  font-size: 1.45rem;
-  font-weight: 700;
-  color: var(--black);
-  font-family: var(--value-text);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-main);
+  font-family: var(--font-value);
 }
 
 .earning-stat-badge {
   display: flex;
   align-items: center;
   gap: 3px;
-  font-size: 0.74rem;
-  font-weight: 600;
+  font-size: 0.72rem;
+  font-weight: 700;
   padding: 4px 8px;
   border-radius: 999px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .earning-stat-badge--up {
-  background: #dcfce7;
-  color: #16a34a;
+  background: var(--success-bg);
+  color: var(--success-text);
 }
 
 .earning-stat-badge--down {
-  background: #fee2e2;
-  color: #dc2626;
+  background: var(--danger-bg);
+  color: var(--danger-text);
 }
 
-/* ─── Main Row ─── */
+/* ─── Main Row (chart + summary) ─── */
 .earning-main-row {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 20px;
-  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
 /* ─── Chart Card ─── */
 .earning-chart-card {
-  background: #fff;
-  border-radius: var(--radius);
-  box-shadow: var(--fr-shadow);
-  padding: 28px;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 18px 16px 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .earning-chart-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 28px;
+  margin-bottom: 8px;
+  gap: 10px;
 }
 
 .earning-chart-title {
-  font-family: var(--heading);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--black);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-main);
   margin: 0;
 }
 
 .earning-chart-meta {
-  font-size: 0.8rem;
-  color: var(--desc);
-  background: var(--section-cardBg);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: #eff6ff;
   padding: 4px 12px;
   border-radius: 999px;
+  white-space: nowrap;
 }
 
-.earning-chart-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  height: 180px;
-  flex-wrap: wrap;
+.earning-chart-wrap {
+  margin: 0 -8px;
 }
 
-.earning-bar-group {
+.earning-chart-wrap > div {
+  width: 100%;
+}
+
+.earning-chart-note {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  flex: 1;
+  gap: 8px;
+  background: var(--success-bg);
+  color: #15803d;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  margin-top: 12px;
 }
 
-.earning-bar-amount {
-  font-size: 1.2rem;
-  color: green;
-  font-weight: 700;
-  font-family: var(--value-text);
+.earning-chart-note svg {
+  flex-shrink: 0;
 }
 
-.earning-bar-track {
-  width: 100%;
-  flex: 1;
-  background: #eff6ff;
-  border-radius: 6px 6px 0 0;
-  display: flex;
-  align-items: flex-end;
-  overflow: hidden;
-}
-
-.earning-bar-fill {
-  width: 100%;
-  background: var(--btn-bg);
-  border-radius: 6px 6px 0 0;
-  transition: height 0.4s ease;
-}
-
-.earning-bar-day {
-  font-size: 1rem;
-  color: var(--desc);
-  font-weight: 600;
-}
-
-/* ─── Payout Card ─── */
-.earning-payout-card {
-  background: var(--custom-one);
-  border-radius: var(--radius);
-  box-shadow: var(--fr-shadow);
-  padding: 28px 24px;
+/* ─── Summary Column ─── */
+.earning-wallet-col {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 16px;
+}
+
+/* ─── Earnings Summary Card (blue) ─── */
+.earning-payout-card {
+  background: var(--btn-gradient);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
   color: #fff;
 }
 
 .earning-payout-title {
-  font-family: var(--heading);
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin: 0 0 22px;
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0 0 18px;
   color: #fff;
 }
 
 .earning-payout-hero {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 10px;
-  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.earning-payout-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.earning-payout-hero > div {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-bottom: 22px;
 }
 
 .earning-payout-label {
-  font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.72);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .earning-payout-amount {
-  font-size: 2rem;
-  font-weight: 700;
-  font-family: var(--value-text);
+  font-size: 1.7rem;
+  font-weight: 800;
+  font-family: var(--font-value);
   color: #fff;
 }
 
 .earning-payout-rows {
   display: flex;
   flex-direction: column;
-  gap: 0;
-  margin-bottom: 24px;
-  flex: 1;
+  margin-bottom: 16px;
 }
 
 .earning-payout-row {
@@ -312,13 +348,13 @@
 }
 
 .earning-payout-row-label {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.75);
 }
 
 .earning-payout-row-val {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.88rem;
+  font-weight: 700;
   color: #fff;
 }
 
@@ -328,61 +364,150 @@
 
 .earning-payout-divider {
   height: 1px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
 }
 
-.earning-withdraw-btn {
-  width: 100%;
-  padding: 13px;
-  border: none;
-  border-radius: 8px;
-  background: #fff;
-  color: var(--custom-one);
-  font-size: 0.92rem;
+/* Info note — replaces the old withdraw button, no action here */
+.earning-payout-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.earning-payout-note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  font-size: 1rem;
+}
+
+/* ─── Payout History ─── */
+.earning-withdrawals-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 20px;
+}
+
+.earning-withdrawals-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0 0 14px;
+}
+
+.earning-withdrawals-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.earning-withdrawal-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--bg-page);
+}
+
+.earning-withdrawal-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.earning-withdrawal-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+.earning-withdrawal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.earning-withdrawal-date {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.earning-withdrawal-status {
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.earning-withdrawal-status--completed {
+  color: var(--success-text);
+}
+
+.earning-withdrawal-status--processing {
+  color: var(--warning-text);
+}
+
+.earning-withdrawal-amount {
+  font-size: 0.9rem;
   font-weight: 700;
-  cursor: pointer;
-  transition:
-    opacity 0.18s ease,
-    transform 0.15s ease;
+  color: var(--text-main);
+  font-family: var(--font-value);
+  flex-shrink: 0;
 }
 
-.earning-withdraw-btn:hover {
-  opacity: 0.92;
-  transform: translateY(-1px);
-}
-
-/* ─── Trips Table Card ─── */
+/* ─── Trips Card ─── */
 .earning-trips-card {
-  background: #fff;
-  border-radius: var(--radius);
-  box-shadow: var(--fr-shadow);
-  padding: 28px;
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 18px 16px 20px;
 }
 
 .earning-trips-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 22px;
+  margin-bottom: 16px;
+  gap: 10px;
 }
 
 .earning-trips-title {
-  font-family: var(--heading);
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--black);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-main);
   margin: 0;
 }
 
 .earning-trips-export {
-  padding: 8px 18px;
-  border: 1.5px solid #d1d9e8;
-  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-sm);
   background: #fff;
-  font-size: 0.82rem;
-  color: var(--custom-one);
-  font-weight: 600;
+  font-size: 0.78rem;
+  color: var(--primary);
+  font-weight: 700;
   cursor: pointer;
+  white-space: nowrap;
   transition: all 0.18s ease;
 }
 
@@ -390,8 +515,9 @@
   background: #eff6ff;
 }
 
+/* Desktop table — hidden on mobile */
 .earning-table-wrap {
-  overflow-x: auto;
+  display: none;
 }
 
 .earning-table {
@@ -401,13 +527,13 @@
 
 .earning-th {
   text-align: left;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--desc);
-  font-weight: 600;
+  color: var(--text-muted);
+  font-weight: 700;
   padding: 0 16px 12px;
-  border-bottom: 1.5px solid #e8ecf3;
+  border-bottom: 1.5px solid var(--border-soft);
 }
 
 .earning-tr {
@@ -420,9 +546,9 @@
 
 .earning-td {
   padding: 16px;
-  font-size: 0.88rem;
-  color: var(--black);
-  border-bottom: 1px solid #f0f4f8;
+  font-size: 0.86rem;
+  color: var(--text-main);
+  border-bottom: 1px solid var(--bg-page);
   vertical-align: middle;
 }
 
@@ -430,135 +556,284 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.earning-route-from {
-  color: var(--black);
+.earning-route-from,
+.earning-route-to {
+  color: var(--text-main);
 }
 
 .earning-route-arrow {
-  color: var(--custom-one);
+  color: var(--primary);
   font-size: 1rem;
-}
-
-.earning-route-to {
-  color: var(--black);
 }
 
 .earning-datetime {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--desc);
+  color: var(--text-muted);
   width: max-content;
 }
 
 .earning-datetime-icon {
   font-size: 0.9rem;
   flex-shrink: 0;
+  color: var(--primary);
 }
 
 .earning-time-chip {
   background: #eff6ff;
-  color: var(--custom-one);
+  color: var(--primary);
   border-radius: 999px;
   padding: 2px 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-left: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-left: 2px;
 }
 
 .earning-passengers {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--desc);
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 .earning-pass-icon {
-  color: var(--custom-one);
+  color: var(--primary);
 }
 
 .earning-amount-cell {
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--custom-one);
-  font-family: var(--value-text);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary);
+  font-family: var(--font-value);
 }
 
 .earning-status-chip {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  background: #dcfce7;
-  color: #16a34a;
+  font-size: 0.72rem;
+  font-weight: 700;
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
-/* ─── Responsive ─── */
-@media (max-width: 1100px) {
-  .earning-stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .earning-main-row {
-    grid-template-columns: 1fr;
-  }
+.earning-status-chip--completed {
+  background: var(--success-bg);
+  color: var(--success-text);
 }
 
-@media (max-width: 768px) {
+.earning-status-chip--pending {
+  background: var(--warning-bg);
+  color: var(--warning-text);
+}
+
+.earning-status-chip--cancelled {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+}
+
+/* Mobile stacked trip cards */
+.earning-trip-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.earning-trip-card {
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-md);
+  padding: 14px;
+}
+
+.earning-trip-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.earning-trip-card-datetime {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.earning-trip-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border-soft);
+}
+
+.earning-trip-card-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.earning-trip-card-field--right {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.earning-trip-card-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.earning-trip-card-value {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.earning-view-all-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: var(--primary);
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.earning-view-all-btn:hover {
+  background: #eff6ff;
+}
+
+/* =============================================
+   Tablet — 640px+
+   ============================================= */
+@media (min-width: 640px) {
   .earning-page {
-    padding: 20px 16px 40px;
-  }
-
-  .earning-stats-grid {
-    grid-template-columns: 1fr;
+    padding: 28px 24px 56px;
   }
 
   .earning-header {
-    flex-direction: column;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .earning-title {
+    font-size: 1.75rem;
+  }
+
+  .earning-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* =============================================
+   Desktop — 1024px+ (mirrors the reference layout)
+   ============================================= */
+@media (min-width: 1024px) {
+  .earning-page {
+    padding: 36px 40px 60px;
+  }
+
+  .earning-title {
+    font-size: 2rem;
   }
 
   .earning-filter-row {
-    width: 100%;
+    overflow: visible;
   }
 
-  .earning-filter-btn {
+  .earning-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .earning-stat-card {
+    padding: 22px 20px;
+  }
+
+  .earning-stat-value {
+    font-size: 1.45rem;
+  }
+
+  .earning-main-row {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .earning-chart-card {
     flex: 1;
-    text-align: center;
+    padding: 28px;
   }
-}
-@media (max-width: 480px) {
-  .earning-title {
-    font-size: 1.4rem !important;
-  }
-  .earning-header-text {
-    display: flex;
 
-    flex-direction: column;
-    justify-self: center;
-    align-self: center;
-    text-align: center;
+  .earning-chart-title {
+    font-size: 1.15rem;
   }
-  
-  .earning-subtitle {
-    font-size: 0.8rem;
+
+  .earning-chart-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
   }
-  .earning-stat-label{
-    font-size: 0.7rem;
+
+  .earning-chart-note {
+    margin-top: auto;
+    padding-top: 12px;
   }
-  .earning-filter-btn {
-    font-size: 0.7rem;
-    padding:5px 10px ;
+
+  .earning-wallet-col {
+    width: 340px;
+    flex-shrink: 0;
   }
-  .earning-stat-value{
-    font-size: 1rem;
+
+  .earning-payout-card,
+  .earning-withdrawals-card {
+    padding: 28px 24px;
   }
-.css-yup6gp-MuiButtonBase-root-MuiButton-root,
-  .css-xsqe0f-MuiButtonBase-root-MuiButton-root{
-    font-size: 0.5rem !important;
+
+  .earning-trips-card {
+    padding: 28px;
+  }
+
+  .earning-trips-title {
+    font-size: 1.15rem;
+  }
+
+  /* Swap: show the real table, hide the mobile cards */
+  .earning-table-wrap {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .earning-trip-cards {
+    display: none;
+  }
+
+  .earning-view-all-btn {
+    width: auto;
+    padding: 10px 24px;
+    margin: 16px auto 0;
+    display: block;
   }
 }

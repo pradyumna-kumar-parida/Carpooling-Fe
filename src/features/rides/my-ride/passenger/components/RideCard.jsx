@@ -45,11 +45,17 @@ export default function RideCard({ ride, onViewDetails, onOpenChat }) {
   // Track: off by default, turns on once the ride day has arrived —
   // but never for cancelled/completed rides
   const isTrackEnabled =
-    !isCancelled && !isCompleted && !isExpired && hasRideDayArrived(ride.rawDate);
+    !isCancelled &&
+    !isCompleted &&
+    !isExpired &&
+    hasRideDayArrived(ride.rawDate);
   const capitalize = (value) => {
     if (!value) return "";
     return value.charAt(0).toUpperCase() + value.slice(1);
   };
+
+  console.log("ride details", ride);
+
   return (
     <div className="myride-card">
       <div className="myride-card-header">

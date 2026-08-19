@@ -3,9 +3,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { FaCarRear } from "react-icons/fa6";
-
+import { IoLocationSharp } from "react-icons/io5";
+import { renderToStaticMarkup } from "react-dom/server";
 import "leaflet/dist/leaflet.css";
-import trackingCar from "../../../assets/images/trackingCar.png";
+import trackingCar from "@/assets/images/trackingCar.png";
 const STATUS_CONFIG = {
   scheduled: { label: "Scheduled", dot: "#1a56db" },
   driver_on_way: { label: "Driver On The Way", dot: "#d97706" },
@@ -255,20 +256,23 @@ const MapPanel = ({
       }).addTo(map);
 
       L.control.zoom({ position: "topleft" }).addTo(map);
+const greenIcon = L.divIcon({
+  className: "",
+  html: `<div style="color:#16a34a; font-size:28px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));">
+    ${renderToStaticMarkup(<IoLocationSharp />)}
+  </div>`,
+  iconSize: [28, 28],
+  iconAnchor: [14, 28], // bottom-center, since a location pin's tip points down
+});
 
-      const greenIcon = L.divIcon({
-        className: "",
-        html: `<div style="width:14px;height:14px;background:#16a34a;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>`,
-        iconSize: [14, 14],
-        iconAnchor: [7, 7],
-      });
-
-      const redIcon = L.divIcon({
-        className: "",
-        html: `<div style="width:16px;height:16px;background:#dc2626;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>`,
-        iconSize: [16, 16],
-        iconAnchor: [8, 8],
-      });
+const redIcon = L.divIcon({
+  className: "",
+  html: `<div style="color:#dc2626; font-size:32px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35));">
+    ${renderToStaticMarkup(<IoLocationSharp />)}
+  </div>`,
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+});
 
       L.marker([srcLat, srcLng], { icon: greenIcon })
         .addTo(map)

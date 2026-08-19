@@ -1,4 +1,4 @@
-import DriverActiveRide from "@/features/tracking/driver-tracking/DriverTracking";
+import DriverActiveRide from "@/features/tracking/driver/DriverTracking";
 import React from "react";
 
 const page = () => {

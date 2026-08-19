@@ -101,8 +101,9 @@ export default function BookingSidebar({
               </div>
             </div>
 
-            {!isRidePassed &&
-              (token ? (
+            {
+            // !isRidePassed &&(
+                token ? (
                 <button
                   type="button"
                   className="btn register-btn"
@@ -123,7 +124,9 @@ export default function BookingSidebar({
                 >
                   Log in to Book
                 </button>
-              ))}
+              )
+            // )
+              }
           </div>
         </div>
       </div>

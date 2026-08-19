@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Alert, Snackbar } from "@mui/material";
-import "../../../styles/ride-published.css";
+import "@/styles/ride-published.css";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
 import { FiAlertCircle } from "react-icons/fi";
@@ -16,6 +16,7 @@ import { socket } from "@/lib/socket";
 import { FaAngleRight } from "react-icons/fa6";
 import Link from "next/link";
 import { cancelRideApi, startRideApi } from "@/services/client/rideService";
+import { TbRouteAltLeft } from "react-icons/tb";
 
 const STATUS_FILTERS = [
   "All",
@@ -545,24 +546,24 @@ export default function PublishedRides({ publishedRide }) {
 
   // Actual API call — only fires after the start confirm dialog says "Yes"
   // Now shows toast first, then executes after 2 seconds
-const handleStart = (id) => {
-  // Show toast immediately
-  showToast("Ride started", "success");
+  const handleStart = (id) => {
+    // Show toast immediately
+    showToast("Ride started", "success");
 
-  // Close the confirm dialog immediately
-  setConfirmStart(null);
+    // Close the confirm dialog immediately
+    setConfirmStart(null);
 
-  // Execute the API call after 2 seconds
-  toastTimerRef.current = setTimeout(async () => {
-    try {
-      await startRideApi(id);
-      router.push(`/driver/tracking?rideId=${id}`); // ← changed
-    } catch (err) {
-      console.error("Failed to start ride:", err);
-      showToast("Failed to start ride", "error");
-    }
-  }, 2000);
-};
+    // Execute the API call after 2 seconds
+    toastTimerRef.current = setTimeout(async () => {
+      try {
+        await startRideApi(id);
+        router.push(`/driver/tracking?rideId=${id}`); // ← changed
+      } catch (err) {
+        console.error("Failed to start ride:", err);
+        showToast("Failed to start ride", "error");
+      }
+    }, 2000);
+  };
 
   // counts for tabs
   const counts = {
@@ -901,7 +902,17 @@ const handleStart = (id) => {
                           </button>
                         </>
                       )}
+                      {ride.status === "ongoing" && (
+                        <button
+                          className="ride-publish-action-btn ride-publish-action-btn-track"
+                          onClick={() =>
+                            router.push(`/driver/tracking?rideId=${ride.id}`)
+                          }
+                        >
+                          Track Ride <TbRouteAltLeft />
 
+                        </button>
+                      )}
                       {ride.status === "ongoing" && (
                         <button
                           className="ride-publish-action-btn ride-publish-action-btn-ongoing"

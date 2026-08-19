@@ -1,4 +1,4 @@
-import MyRidesPage from "@/features/rides/my-ride/Rides";
+import MyRidesPage from "@/features/rides/my-ride/passenger/Rides";
 import { getUserBookings } from "@/services/server/rideService";
 import React from "react";
 

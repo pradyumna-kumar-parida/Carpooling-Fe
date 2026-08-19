@@ -1,4 +1,4 @@
-import PublishedRides from "@/features/rides/published-rides/Published";
+import PublishedRides from "@/features/rides/my-ride/driver/Published";
 import { getPublishedRides } from "@/services/server/rideService";
 import React from "react";
 

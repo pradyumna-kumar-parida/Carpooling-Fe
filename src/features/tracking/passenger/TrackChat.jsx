@@ -1,21 +1,18 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
 
 import MapPanel from "./components/MapPanel";
 import RideDetailsCard from "./components/RideDetailsCard";
-import DriverDetailsCard from "./components/DriverDetailsCard";
+// import DriverDetailsCard from "../components/DriverDetailsCard";
 import RideStatusCard from "./components/RideStatusCard";
 import HelpSupportCard from "./components/HelpSupportCard";
-import ChatPanel from "../chat/ChatPanel";
+import ChatPanel from "../../chat/ChatPanel";
 
-import "../../styles/track-chat.css";
+import "@/styles/track-chat.css";
 import SosFloating from "@/components/SOS";
 
-const TrackChat = () => {
-  const searchParams = useSearchParams();
-
+const TrackChat = ({ bookingDetails }) => {
   const ride = null;
   const booking = null;
   const noOfSIt = null;
@@ -118,7 +115,7 @@ const TrackChat = () => {
 
   return (
     <div className="tc-page">
-          <SosFloating  />
+      <SosFloating />
       <div className={`tc-wrapper ${mapFullscreen ? "tc-fullscreen" : ""}`}>
         {/* LEFT — MAP */}
 

@@ -203,6 +203,7 @@ export default function DriverActiveRide({ ride = RIDE_DATA, onRideComplete }) {
 
     (async () => {
       const L = (await import("leaflet")).default;
+      if (cancelled || !mapElRef.current) return;
       leafletRef.current = L;
 
       const map = L.map(mapElRef.current, {

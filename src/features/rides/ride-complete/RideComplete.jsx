@@ -5,19 +5,28 @@ import Image from "next/image";
 import {
   FaCheck,
   FaCarSide,
+  FaHeadset,
+  FaHome,
   FaRoute,
   FaRegClock,
   FaUserFriends,
+  FaExclamationTriangle,
   FaChevronRight,
   FaStar,
+  FaHashtag,
+  FaWallet,
+  FaReceipt,
+  FaMoneyBillWave,
+  FaCheckCircle,
+  FaTimes,
 } from "react-icons/fa";
 import { IoLocationSharp } from "react-icons/io5";
 
 import RatingModal from "@/components/Rating";
 import rideComplete from "@/assets/images/ride-complete.png";
+import { getRole } from "@/lib/cookie";
 
 const DEMO_RIDE_DATA = {
-  role: "driver", // "driver" | "passenger"
   route: { from: "KIIT Square", to: "Puri" },
   distanceKm: 145,
   durationLabel: "2h 15m",
@@ -34,6 +43,15 @@ const DEMO_RIDE_DATA = {
     avatar: null,
     car: "Maruti Ertiga · White",
     rating: 4.8,
+  },
+  // Added: needed by the Booking Details card/modal section.
+  booking: {
+    id: "#CP10245",
+    seatsBooked: 1,
+    pricePerSeat: 630,
+    serviceFee: 20,
+    totalPaid: 650,
+    paymentStatus: "Paid",
   },
 };
 
@@ -68,11 +86,70 @@ function RideComAvatar({ name, avatar, size = 34 }) {
   );
 }
 
+/**
+ * Booking Details rows — shared by the inline card (desktop/tablet) and the
+ * mobile modal so the two never drift apart. Extracted as-is from the old
+ * UserRideCompleted page.
+ */
+function BookingDetailsRows({ booking }) {
+  return (
+    <div className="user-ride-complete-booking-rows">
+      <div className="user-ride-complete-booking-row">
+        <span>
+          <FaHashtag /> Booking ID
+        </span>
+        <span>{booking.id}</span>
+      </div>
+      <div className="user-ride-complete-booking-row">
+        <span>
+          <FaUserFriends /> Seats Booked
+        </span>
+        <span>{booking.seatsBooked}</span>
+      </div>
+      <div className="user-ride-complete-booking-row">
+        <span>
+          <FaWallet /> Price per seat
+        </span>
+        <span>₹{booking.pricePerSeat}</span>
+      </div>
+      <div className="user-ride-complete-booking-row">
+        <span>
+          <FaReceipt /> Service Fee
+        </span>
+        <span>₹{booking.serviceFee}</span>
+      </div>
+      <div className="user-ride-complete-booking-row user-ride-complete-booking-row-highlight">
+        <span>
+          <FaMoneyBillWave /> Total Paid
+        </span>
+        <span>₹{booking.totalPaid}</span>
+      </div>
+      <div className="user-ride-complete-booking-row">
+        <span>
+          <FaCheckCircle /> Payment Status
+        </span>
+        <span className="user-ride-complete-paid-tag">
+          <FaCheck /> {booking.paymentStatus}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function RideCompleted({
   data = DEMO_RIDE_DATA,
   onViewAllPassengers,
 }) {
-  const { role, route, distanceKm, durationLabel, passengers, driver } = data;
+  const { route, distanceKm, durationLabel, passengers, driver, booking } =
+    data;
+
+  // Role now comes from getRole() instead of the data object.
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    setRole(getRole());
+  }, []);
+
   const isDriver = role === "driver";
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,13 +167,24 @@ export default function RideCompleted({
 
   const closeModal = useCallback(() => setIsModalOpen(false), []);
 
-  // Start the 3s auto-open countdown once, when the ride-completed screen mounts.
+  // Start the 3s auto-open countdown once role is known and the screen has mounted.
   useEffect(() => {
+    if (!role) return;
     autoOpenTimerRef.current = setTimeout(openModal, AUTO_OPEN_DELAY_MS);
     return () => {
       if (autoOpenTimerRef.current) clearTimeout(autoOpenTimerRef.current);
     };
-  }, [openModal]);
+  }, [role, openModal]);
+
+  // Mobile-only "Booking Details" modal (desktop/tablet shows the card inline).
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
+  const openBookingModal = () => setIsBookingModalOpen(true);
+  const closeBookingModal = () => setIsBookingModalOpen(false);
+
+  // Role hasn't resolved yet — avoid flashing the wrong layout.
+  if (!role) {
+    return null;
+  }
 
   const visiblePassengers = passengers.slice(0, 4);
   const overflowCount = passengers.length - visiblePassengers.length;
@@ -228,29 +316,108 @@ export default function RideCompleted({
             </div>
           )}
 
+          {/* ---------------- Booking Details: inline card (desktop/tablet) ---------------- */}
+          <div className="user-ride-complete-booking-card">
+            <h2 className="user-ride-complete-card-title">Booking Details</h2>
+            <BookingDetailsRows booking={booking} />
+          </div>
+
+          {/* Booking Details: mobile-only trigger — opens the same info as a modal */}
+          <button
+            type="button"
+            className="user-ride-complete-booking-trigger"
+            onClick={openBookingModal}
+          >
+            <span>
+              <FaReceipt /> View Booking Details
+            </span>
+            <FaChevronRight />
+          </button>
+
           {/* Rating nudge */}
-          <div className="ride-com-nudge">
+          {/* <div className="ride-com-nudge">
             <FaStar className="ride-com-nudge-icon" />
             <span>{nudgeText}</span>
+          </div> */}
+
+          <div className="user-ride-complete-help-bar">
+            <span className="user-ride-complete-help-icon">
+              <FaExclamationTriangle />
+            </span>
+            <span className="user-ride-complete-help-text">
+              Need help with this ride?
+            </span>
+            <span className="user-ride-complete-help-links">
+              <button
+                type="button"
+                // onClick={onContactSupport}
+                className="user-ride-complete-help-link"
+              >
+                <FaHeadset /> Contact support
+              </button>
+              <span className="user-ride-complete-help-divider">|</span>
+              <button
+                type="button"
+                // onClick={onReportIssue}
+                className="user-ride-complete-help-link"
+              >
+                Report an issue
+              </button>
+              <FaChevronRight />
+            </span>
           </div>
+
+          {/* ---------------- Back to home ---------------- */}
+          {/* <button type="button" className="user-ride-complete-back-home">
+            <FaHome /> Back to Home
+          </button> */}
 
           {/* CTA — clicking this calls the SAME openModal() the 3s timer calls */}
           <button
             type="button"
-            className="ride-com-rate-btn"
+            className="user-ride-complete-back-home"
             onClick={openModal}
           >
             <FaStar />
             {rateLabel}
-            {!isModalOpen && (
+            {/* {!isModalOpen && (
               <span
                 className="ride-com-rate-btn-timer"
                 style={{ animationDuration: `${AUTO_OPEN_DELAY_MS}ms` }}
               />
-            )}
+            )} */}
           </button>
         </section>
       </div>
+
+      {/* ---------------- Booking details modal (mobile) ---------------- */}
+      {isBookingModalOpen && (
+        <div
+          className="user-ride-complete-booking-modal-overlay"
+          onClick={closeBookingModal}
+        >
+          <div
+            className="user-ride-complete-booking-modal"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Booking details"
+          >
+            <div className="user-ride-complete-booking-modal-header">
+              <h3>Booking Details</h3>
+              <button
+                type="button"
+                className="user-ride-complete-booking-modal-close"
+                onClick={closeBookingModal}
+                aria-label="Close booking details"
+              >
+                <FaTimes />
+              </button>
+            </div>
+            <BookingDetailsRows booking={booking} />
+          </div>
+        </div>
+      )}
 
       {/* Wire this up to your real RatingModal props/API */}
       <RatingModal

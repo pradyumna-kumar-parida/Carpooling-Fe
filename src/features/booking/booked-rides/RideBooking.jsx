@@ -73,6 +73,7 @@ export default function RideBooking({ rideDetails, totalSeat }) {
     const storedToken = getToken();
     setToken(storedToken);
   }, []);
+console.log("ride",ride);
 
   useEffect(() => {
     if (ride) {
@@ -98,6 +99,7 @@ export default function RideBooking({ rideDetails, totalSeat }) {
       </div>
     );
   }
+console.log("ride passed",ridePassed);
 
   return (
     <>
