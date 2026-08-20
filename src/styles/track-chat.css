@@ -469,17 +469,122 @@
 /* ══════════════════════════════════════════════════════════════════════════════
    MAPPANEL.JSX
 ══════════════════════════════════════════════════════════════════════════════ */
-
 .ms-container {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+}
+
+/* Wrap clips the oversized rotor below so no empty corners show while it spins */
+.ms-map-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Oversized, CSS-rotated container — the "nav camera" trick. Leaflet has
+   no native map rotation, so we rotate this instead and compensate the
+   zoom level in MapPanel.jsx (log2(2.6), matching the 260%/-80% sizing
+   below — keep these in sync if you ever change MAP_OVERSIZE_FACTOR). */
+.ms-map-rotor {
+  position: absolute;
+  top: -80%;
+  left: -80%;
+  width: 260%;
+  height: 260%;
+  transform-origin: center center;
+  transition: transform 0.6s linear;
+  will-change: transform;
 }
 
 .ms-map {
   width: 100%;
   height: 100%;
-  z-index: 1;
+}
+
+/* Pickup/destination pins live inside the rotated map too, so each gets
+   its own inner rotor that spins the opposite way to stay upright. */
+.ms-pin-rotor {
+  transform-origin: center center;
+  transition: transform 0.6s linear;
+}
+
+/* Car marker */
+.ms-car-marker {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ms-car-pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(30, 64, 175, 0.25);
+  animation: ms-car-pulse 1.6s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ms-car-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+.ms-car-dot {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center center;
+  transition: transform 0.25s linear;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.35));
+}
+
+/* Zoom / recenter controls — dragging is disabled on the rotated map, so
+   these replace Leaflet's built-in zoom control (which would rotate too,
+   since it lives inside the rotated container). */
+.ms-map-controls {
+  position: absolute;
+  right: 12px;
+  bottom: 108px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ms-map-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--white);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--blue-dark);
+  transition:
+    background 0.2s,
+    transform 0.15s;
+}
+
+.ms-map-btn:hover {
+  background: var(--bg);
+  transform: scale(1.05);
 }
 
 /* Status badge */
@@ -1229,6 +1334,15 @@
 }
 
 @media (max-width: 480px) {
+    .ms-map-controls {
+    bottom: 92px;
+    right: 8px;
+    gap: 6px;
+  }
+  .ms-map-btn {
+    width: 32px;
+    height: 32px;
+  }
   .ms-driver-status {
     display: none;
   }

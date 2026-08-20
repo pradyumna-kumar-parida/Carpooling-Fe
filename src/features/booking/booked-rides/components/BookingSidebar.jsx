@@ -46,12 +46,12 @@ export default function BookingSidebar({
   return (
     <>
       <div className="ride-confirm-sidebar">
-        {isRidePassed && (
+        {/* {isRidePassed && (
           <div className="ride-status-badge">
             <BsInfoCircle />
             <span>This ride has already departed</span>
           </div>
-        )}
+        )} */}
         <div className="ride-map-preview">
           <div className="ride-map-preview-map">
             <BookingRouteMap

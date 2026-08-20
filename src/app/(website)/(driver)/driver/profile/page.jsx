@@ -6,6 +6,8 @@ const Page = async () => {
   try {
     const response = await getProfile();
     const profile = response?.data || response;
+    console.log("user verify", profile);
+
     const profileData = {
       fullname: profile?.name || "",
       email: profile?.email || "",
@@ -34,6 +36,7 @@ const Page = async () => {
       password: "",
       confirmPassword: "",
       terms: false,
+      userverified: profile?.isVerified ?? Boolean(profile?.is_verified),
     };
 
     return <ProfileRoute profileData={profileData} />;

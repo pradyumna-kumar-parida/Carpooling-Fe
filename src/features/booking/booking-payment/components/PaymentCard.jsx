@@ -30,22 +30,20 @@ const PaymentCard = ({
           {/* Countdown Alert */}
           <div className="ridepay-payment-alert">
             <div className="ridepay-payment-alert-top">
-              <span className="ridepay-payment-icon">
+              {/* <span className="ridepay-payment-icon">
                 <IoMdAlarm />
-              </span>
+              </span> */}
 
               <div>
-                <h4>
+                {/* <h4>
                   {isExpired
                     ? "Your payment time has expired"
                     : `Complete your payment within ${formatTime(remainingMs)}`}
-                </h4>
+                </h4> */}
                 <p>
-                  Your seats are temporarily reserved. Please complete your
-                  payment before the timer ends. If payment is not completed
-                  within <strong>5 minutes</strong>, your reservation will be
-                  cancelled automatically and the seats will be released for
-                  other passengers.
+                  Your seats are temporarily reserved. Complete payment within{" "}
+                  <strong>5 minutes</strong>, or your reservation will be
+                  cancelled automatically.
                 </p>
               </div>
             </div>
@@ -79,9 +77,13 @@ const PaymentCard = ({
           <button
             className="ridepay-btn-primary"
             onClick={handlePayNow}
-            disabled={processing || !razorpayLoaded}
+            disabled={processing || !razorpayLoaded || isExpired}
           >
-            {processing ? "Opening Payment..." : `Pay ₹${totalAmount}`}
+            {isExpired
+              ? "Payment Time Expired"
+              : processing
+                ? "Opening Payment..."
+                : `Pay ₹${totalAmount}`}
           </button>
 
           <p className="ridepay-secure-note">

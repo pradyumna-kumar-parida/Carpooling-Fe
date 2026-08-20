@@ -77,7 +77,7 @@ function RideComAvatar({ name, avatar, size = 34 }) {
   return (
     <span
       className="ride-com-avatar"
-      style={{ width: size, height: size }}
+     
       aria-label={name}
       title={name}
     >
@@ -118,7 +118,7 @@ function BookingDetailsRows({ booking }) {
         </span>
         <span>₹{booking.serviceFee}</span>
       </div>
-      <div className="user-ride-complete-booking-row user-ride-complete-booking-row-highlight">
+      <div className="user-ride-complete-booking-row ">
         <span>
           <FaMoneyBillWave /> Total Paid
         </span>
@@ -223,9 +223,9 @@ export default function RideCompleted({
               : "Thank you for choosing Carpooling."}
           </p>
 
-          <span className="ride-com-role-tag">
-            {isDriver ? "Driver view" : "Passenger view"}
-          </span>
+          <button className="ride-com-role-tag" onClick={openModal}>
+            <FaStar /> {isDriver ? "Rate Passenger" : "Rate Driver"}
+          </button>
         </section>
 
         {/* ---------------- Details column ---------------- */}
@@ -267,7 +267,7 @@ export default function RideCompleted({
                 <FaUserFriends className="ride-com-stat-icon" />
                 <span className="ride-com-stat-value">{passengers.length}</span>
                 <span className="ride-com-stat-label">
-                  {isDriver ? "Passengers" : "Co-riders"}
+                  {isDriver ? "Passengers" : "Seats"}
                 </span>
               </div>
             </div>
@@ -366,27 +366,6 @@ export default function RideCompleted({
               <FaChevronRight />
             </span>
           </div>
-
-          {/* ---------------- Back to home ---------------- */}
-          {/* <button type="button" className="user-ride-complete-back-home">
-            <FaHome /> Back to Home
-          </button> */}
-
-          {/* CTA — clicking this calls the SAME openModal() the 3s timer calls */}
-          <button
-            type="button"
-            className="user-ride-complete-back-home"
-            onClick={openModal}
-          >
-            <FaStar />
-            {rateLabel}
-            {/* {!isModalOpen && (
-              <span
-                className="ride-com-rate-btn-timer"
-                style={{ animationDuration: `${AUTO_OPEN_DELAY_MS}ms` }}
-              />
-            )} */}
-          </button>
         </section>
       </div>
 

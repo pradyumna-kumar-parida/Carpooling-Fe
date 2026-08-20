@@ -5,12 +5,14 @@ import Image from "next/image";
 import { BiSolidPhoneCall } from "react-icons/bi";
 
 const DriverDetailsCard = ({ driver }) => {
+  const driverName = driver?.driver_name || "Driver";
+
   const fallbackImage = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-    driver.driver_name,
+    driverName,
   )}&background=1a56db&color=fff`;
 
   const [imageSrc, setImageSrc] = useState(
-    driver.driver_profile_picture || fallbackImage,
+    driver?.driver_profile_picture || fallbackImage,
   );
 
   return (
@@ -22,7 +24,7 @@ const DriverDetailsCard = ({ driver }) => {
       <div className="driver-row">
         <Image
           src={imageSrc}
-          alt={driver.driver_name}
+          alt={driverName}
           width={64}
           height={64}
           className="driver-avatar"
@@ -30,22 +32,22 @@ const DriverDetailsCard = ({ driver }) => {
         />
 
         <div className="driver-metass">
-          <p className="driver-name">{driver.driver_name}</p>
+          <p className="driver-name">{driverName}</p>
 
-          <p className="driver-rating">⭐ 4.8</p>
+          <p className="driver-rating">⭐ {driver?.driver_rating || "4.8"}</p>
 
           <p className="driver-vehicle-info">
-            {driver.brand} {driver.model}
+            {driver?.brand} {driver?.model}
             <br />
             <span style={{ color: "#64748b" }}>
-              {driver.registration_number}
+              {driver?.registration_number}
             </span>
           </p>
         </div>
 
         <div className="driver-actions">
           <a
-            href={`tel:${driver.driver_phone}`}
+            href={`tel:${driver?.driver_phone || ""}`}
             className="chat-action-btn action-btn-blue"
             title="Call driver"
           >

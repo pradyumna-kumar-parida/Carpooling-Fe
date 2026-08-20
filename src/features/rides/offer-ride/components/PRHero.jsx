@@ -392,7 +392,7 @@ const SAVED_FORM_KEY = "offerRideSavedForm";
 const PRHero = ({ vehiclesFetch, profileData }) => {
   const user = useSelector((state) => state.auth.user);
   const vehicleList = vehiclesFetch || [];
-  console.log("vehicle list status", vehicleList);
+  console.log("profileData", profileData);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -419,9 +419,16 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
 
   const token = getToken();
   const profileCompleted = profileData?.profileCompleted;
+
   const profileStatus = profileData?.profileStatus; // "pending" | "active" | "blocked"
+
+  const isVerified = profileData?.isVerified;
+
   const profileVerified =
-    !!token && !!profileCompleted && profileStatus === "active";
+    !!token &&
+    !!profileCompleted &&
+    profileStatus === "active" &&
+    isVerified === true;
 
   // Vehicle-level gating: profile clearance alone doesn't unlock the form —
   // at least one registered vehicle must also be active. Once that's true,
@@ -439,6 +446,8 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
       ? "rejected"
       : "pending";
 
+  console.log("verifyyyyyyyyyyyyy", profileVerified);
+  console.log("vehcile         erifyyyyyyyyyyyyy", vehicleVerified);
   const isCleared = profileVerified && vehicleVerified;
 
   const selectedVehicleData = approvedVehicles.find(

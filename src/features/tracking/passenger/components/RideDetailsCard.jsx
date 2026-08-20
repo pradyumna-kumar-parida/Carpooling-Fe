@@ -8,11 +8,14 @@ const RideDetailsCard = ({
   seatsBooked,
   formatDate,
   formatTime,
+  travelTime = "-",
+  distanceLabel = "-",
+  bookingStatus = { label: "Upcoming", className: "badge-blue" },
 }) => {
   const handleCopy = async () => {
     try {
       if (navigator?.clipboard) {
-        await navigator.clipboard.writeText(bookingId);
+        await navigator.clipboard.writeText(String(bookingId));
       }
     } catch (error) {
       console.error("Failed to copy booking ID:", error);
@@ -23,7 +26,19 @@ const RideDetailsCard = ({
     <div className="chatpanel-card">
       <div className="card-header">
         <h3 className="card-title">Ride Details</h3>
-        <span className="badge badge-blue">Upcoming</span>
+        <span
+          className={`badge ${bookingStatus.className || ""}`}
+          style={
+            bookingStatus.className
+              ? undefined
+              : {
+                  background: `${bookingStatus.color}22`,
+                  color: bookingStatus.color,
+                }
+          }
+        >
+          {bookingStatus.label}
+        </span>
       </div>
 
       {/* Booking ID + Amount */}
@@ -69,9 +84,8 @@ const RideDetailsCard = ({
       {/* Route */}
       <div className="route-section">
         <div className="route-point">
-          <span className="route-dot route-dot-green" >
+          <span className="route-dot route-dot-green">
             <IoLocationSharp />
-
           </span>
 
           <div>
@@ -88,9 +102,8 @@ const RideDetailsCard = ({
         <div className="route-line-v" />
 
         <div className="route-point">
-          <span className="route-dot route-dot-red" >
+          <span className="route-dot route-dot-red">
             <IoLocationSharp />
-
           </span>
 
           <div>
@@ -117,14 +130,14 @@ const RideDetailsCard = ({
 
         <div className="stat-item">
           <p className="stat-label">Travel Time</p>
-          <p className="stat-val">3h 10m</p>
+          <p className="stat-val">{travelTime}</p>
         </div>
 
         <div className="stat-divider" />
 
         <div className="stat-item">
           <p className="stat-label">Distance</p>
-          <p className="stat-val">145 km</p>
+          <p className="stat-val">{distanceLabel}</p>
         </div>
       </div>
     </div>

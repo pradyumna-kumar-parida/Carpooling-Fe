@@ -11,7 +11,7 @@ import { getRole } from "@/lib/cookie";
 import { uploadProfileApi } from "@/services/client/authService";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-
+import { MdVerified } from "react-icons/md";
 export default function ProfileHeader({
   isEditing,
   saving,
@@ -41,51 +41,50 @@ export default function ProfileHeader({
     type: "info",
     message: "",
   });
+  console.log("userdata allllll", userData);
 
   const showAvatarAlert = (type, message) =>
     setAvatarAlert({ open: true, type, message });
 
-//   const handleAvatarSelect = (e) => {
-//     const file = e.target.files?.[0];
-//     e.target.value = ""; // allow re-selecting the same file again later
-//     console.log("files is",file);
-    
-//     if (!file) return;
+  //   const handleAvatarSelect = (e) => {
+  //     const file = e.target.files?.[0];
+  //     e.target.value = ""; // allow re-selecting the same file again later
+  //     console.log("files is",file);
 
-//     setAvatarFile(file);
-// console.log("avta5r file is ",avatarFile);
+  //     if (!file) return;
 
-//     const reader = new FileReader();
-//     reader.onloadend = () => {
-//       setAvatarPreview(reader.result);
-//       setAvatarModalOpen(true);
-//     };
-//     reader.readAsDataURL(file);
-//   };
+  //     setAvatarFile(file);
+  // console.log("avta5r file is ",avatarFile);
 
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setAvatarPreview(reader.result);
+  //       setAvatarModalOpen(true);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   };
 
-const handleAvatarSelect = (e) => {
-  const file = e.target.files?.[0];
-  e.target.value = "";
+  const handleAvatarSelect = (e) => {
+    const file = e.target.files?.[0];
+    e.target.value = "";
 
-  console.log("Selected file:", file);
+    console.log("Selected file:", file);
 
-  if (!file) return;
+    if (!file) return;
 
-  setAvatarFile(file);
+    setAvatarFile(file);
 
-  console.log("File that will be uploaded:", file);
+    console.log("File that will be uploaded:", file);
 
-  const reader = new FileReader();
+    const reader = new FileReader();
 
-  reader.onloadend = () => {
-    setAvatarPreview(reader.result);
-    setAvatarModalOpen(true);
+    reader.onloadend = () => {
+      setAvatarPreview(reader.result);
+      setAvatarModalOpen(true);
+    };
+
+    reader.readAsDataURL(file);
   };
-
-  reader.readAsDataURL(file);
-};
-
 
   const closeAvatarModal = () => {
     if (avatarUploading) return;
@@ -106,7 +105,7 @@ const handleAvatarSelect = (e) => {
 
       showAvatarAlert(
         "success",
-        response?.data?.message || "Profile picture uploaded successfully!"
+        response?.data?.message || "Profile picture uploaded successfully!",
       );
 
       setAvatarModalOpen(false);
@@ -121,7 +120,7 @@ const handleAvatarSelect = (e) => {
         err?.response?.data?.message ||
           err?.response?.data?.error ||
           err?.message ||
-          "Failed to upload profile picture."
+          "Failed to upload profile picture.",
       );
     } finally {
       setAvatarUploading(false);
@@ -168,10 +167,7 @@ const handleAvatarSelect = (e) => {
 
               {!hasProfilePicture && (
                 <>
-                  <label
-                    htmlFor="profilePicture"
-                    className="avatar-upload-btn"
-                  >
+                  <label htmlFor="profilePicture" className="avatar-upload-btn">
                     <FiPlus />
                   </label>
 
@@ -189,11 +185,14 @@ const handleAvatarSelect = (e) => {
 
           <div className="profile-info">
             <h1 className="profile-name">
-              {userData.fullname || "Not provided"}
+              {userData.fullname}
+              {userData.userverified && (
+                <MdVerified className="verify-driver" />
+              )}
             </h1>
             <p className="profile-email">{userData.email || "Not provided"}</p>
-            {role === "driver" ? (
-              <span className="profile-badge">verified</span>
+            {role === "driver" && !userData.userverified ? (
+              <span className="profile-badge">Not Verified</span>
             ) : (
               ""
             )}
@@ -342,9 +341,7 @@ const handleAvatarSelect = (e) => {
               />
             </div>
 
-            <div className="document-preview-title">
-              Update Profile Picture
-            </div>
+            <div className="document-preview-title">Update Profile Picture</div>
 
             <div
               className="edit-actions"

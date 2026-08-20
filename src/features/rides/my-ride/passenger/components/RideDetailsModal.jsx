@@ -1,5 +1,5 @@
 "use client";
-
+import { MdVerified } from "react-icons/md";
 import Image from "next/image";
 import { IoLocationOutline } from "react-icons/io5";
 import { FaLocationDot } from "react-icons/fa6";
@@ -130,7 +130,7 @@ console.log("ride canxcelled",ride);
                 <GrMoney className="item-icon" />
                 <div>
                   <span className="item-label">Price</span>
-                  <span className="item-value">{ride.price} </span>
+                  <span className="item-value">₹{ride.price} </span>
                 </div>
               </div>
             </div>
@@ -151,7 +151,7 @@ console.log("ride canxcelled",ride);
                 />
                 <div className="driver-details">
                   <div className="my-rides-driver-meta">
-                    <h4 className="driver-name">{ride.driver.name}</h4>
+                    <h4 className="driver-name">{ride.driver.name}<MdVerified className="verify-driver" /></h4>
                     {ride.driver.rating != null && (
                       <span className="driver-rating">
                         <FaStar className="star-icon" /> {ride.driver.rating}

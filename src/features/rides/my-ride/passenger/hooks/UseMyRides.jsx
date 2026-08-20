@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { cancelBookingApi } from "@/services/client/rideService";
+import { useEffect, useMemo, useState } from "react";
 
 /* ---------- helpers ---------- */
 
@@ -49,7 +50,6 @@ function formatDuration(seconds) {
  */
 export function mapBookingToRide(booking) {
   if (!booking) return null;
-  console.log("ride details", booking);
 
   return {
     id: booking.booking_id,
@@ -68,6 +68,7 @@ export function mapBookingToRide(booking) {
 
     // schedule
     date: formatDate(booking.ride_date),
+    rawDate: booking.ride_date, // raw ISO date, needed for Track button logic
     departureTime: formatTime(booking.departure_time),
     arrivalTime: formatTime(booking.estimated_reach_time),
     duration: formatDuration(booking.duration_seconds),
@@ -76,17 +77,15 @@ export function mapBookingToRide(booking) {
     status: booking.ride_status || "",
     bookingStatus: booking.booking_status || "",
     paymentStatus: booking.payment_status || "",
-    cancelReason : booking?.reason_of_cancel || "",
+    cancelReason: booking?.reason_of_cancel || "",
+
     // booking
     seats: booking.seats,
     passengers: booking.seats,
     pricePerSeat: booking.price_per_seat,
     price: booking.total_price ?? booking.price_per_seat,
     bookedAt: booking.booked_at,
-// schedule
-    date: formatDate(booking.ride_date),
-    rawDate: booking.ride_date, // <-- ADD THIS: raw ISO date, needed for Track button logic
-    departureTime: formatTime(booking.departure_time),
+
     // driver + vehicle
     driver: {
       id: booking.driver_id,
@@ -100,7 +99,6 @@ export function mapBookingToRide(booking) {
       color: booking.vehicle_color || "",
       fuelType: booking.vehicle_fuel_type || "",
       vehicleType: booking.vehicle_type || "",
-      // API sample has no driver rating field — guard for it if it's added later
       rating: booking.driver_rating ?? null,
     },
   };
@@ -108,23 +106,35 @@ export function mapBookingToRide(booking) {
 
 /**
  * Buckets normalized rides into tabs.
- * Adjust the status strings here if your backend uses different values.
+ * "all" holds every ride; the rest are mutually exclusive,
+ * driven off ride_status (with a booking_status cancelled override).
  */
 function groupRidesIntoTabs(rides) {
-  const groups = { upcoming: [], completed: [], cancelled: [] };
+  const groups = {
+    all: [],
+    upcoming: [],
+    ongoing: [],
+    expired: [],
+    cancelled: [],
+    completed: [],
+  };
 
   rides.forEach((ride) => {
+    groups.all.push(ride);
+
     const bookingStatus = (ride.bookingStatus || "").toLowerCase();
     const rideStatus = (ride.status || "").toLowerCase();
 
     if (bookingStatus === "cancelled" || rideStatus === "cancelled") {
       groups.cancelled.push(ride);
-    } else if (bookingStatus === "pending") {
-      groups.requests.push(ride);
     } else if (rideStatus === "completed") {
       groups.completed.push(ride);
+    } else if (rideStatus === "expired") {
+      groups.expired.push(ride);
+    } else if (rideStatus === "ongoing") {
+      groups.ongoing.push(ride);
     } else {
-      // scheduled / ongoing / confirmed etc.
+      // scheduled / confirmed / anything else pending departure
       groups.upcoming.push(ride);
     }
   });
@@ -137,37 +147,42 @@ export function getStatusColor(status) {
     case "pending":
     case "waiting for approval":
       return "#ff9d00";
-    case "confirmed":
-    case "approved":
-      return "#9500ff";
     case "scheduled":
-      return "#15803d";
+      return "#16a34a";
     case "ongoing":
-    case "in_progress":
-      return "#1b70ff";
+      return "#9500ff";
+    case "expired":
+      return "#57534e";
     case "completed":
-      return " #2563eb";
+      return "#64748b";
     case "cancelled":
-      return "#ef4444";
+      return "#dc2626";
     default:
       return "#6b7280";
   }
 }
 
 export function useMyRides(userRides = []) {
-  const [activeTab, setActiveTab] = useState("upcoming");
+  const [activeTab, setActiveTab] = useState("all");
   const [selectedRide, setSelectedRide] = useState(null);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
 
-  const normalizedRides = useMemo(
-    () => (userRides || []).map(mapBookingToRide).filter(Boolean),
-    [userRides],
+  // ride currently in the cancel-confirmation modal
+  const [rideToCancel, setRideToCancel] = useState(null);
+  const [isCancelling, setIsCancelling] = useState(false);
+  const [cancelError, setCancelError] = useState("");
+
+  // local, mutable copy so a successful cancel reflects immediately
+  // in the UI without needing the parent to refetch
+  const [rides, setRides] = useState(() =>
+    (userRides || []).map(mapBookingToRide).filter(Boolean),
   );
 
-  const groupedRides = useMemo(
-    () => groupRidesIntoTabs(normalizedRides),
-    [normalizedRides],
-  );
+  useEffect(() => {
+    setRides((userRides || []).map(mapBookingToRide).filter(Boolean));
+  }, [userRides]);
+
+  const groupedRides = useMemo(() => groupRidesIntoTabs(rides), [rides]);
 
   const getRidesData = () => groupedRides[activeTab] || [];
 
@@ -181,6 +196,52 @@ export function useMyRides(userRides = []) {
     setSelectedRide(null);
   };
 
+  const handleOpenCancel = (ride) => {
+    setCancelError("");
+    setRideToCancel(ride);
+  };
+
+  const handleCloseCancel = () => {
+    if (isCancelling) return; // don't let the overlay close mid-request
+    setRideToCancel(null);
+    setCancelError("");
+  };
+
+  const handleConfirmCancel = async (reason) => {
+    if (!rideToCancel) return;
+    setIsCancelling(true);
+    setCancelError("");
+    try {
+      await cancelBookingApi({
+        bookingId: rideToCancel.id,
+        cancelReason: reason,
+      });
+
+      // optimistically flip the ride to cancelled so it moves tabs right away
+      setRides((prev) =>
+        prev.map((r) =>
+          r.id === rideToCancel.id
+            ? {
+                ...r,
+                status: "cancelled",
+                bookingStatus: "cancelled",
+                cancelReason: reason,
+              }
+            : r,
+        ),
+      );
+
+      setRideToCancel(null);
+    } catch (err) {
+      setCancelError(
+        err?.response?.data?.message ||
+          "Something went wrong while cancelling this ride. Please try again.",
+      );
+    } finally {
+      setIsCancelling(false);
+    }
+  };
+
   return {
     activeTab,
     setActiveTab,
@@ -190,5 +251,11 @@ export function useMyRides(userRides = []) {
     getRidesData,
     handleViewDetails,
     handleCloseDetails,
+    rideToCancel,
+    isCancelling,
+    cancelError,
+    handleOpenCancel,
+    handleCloseCancel,
+    handleConfirmCancel,
   };
 }

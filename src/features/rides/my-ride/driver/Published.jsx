@@ -203,6 +203,14 @@ function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
     ride.passengers.filter((p) => p.paid).length * ride.pricePerSeat;
   const startEnabled = canStartToday(ride.rideDateRaw);
 
+  // Booked Passengers list only shows passengers whose payment is
+  // confirmed (payment_status === "paid"). Pending / other statuses are
+  // intentionally excluded here — this does NOT affect the card's
+  // passenger-avatar strip (which still shows paid + pending together
+  // via the legend dots) or the earnings total above (which already
+  // filtered by p.paid).
+  const paidPassengers = ride.passengers.filter((p) => p.paid);
+
   return (
     <div className="ride-publish-modal-backdrop" onClick={onClose}>
       <div className="ride-publish-modal" onClick={(e) => e.stopPropagation()}>
@@ -302,11 +310,11 @@ function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
               Booked Passengers
             </h3>
 
-            {ride.passengers.length === 0 ? (
+            {paidPassengers.length === 0 ? (
               <p className="ride-publish-modal-empty">No passengers yet.</p>
             ) : (
               <div className="ride-publish-modal-pax-list">
-                {ride.passengers.map((p, i) => {
+                {paidPassengers.map((p, i) => {
                   const expanded = expandedPax === i;
 
                   return (
@@ -326,12 +334,16 @@ function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
                           </span>
                         </div>
 
-                        <Link
-                          className="ride-publish-modal-pax-seat"
-                          href="/driver/chats"
-                        >
-                          Chat
-                        </Link>
+                        {!["completed", "cancelled", "expired"].includes(
+                          ride.status,
+                        ) && (
+                          <Link
+                            className="ride-publish-modal-pax-seat"
+                            href="/driver/chats"
+                          >
+                            Chat
+                          </Link>
+                        )}
 
                         <span
                           className={`ride-publish-pax-paid ${
@@ -910,7 +922,6 @@ export default function PublishedRides({ publishedRide }) {
                           }
                         >
                           Track Ride <TbRouteAltLeft />
-
                         </button>
                       )}
                       {ride.status === "ongoing" && (

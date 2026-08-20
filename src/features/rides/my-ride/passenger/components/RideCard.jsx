@@ -5,6 +5,7 @@ import { getStatusColor } from "../hooks/UseMyRides";
 import { useRouter } from "next/navigation";
 import { TbRoute } from "react-icons/tb";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
+import { MdOutlineCancel } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 
 // Ride day has arrived if today's local date >= ride's local date (ignores time-of-day)
@@ -28,7 +29,7 @@ function hasRideDayArrived(rawDate) {
   return rideDayStart <= todayStart;
 }
 
-export default function RideCard({ ride, onViewDetails, onOpenChat }) {
+export default function RideCard({ ride, onViewDetails, onOpenChat, onCancelClick }) {
   const router = useRouter();
 
   if (!ride) return null;
@@ -49,12 +50,14 @@ export default function RideCard({ ride, onViewDetails, onOpenChat }) {
     !isCompleted &&
     !isExpired &&
     hasRideDayArrived(ride.rawDate);
+
+  // Cancel: off for anything already in a final state
+  const isCancelEnabled = !isCancelled && !isCompleted && !isExpired;
+
   const capitalize = (value) => {
     if (!value) return "";
     return value.charAt(0).toUpperCase() + value.slice(1);
   };
-
-  console.log("ride details", ride);
 
   return (
     <div className="myride-card">
@@ -64,14 +67,14 @@ export default function RideCard({ ride, onViewDetails, onOpenChat }) {
           style={{
             color: getStatusColor(ride.status),
             border: `1px dotted ${getStatusColor(ride.status)}`,
-            backgroundColor: `${getStatusColor(ride.status)}10`,
+            backgroundColor: `${getStatusColor(ride.status)}25`,
           }}
         >
           {capitalize(ride.status)}
         </span>
         <span className="info-value-card-date">
           {ride.date} <GoDotFill className="separtor-dot" />
-          <b>₹{ride.price}</b>
+          <strong >₹{ride.price}</strong>
         </span>
       </div>
 
@@ -88,24 +91,6 @@ export default function RideCard({ ride, onViewDetails, onOpenChat }) {
           <span className="route-value">{ride.to}</span>
         </div>
       </div>
-
-      {/* <div className="myride-card-info">
-        <div className="info-row">
-          <span className="info-label">Date:</span>
-          <span className="info-value">{ride.date}</span>
-        </div>
-        <div className="info-row">
-          <span className="info-label">Depart:</span>
-          <span className="info-value">{ride.departureTime}</span>
-        </div>
-      </div> */}
-
-      {/* <div className="myride-card-footer">
-        <div className="myride-price">
-          <span className="price-label">Price:</span>
-          <span className="price-value">₹{ride.price}</span>
-        </div>
-      </div> */}
 
       <div className="myride-card-actions">
         <button
@@ -142,11 +127,27 @@ export default function RideCard({ ride, onViewDetails, onOpenChat }) {
           }
           onClick={() => {
             if (!isChatEnabled) return;
-            // ride already carries booking_id -> ride.id and booking_code -> ride.bookingCode
             onOpenChat(ride);
           }}
         >
           Chat <IoChatbubbleEllipsesOutline />
+        </button>
+
+        <button
+          className="myride-cancel-btn"
+          disabled={!isCancelEnabled}
+          aria-disabled={!isCancelEnabled}
+          title={
+            isCancelEnabled
+              ? "Cancel this ride"
+              : "This ride can no longer be cancelled"
+          }
+          onClick={() => {
+            if (!isCancelEnabled) return;
+            onCancelClick(ride);
+          }}
+        >
+          Cancel 
         </button>
       </div>
     </div>

@@ -8,5 +8,7 @@ export const metadata = {
 };
 
 export default function ProfileRoute({ profileData }) {
+
+  
   return <ProfilePage profileData={profileData} />;
 }

@@ -1838,8 +1838,8 @@ html {
   min-width: 0;
 }
 .prh-vehicle-name {
-  font-size: 0.85rem;
-  font-weight: 600;
+    font-size: 14px;
+    font-weight: 500;
   color: var(--pr-text-dark);
   white-space: nowrap;
   overflow: hidden;

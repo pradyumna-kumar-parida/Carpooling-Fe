@@ -4,14 +4,17 @@ import { useState } from "react";
 import { useMyRides } from "../hooks/UseMyRides";
 import RideCard from "./RideCard";
 import RideDetailsModal from "./RideDetailsModal";
+import CancelRideModal from "./CancelBooking";
 import ChatPanel from "@/features/chat/ChatPanel";
 import { FaCar } from "react-icons/fa";
 
 const TAB_CONFIG = [
-  // { id: "requests", label: "Requests" },
+  { id: "all", label: "All" },
   { id: "upcoming", label: "Upcoming" },
-  { id: "completed", label: "Completed" },
+  { id: "expired", label: "Expired" },
+  { id: "ongoing", label: "Ongoing" },
   { id: "cancelled", label: "Cancelled" },
+  { id: "completed", label: "Completed" },
 ];
 
 export default function MyRides({ userRides }) {
@@ -24,6 +27,12 @@ export default function MyRides({ userRides }) {
     getRidesData,
     handleViewDetails,
     handleCloseDetails,
+    rideToCancel,
+    isCancelling,
+    cancelError,
+    handleOpenCancel,
+    handleCloseCancel,
+    handleConfirmCancel,
   } = useMyRides(userRides);
 
   const rides = getRidesData();
@@ -83,6 +92,7 @@ export default function MyRides({ userRides }) {
                   setSelectedChatRide(r);
                   setShowChat(true);
                 }}
+                onCancelClick={handleOpenCancel}
               />
             ))
           )}
@@ -94,7 +104,17 @@ export default function MyRides({ userRides }) {
         <RideDetailsModal ride={selectedRide} onClose={handleCloseDetails} />
       )}
 
-      {/* Chat Panel */}
+      {/* Cancel Confirmation Modal */}
+      {rideToCancel && (
+        <CancelRideModal
+          ride={rideToCancel}
+          onClose={handleCloseCancel}
+          onConfirm={handleConfirmCancel}
+          isSubmitting={isCancelling}
+          errorMessage={cancelError}
+        />
+      )}
+
       {/* Chat Panel */}
       {showChat && (
         <ChatPanel

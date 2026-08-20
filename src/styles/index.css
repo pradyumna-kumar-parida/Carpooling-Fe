@@ -1711,7 +1711,7 @@ footer {
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid var(--fr-text-dark);
+  border: 2px solid var(--fr-bg-gray);
 
   box-shadow: var(--fr-shadow);
 }
@@ -1747,6 +1747,9 @@ footer {
 }
 
 .profile-name {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   font-size: 1.4rem;
   font-weight: 700;
   color: var(--fr-text-dark);
@@ -2764,10 +2767,150 @@ footer {
   height: 70px;
   color: #2563eb;
 }
-/* ===========================
-   RESPONSIVE — ≤ 480px — FIX 3 (mobile)
-   =========================== */
+
 @media (max-width: 480px) {
+  .notification > .count {
+    font-size: 11px !important;
+    bottom: 13px !important;
+    right: -2px !important;
+  }
+  .error-page {
+    min-height: 60vh;
+    padding: 24px 14px;
+  }
+
+  .error-page__content {
+    padding: 30px 18px;
+    border-radius: var(--fr-radius);
+  }
+
+  .error-page__content h2 {
+    font-size: 1.3rem !important;
+    line-height: 1.2;
+  }
+
+  .error-page__content p {
+    margin-bottom: 20px;
+    font-size: 0.8rem !important;
+    line-height: 1.5;
+  }
+
+  .error-page__content button {
+    width: 100%;
+    max-width: 200px;
+    padding: 8px 10px !important;
+    font-size: 0.8rem !important;
+  }
+  .SOS-Flot {
+    right: 12px !important;
+    bottom: 35px !important;
+
+    width: 58px !important;
+    height: 58px !important;
+  }
+  .sos-dialog .MuiDialog-paper {
+    margin: 16px;
+    border-radius: 12px;
+  }
+
+  .sos-dialog-title {
+    padding: 15px 16px !important;
+  }
+
+  .sos-dialog-content {
+    padding: 16px !important;
+  }
+
+  .sos-dialog-actions {
+    padding: 14px 16px 16px !important;
+  }
+
+  .sos-alert-box {
+    padding: 12px;
+  }
+  .driver-track-chip-speed {
+    width: max-content !important;
+  }
+  .location-overlay {
+    padding: 16px;
+  }
+  .cp-pending-icon {
+    height: 50px !important;
+    width: 50px !important;
+  }
+  .cp-pending-wrap {
+    min-height: 80vh !important;
+  }
+  .back-to-top {
+    display: none !important;
+  }
+  .location-modal {
+    width: 100%;
+    max-width: 325px;
+    padding: 24px 18px;
+    border-radius: 16px;
+  }
+  .profile-header,
+  .profile-tabs {
+    margin-bottom: 1rem !important;
+  }
+  .location-icon {
+    width: 54px;
+    height: 54px;
+    font-size: 26px;
+  }
+
+  .location-modal h2 {
+    font-size: 1.05rem;
+  }
+
+  .location-modal p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 13px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+  .app-download {
+    --scanner-width: 170px;
+    --scanner-overlap: 46px;
+    padding: 10px 0;
+  }
+
+  .reviewer-info .name,
+  .reviewer-info .name span,
+  .ridetail-date-route,
+  .avl-rides-viewall {
+    font-size: 0.7rem !important;
+  }
+  .card-title,
+  .avl-rides-title {
+    font-size: 1.2rem;
+  }
+
+  .app-download-heading {
+    font-size: 1.1rem;
+  }
+  .chat-window__name {
+    font-size: 0.9rem !important;
+  }
+  .testimonial-card p,
+  .app-download-desc {
+    font-size: 0.8rem !important;
+  }
+
+  .app-download-badges {
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .app-download-badgeImg {
+    height: 40px;
+  }
   .mobile-menu-sidebar {
     gap: 0px !important;
   }
@@ -2803,7 +2946,9 @@ footer {
     width: auto !important;
   }
 
-  .profile-rate,
+  .profile-rate {
+    font-size: 0.69rem !important;
+  }
   .avl-rides-when,
   .footer-links a {
     font-size: 0.6rem !important;
@@ -2918,7 +3063,6 @@ footer {
     margin-bottom: 16px !important;
   }
   footer,
-  .ride-com-role-tag,
   .ride-card__status,
   .hero-image {
     display: none !important;
@@ -3005,6 +3149,7 @@ footer {
   .MuiTypography-root {
     font-size: 0.87rem !important;
   }
+  .user-ride-complete-booking-modal-header h3,
   .ride-com-card-title,
   .sos-btn > span,
   .input-icon,
@@ -3090,6 +3235,8 @@ footer {
   .chat-list__name {
     font-size: 0.9rem !important;
   }
+  .ride-com-driver-name,
+  .user-ride-complete-booking-trigger,
   .file-upload-label,
   .fail-profile p,
   .cp-pending-text,
@@ -3118,6 +3265,7 @@ footer {
   .login-redirect,
   .field-input,
   .field-select,
+  .verify-driver,
   .signup-desc,
   .field-label,
   .form-container .subtitle,
@@ -3133,6 +3281,8 @@ footer {
   .logout-icon {
     margin: 0 auto -9px !important;
   }
+  .user-ride-complete-booking-row,
+  .ride-com-driver-car,
   .document-title,
   .ride-com-nudge,
   .ride-com-view-all,
@@ -3146,6 +3296,7 @@ footer {
   .document-card {
     gap: 10px !important;
   }
+  .ride-com-role-tag,
   .cp-pending-note,
   .status-uploaded,
   .sos-location-box,
@@ -3314,7 +3465,7 @@ footer {
 
   .profile-progress-text,
   .profile-email {
-    font-size: 0.7rem !important;
+    font-size: 0.78rem !important;
     margin-bottom: 4px;
   }
   .profile-content {
@@ -4556,92 +4707,6 @@ footer {
 
   .app-download-scannerImg {
     transform: translateY(calc(-1 * var(--scanner-overlap)));
-  }
-}
-
-/* ==========================================================================
-   Mobile
-   ========================================================================== */
-@media (max-width: 480px) {
-  .location-overlay {
-    padding: 16px;
-  }
-  .cp-pending-icon {
-    height: 50px !important;
-    width: 50px !important;
-  }
-  .cp-pending-wrap {
-    min-height: 80vh !important;
-  }
-  .back-to-top {
-    display: none !important;
-  }
-  .location-modal {
-    width: 100%;
-    max-width: 325px;
-    padding: 24px 18px;
-    border-radius: 16px;
-  }
-  .profile-header,
-  .profile-tabs {
-    margin-bottom: 1rem !important;
-  }
-  .location-icon {
-    width: 54px;
-    height: 54px;
-    font-size: 26px;
-  }
-
-  .location-modal h2 {
-    font-size: 1.05rem;
-  }
-
-  .location-modal p {
-    font-size: 0.85rem;
-    line-height: 1.6;
-  }
-
-  .btn-primary,
-  .btn-secondary {
-    padding: 13px;
-    font-size: 0.9rem;
-    border-radius: 10px;
-  }
-  .app-download {
-    --scanner-width: 170px;
-    --scanner-overlap: 46px;
-    padding: 10px 0;
-  }
-
-  .reviewer-info .name,
-  .reviewer-info .name span,
-  .ridetail-date-route,
-  .avl-rides-viewall {
-    font-size: 0.7rem !important;
-  }
-  .card-title,
-  .avl-rides-title {
-    font-size: 1.2rem;
-  }
-
-  .app-download-heading {
-    font-size: 1.1rem;
-  }
-  .chat-window__name {
-    font-size: 0.9rem !important;
-  }
-  .testimonial-card p,
-  .app-download-desc {
-    font-size: 0.8rem !important;
-  }
-
-  .app-download-badges {
-    gap: 10px;
-    justify-content: center;
-  }
-
-  .app-download-badgeImg {
-    height: 40px;
   }
 }
 
@@ -7051,12 +7116,37 @@ footer {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--custom-one);
-  background: var(--ntfy-blue-bg);
+  text-transform: capitalize;
+  /* color: var(--ntfy-gray-bg);  */
+  color: yellow;
+  cursor: pointer;
+  background: var(--black);
   border: 1px solid var(--ntfy-border);
-  padding: 6px 14px;
+  padding: 8px 14px;
   border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  /* Smooth interaction */
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+/* Click / press */
+.ride-com-role-tag:active {
+  transform: translateY(0) scale(0.96);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Keyboard focus */
+.ride-com-role-tag:focus-visible {
+  outline: 2px solid var(--custom-one);
+  outline-offset: 3px;
 }
 
 /* --------------------------- Content column --------------------------- */
@@ -7254,14 +7344,25 @@ footer {
 .ride-com-driver-rating {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+
+  padding: 6px 10px;
+  border-radius: 10px;
+
+  background: #fff8e6;
+  border: 1px solid #ffe4a3;
+
+  color: #575757;
+  font-size: 13px;
   font-weight: 700;
-  font-size: 14px;
-  color: var(--ntfy-amber);
-  background: var(--ntfy-amber-bg);
-  padding: 6px 12px;
-  border-radius: 999px;
+  line-height: 1;
+
+  white-space: nowrap;
   flex-shrink: 0;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+
+  transition: all 0.2s ease;
 }
 
 /* Nudge banner */
@@ -7284,8 +7385,6 @@ footer {
 }
 
 /* CTA */
-
-
 
 @keyframes ride-com-timer-shrink {
   from {
@@ -7325,15 +7424,12 @@ footer {
     position: sticky;
     top: 32px;
   }
-
- 
 }
 
 /* Respect reduced-motion preferences */
 @media (prefers-reduced-motion: reduce) {
   .ride-com-badge,
-  .ride-com-confetti,
-  .ride-com-rate-btn-timer {
+  .ride-com-confetti {
     animation: none !important;
   }
 }
@@ -7554,37 +7650,6 @@ footer {
   background: #eff6ff !important;
   border-color: #1d4ed8 !important;
 }
-@media (max-width: 480px) {
-  .sos-dialog .MuiDialog-paper {
-    margin: 16px;
-    border-radius: 12px;
-  }
-
-  .sos-dialog-title {
-    padding: 15px 16px !important;
-  }
-
-  .sos-dialog-content {
-    padding: 16px !important;
-  }
-
-  .sos-dialog-actions {
-    padding: 14px 16px 16px !important;
-  }
-
-  .sos-alert-box {
-    padding: 12px;
-  }
-  .driver-track-chip-speed {
-    width: max-content !important;
-  }
-}
-/* ─────────────────────────────────────────────────────────────────────────
-   Complete Profile page — outer layout, stepper chrome, pending screen.
-   Field-level styles (field-wrapper, field-input, field-select, file
-   upload markup, register-btn, etc.) are assumed to already exist in your
-   global stylesheet and are intentionally NOT redefined here.
-───────────────────────────────────────────────────────────────────────── */
 
 .complete-profile-container {
   min-height: 90vh;
@@ -8061,16 +8126,6 @@ footer {
   }
 }
 
-/* Small phones */
-@media (max-width: 480px) {
-  .SOS-Flot {
-    right: 12px !important;
-    bottom: 35px !important;
-
-    width: 58px !important;
-    height: 58px !important;
-  }
-}
 @keyframes sosEmergency {
   0% {
     transform: scale(1);
@@ -8175,45 +8230,6 @@ footer {
     font-size: 15px;
   }
 }
-
-/* Mobile */
-@media (max-width: 480px) {
-  .error-page {
-    min-height: 60vh;
-    padding: 24px 14px;
-  }
-
-  .error-page__content {
-    padding: 30px 18px;
-    border-radius: var(--fr-radius);
-  }
-
-  .error-page__content h2 {
-    font-size: 1.3rem !important;
-    line-height: 1.2;
-  }
-
-  .error-page__content p {
-    margin-bottom: 20px;
-    font-size: 0.8rem !important;
-    line-height: 1.5;
-  }
-
-  .error-page__content button {
-    width: 100%;
-    max-width: 200px;
-    padding: 8px 10px !important;
-    font-size: 0.8rem !important;
-  }
-}
-/* ==========================================================================
-   Booking Details section — extracted from the old UserRideCompleted styles.
-   Desktop/tablet: shows an inline card.
-   Mobile: card is hidden, a trigger button is shown instead, tapping it
-   opens the same details in a bottom-sheet modal.
-   Append this into your existing global stylesheet (e.g. find-ride.css),
-   or import it directly wherever RideCompleted.jsx is rendered.
-   ========================================================================== */
 
 .user-ride-complete-card-title {
   font-family: var(--heading);
@@ -8439,7 +8455,7 @@ footer {
   border: none;
   color: var(--custom-one);
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
   padding: 0;
 }
@@ -8451,25 +8467,6 @@ footer {
 .user-ride-complete-help-divider {
   color: var(--ntfy-border);
 }
-
-/* -------------------------------- Back home -------------------------------- */
-
-.user-ride-complete-back-home {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  background: var(--ntfy-blue-bg);
-  color: var(--custom-one);
-  border: none;
-  border-radius: var(--radius);
-  padding: 14px;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.user-ride-complete-back-home:hover {
-  background: rgba(30, 64, 175, 0.14);
+.verify-driver {
+  font-size: 1.102rem;
 }

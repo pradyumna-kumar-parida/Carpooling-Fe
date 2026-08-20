@@ -23,3 +23,6 @@ export const startRideApi = (rideId) =>
   getClientAxios.patch(`/ride/${rideId}/start`);
 export const cancelRideApi = (rideId, data) =>
   getClientAxios.patch(`/ride/${rideId}/cancel`, data);
+
+export const cancelBookingApi = (data) =>
+  getClientAxios.post(`/passenger/cancel-booking`, data);

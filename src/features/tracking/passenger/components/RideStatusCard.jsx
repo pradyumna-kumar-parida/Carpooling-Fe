@@ -31,7 +31,6 @@ function StepIconCustom(props) {
   return (
     <div
       style={{
-      
         background: COLORS.white,
         border: `2.5px solid ${isBlue ? COLORS.blue : COLORS.gray}`,
       }}
@@ -49,7 +48,6 @@ const RideStatusCard = ({ rideStatus = "scheduled" }) => {
   );
 
   const activeStep = currentStepIndex >= 0 ? currentStepIndex : 0;
-  console.log(" curr", currentStepIndex);
 
   return (
     <div className="chatpanel-card ride-status-card">

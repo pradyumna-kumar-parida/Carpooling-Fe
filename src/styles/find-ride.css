@@ -1627,11 +1627,6 @@
   transition: all 0.3s ease;
 }
 
-.myride-tab:hover {
-  border-color: var(--fr-primary-light);
-  color: var(--fr-text-dark);
-}
-
 .myride-tab.active {
   background: var(--fr-primary);
   border-color: var(--fr-primary-light);
@@ -1648,8 +1643,6 @@
   grid-column: 1 / -1;
   text-align: center;
   padding: 4rem 2rem;
-  background: var(--fr-bg-white);
-  border-radius: var(--fr-radius-lg);
 }
 
 .empty-icon {
@@ -1768,13 +1761,13 @@
   font-weight: 600;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
-.info-value-card-date{
+.info-value-card-date {
   display: flex;
   align-items: center;
   gap: 3px;
 }
 
-.separtor-dot{
+.separtor-dot {
   font-size: 8px;
 }
 .myride-card-footer {
@@ -1800,7 +1793,6 @@
   color: var(--fr-text-dark);
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 }
-
 
 .myride-chat-btn:hover,
 .myride-track-btn:hover,
@@ -1919,8 +1911,8 @@
 }
 
 .info-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
@@ -2565,8 +2557,8 @@ grid-template-columns: 1fr 1fr;
 }
 
 .bookconf-info-grid {
-display: grid;
-grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 1.25rem;
 }
 
@@ -3671,8 +3663,8 @@ grid-template-columns: 1fr 1fr 1fr;
   .bookconf-info-grid {
     grid-template-columns: 1fr 1fr;
   }
-  .car-icon{
-    font-size:14px !important;
+  .car-icon {
+    font-size: 14px !important;
   }
   .bookconf-driver-avatar {
     width: 64px;
@@ -3728,13 +3720,25 @@ grid-template-columns: 1fr 1fr 1fr;
    ========================================== */
 
 @media (max-width: 480px) {
-  .separtor-dot{
-  font-size: 4px;
-}
+    .cancel-ride-keep-btn,
+  .cancel-ride-confirm-btn{
+    font-size: 0.7rem !important;
+  }
+  .ridepay-payment-alert {
+    padding: 10px 16px !important;
+    margin-bottom: 10px !important;
+  }
+  .driver-details {
+    align-self: anchor-center !important;
+  }
+  .separtor-dot {
+    font-size: 4px;
+  }
   .approval-image {
     max-width: 320px;
   }
-  .info-value-card-date, .info-value{
+  .info-value-card-date,
+  .info-value {
     font-weight: 400 !important;
   }
   .modal-price {
@@ -3742,14 +3746,23 @@ grid-template-columns: 1fr 1fr 1fr;
     text-align: center;
   }
   .driver-card,
-  .driver-info{
+  .driver-info {
     gap: 0.7rem !important;
   }
-   .bookconf-step-city,
-    .section-title{
-      font-size: 0.9rem !important;
-    }
- 
+  .myride-modal-route {
+    margin-bottom: 1rem;
+  }
+  .my-rides-driver-meta {
+    margin-bottom: 0px !important;
+  }
+  .bookconf-step-city,
+  .section-title {
+    font-size: 0.9rem !important;
+  }
+  .section-title {
+    padding-bottom: 10px !important ;
+    margin: 0 0 12px 0 !important;
+  }
   .myride-modal-actions {
     grid-template-columns: 1fr;
   }
@@ -3782,13 +3795,11 @@ grid-template-columns: 1fr 1fr 1fr;
     width: 100%;
     text-align: center;
   }
-    .driver-car,
+  .driver-car,
   .rating-modal-subtitle,
   .vehicle-detl-subtitle,
   .cancel-info p,
-
   .driver-phone,
-  .item-value,
   .step-address,
   .step-city,
   .price-value,
@@ -3797,7 +3808,7 @@ grid-template-columns: 1fr 1fr 1fr;
   .route-value,
   .bookconf-success-text,
   .ridepay-razorpay-desc {
-    font-size: 0.8rem !important;
+    font-size: 0.75rem !important;
     padding: 0 !important;
     margin-bottom: 0 !important;
   }
@@ -3805,34 +3816,57 @@ grid-template-columns: 1fr 1fr 1fr;
     padding: 4px 2px !important ;
   }
   .myride-card-actions {
-    margin-top: 10px !important;
-    /* padding: 12px !important; */
+    margin-top: 0px !important;
+    padding-top: 10px !important;
+  }
+  .myride-route-simple {
+    margin: 0 !important;
+  }
+  .myride-modal-driver {
+    margin-bottom: 10px !important;
   }
   .myride-modal-price-section,
   .cancel-info,
-  .driver-card,
   .info-item {
     padding: 0.6rem 1rem !important;
   }
+  .driver-card {
+    padding: 0.6rem 0rem !important;
+  }
+  .myride-card-actions button {
+    height: 30px !important;
+  }
+  .myride-cancel-btn,
   .myride-chat-btn,
   .myride-track-btn,
   .myride-details-btn {
-    padding: 7px 10px !important;
-    font-size: 0.78rem !important;
+    padding: 4px 10px !important;
+    font-size: 0.7rem !important;
   }
   .rating-modal-box {
     padding: 20px 15px !important;
   }
-  .bkf-ref-chip{
+  .bkf-ref-chip {
     margin-bottom: 30px !important;
   }
- .bkf-journey-label,
- .bkf-journey-value,
- .bkf-status-label,
- .bkf-status-badge,
+  .empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0 !important;
+  }
+  .cancel-ride-modal {
+    padding: 20px !important;
+  }
+  .cancel-ride-desc,
+  .cancel-reason-textarea,
+
+  .myride-empty p,
+  .bkf-journey-label,
+  .bkf-journey-value,
+  .bkf-status-label,
+  .bkf-status-badge,
   .bkf-subtitle,
-.bookconf-info-value,
-.bookconf-step-address,
+  .bookconf-info-value,
+  .bookconf-step-address,
   .ridepay-payment-alert h4,
   .vehicle-detl-card-name,
   .vehicle-detl-panel-title,
@@ -3841,9 +3875,9 @@ grid-template-columns: 1fr 1fr 1fr;
   .vehicle-detl-add-btn {
     font-size: 0.8rem !important;
   }
-   .bkf-ref-chip,
+  .bkf-ref-chip,
   .bookconf-step-time,
-.info-value-card-date,
+  .info-value-card-date,
   .rating-modal-feedback,
   .fr-rides-rating,
   .fr-rides-distance,
@@ -3880,22 +3914,24 @@ grid-template-columns: 1fr 1fr 1fr;
   .back-to-top {
     display: none;
   }
+
   .bookconf-info-grid,
   .bookconf-price-breakdown,
   .bookconf-booking-info,
-  .dm-header{
+  .dm-header {
     gap: 0.7rem !important;
   }
-  .bookconf-btn-primary, .bookconf-btn-secondary{
+  .bookconf-btn-primary,
+  .bookconf-btn-secondary {
     padding: 13px 12px !important;
   }
-  .bookconf-success-header{
+  .bookconf-success-header {
     margin-bottom: 10px !important;
   }
-  .bookconf-success-text{
+  .bookconf-success-text {
     margin-bottom: 10px !important;
   }
-  .bookconf-driver-info{
+  .bookconf-driver-info {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -3903,15 +3939,15 @@ grid-template-columns: 1fr 1fr 1fr;
   .ridepay-payment {
     gap: 0.2rem;
   }
-  .route-step{
+  .route-step {
     gap: 0.5rem !important;
   }
   /* Search */
-  .fr-page-title ,
-  .bkf-icon{
+  .fr-page-title,
+  .bkf-icon {
     font-size: 1.9rem !important;
   }
- .bkf-title,
+  .bkf-title,
   .bookconf-step-icon,
   .ridepay-payment-icon,
   .vehicle-detl-title,
@@ -3921,7 +3957,7 @@ grid-template-columns: 1fr 1fr 1fr;
   .ridepay-payment-alert-top {
     gap: 8px !important;
   }
- 
+  .myride-empty h3,
   .sucess-heading,
   .step-icon,
   .bookconf-card-title,
@@ -3937,22 +3973,19 @@ grid-template-columns: 1fr 1fr 1fr;
     height: 40px !important;
     width: 40px !important;
   }
-    .driver-name,
-    .ridepay-driver-name{
-      font-size: 0.9rem !important;
-    }
+  .driver-name,
+  .ridepay-driver-name {
+    font-size: 0.9rem !important;
+  }
   .vehicle-detl-section-title,
   .item-icon,
   .myride-modal-title h2,
   .bookconf-driver-name,
- 
   .ridepay-driver-title,
   .ridepay-summary-title,
-  
   .ridepay-payment-title,
   .dm-driver-name,
   .passengers-title,
-
   .ride-price-total span:first-child {
     font-size: 1rem !important ;
   }
@@ -3971,14 +4004,13 @@ grid-template-columns: 1fr 1fr 1fr;
   .vehicledetails-photo-label span,
   .modal-price-value,
   .modal-price-label,
-
-.bookconf-btn-primary, .bookconf-btn-secondary,
+  .bookconf-btn-primary,
+  .bookconf-btn-secondary,
   .vehicledetails-subtitle,
   .bookconf-booking-value,
   .bookconf-booking-label,
   .bookconf-price-value,
   .bookconf-price-label,
-
   .ridepay-route-value,
   .ridepay-amount-value,
   .ridepay-amount-label,
@@ -3991,6 +4023,7 @@ grid-template-columns: 1fr 1fr 1fr;
   .fr-field:first-of-type {
     border-radius: 14px 14px 0 0 !important;
   }
+  .item-value,
   .ridepay-secure-note,
   .ridepay-payment-alert p {
     font-size: 0.7rem !important;
@@ -4077,10 +4110,10 @@ grid-template-columns: 1fr 1fr 1fr;
     width: 16px;
     height: 16px;
   }
-.bkf-icon-wrap{
-  height: 50px !important;
-  width: 50px !important;
-}
+  .bkf-icon-wrap {
+    height: 50px !important;
+    width: 50px !important;
+  }
   .fr-route-btn {
     width: 32px !important;
     height: 32px;
@@ -4205,10 +4238,8 @@ grid-template-columns: 1fr 1fr 1fr;
   .myride-card {
     padding: 1rem;
     height: auto;
-    min-height: 170px;
+    min-height: 160px;
   }
-
- 
 
   .passengers-grid {
     grid-template-columns: 1fr;
@@ -5028,6 +5059,9 @@ grid-template-columns: 1fr 1fr 1fr;
   .vehicle-detl-photo-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .myride-tabs {
+    justify-content: flex-start !important;
+  }
 }
 
 /* ── Responsive 768px ─────────────────────────────────────────────────────── */
@@ -5264,7 +5298,8 @@ grid-template-columns: 1fr 1fr 1fr;
 
 @media (max-width: 768px) {
   .driver-card {
-    flex-direction: column;
+    /* flex-direction: column; */
+
     align-items: baseline;
     text-align: start;
   }
@@ -5356,6 +5391,7 @@ body.modal-open {
   letter-spacing: 0.04rem;
   font-size: 70%;
   padding: 3px 12px;
+  font-weight: 700;
   color: white;
 }
 
@@ -5497,7 +5533,15 @@ body.modal-open {
   border-color: #fdba74;
 }
 
-
+.myride-cancel-btn {
+  padding: 0 12px;
+  background: #fff;
+  color: #dc2626;
+  border: 1.5px solid #fca5a5;
+}
+.myride-cancel-btn:hover {
+  background: #fee2e2;
+}
 /* Track - primary blue */
 .myride-track-btn {
   flex: 1;
@@ -5513,7 +5557,7 @@ body.modal-open {
 }
 
 .myride-track-btn:hover:not(:disabled) {
-   background: var(--fr-text-dark);
+  background: var(--fr-text-dark);
 }
 
 /* Track disabled */
@@ -6239,7 +6283,6 @@ body.modal-open {
   color: var(--fr-bg-light);
 }
 
-
 .bkf-btn--support {
   background: var(--fr-bg-white);
   color: var(--fr-text-dark);
@@ -6255,7 +6298,6 @@ body.modal-open {
 .bkf-btn--home:hover {
   opacity: 0.9;
 }
-
 
 .ridepay-payment-alert {
   background: #fff8e8;
@@ -6285,7 +6327,6 @@ body.modal-open {
 }
 
 .ridepay-payment-alert p {
-  margin-top: 8px;
   font-size: 14px;
   line-height: 1.6;
   color: #6c5d31;
@@ -6418,5 +6459,365 @@ body.modal-open {
 
   font-size: 15px;
   color: #64748b;
+  background: #f8fafc;
+}
+
+/* ==========================================================================
+   Payment urgency banner — slides in from the right edge of the screen on
+   the ride-payment page. Shows a live countdown in parallel with the
+   existing inline alert box, switches to a "failed" message once the
+   5-minute reservation window expires, then slides back out shortly
+   before the page redirects.
+   Imported directly by RidePayment.jsx — no manual merging needed.
+   ========================================================================== */
+
+.ridepay-urgency-banner {
+  position: fixed;
+  top: 96px;
+  right: 20px;
+  z-index: 1100;
+  width: 320px;
+  max-width: calc(100vw - 40px);
+
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  background: var(--ntfy-amber-bg, #fffbeb);
+  border: 1px solid var(--ntfy-amber, #d97706);
+  border-radius: var(--radius);
+  box-shadow: var(--fr-shadow);
+  padding: 16px 18px;
+
+  transform: translateX(130%);
+  opacity: 0;
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.35s ease,
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.ridepay-urgency-banner.is-visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Slides back out to the right, shortly before the parent redirects. */
+.ridepay-urgency-banner.is-leaving {
+  transform: translateX(130%);
+  opacity: 0;
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 1, 1),
+    opacity 0.35s ease;
+}
+
+.ridepay-urgency-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  background: rgba(217, 119, 6, 0.15);
+  color: var(--ntfy-amber, #d97706);
+  transition:
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.ridepay-urgency-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.ridepay-urgency-text h4 {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  margin: 0 0 4px;
+  color: var(--black);
+}
+
+.ridepay-urgency-text p {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--desc);
+  margin: 0;
+}
+
+.ridepay-urgency-timer-box {
+  flex-shrink: 0;
+  align-self: center;
+  min-width: 54px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--ntfy-amber, #d97706);
+  background: #fff;
+  border: 1px solid var(--ntfy-amber, #d97706);
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------ Expired state ------------------------------ */
+
+.ridepay-urgency-banner.is-expired {
+  background: var(--ntfy-danger-bg, #fef2f2);
+  border-color: var(--ntfy-danger, #dc2626);
+  animation: ridepay-urgency-shake 0.4s ease;
+}
+
+.ridepay-urgency-banner.is-expired .ridepay-urgency-icon {
+  background: rgba(220, 38, 38, 0.15);
+  color: var(--ntfy-danger, #dc2626);
+}
+
+.ridepay-urgency-banner.is-expired .ridepay-urgency-timer-box {
+  color: var(--ntfy-danger, #dc2626);
+  border-color: var(--ntfy-danger, #dc2626);
+}
+
+@keyframes ridepay-urgency-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
+}
+
+/* ================================ Responsive ================================ */
+
+@media (max-width: 640px) {
+  .ridepay-urgency-banner {
+    top: auto;
+    bottom: 20px;
+    right: 16px;
+    left: 16px;
+    width: auto;
+    max-width: none;
+    transform: translateY(130%);
+  }
+
+  .ridepay-urgency-banner.is-visible {
+    transform: translateY(0);
+  }
+
+  .ridepay-urgency-banner.is-leaving {
+    transform: translateY(130%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ridepay-urgency-banner {
+    transition: opacity 0.3s ease;
+    transform: none !important;
+  }
+
+  .ridepay-urgency-banner.is-expired {
+    animation: none;
+  }
+}
+/* ---------- Cancel Ride Modal ---------- */
+.cancel-ride-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.cancel-ride-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  padding: 32px 28px 24px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  animation: cancelRidePop 0.18s ease-out;
+}
+
+@keyframes cancelRidePop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cancel-ride-icon-wrap {
+  color: #f97316;
+  background: #fff7ed;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 16px;
+  display: flex;
+}
+
+.cancel-ride-icon {
+  font-size: 26px;
+  color: #f97316;
+}
+
+.cancel-ride-title {
+  font-family: var(--heading);
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 10px;
+}
+
+.cancel-ride-desc {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #64748b;
+  margin: 0 0 20px;
+}
+
+.cancel-ride-reason {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.cancel-reason-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.required-star {
+  color: #dc2626;
+}
+
+.cancel-reason-textarea {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: #0f172a;
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.cancel-reason-textarea:focus {
+  border-color: #94a3b8;
+}
+
+.cancel-reason-textarea.input-error {
+  border-color: #dc2626;
+}
+
+.cancel-reason-textarea:disabled {
+  background: #f8fafc;
+  cursor: not-allowed;
+}
+
+.cancel-reason-error {
+  display: block;
+  font-size: 12px;
+  color: #dc2626;
+  margin-top: 6px;
+}
+
+.cancel-ride-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.cancel-ride-keep-btn,
+.cancel-ride-confirm-btn {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition:
+    opacity 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.cancel-ride-keep-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+}
+
+.cancel-ride-keep-btn:hover:not(:disabled) {
+  background: #f8fafc;
+}
+
+.cancel-ride-keep-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cancel-ride-confirm-btn {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.cancel-ride-confirm-btn:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.cancel-ride-confirm-btn:disabled {
+  background: #f9a8a8;
+  color: #ffffff;
+  opacity: 1; /* keep the red tint visible instead of generic greyed-out look */
+  cursor: not-allowed;
+}
+
+/* ---------- Cancel button on RideCard (matches disabled pattern of Track/Chat) ---------- */
+.myride-cancel-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 8px;
+  border: 1px solid #fca5a5;
+  background: #fff;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.myride-cancel-btn:hover:not(:disabled) {
+  background: #fef2f2;
+}
+
+.myride-cancel-btn:disabled {
+  border-color: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
   background: #f8fafc;
 }

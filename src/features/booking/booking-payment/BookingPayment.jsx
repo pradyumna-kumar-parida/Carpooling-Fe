@@ -2,13 +2,15 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import ArcLoader from "../../../components/Loader";
-import "../../../styles/find-ride.css";
+import ArcLoader from "@/components/Loader";
+import "@/styles/find-ride.css";
 import PaymentCard from "./components/PaymentCard";
 import RideDetailsCard from "./components/RideDetailsCard";
+import PaymentUrgencyBanner from "./components/PaymentUrgencyBanner";
 import { paymentApi, paymentFailedApi } from "@/services/client/bookingService";
 
 const FALLBACK_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+const AUTO_REDIRECT_DELAY_MS = 1500; // hold 1s on the "failed" state before redirecting
 
 const RidePayment = () => {
   const router = useRouter();
@@ -30,6 +32,7 @@ const RidePayment = () => {
     }
   }, [router]);
 
+
   // Load Razorpay SDK
   useEffect(() => {
     const script = document.createElement("script");
@@ -49,27 +52,70 @@ const RidePayment = () => {
     ? (parseFloat(ride.price_per_seat) * (noOfSIt || 1)).toFixed(2)
     : 0;
 
-  const mountedAtRef = useRef(null); // performance.now() snapshot when countdown starts
-  const durationRef = useRef(FALLBACK_DURATION_MS);
+  // ---- Countdown: driven by an ABSOLUTE wall-clock deadline, not by "how
+  // long ago did this component mount". This is the fix for the
+  // refresh-resets-the-timer bug: a refresh just remounts the component and
+  // recomputes "how much time is left until the same fixed deadline" —
+  // it can never push the deadline itself forward. ----
+  const [expiryTimestamp, setExpiryTimestamp] = useState(null);
 
   useEffect(() => {
-    if (!booking?.creationTime || mountedAtRef.current !== null) return;
+    if (!booking?.booking_id || expiryTimestamp !== null) return;
 
-    durationRef.current = booking?.ExpiryTime
-      ? new Date(booking.ExpiryTime).getTime() -
-        new Date(booking.creationTime).getTime()
-      : FALLBACK_DURATION_MS;
+    const storageKey = `paymentExpiryAt:${booking.booking_id}`;
 
-    mountedAtRef.current = performance.now();
-    setRemainingMs(durationRef.current);
-  }, [booking?.creationTime, booking?.ExpiryTime]);
+    // Refresh-safe: if we already anchored a deadline for this booking,
+    // keep using it — regardless of what a re-fetched API response says.
+    // (Untouched — this is the refresh-persistence logic.)
+    const stored = sessionStorage.getItem(storageKey);
+    if (stored) {
+      setExpiryTimestamp(parseInt(stored, 10));
+      return;
+    }
+
+    // ---- THE FIX ----
+    // Derive the hold's DURATION from two SERVER timestamps
+    // (creationTime -> ExpiryTime), not from "server ExpiryTime minus
+    // this device's Date.now()". Both creationTime and ExpiryTime are
+    // stamped by the same backend clock, so their difference is a clean
+    // 5:00 no matter how skewed the passenger's device clock is.
+    //
+    // Only AFTER we have that duration do we touch the client's clock —
+    // exactly once, to anchor it locally. Every tick afterwards compares
+    // only against this same device's own Date.now(), so it stays
+    // internally consistent even on a device with the wrong time.
+    let holdDurationMs = FALLBACK_DURATION_MS;
+
+    if (booking?.ExpiryTime && booking?.creationTime) {
+      holdDurationMs =
+        new Date(booking.ExpiryTime).getTime() -
+        new Date(booking.creationTime).getTime();
+    } else if (typeof booking?.remainingMs === "number") {
+      holdDurationMs = booking.remainingMs;
+    } else if (booking?.ExpiryTime) {
+      // Last-resort fallback if creationTime is ever missing — still
+      // skew-prone, kept only so the timer degrades gracefully instead
+      // of breaking.
+      holdDurationMs = new Date(booking.ExpiryTime).getTime() - Date.now();
+    }
+
+    const expiry = Date.now() + Math.max(0, holdDurationMs);
+
+    sessionStorage.setItem(storageKey, String(expiry));
+    setExpiryTimestamp(expiry);
+  }, [
+    booking?.booking_id,
+    booking?.ExpiryTime,
+    booking?.creationTime,
+    booking?.remainingMs,
+    expiryTimestamp,
+  ]);
 
   useEffect(() => {
-    if (mountedAtRef.current === null || paymentSuccess) return;
+    if (expiryTimestamp === null || paymentSuccess) return;
 
     const tick = () => {
-      const elapsed = performance.now() - mountedAtRef.current;
-      const remaining = Math.max(0, durationRef.current - elapsed);
+      const remaining = Math.max(0, expiryTimestamp - Date.now());
       setRemainingMs(remaining);
       if (remaining <= 0) {
         setIsExpired(true);
@@ -79,7 +125,13 @@ const RidePayment = () => {
     tick();
     const timer = setInterval(tick, 1000);
     return () => clearInterval(timer);
-  }, [booking?.creationTime, paymentSuccess]);
+  }, [expiryTimestamp, paymentSuccess]);
+
+  const clearPersistedExpiry = useCallback(() => {
+    if (booking?.booking_id) {
+      sessionStorage.removeItem(`paymentExpiryAt:${booking.booking_id}`);
+    }
+  }, [booking?.booking_id]);
 
   const handlePaymentExpired = useCallback(
     async (reason) => {
@@ -100,15 +152,86 @@ const RidePayment = () => {
       } catch (err) {
         console.error("Payment Failed API Error:", err);
       } finally {
+        clearPersistedExpiry();
         router.replace("/passenger/booking-failed");
       }
     },
-    [booking?.booking_id, router],
+    [booking?.booking_id, router, clearPersistedExpiry],
   );
+
+  // ---- Forced redirect: the moment the timer hits 0, the Pay Now button
+  // locks (see PaymentCard's disabled prop) and the banner switches to its
+  // "failed" message. 1 second after that, we auto-fire the payment-failed
+  // flow ourselves — the user doesn't need to click anything.
+  // autoExpireHandledRef guards against this firing twice. ----
+  const autoExpireHandledRef = useRef(false);
+
+  useEffect(() => {
+    if (!isExpired || paymentSuccess || autoExpireHandledRef.current) return;
+    autoExpireHandledRef.current = true;
+
+    const timeout = setTimeout(() => {
+      handlePaymentExpired(
+        "Payment time expired. Reservation automatically cancelled after 5 minutes.",
+      );
+    }, AUTO_REDIRECT_DELAY_MS);
+
+    return () => clearTimeout(timeout);
+  }, [isExpired, paymentSuccess, handlePaymentExpired]);
+
+  // ---- Back-navigation / leaving the page early: if the passenger
+  // navigates away from this screen (browser/in-app back button, or any
+  // other client-side route change) WITHOUT completing payment and
+  // BEFORE the timer expired, we still release the held seats via the
+  // same failed-payment API — but we deliberately do NOT force a redirect
+  // here, since the user is already navigating away on their own. The
+  // forced redirect only happens if they stay on this page until the
+  // 5-minute timer actually runs out (handled above).
+  //
+  // Refs are used so this cleanup always reads the LATEST values instead
+  // of whatever was true on the render this effect was declared in.
+  // The `mountedAtGuard` skips the near-instant mount→cleanup→mount that
+  // React 18 Strict Mode does in development, so it doesn't mistake that
+  // for a real "user left the page" event.
+  const latestBookingRef = useRef(booking);
+  const latestPaymentSuccessRef = useRef(paymentSuccess);
+  const latestIsExpiredRef = useRef(isExpired);
+
+  useEffect(() => {
+    latestBookingRef.current = booking;
+  }, [booking]);
+  useEffect(() => {
+    latestPaymentSuccessRef.current = paymentSuccess;
+  }, [paymentSuccess]);
+  useEffect(() => {
+    latestIsExpiredRef.current = isExpired;
+  }, [isExpired]);
+
+  useEffect(() => {
+    const mountedAtGuard = Date.now();
+
+    return () => {
+      if (Date.now() - mountedAtGuard < 50) return; // Strict Mode synthetic unmount
+
+      const stillPending =
+        !latestPaymentSuccessRef.current && !latestIsExpiredRef.current;
+      const bookingId = latestBookingRef.current?.booking_id;
+
+      if (stillPending && bookingId) {
+        paymentFailedApi({
+          booking_id: bookingId,
+          reason: "Passenger left the payment page before completing payment.",
+        }).catch((err) => {
+          console.error("Payment Failed API Error (on navigate away):", err);
+        });
+      }
+    };
+  }, []);
 
   const handlePayNow = () => {
     // Guard: if the reservation window has already lapsed, don't even
-    // attempt Razorpay — fail immediately.
+    // attempt Razorpay — fail immediately. (Button is also disabled in
+    // this state, so this mainly protects against a stray/queued click.)
     if (isExpired) {
       handlePaymentExpired(
         "Payment time expired. Reservation automatically cancelled after 5 minutes.",
@@ -146,6 +269,7 @@ const RidePayment = () => {
               JSON.stringify(api.data),
             );
 
+            clearPersistedExpiry();
             setProcessing(false);
             setPaymentSuccess(true);
 
@@ -202,6 +326,12 @@ const RidePayment = () => {
         <div className="ridepay-loader-overlay">
           <ArcLoader />
         </div>
+      )}
+
+      {/* Slides in from the right on mount; stays in sync with the same
+          countdown driving the Pay Now button and the inline alert box. */}
+      {!paymentSuccess && (
+        <PaymentUrgencyBanner remainingMs={remainingMs} isExpired={isExpired} />
       )}
 
       <div className="ridepay-page">
