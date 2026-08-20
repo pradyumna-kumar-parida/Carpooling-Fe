@@ -445,7 +445,7 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
     otherVehicles.every((v) => v.Status === "blocked")
       ? "rejected"
       : "pending";
-
+   
   console.log("verifyyyyyyyyyyyyy", profileVerified);
   console.log("vehcile         erifyyyyyyyyyyyyy", vehicleVerified);
   const isCleared = profileVerified && vehicleVerified;
