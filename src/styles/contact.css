@@ -775,7 +775,7 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .contact-hero-title {
     font-size: 1.8rem;
   }
@@ -798,5 +798,68 @@
 
   .contact-main {
     padding: 48px 0 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-eyebrow,
+  .contact-hero-stats {
+    display: none;
+  }
+  .contact-bottom-title,
+  .contact-section-title {
+    font-size: 1.1rem;
+  }
+  .contact-hero-title {
+    font-size: 1.3rem;
+  }
+
+  .contact-hero-content {
+    padding: 40px 25px 0;
+  }
+
+  .contact-hero {
+    min-height: 190px;
+  }
+  .contact-phone-prefix,
+  .contact-input{
+    height: 35px;
+    font-size: 0.7rem;
+  }
+  .contact-submit-btn{
+    font-size: 0.8rem;
+    height: 40px;
+  }
+    .contact-channel-action ,
+  .contact-help-nudge-topics,
+  .contact-sos-strip,
+  .contact-form-note,
+  .contact-char-count,
+  .contact-reason-btn,
+  .contact-reason-btn,
+  .contact-section-eyebrow,
+  .contact-channel-tag {
+    font-size: 0.6rem;
+  }
+  .contact-bottom-btn-primary,
+  .contact-bottom-btn-outline,
+  .contact-address-line,
+  .contact-help-nudge-link,
+  .contact-help-nudge-text,
+  .contact-bottom-sub,
+  .contact-hours-day,
+   .contact-channel-desc,
+  .contact-hours-time,
+  .contact-textarea,
+  .contact-label{
+    font-size: 0.7rem;
+  }
+  
+  
+  .contact-info-card-title,
+  .contact-section-sub, .contact-hero-sub,
+ 
+  .contact-channel-title {
+    font-size: 0.8rem;
   }
 }
