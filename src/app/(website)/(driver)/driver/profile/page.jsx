@@ -19,7 +19,8 @@ const Page = async () => {
       country: profile?.country || "",
       postalCode: profile?.postal_code || "",
       address: profile?.address || "",
-      profileCompleted: profile?.profileCompleted || "",
+      profileCompleted:
+        profile?.profileCompleted ?? Boolean(profile?.profileCompleted),
       bankAccountHolder: profile?.bank_account_holder || "",
       bankAccountNumber: profile?.bank_account_number || "",
       bankIFSC: profile?.bank_account_ifsc || "",

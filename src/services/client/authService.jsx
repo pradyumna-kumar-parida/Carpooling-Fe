@@ -14,7 +14,7 @@ export const verifyOtpApi = (data) => getClientAxios.post("/verify-otp", data);
 
 export const resendOtpApi = (data) => getClientAxios.post("/resend-otp", data);
 export const UpdateProfilepApi = (data) =>
-  getClientAxios.post("/update-user-details", data, {
+  getClientAxios.patch("/update-user-details", data, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

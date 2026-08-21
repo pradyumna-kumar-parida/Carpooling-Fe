@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaCarAlt, FaUserAlt } from "react-icons/fa";
@@ -352,9 +352,13 @@ function PendingVerification() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────
-export default function CompleteProfile({ hasProfilePicture = true }) {
+export default function CompleteProfile({ hasProfilePicture: initialHasProfilePicture }) {
   const router = useRouter();
+
+  const [hasProfilePicture, setHasProfilePicture] = useState(
+    initialHasProfilePicture ?? false
+  );
+
   const [formData, setFormData] = useState(INITIAL_FORM);
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -363,7 +367,12 @@ export default function CompleteProfile({ hasProfilePicture = true }) {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("info");
+useEffect(() => {
+  const profilePhotoAdded =
+    sessionStorage.getItem("profilePhotoadded") === "true";
 
+  setHasProfilePicture(profilePhotoAdded);
+}, []);
   // Skip the "profilePicture" field entirely if the user already uploaded
   // one via the profile page's quick-upload (+) flow.
   const steps = useMemo(() => {

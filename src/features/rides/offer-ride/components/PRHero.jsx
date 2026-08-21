@@ -427,8 +427,7 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
   const profileVerified =
     !!token &&
     !!profileCompleted &&
-    profileStatus === "active" &&
-    isVerified === true;
+    profileStatus === "active" 
 
   // Vehicle-level gating: profile clearance alone doesn't unlock the form —
   // at least one registered vehicle must also be active. Once that's true,
@@ -446,8 +445,6 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
       ? "rejected"
       : "pending";
    
-  console.log("verifyyyyyyyyyyyyy", profileVerified);
-  console.log("vehcile         erifyyyyyyyyyyyyy", vehicleVerified);
   const isCleared = profileVerified && vehicleVerified;
 
   const selectedVehicleData = approvedVehicles.find(

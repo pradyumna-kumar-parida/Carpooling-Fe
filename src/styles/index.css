@@ -3274,6 +3274,7 @@ footer {
   .fr-field-icon,
   .features-list li,
   .card-subtitle,
+  .status-pending,
   .form-group label {
     font-size: 0.8rem !important;
   }

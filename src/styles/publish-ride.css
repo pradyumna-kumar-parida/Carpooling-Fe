@@ -1302,6 +1302,7 @@ html {
     margin-bottom: 20px;
     font-size: 1.3rem !important;
   }
+  .ors-badge-title,
   .ors-step-label,
   .ors-card-head p,
   .pr-faq-answer p,
@@ -1353,7 +1354,7 @@ html {
   .pr-testimonial-dots {
     margin-top: 18px;
   }
-
+.ors-badge-desc,
   .prh-card-badge,
   .pr-faq-link,
   .prh-pref-text,

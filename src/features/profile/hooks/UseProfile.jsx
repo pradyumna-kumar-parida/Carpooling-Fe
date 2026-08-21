@@ -122,6 +122,14 @@ export function useProfile(profileData) {
     try {
       const payload = buildUpdatePayload(editData);
       const response = await UpdateProfilepApi(payload);
+      console.log("response", response);
+      console.log("response DATA", response?.data);
+
+      if (response?.data?.status === "success") {
+        sessionStorage.setItem("profilePhotoadded", "true");
+      } else {
+        sessionStorage.setItem("profilePhotoadded", "false");
+      }
 
       setUserData({ ...editData });
       setIsEditing(false);

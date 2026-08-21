@@ -15,6 +15,10 @@ import { LiaAngleRightSolid } from "react-icons/lia";
 import INITIAL_NOTIFICATIONS from "@/constant/notification";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import { LuMessageSquareMore } from "react-icons/lu";
+import { FaUserAlt } from "react-icons/fa";
+import { FaRocketchat } from "react-icons/fa";
+
+import { FaUser } from "react-icons/fa6";
 
 import notification from "../assets/images/notification-icon.png";
 import { RiLoginCircleLine } from "react-icons/ri";
@@ -56,7 +60,7 @@ const getNavLinks = (role, isLoggedIn) => [
 const getAccountLinks = (role) => [
   ...(role === "passenger"
     ? [
-        { label: "Profile", path: "/passenger/profile", icon: <FiUser /> },
+        { label: "Profile", path: "/passenger/profile", icon: <FaUser /> },
         { label: "My Rides", path: "/passenger/my-rides", icon: <FaRoute /> },
         // {
         //   label: "Notification",
@@ -72,7 +76,7 @@ const getAccountLinks = (role) => [
     : []),
   ...(role === "driver"
     ? [
-        { label: "Profile", path: "/driver/profile", icon: <FiUser /> },
+        { label: "Profile", path: "/driver/profile", icon: <FaUser /> },
         // {
         //   label: "Notification",
         //   path: "/driver/notification",
@@ -82,7 +86,7 @@ const getAccountLinks = (role) => [
         {
           label: "Messages",
           path: "/driver/chats",
-          icon: <LuMessageSquareMore size={16} />,
+          icon: <FaRocketchat size={16} />,
         },
         { label: "My Rides", path: "/driver/my-rides", icon: <FaRoute /> },
         // {
@@ -91,7 +95,7 @@ const getAccountLinks = (role) => [
         //   icon: <MdOutlinePublishedWithChanges size={18} />,
         // },
         {
-          label: "Offer Ride",
+          label: "Publish Ride",
           path: "/offer-ride",
           icon: <SiCardmarket size={15} />,
         },
@@ -146,8 +150,6 @@ const Header = () => {
     setPanelOpen(true);
   };
 
-
-
   const handleLogout = () => {
     dispatch(logoutUser());
     clearAuthCookies();
@@ -169,7 +171,7 @@ const Header = () => {
     profilePicture ? (
       <Image src={profilePicture} alt="user" fill unoptimized />
     ) : (
-      <FaUserCircle size={51} color="#1e40af"/>
+      <FaUserCircle size={51} color="#1e40af" />
     );
 
   const DrawerContent = (
@@ -184,7 +186,7 @@ const Header = () => {
                   <span className="user-role">{firstName || "Guest"}</span>
                 </div>
                 <div className="profile-img">
-                  <ProfileAvatar  />
+                  <ProfileAvatar />
                 </div>
               </div>
             </ListItemButton>
@@ -203,7 +205,11 @@ const Header = () => {
               >
                 {item.icon}
 
-                <ListItemText primary={item.label} sx={{ ml: 1 }}  className="mobile-menus"/>
+                <ListItemText
+                  primary={item.label}
+                  sx={{ ml: 1 }}
+                  className="mobile-menus"
+                />
 
                 <LiaAngleRightSolid className="move-forward" />
               </ListItemButton>
@@ -211,7 +217,7 @@ const Header = () => {
           </div>
         ))}
       </List>
-        <Divider />
+      <Divider />
 
       {isLoggedIn ? (
         <List>
@@ -223,7 +229,11 @@ const Header = () => {
                   onClick={() => navTo(item.path)}
                 >
                   {item.icon}
-                  <ListItemText primary={item.label} sx={{ ml: 1 }} className="mobile-menus" />
+                  <ListItemText
+                    primary={item.label}
+                    sx={{ ml: 1 }}
+                    className="mobile-menus"
+                  />
                   <LiaAngleRightSolid className="move-forward" />
                 </ListItemButton>
               </ListItem>
@@ -373,7 +383,9 @@ const Header = () => {
                       >
                         <div className="menu-lables">
                           {item.icon}
-                          <span className="mobile-menus-desktop">{item.label}</span>
+                          <span className="mobile-menus-desktop">
+                            {item.label}
+                          </span>
                         </div>
                         <div className="move-forward">
                           <LiaAngleRightSolid />

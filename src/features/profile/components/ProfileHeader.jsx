@@ -97,24 +97,40 @@ export default function ProfileHeader({
     if (!avatarFile) return;
 
     setAvatarUploading(true);
+
     try {
       const formData = new FormData();
       formData.append("profile_picture", avatarFile);
 
       const response = await uploadProfileApi(formData);
 
-      showAvatarAlert(
-        "success",
-        response?.data?.message || "Profile picture uploaded successfully!",
-      );
+      console.log("PROFILE IMAGE RESPONSE:", response);
+      console.log("PROFILE IMAGE RESPONSE DATA:", response?.data);
 
-      setAvatarModalOpen(false);
-      setAvatarFile(null);
-      setAvatarPreview(null);
+      if (response?.data?.status === "success") {
+        sessionStorage.setItem("profilePhotoadded", "true");
 
-      // Refresh so the newly uploaded picture is fetched from the server
-      router.refresh();
+        console.log(
+          "profilePhotoadded:",
+          sessionStorage.getItem("profilePhotoadded"),
+        );
+
+        showAvatarAlert(
+          "success",
+          response?.data?.message || "Profile picture uploaded successfully!",
+        );
+
+        setAvatarModalOpen(false);
+        setAvatarFile(null);
+        setAvatarPreview(null);
+
+        // Refresh the complete page so the latest profile picture
+        // is fetched from the server.
+        window.location.reload();
+      }
     } catch (err) {
+      console.error("Profile image upload error:", err);
+
       showAvatarAlert(
         "error",
         err?.response?.data?.message ||
