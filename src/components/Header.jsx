@@ -37,7 +37,7 @@ import { FiUser, FiLogOut, FiInfo, FiHelpCircle } from "react-icons/fi";
 import { CgMenuRightAlt } from "react-icons/cg";
 import Link from "next/link";
 import { SiCardmarket } from "react-icons/si";
-import NotificationPanel from "./Notification";
+// import NotificationPanel from "./Notification";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,6 +45,7 @@ import { logoutUser } from "@/redux/slices/authSlice";
 import { clearAuthCookies, getRole, getToken } from "@/lib/cookie";
 import LogoutDialog from "./LogoutDialog";
 import { usePathname } from "next/navigation";
+import { useNotifications } from "@/hooks/useNotifications";
 
 const getNavLinks = (role, isLoggedIn) => [
   ...(role === "driver" || !isLoggedIn
@@ -124,6 +125,7 @@ const getAccountLinks = (role) => [
 ];
 
 const Header = () => {
+  const { carpoolunreadCount, isLoading } = useNotifications();
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector((state) => state.auth.user);
@@ -310,6 +312,7 @@ const Header = () => {
 
         <div className="right-side-nav">
           {isLoggedIn && (
+            
             <Link
               className="notification"
               href={
@@ -318,10 +321,18 @@ const Header = () => {
                   : "/passenger/notification"
               }
             >
-              <Image src={notification} alt="" width={24} height={24} />
-              <p className="count">
-                {notifications.filter((n) => !n.read).length}
-              </p>
+              <Image
+                src={notification}
+                alt="Notifications"
+                width={24}
+                height={24}
+              />
+
+              {!isLoading && carpoolunreadCount > 0 && (
+                <p className="count">
+                  {carpoolunreadCount > 99 ? "99+" : carpoolunreadCount}
+                </p>
+              )}
             </Link>
           )}
 

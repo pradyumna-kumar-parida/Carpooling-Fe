@@ -22,3 +22,9 @@ export const getBookingDetailsTrack = async (bookingId) => {
 
   return response.data;
 };
+export const getPopularRoutes = async () => {
+  const axios = await getServerAxios();
+  const response = await axios.get("/top-corridors");
+
+  return response.data;
+};

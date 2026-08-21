@@ -1,31 +1,3 @@
-// "use client";
-
-// import { useQuery } from "@tanstack/react-query";
-// import { getNearRides } from "@/services/client/rideService";
-
-// export const useNearRides = () => {
-//   return useQuery({
-//     queryKey: ["near-rides"],
-//     queryFn: async () => {
-//       const permission = sessionStorage.getItem("locationPermission");
-
-//       if (permission === "allowed") {
-//         const location = JSON.parse(sessionStorage.getItem("userLocation"));
-
-//         const response = await getNearRides(
-//           location.latitude,
-//           location.longitude,
-//         );
-
-//         return response.data.rides || [];
-//       }
-
-//       const response = await getNearRides();
-
-//       return response.data.rides || [];
-//     },
-//   });
-// };
 
 
 "use client";

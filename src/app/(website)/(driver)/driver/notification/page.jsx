@@ -1,7 +1,7 @@
 import NotificationsPage from "@/components/AllNotification";
 import React from "react";
 
-const page = () => {
+const page = async () => {
   return <NotificationsPage />;
 };
 

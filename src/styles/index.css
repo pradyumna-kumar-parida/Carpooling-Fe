@@ -1924,7 +1924,7 @@ footer {
   border-radius: var(--fr-radius);
   font-size: 0.9375rem;
   color: var(--fr-text-dark);
-  background-color: var(--fr-bg-gray);
+  background-color:#FFF;
   transition: all 0.3s ease;
 
   font-family: sans-serif;
@@ -2038,11 +2038,10 @@ footer {
   align-items: center;
   margin-bottom: 5px;
   gap: 2px;
-  padding: 6px 14px;
-
-  font-weight: 600;
+ padding: 4px 12px;
+    font-size: .72rem;
+    font-weight: 700;
   display: inline-flex;
-  font-weight: 600;
 }
 .status-pending {
   color: var(--fr-text-light);
@@ -2770,7 +2769,7 @@ footer {
 
 @media (max-width: 480px) {
   .notification > .count {
-    font-size: 11px !important;
+    font-size: 8px !important;
     bottom: 13px !important;
     right: -2px !important;
   }
@@ -2876,9 +2875,9 @@ footer {
     border-radius: 10px;
   }
   .app-download {
-    --scanner-width: 170px;
-    --scanner-overlap: 46px;
-    padding: 10px 0;
+    --scanner-width: 170px !important;
+    --scanner-overlap: 46px !important;
+    padding: 10px 0 !important;
   }
 
   .reviewer-info .name,
@@ -2889,11 +2888,11 @@ footer {
   }
   .card-title,
   .avl-rides-title {
-    font-size: 1.2rem;
+    font-size: 1.2rem !important;
   }
 
   .app-download-heading {
-    font-size: 1.1rem;
+    font-size: 1.1rem !important;
   }
   .chat-window__name {
     font-size: 0.9rem !important;
@@ -2909,7 +2908,7 @@ footer {
   }
 
   .app-download-badgeImg {
-    height: 40px;
+    height: 40px !important;
   }
   .mobile-menu-sidebar {
     gap: 0px !important;
@@ -3661,137 +3660,12 @@ footer {
   font-family: sans-serif;
   font-weight: 500;
   height: 20px;
-  font-size: 13px;
+  font-size: 11px;
   width: 20px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.panel-bedge-count {
-  color: #f0e9e9;
-  font-size: 95%;
-  font-weight: 400;
-}
-
-/* Notification panel */
-.notification-dialog-paper {
-  position: fixed !important;
-  padding-bottom: 20px !important;
-  top: 70px;
-  max-height: 400px !important;
-  right: 20px;
-
-  margin: 0 !important;
-  width: 380px;
-  border-radius: 16px !important;
-  overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
-}
-.css-ahj2mt-MuiTypography-root {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
-}
-.notification-dialog-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(90deg, #1f4db8 0%, #0d6efd 100%);
-  color: #fff;
-  padding: 16px 24px !important;
-}
-
-.notification-title-wrapper {
-  display: flex;
-  align-items: center;
-
-  gap: 8px;
-}
-
-.notification-title-text {
-  font-weight: 600 !important;
-}
-
-.notification-badge-count {
-  font-weight: 700;
-}
-
-.notification-dialog-content {
-  padding: 0 !important;
-  max-height: 500px;
-  overflow-y: auto;
-}
-
-.notification-empty-state {
-  text-align: center;
-  padding: 48px 20px;
-  color: #666;
-}
-
-.notification-item {
-  padding: 16px;
-  border-bottom: 1px solid #f1f1f1;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.notification-item:hover {
-  background: #f5f9ff;
-}
-
-.notification-item-wrapper {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.notification-avatar {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  border-radius: 50%;
-  background: #e8f1ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.notification-avatar-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.notification-content {
-  flex: 1;
-}
-
-.notification-item-title {
-  font-size: 15px !important;
-  font-weight: 600 !important;
-}
-
-.notification-item-body {
-  color: #666 !important;
-  margin-top: 4px !important;
-  font-size: 13px !important;
-}
-
-.notification-item-time {
-  color: #999 !important;
-  display: block !important;
-
-  font-size: 10px !important;
-}
-
-.notification-unread-dot {
-  width: 10px;
-  height: 10px;
-  min-width: 10px;
-  border-radius: 50%;
-  background: #0d6efd;
-  margin-top: 4px;
 }
 
 /* Profile picture in header */
@@ -4959,7 +4833,6 @@ footer {
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  background: var(--section-cardBg);
   border: 1px solid var(--ntfy-border);
   border-radius: var(--radius);
   box-shadow: var(--fr-shadow);
@@ -4984,7 +4857,7 @@ footer {
 }
 
 .ntfy-card.is-read {
-  background: #fff;
+  background:#f7f9fb;
   opacity: 0.85;
 }
 
@@ -8469,5 +8342,9 @@ footer {
   color: var(--ntfy-border);
 }
 .verify-driver {
-  font-size: 1.102rem;
+  font-size: 0.9rem;
+}
+.ntfy-card.ntfy-card--new {
+  background: #ffff!important;
+
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import { useNotifications } from "@/hooks/useNotifications";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 /* Import the stylesheet once in your root layout/_app instead of here —
    see note at the bottom of this file. */
 
@@ -61,7 +62,27 @@ const IconInbox = () => (
   </svg>
 );
 
-/* ---------- category metadata (color + tag label) ---------- */
+const IconAlert = () => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.6"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+    <line x1="12" y1="9" x2="12" y2="13" />
+    <line x1="12" y1="17" x2="12.01" y2="17" />
+  </svg>
+);
+
+/* ---------- category metadata (color + tag label) ----------
+   Keys are lower-cased "internal" categories. Real API `type` values
+   (e.g. LOGIN_SUCCESS, RIDE_CANCELLED, CONVERSATION, SYSTEM, ...) get
+   normalized into one of these via TYPE_TO_CATEGORY below. Anything
+   we don't recognize falls back to the `default` entry so the UI
+   never breaks on a new/unknown notification type. */
 
 const CATEGORY = {
   booking: { label: "Booking", tone: "blue" },
@@ -70,6 +91,7 @@ const CATEGORY = {
   payment: { label: "Payment", tone: "amber" },
   message: { label: "Message", tone: "blue" },
   system: { label: "Update", tone: "gray" },
+  default: { label: "Notification", tone: "gray" },
 };
 
 const DOT_COLOR = {
@@ -80,156 +102,283 @@ const DOT_COLOR = {
   gray: "var(--ntfy-gray)",
 };
 
-/* ---------- sample data — wire this up to your API ---------- */
+/* Maps raw API `type` strings to the internal CATEGORY keys used for
+   styling + tab filtering. Extend this as new backend types appear —
+   anything missing safely falls back to "default". */
+const TYPE_TO_CATEGORY = {
+  LOGIN_SUCCESS: "system",
+  SYSTEM: "system",
+  RIDE_CANCELLED: "cancelled",
+  RIDE_CONFIRMED: "confirmed",
+  RIDE_EXPIRED: "cancelled",
+  BOOKING_REQUEST: "booking",
+  BOOKING_ACCEPTED: "booking",
+  CONVERSATION: "message",
+  MESSAGE: "message",
+  PAYMENT: "payment",
+  PAYOUT: "payment",
+};
 
-const INITIAL_NOTIFICATIONS = [
-  {
-    id: 1,
-    type: "booking",
-    group: "Today",
-    avatar: "P",
-    title: "New booking request",
-    description: "Pradyumna requested 2 seats for Mumbai → Pune.",
-    time: "2 min ago",
-    unread: true,
-  },
-  {
-    id: 2,
-    type: "confirmed",
-    group: "Today",
-    avatar: "A",
-    title: "Ride confirmed",
-    description: "Your ride to Bangalore on Aug 2, 7:30 AM is confirmed.",
-    time: "10 min ago",
-    unread: true,
-  },
-  {
-    id: 3,
-    type: "confirmed",
-    group: "Today",
-    avatar: "R",
-    title: "Ride confirmed",
-    description: "Your ride to Bangalore on Aug 2, 9:00 PM is confirmed.",
-    time: "10 min ago",
-    unread: true,
-  },
-  {
-    id: 4,
-    type: "message",
-    group: "Today",
-    avatar: "S",
-    title: "New message from Sanya",
-    description: "Running 5 minutes late, see you at the pickup point.",
-    time: "34 min ago",
-    unread: false,
-  },
-  {
-    id: 5,
-    type: "payment",
-    group: "Today",
-    title: "Payment received",
-    description: "₹450 credited for your Pune → Mumbai ride.",
-    time: "1 hour ago",
-    unread: true,
-  },
-  {
-    id: 6,
-    type: "cancelled",
-    group: "Yesterday",
-    avatar: "K",
-    title: "Ride cancelled",
-    description: "Karan cancelled the ride from Hyderabad to Vijayawada.",
-    time: "Yesterday, 6:12 PM",
-    unread: false,
-  },
-  {
-    id: 7,
-    type: "system",
-    group: "Yesterday",
-    title: "Pickup point updated",
-    description:
-      "Your driver moved tomorrow's pickup point closer to the metro station.",
-    time: "Yesterday, 4:45 PM",
-    unread: true,
-  },
-  {
-    id: 8,
-    type: "booking",
-    group: "Yesterday",
-    avatar: "M",
-    title: "Booking request accepted",
-    description: "You accepted Meera's request for 1 seat to Nashik.",
-    time: "Yesterday, 11:20 AM",
-    unread: false,
-  },
-  {
-    id: 9,
-    type: "payment",
-    group: "Earlier",
-    title: "Payout processed",
-    description: "₹1,200 was transferred to your linked bank account.",
-    time: "3 days ago",
-    unread: false,
-  },
-  {
-    id: 10,
-    type: "system",
-    group: "Earlier",
-    title: "Profile verified",
-    description: "Your driving licence has been verified successfully.",
-    time: "5 days ago",
-    unread: false,
-  },
-];
+const normalizeCategory = (rawType) => {
+  if (!rawType) return "default";
+  const key = TYPE_TO_CATEGORY[String(rawType).toUpperCase()];
+  return key && CATEGORY[key] ? key : "default";
+};
 
 const GROUP_ORDER = ["Today", "Yesterday", "Earlier"];
 
 const TABS = [
   { id: "all", label: "All", filter: () => true },
   { id: "unread", label: "Unread", filter: (n) => n.unread },
-  { id: "booking", label: "Bookings", filter: (n) => n.type === "booking" },
+  { id: "booking", label: "Bookings", filter: (n) => n.category === "booking" },
   {
     id: "rides",
     label: "Rides",
-    filter: (n) => n.type === "confirmed" || n.type === "cancelled",
+    filter: (n) => n.category === "confirmed" || n.category === "cancelled",
   },
-  { id: "payment", label: "Payments", filter: (n) => n.type === "payment" },
+  { id: "payment", label: "Payments", filter: (n) => n.category === "payment" },
 ];
 
-export default function NotificationsPage() {
-  const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
-  const [activeTab, setActiveTab] = useState("all");
+/* ---------- date / time helpers ---------- */
 
-  const unreadCount = notifications.filter((n) => n.unread).length;
+// API sends "YYYY-MM-DD HH:mm:ss" (treated as local time).
+const parseApiDate = (value) => {
+  if (!value) return null;
+  const isoish = value.includes("T") ? value : value.replace(" ", "T");
+  const date = new Date(isoish);
+  return Number.isNaN(date.getTime()) ? null : date;
+};
+
+const isSameDay = (a, b) =>
+  a.getFullYear() === b.getFullYear() &&
+  a.getMonth() === b.getMonth() &&
+  a.getDate() === b.getDate();
+
+const getGroupLabel = (date) => {
+  if (!date) return "Earlier";
+  const now = new Date();
+  const yesterday = new Date(now);
+  yesterday.setDate(now.getDate() - 1);
+
+  if (isSameDay(date, now)) return "Today";
+  if (isSameDay(date, yesterday)) return "Yesterday";
+  return "Earlier";
+};
+
+const formatRelativeTime = (date) => {
+  if (!date) return "";
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMin = Math.round(diffMs / 60000);
+
+  if (diffMin < 1) return "Just now";
+  if (diffMin < 60) return `${diffMin} min ago`;
+
+  const diffHrs = Math.round(diffMin / 60);
+  if (isSameDay(date, now))
+    return `${diffHrs} hour${diffHrs === 1 ? "" : "s"} ago`;
+
+  const yesterday = new Date(now);
+  yesterday.setDate(now.getDate() - 1);
+  const timeStr = date.toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  if (isSameDay(date, yesterday)) return `Yesterday, ${timeStr}`;
+
+  const diffDays = Math.round(diffMs / 86400000);
+  if (diffDays < 7) return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
+
+  return date.toLocaleDateString([], { month: "short", day: "numeric" });
+};
+
+// Pulls a stable initial (for the avatar-less icon vs. letter avatar) out
+// of the notification title, if it looks like a person-addressed message.
+const getAvatarLetter = (n) => {
+  if (n.category !== "message") return null;
+  const match = n.title?.match(/from\s+([A-Za-z])/i);
+  return match ? match[1].toUpperCase() : null;
+};
+
+/* Normalizes whatever shape the notifications query returns (plain array,
+   `{ data: [...] }`, or a paginated `{ data: [...], meta: {...} }`) into
+   a flat array so pagination changes on the backend can't break the UI. */
+const extractList = (payload) => {
+  if (!payload) return [];
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload.data)) return payload.data;
+  if (Array.isArray(payload.notifications)) return payload.notifications;
+  if (Array.isArray(payload.items)) return payload.items;
+  return [];
+};
+
+export default function NotificationsPage() {
+  const {
+    carpoolnotifications,
+    carpoolunreadCount,
+    carpoolmarkRead,
+    carpoolmarkAllRead,
+    isLoading,
+    isError,
+    error,
+  } = useNotifications();
+
+  const [activeTab, setActiveTab] = useState("all");
+  const [dismissedIds, setDismissedIds] = useState(() => new Set());
+
+  /* ---------------- mark-all-as-read on mount (once) ---------------- */
+  const hasTriggeredMarkAllRef = useRef(false);
+
+  /* ---------------- "new" (live-arrival) tracking ----------------
+     `isNew` is NOT the same as `unread`. `unread` reflects the backend
+     `is_read` flag, which flips true almost immediately after mount
+     because we call carpoolmarkAllRead() below. `isNew` instead means
+     "this id showed up in a refetch that happened after the page was
+     already open" — e.g. a Firebase push that invalidates the
+     ["notifications"] query while the user is sitting on this page.
+     That's the one that should get a distinct highlight background. */
+  const previousNotificationIdsRef = useRef(new Set());
+  const hasInitializedNotificationsRef = useRef(false);
+const [newNotificationIds, setNewNotificationIds] = useState(
+  () => new Set()
+);
+
+  useEffect(() => {
+    // Wait for the first successful load so we know whether there's
+    // anything to mark, and never fire more than once per mount.
+    if (hasTriggeredMarkAllRef.current) return;
+    if (isLoading) return;
+
+    hasTriggeredMarkAllRef.current = true;
+
+    if (!carpoolunreadCount) return; // nothing unread, skip the call entirely
+
+    // Your useNotifications() hook's markAllRead mutation already
+    // invalidates ["notifications"] onSuccess, which updates this page,
+    // the header badge, and anything else subscribed to that query key —
+    // so there's no need to invalidate again here.
+    Promise.resolve(carpoolmarkAllRead?.()).catch((err) => {
+      console.error("Failed to mark all notifications as read:", err);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
+
+  /* Detect ids that appear in a refetch AFTER the page was already open
+     (e.g. a Firebase-triggered invalidation of ["notifications"] while
+     the user is sitting here) and remember them as "new" for the rest
+     of the visit. The very first successful response just seeds the
+     "known ids" baseline — nothing is "new" on initial load. */
+useEffect(() => {
+  if (!carpoolnotifications) return;
+
+  const list = extractList(carpoolnotifications);
+
+  const currentIds = new Set(list.map((n) => n.id));
+
+  // First API response = baseline
+  if (!hasInitializedNotificationsRef.current) {
+    previousNotificationIdsRef.current = currentIds;
+    hasInitializedNotificationsRef.current = true;
+    return;
+  }
+
+  // Find notifications that were not present before
+  const arrivedIds = [...currentIds].filter(
+    (id) => !previousNotificationIdsRef.current.has(id)
+  );
+
+  if (arrivedIds.length > 0) {
+    setNewNotificationIds((prev) => {
+      const next = new Set(prev);
+
+      arrivedIds.forEach((id) => {
+        next.add(id);
+      });
+
+      return next;
+    });
+  }
+
+  previousNotificationIdsRef.current = currentIds;
+}, [carpoolnotifications]);
+  /* ---------------- map API notifications -> UI shape ---------------- */
+
+const notifications = useMemo(() => {
+  const list = extractList(carpoolnotifications);
+
+  return list.map((raw) => {
+    const category = normalizeCategory(raw.type);
+    const date = parseApiDate(raw.created_at);
+
+    const mapped = {
+      id: raw.id,
+      rawType: raw.type,
+      category,
+      title: raw.title ?? "Notification",
+      description: raw.body ?? "",
+      unread: !raw.is_read,
+
+      // New notification that arrived while page was open
+      isNew: newNotificationIds.has(raw.id),
+
+      date,
+      time: formatRelativeTime(date),
+      group: getGroupLabel(date),
+      data: raw.data ?? {},
+    };
+
+    mapped.avatar = getAvatarLetter(mapped);
+
+    return mapped;
+  });
+}, [carpoolnotifications, newNotificationIds]);
+
+  const visibleNotifications = useMemo(
+    () => notifications.filter((n) => !dismissedIds.has(n.id)),
+    [notifications, dismissedIds],
+  );
 
   const tabCounts = useMemo(() => {
     const counts = {};
     TABS.forEach((tab) => {
-      counts[tab.id] = notifications.filter(tab.filter).length;
+      counts[tab.id] = visibleNotifications.filter(tab.filter).length;
     });
     return counts;
-  }, [notifications]);
+  }, [visibleNotifications]);
 
   const filtered = useMemo(() => {
     const tab = TABS.find((t) => t.id === activeTab) || TABS[0];
-    return notifications.filter(tab.filter);
-  }, [notifications, activeTab]);
+    return visibleNotifications.filter(tab.filter);
+  }, [visibleNotifications, activeTab]);
 
   const groups = GROUP_ORDER.map((group) => ({
     group,
     items: filtered.filter((n) => n.group === group),
   })).filter((g) => g.items.length > 0);
 
-  const markAllRead = () =>
-    setNotifications((prev) => prev.map((n) => ({ ...n, unread: false })));
-  const markRead = (id) =>
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, unread: false } : n)),
-    );
+  /* ---------------- interactions ----------------
+     Everything is already marked read via carpoolmarkAllRead on mount,
+     so a per-card click doesn't need to hit the single-read API right
+     now. carpoolmarkRead is kept wired up (commented call below) so
+     it's a one-line change to re-enable per-item marking later. */
+  const handleCardClick = (n) => {
+    // carpoolmarkRead?.(n.id);
+    if (n.data?.screen) {
+      // hook this up to your router if/when per-card navigation is needed
+      // router.push(mapScreenToRoute(n.data.screen, n.data));
+    }
+  };
+
   const dismiss = (id, e) => {
     e.stopPropagation();
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
+    setDismissedIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      return next;
+    });
   };
+
+  /* ---------------- render states ---------------- */
 
   return (
     <div className="ntfy-page">
@@ -237,28 +386,44 @@ export default function NotificationsPage() {
         <h2 id="avl-rides-heading" className="avl-rides-title">
           Notifications
         </h2>
-       <nav className="ntfy-tabs">
-  {TABS.map((tab) => (
-    <button
-      key={tab.id}
-      className={`ntfy-tab${activeTab === tab.id ? " is-active" : ""}`}
-      onClick={() => setActiveTab(tab.id)}
-    >
-      {tab.label}
-      <span
-        className={`ntfy-tab-count ${
-          activeTab === tab.id ? "tab-countactive" : ""
-        }`}
-      >
-        {tabCounts[tab.id]}
-      </span>
-    </button>
-  ))}
-</nav>
+        <nav className="ntfy-tabs">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              className={`ntfy-tab${activeTab === tab.id ? " is-active" : ""}`}
+              onClick={() => setActiveTab(tab.id)}
+            >
+              {tab.label}
+              <span
+                className={`ntfy-tab-count ${
+                  activeTab === tab.id ? "tab-countactive" : ""
+                }`}
+              >
+                {tabCounts[tab.id] ?? 0}
+              </span>
+            </button>
+          ))}
+        </nav>
       </div>
 
       <div className="ntfy-scroll-area">
-        {groups.length === 0 ? (
+        {isLoading ? (
+          <div className="ntfy-empty">
+            <div className="ntfy-empty-icon">
+              <IconInbox />
+            </div>
+            <h3>Loading notifications…</h3>
+            <p>Hang tight, this only takes a second.</p>
+          </div>
+        ) : isError ? (
+          <div className="ntfy-empty">
+            <div className="ntfy-empty-icon">
+              <IconAlert />
+            </div>
+            <h3>Couldn't load notifications</h3>
+            <p>{error?.message || "Something went wrong. Please try again."}</p>
+          </div>
+        ) : groups.length === 0 ? (
           <div className="ntfy-empty">
             <div className="ntfy-empty-icon">
               <IconInbox />
@@ -272,18 +437,20 @@ export default function NotificationsPage() {
               <h2 className="ntfy-group-label">{group}</h2>
               <div className="ntfy-list">
                 {items.map((n) => {
-                  const meta = CATEGORY[n.type];
+                  const meta = CATEGORY[n.category] || CATEGORY.default;
                   return (
                     <div
-                      className={`ntfy-row${n.unread ? " is-unread" : ""}`}
+                      className={`ntfy-row${n.unread ? " is-unread" : ""}${
+                        n.isNew ? " is-new" : ""
+                      }`}
                       key={n.id}
                       style={{ color: DOT_COLOR[meta.tone] }}
                     >
-                     
-
                       <article
-                        className={`ntfy-card${n.unread ? "" : " is-read"}`}
-                        onClick={() => markRead(n.id)}
+                        className={`ntfy-card${n.unread ? "" : " is-read"}${
+                          n.isNew ? " ntfy-card--new" : ""
+                        }`}
+                        onClick={() => handleCardClick(n)}
                         tabIndex={0}
                         role="button"
                         aria-label={n.title}
@@ -292,7 +459,11 @@ export default function NotificationsPage() {
                           <div className="ntfy-avatar">{n.avatar}</div>
                         ) : (
                           <div className={`ntfy-icon-badge ${meta.tone}`}>
-                            {n.type === "payment" ? <IconCard /> : <IconBell />}
+                            {n.category === "payment" ? (
+                              <IconCard />
+                            ) : (
+                              <IconBell />
+                            )}
                           </div>
                         )}
 
@@ -303,7 +474,6 @@ export default function NotificationsPage() {
                               <p className="ntfy-card-desc">{n.description}</p>
                             </div>
                             <div className="ntfy-row-actions">
-                              {/* {n.unread && <span className="ntfy-unread-dot" />} */}
                               <button
                                 className="ntfy-dismiss"
                                 onClick={(e) => dismiss(n.id, e)}
@@ -332,3 +502,4 @@ export default function NotificationsPage() {
     </div>
   );
 }
+

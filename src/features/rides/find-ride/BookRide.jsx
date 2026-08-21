@@ -5,6 +5,7 @@ import "../../../styles/find-ride.css";
 import NearbyRides from "./NearRides";
 
 const BookRide = () => {
+  
   return (
     <>
       <div className="fr-container">

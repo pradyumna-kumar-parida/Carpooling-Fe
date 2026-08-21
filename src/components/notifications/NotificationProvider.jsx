@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { listenForForegroundMessages } from "@/lib/firebase/messaging";
@@ -8,12 +9,19 @@ import { notificationUI } from "@/lib/notifications/notification-ui";
 import NotificationToast from "../../components/NotificationToast";
 
 export default function NotificationProvider() {
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     let unsubscribe;
 
     const setupNotificationListener = async () => {
       unsubscribe = await listenForForegroundMessages((payload) => {
         console.log("[Notifications] Foreground message:", payload);
+
+        // 🔥 Refresh notification data
+        queryClient.invalidateQueries({
+          queryKey: ["notifications"],
+        });
 
         const type = payload.data?.type || "SYSTEM";
 
@@ -33,8 +41,6 @@ export default function NotificationProvider() {
               body={body}
               onView={() => {
                 console.log("[Notifications] View clicked:", payload);
-
-                // Navigation will be added here.
               }}
             />
           ),
@@ -52,7 +58,7 @@ export default function NotificationProvider() {
         unsubscribe();
       }
     };
-  }, []);
+  }, [queryClient]);
 
   return null;
 }

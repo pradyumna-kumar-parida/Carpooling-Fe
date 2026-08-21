@@ -16,3 +16,23 @@ export const registerNotificationDevice = async ({
 
   return response.data;
 };
+
+export const getNotificationsApi = async () => {
+  const response = await getClientAxios.get("/notifications");
+
+  return response.data;
+};
+
+export const markNotificationReadApi = async (notificationId) => {
+  const response = await getClientAxios.patch("/notifications/read", {
+    notificationIds: notificationId,
+  });
+
+  return response.data;
+};
+
+export const markAllNotificationsReadApi = async () => {
+  const response = await getClientAxios.patch("/notifications/read-all");
+
+  return response.data;
+};

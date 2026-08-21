@@ -1,15 +1,10 @@
+import { getPopularRoutes } from "@/services/server/rideService";
 import React from "react";
 
-const FRPopularRoutes = () => {
-  const routes = [
-    { id: 1, from: "New Delhi", to: "Chandigarh" },
-    { id: 2, from: "New Delhi", to: "Jaipur" },
-    { id: 3, from: "New Delhi", to: "Agra" },
-    { id: 4, from: "Mumbai", to: "Pune" },
-    { id: 5, from: "Agra", to: "New Delhi" },
-    { id: 6, from: "Jaipur", to: "New Delhi" },
-    { id: 7, from: "Chandigarh", to: "New Delhi" },
-  ];
+const FRPopularRoutes = async () => {
+  const popularRoute = await getPopularRoutes();
+
+  console.log("popular routes", popularRoute);
 
   return (
     <section className="fr-routes-section">
@@ -19,10 +14,11 @@ const FRPopularRoutes = () => {
         </h2>
 
         <div className="fr-routes-list">
-          {routes.map((route) => (
-            <div key={route.id} className="fr-route-item">
+          {popularRoute.data?.map((route, index) => (
+            <div key={index} className="fr-route-item">
               <div className="fr-route-details">
-                <span className="fr-route-from">{route.from}</span>
+                <span className="fr-route-from">{route.origin}</span>
+
                 <span className="fr-route-arrow">
                   <svg
                     viewBox="0 0 24 24"
@@ -38,8 +34,10 @@ const FRPopularRoutes = () => {
                     />
                   </svg>
                 </span>
-                <span className="fr-route-to">{route.to}</span>
+
+                <span className="fr-route-to">{route.destination}</span>
               </div>
+
               <button className="fr-route-btn" type="button">
                 <svg
                   viewBox="0 0 24 24"
