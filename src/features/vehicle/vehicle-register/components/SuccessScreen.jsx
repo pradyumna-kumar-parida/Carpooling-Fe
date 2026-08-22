@@ -22,8 +22,8 @@ export default function SuccessScreen({ onViewDetails, onGoHome }) {
         <Image
           src={sucessBedge}
           alt="success-badge"
-          width={100}
-          height={100}
+          width={80}
+          height={80}
           className="success-badge-image"
         />
       </div>
@@ -52,13 +52,13 @@ export default function SuccessScreen({ onViewDetails, onGoHome }) {
         >
           View Vehicle Details
         </Button>
-        <Button
+        {/* <Button
           variant="outlined"
           onClick={onGoHome}
           className="vehicledetails-btn-back"
         >
           Go to Dashboard
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

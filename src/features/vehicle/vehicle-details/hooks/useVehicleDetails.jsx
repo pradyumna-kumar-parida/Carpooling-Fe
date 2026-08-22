@@ -4,12 +4,23 @@ import { vehicleDetailUpdateApi } from "@/services/client/vehicleService";
 
 import { useState, useEffect } from "react";
 
-
 export function useVehicleDetails(vehiclesFetch) {
   const vehicleList = vehiclesFetch;
   const [selected, setSelected] = useState(
     vehicleList?.length > 0 ? vehicleList[0] : null,
   );
+
+  // ── Search ────────────────────────────────────────────────────────────
+  const [search, setSearch] = useState("");
+
+  const filteredVehicles = (vehicleList || []).filter((v) => {
+    const q = search.trim().toLowerCase();
+    if (!q) return true;
+    return `${v.brand} ${v.model} ${v.registration_number}`
+      .toLowerCase()
+      .includes(q);
+  });
+
   const [editOpen, setEditOpen] = useState(false);
   const [editData, setEditData] = useState({});
   const [editLoading, setEditLoading] = useState(false);
@@ -81,7 +92,10 @@ export function useVehicleDetails(vehiclesFetch) {
   };
 
   return {
-    vehicles: vehicleList, // ← directly from context
+    vehicles: vehicleList, // ← full list (used for the "N Vehicles Registered" count)
+    filteredVehicles, // ← search-filtered list (used for rendering the sidebar cards)
+    search,
+    setSearch,
     selected,
     setSelected,
     editOpen,

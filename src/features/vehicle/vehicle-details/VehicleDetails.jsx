@@ -7,7 +7,7 @@ import VehicleDetailPanel from "./components/VehicleDetailPanel";
 import VehicleEditModal from "./components/VehicleEditModal";
 import EmptyState from "./components/EmptyState";
 // import { useVehicleList } from "../../context/VehicleContext";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiSearch, FiFilter } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 function PageLoader() {
   return (
@@ -21,6 +21,9 @@ export default function VehicleDetails({ vehiclesFetch }) {
   const router = useRouter();
   const {
     vehicles,
+    filteredVehicles,
+    search,
+    setSearch,
     selected,
     setSelected,
     loading,
@@ -81,7 +84,7 @@ export default function VehicleDetails({ vehiclesFetch }) {
             className="vehicle-detl-add-btn"
             onClick={() => router.push("/driver/vehicle-registration")}
           >
-            <FiPlus size={16} /> Add 
+            <FiPlus size={16} /> Add
           </button>
           {/* )} */}
         </div>
@@ -99,15 +102,35 @@ export default function VehicleDetails({ vehiclesFetch }) {
                 {vehicles.length} Vehicle{vehicles.length > 1 ? "s" : ""}{" "}
                 Registered
               </p>
-              <div className="vehicle-detl-card-list">
-                {vehicles.map((v) => (
-                  <VehicleCard
-                    key={v.id}
-                    vehicle={v}
-                    isSelected={selected?.id === v.id}
-                    onClick={() => setSelected(v)}
+
+              {/* ── Search + filter row ── */}
+              <div className="vehicle-detl-search-row">
+                <div className="vehicle-detl-search-box">
+                  <FiSearch className="vehicle-detl-search-icon" />
+                  <input
+                    type="text"
+                    placeholder="Search vehicle..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="vehicle-detl-search-input"
                   />
-                ))}
+                </div>
+               
+              </div>
+
+              <div className="vehicle-detl-card-list">
+                {filteredVehicles.length === 0 ? (
+                  <p className="vehicle-detl-no-results">No vehicles found</p>
+                ) : (
+                  filteredVehicles.map((v) => (
+                    <VehicleCard
+                      key={v.id}
+                      vehicle={v}
+                      isSelected={selected?.id === v.id}
+                      onClick={() => setSelected(v)}
+                    />
+                  ))
+                )}
               </div>
             </aside>
 

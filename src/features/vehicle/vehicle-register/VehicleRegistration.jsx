@@ -189,7 +189,7 @@ export default function VehicleRegistration() {
                         className="vehicledetails-btn-submit"
                         style={{ opacity: loading ? 0.85 : 1 }}
                       >
-                        Submit for Verification
+                        Submit 
                       </Button>
                     )}
                   </div>

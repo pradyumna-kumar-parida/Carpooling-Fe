@@ -14,7 +14,7 @@ export default function VehicleCard({ vehicle, isSelected, onClick }) {
       onClick={onClick}
     >
       <div className="vehicle-detl-card-top">
-        <div className="vehicle-detl-card-icon">
+        <div className="vehicle-detl-card-icon desktop-car-show">
           <FaCar />
         </div>
         <span className={`vehicle-detl-badge ${statusColor}`}>

@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { FiEdit } from "react-icons/fi";
 import { IoDocumentText } from "react-icons/io5";
+import { FaCar } from "react-icons/fa";
 const InfoRow = ({ label, value }) => (
   <div className="vehicle-detl-info-row">
     <span className="vehicle-detl-info-label">{label}</span>
@@ -42,13 +43,20 @@ export default function VehicleDetailPanel({ vehicle, onEdit }) {
     <div className="vehicle-detl-panel">
       {/* ── Panel header ── */}
       <div className="vehicle-detl-panel-header">
-        <div>
-          <h2 className="vehicle-detl-panel-title">
-            {vehicle.brand} {vehicle.model}
-          </h2>
+        <div className="vd-car-name-icon">
+      
+            <div className="vehicle-detl-card-icon">
+              <FaCar />
+            </div>
+         <div>
+             <h2 className="vehicle-detl-panel-title">
+              {vehicle.brand} {vehicle.model}
+            </h2>
+
           <p className="vehicle-detl-panel-reg">
             {vehicle.registration_number}
           </p>
+         </div>
         </div>
         <div className="vehicle-detl-panel-actions">
           <button

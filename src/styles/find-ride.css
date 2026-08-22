@@ -406,6 +406,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   background: var(--fr-bg-white);
+  text-decoration: none;
 }
 
 .fr-route-item:last-child {
@@ -421,6 +422,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
+
   font-size: 1rem;
 }
 
@@ -871,9 +873,14 @@
   justify-content: center;
   flex-shrink: 0;
 }
-
+.all-ride-driver-details{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 .ridetail-driver-name {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  margin-bottom: 2px;
   font-weight: 600;
   color: var(--fr-text-dark);
 }
@@ -883,12 +890,12 @@
   align-items: center;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   gap: 3px;
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   color: #f59e0b;
 }
 
 .ridetail-star-val {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--fr-text-gray);
 }
@@ -3087,7 +3094,8 @@
 
 .fotter-registration-btn {
   display: flex;
-  flex-direction: column;
+ justify-content: center;
+ align-items: center;
   gap: 10px;
   width: 100%;
   max-width: 320px;
@@ -3720,8 +3728,26 @@
    ========================================== */
 
 @media (max-width: 480px) {
-    .cancel-ride-keep-btn,
-  .cancel-ride-confirm-btn{
+  .sucessBedge {
+    height: 80px !important;
+    width: 80px !important;
+  }
+  .vehicledetails-actions {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
+  }
+  .sucess-subheading,
+  .basicDetails-registration,
+  .vehicledetails-stepper-wrapper,
+  .vehicledetails-section-title {
+    margin-bottom: 1rem !important;
+  }
+    .ridetail-driver-name{
+      font-size: 0.78rem !important;
+      margin-bottom: 3px !important;
+    }
+  .cancel-ride-keep-btn,
+  .cancel-ride-confirm-btn {
     font-size: 0.7rem !important;
   }
   .ridepay-payment-alert {
@@ -3856,9 +3882,13 @@
   .cancel-ride-modal {
     padding: 20px !important;
   }
+    .vehicle-detl-doc-btn{
+      font-size: 0.65rem !important;
+    }
   .cancel-ride-desc,
+  .vehicle-detl-search-input,
+  .vehicle-detl-info-value,
   .cancel-reason-textarea,
-
   .myride-empty p,
   .bkf-journey-label,
   .bkf-journey-value,
@@ -3882,7 +3912,8 @@
   .fr-rides-rating,
   .fr-rides-distance,
   .fr-rides-subtitle,
-  .vehicle-detl-doc-btn,
+.ridetail-star-wrap,
+.ridetail-star-val,
   .vehicle-detl-card-reg,
   .vehicle-detl-card-meta,
   .vehicle-detl-sidebar-label,
@@ -3908,11 +3939,14 @@
   .bookconf-driver-phone {
     justify-content: center;
   }
+  .ridetail-badges,
+  .desktop-car-show,
+  .vehicledetails-progress,
   .myride-card-footer,
   .myride-modal-badges,
   /* .step-city, */
   .back-to-top {
-    display: none;
+    display: none !important;
   }
 
   .bookconf-info-grid,
@@ -3992,6 +4026,13 @@
   .show-map-btn {
     height: 38px !important;
   }
+  .vehicledetails-btn-submit,
+  .vehicledetails-btn-back,
+  .vehicledetails-btn-next {
+    font-size: 0.9rem !important;
+  }
+
+  .ridetail-ride-time ,
   .ridepay-btn-primary,
   .show-map-btn,
   .ridepay-info-value,
@@ -3999,8 +4040,6 @@
   .vehicle-detl-info-label,
   .details-Items,
   .sucess-subheading,
-  .vehicledetails-btn-submit,
-  .vehicledetails-btn-back,
   .vehicledetails-photo-label span,
   .modal-price-value,
   .modal-price-label,
@@ -4067,7 +4106,7 @@
   .fr-loc-item:hover {
     padding-left: 16px;
   }
-
+.ridetail-ride-dur,
   .fr-loc-name {
     font-size: 0.9rem;
   }
@@ -4163,13 +4202,10 @@
   .ridetail-badge {
     font-size: 0.65rem !important;
   }
-  .ridetail-driver-name,
-  .ridetail-ride-time {
-    font-size: 0.85rem;
-  }
+
 
   .ridetail-ride-city {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   .ridetail-date-header {
     flex-direction: column;
@@ -4196,7 +4232,6 @@
   }
 
   .vehicledetails-subsection-title,
-  .vehicledetails-btn-next,
   .css-y6rp3m-MuiButton-startIcon > *:nth-of-type(1),
   .css-1ytlwq5-MuiAlert-icon,
   .vehicledetails-section-icon,
@@ -4309,13 +4344,16 @@
   .vehicledetails-photo-box {
     padding: 2rem 1rem;
   }
-
+  .vehicledetails-preview-image {
+    max-width: 144px !important;
+  }
   .vehicledetails-upload-icon {
     font-size: 2rem;
   }
   .css-eglki6-MuiLinearProgress-root {
     display: none !important;
   }
+  .css-1pxa9xg-MuiAlert-message,
   .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input,
   .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input,
   .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input,
@@ -4325,8 +4363,7 @@
   }
 
   .vehicledetails-remove-btn,
-  .vehicledetails-upload-hint,
-  .css-1pxa9xg-MuiAlert-message {
+  .vehicledetails-upload-hint {
     font-size: 0.7rem !important;
   }
   .vehicledetails-upload-label {
@@ -4550,6 +4587,10 @@
 .vehicle-detl-sidebar {
   position: sticky;
   top: 24px;
+  /* NEW */
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 48px);
 }
 
 .vehicle-detl-sidebar-label {
@@ -4566,6 +4607,64 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  /* NEW */
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.vehicle-detl-card-list::-webkit-scrollbar {
+  width: 5px;
+}
+.vehicle-detl-card-list::-webkit-scrollbar-thumb {
+  background: var(--fr-border-dark);
+  border-radius: 4px;
+}
+
+.vehicle-detl-search-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.vehicle-detl-search-box {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.vehicle-detl-search-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--fr-text-light);
+  font-size: 15px;
+  pointer-events: none;
+}
+
+.vehicle-detl-search-input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1.5px solid var(--fr-border);
+  border-radius: var(--fr-radius);
+  font-size: 13.5px;
+  color: var(--fr-text-dark);
+  background: var(--fr-bg-white);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.vehicle-detl-search-input:focus {
+  border-color: var(--fr-primary-light);
+}
+
+
+.vehicle-detl-no-results {
+  text-align: center;
+  padding: 24px 12px;
+  color: var(--fr-text-light);
+  font-size: 13px;
 }
 
 /* ── Vehicle card ─────────────────────────────────────────────────────────── */
@@ -4583,7 +4682,7 @@
 .vehicle-detl-card:hover {
   border-color: var(--fr-primary-light);
   box-shadow: var(--fr-shadow);
-  transform: translateY(-2px);
+
 }
 .vehicle-detl-card--selected {
   border-color: var(--fr-primary-light);
@@ -4597,7 +4696,10 @@
   justify-content: space-between;
   margin-bottom: 12px;
 }
-
+.vd-car-name-icon{
+  display: flex;
+  gap: 5px;
+}
 .vehicle-detl-card-icon {
   width: 40px;
   height: 40px;
@@ -5075,13 +5177,35 @@
   .vehicle-detl-layout {
     grid-template-columns: 1fr;
   }
+
   .vehicle-detl-sidebar {
     position: static;
+    max-height: none;
+    width: 100%;
+    min-width: 0;        /* NEW — stops content from forcing the sidebar wider than its parent */
+    box-sizing: border-box;
   }
+
   .vehicle-detl-card-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: row;
+    flex: none;
+    min-width: 0;         /* NEW */
+    overflow-x: auto;
+    overflow-y: visible;
+    gap: 12px;
+    padding: 2px 2px 10px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
+.vehicle-detl-card-list::-webkit-scrollbar {
+    height: 4px;
+}
+
+.vehicle-detl-card {
+    min-width: 180px;
+    flex: 0 0 auto;
+}
   .vehicle-detl-panel-header {
     padding: 18px 20px;
   }

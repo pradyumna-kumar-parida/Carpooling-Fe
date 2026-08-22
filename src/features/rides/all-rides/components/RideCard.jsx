@@ -107,15 +107,15 @@ export default function RideCard({ ride, noOfSIt }) {
               getInitials(ride.driver_name)
             )}
           </div>
+          <div>
+            <div className="all-ride-driver-details">
+              <span className="ridetail-driver-name">{ride.driver_name}</span>
 
-          <span className="ridetail-driver-name">
-            {ride.driver_name}
-         
-          </span>
-   {/* {ride.verified &&  */}
-   <MdVerified className="verify-driver" />
- {/* } */}
-          <StarRating rating={ride.driver_rating || 3.5} />
+              <MdVerified className="verify-driver" />
+            </div>
+
+            <StarRating rating={ride.driver_rating || 3.5} />
+          </div>
         </div>
 
         <div className="ridetail-badges">
