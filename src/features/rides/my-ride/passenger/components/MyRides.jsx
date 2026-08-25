@@ -7,6 +7,7 @@ import RideDetailsModal from "./RideDetailsModal";
 import CancelRideModal from "./CancelBooking";
 import ChatPanel from "@/features/chat/ChatPanel";
 import { FaCar } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const TAB_CONFIG = [
   { id: "all", label: "All" },
@@ -38,7 +39,9 @@ export default function MyRides({ userRides }) {
   const rides = getRidesData();
   const [showChat, setShowChat] = useState(false);
   const [selectedChatRide, setSelectedChatRide] = useState(null);
-
+  console.log("passenger rides ",rides);
+  
+const router = useRouter()
   return (
     <div className="myride-page">
       <div className="myride-container">
@@ -77,10 +80,11 @@ export default function MyRides({ userRides }) {
           {rides.length === 0 ? (
             <div className="myride-empty">
               <div className="empty-icon">
-                <FaCar />
+                <FaCar  />
               </div>
               <h3>No rides found</h3>
               <p>You don&apos;t have any {activeTab} rides yet.</p>
+              {/* <button className="vehicle-detl-add-btn" onClick={()=>router.push("/find-ride")}> Book Your First Ride</button> */}
             </div>
           ) : (
             rides.map((ride) => (

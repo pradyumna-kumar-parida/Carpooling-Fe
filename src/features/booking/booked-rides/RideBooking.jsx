@@ -104,7 +104,7 @@ console.log("ride passed",ridePassed);
   return (
     <>
       {/* Snackbar */}
-      <Snackbar
+      {/* <Snackbar
         open={openAlert}
         autoHideDuration={5000}
         onClose={() => setOpenAlert(false)}
@@ -120,7 +120,7 @@ console.log("ride passed",ridePassed);
         >
           {alertMessage}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       {/* Modals */}
       <DriverModal

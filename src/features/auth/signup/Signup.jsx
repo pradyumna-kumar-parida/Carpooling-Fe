@@ -46,7 +46,7 @@ export default function Signup({ roles }) {
 
   return (
     <>
-      <Snackbar
+      {/* <Snackbar
         open={openAlert}
         autoHideDuration={5000}
         onClose={() => setOpenAlert(false)}
@@ -61,7 +61,7 @@ export default function Signup({ roles }) {
         >
           {alertMessage}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       {loading && <PageLoader />}
 

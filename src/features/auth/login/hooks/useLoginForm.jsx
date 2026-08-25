@@ -13,6 +13,7 @@ import {
 } from "../utils/loginHelpers";
 import { setAuthCookies } from "@/lib/cookie";
 import { registerBrowserForNotifications } from "@/lib/notifications/register";
+import { showAlert } from "@/lib/toast";
 
 export function useLoginForm() {
   const dispatch = useDispatch();
@@ -59,14 +60,14 @@ export function useLoginForm() {
   }, []);
 
   // ── Alert helpers ─────────────────────────────────────────────────────
-  const showAlert = (type, message) => {
-    clearTimeout(alertTimerRef.current);
-    setAlert({ open: true, message, type });
-    alertTimerRef.current = setTimeout(
-      () => setAlert((a) => ({ ...a, open: false })),
-      5000,
-    );
-  };
+  // const showAlert = (type, message) => {
+  //   clearTimeout(alertTimerRef.current);
+  //   setAlert({ open: true, message, type });
+  //   alertTimerRef.current = setTimeout(
+  //     () => setAlert((a) => ({ ...a, open: false })),
+  //     5000,
+  //   );
+  // };
 
   const clearAlert = () => {
     clearTimeout(alertTimerRef.current);
@@ -131,18 +132,30 @@ export function useLoginForm() {
         return;
       }
 
-      showAlert(status === "success" ? "success" : "info", message);
+      // showAlert(status === "success" ? "success" : "info", message);
 
+      // if (status === "success") {
+      //   persistUser(user, token);
+      //   setFormData({ identifier: "", password: "" });
+
+      //   // Register this browser/device for notifications
+      //   registerBrowserForNotifications().catch((error) => {
+      //     console.error("Notification registration failed:", error);
+      //   });
+
+      //   setTimeout(redirectAfterLogin, 500);
+      // }
       if (status === "success") {
         persistUser(user, token);
         setFormData({ identifier: "", password: "" });
 
-        // Register this browser/device for notifications
         registerBrowserForNotifications().catch((error) => {
           console.error("Notification registration failed:", error);
         });
 
-        setTimeout(redirectAfterLogin, 500);
+        redirectAfterLogin();
+      } else {
+        showAlert("info", message);
       }
     } catch (err) {
       showAlert(

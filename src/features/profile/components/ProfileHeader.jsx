@@ -12,6 +12,7 @@ import { uploadProfileApi } from "@/services/client/authService";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import { MdVerified } from "react-icons/md";
+import { showAlert } from "@/lib/toast";
 export default function ProfileHeader({
   isEditing,
   saving,
@@ -43,26 +44,9 @@ export default function ProfileHeader({
   });
   console.log("userdata allllll", userData);
 
-  const showAvatarAlert = (type, message) =>
-    setAvatarAlert({ open: true, type, message });
+  // const showAvatarAlert = (type, message) =>
+  //   setAvatarAlert({ open: true, type, message });
 
-  //   const handleAvatarSelect = (e) => {
-  //     const file = e.target.files?.[0];
-  //     e.target.value = ""; // allow re-selecting the same file again later
-  //     console.log("files is",file);
-
-  //     if (!file) return;
-
-  //     setAvatarFile(file);
-  // console.log("avta5r file is ",avatarFile);
-
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       setAvatarPreview(reader.result);
-  //       setAvatarModalOpen(true);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   };
 
   const handleAvatarSelect = (e) => {
     const file = e.target.files?.[0];
@@ -115,7 +99,7 @@ export default function ProfileHeader({
           sessionStorage.getItem("profilePhotoadded"),
         );
 
-        showAvatarAlert(
+        showAlert(
           "success",
           response?.data?.message || "Profile picture uploaded successfully!",
         );
@@ -131,7 +115,7 @@ export default function ProfileHeader({
     } catch (err) {
       console.error("Profile image upload error:", err);
 
-      showAvatarAlert(
+      showAlert(
         "error",
         err?.response?.data?.message ||
           err?.response?.data?.error ||
@@ -144,10 +128,10 @@ export default function ProfileHeader({
   };
 
   const hasProfilePicture = Boolean(userData?.profilePicture);
-
+const profileCompletion = hasProfilePicture ? 35 : 25;
   return (
     <div className="profile-header">
-      <Snackbar
+      {/* <Snackbar
         open={avatarAlert.open}
         autoHideDuration={4000}
         onClose={() => setAvatarAlert((a) => ({ ...a, open: false }))}
@@ -162,7 +146,7 @@ export default function ProfileHeader({
         >
           {avatarAlert.message}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       <div className="profile-header-content">
         <div className="profile-avatar-section">
@@ -176,6 +160,7 @@ export default function ProfileHeader({
                   width={96}
                   height={96}
                   unoptimized
+                  loading="eager"
                 />
               ) : (
                 <FaUserCircle className="profile-default-avatar" size={96} />
@@ -223,80 +208,93 @@ export default function ProfileHeader({
               4.8 rating{" "}
             </p>
           </div>
-          {role === "driver" && !userData?.profileCompleted && (
-            <div className="profile-progress-card">
-              <div className="profile-progress-top">
-                <div>
-                  <h4 className="profile-progress-title">
-                    Complete your profile
-                  </h4>
-                  <p className="profile-progress-text">
-                    Complete your profile to build trust and get more ride
-                    bookings.
-                  </p>
-                </div>
-                <span className="profile-progress-percentage">25%</span>
-              </div>
+       {role === "driver" && !userData?.profileCompleted && (
+  <div className="profile-progress-card">
+    <div className="profile-progress-top">
+      <div>
+        <h4 className="profile-progress-title">
+          Complete your profile
+        </h4>
 
-              <div className="profile-progress-bar">
-                <div
-                  className="profile-progress-fill"
-                  style={{ width: "25%" }}
-                ></div>
-              </div>
+        <p className="profile-progress-text">
+          Complete your profile to build trust and get more ride
+          bookings.
+        </p>
+      </div>
 
-              <div className="profile-progress-footer">
-                <span className="profile-progress-info">
-                  8 of 12 profile sections completed
-                </span>
-                <button
-                  type="button"
-                  className="profile-progress-btn"
-                  onClick={() => router.push("/driver/complete-profile")}
-                >
-                  Complete Profile
-                </button>
-              </div>
-            </div>
-          )}
+      <span className="profile-progress-percentage">
+        {profileCompletion}%
+      </span>
+    </div>
+
+    <div className="profile-progress-bar">
+      <div
+        className="profile-progress-fill"
+        style={{ width: `${profileCompletion}%` }}
+      />
+    </div>
+
+    <div className="profile-progress-footer">
+      <span className="profile-progress-info">
+        {hasProfilePicture
+          ? "9 of 12 profile sections completed"
+          : "8 of 12 profile sections completed"}
+      </span>
+
+      <button
+        type="button"
+        className="profile-progress-btn"
+        onClick={() => router.push("/driver/complete-profile")}
+      >
+        Complete Profile
+      </button>
+    </div>
+  </div>
+)}
         </div>
-        {role === "driver" && !userData?.profileCompleted && (
-          <div className="profile-progress-card1">
-            <div className="profile-progress-top">
-              <div>
-                <h4 className="profile-progress-title">
-                  Complete your profile
-                </h4>
-                <p className="profile-progress-text">
-                  Complete your profile to build trust and get more ride
-                  bookings.
-                </p>
-              </div>
+      {role === "driver" && !userData?.profileCompleted && (
+  <div className="profile-progress-card1">
+    <div className="profile-progress-top">
+      <div>
+        <h4 className="profile-progress-title">
+          Complete your profile
+        </h4>
 
-              <span className="profile-progress-percentage">25%</span>
-            </div>
+        <p className="profile-progress-text">
+          Complete your profile to build trust and get more ride
+          bookings.
+        </p>
+      </div>
 
-            <div className="profile-progress-bar">
-              <div
-                className="profile-progress-fill"
-                style={{ width: "25%" }}
-              ></div>
-            </div>
+      <span className="profile-progress-percentage">
+        {profileCompletion}%
+      </span>
+    </div>
 
-            <div className="profile-progress-footer">
-              <span className="profile-progress-info">
-                8 of 12 profile sections completed
-              </span>
+    <div className="profile-progress-bar">
+      <div
+        className="profile-progress-fill"
+        style={{ width: `${profileCompletion}%` }}
+      />
+    </div>
 
-              <button
-                className="profile-progress-btn"
-                onClick={() => router.push("/driver/complete-profile")}
-              >
-                Complete
-              </button>
-            </div>
-          </div>
-        )}
+    <div className="profile-progress-footer">
+      <span className="profile-progress-info">
+        {hasProfilePicture
+          ? "9 of 12 profile sections completed"
+          : "8 of 12 profile sections completed"}
+      </span>
+
+      <button
+        type="button"
+        className="profile-progress-btn"
+        onClick={() => router.push("/driver/complete-profile")}
+      >
+        Complete Profile
+      </button>
+    </div>
+  </div>
+)}
         <div className="profile-actions">
           {!isEditing ? (
             <button type="button" className="btn-edit" onClick={onEditToggle}>

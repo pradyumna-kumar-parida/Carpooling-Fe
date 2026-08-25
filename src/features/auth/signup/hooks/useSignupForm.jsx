@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "@/redux/slices/authSlice";
 import { setAuthCookies } from "@/lib/cookie";
 import { registerBrowserForNotifications } from "@/lib/notifications/register";
+import { showAlert } from "@/lib/toast";
 
 export function useSignupForm(roles) {
   const router = useRouter();
@@ -40,13 +41,13 @@ export function useSignupForm(roles) {
     label: r.name,
   }));
 
-  const showAlert = (severity, message) => {
-    clearTimeout(alertTimerRef.current);
-    setAlertType(severity);
-    setAlertMessage(message);
-    setOpenAlert(true);
-    alertTimerRef.current = setTimeout(() => setOpenAlert(false), 5000);
-  };
+  // const showAlert = (severity, message) => {
+  //   clearTimeout(alertTimerRef.current);
+  //   setAlertType(severity);
+  //   setAlertMessage(message);
+  //   setOpenAlert(true);
+  //   alertTimerRef.current = setTimeout(() => setOpenAlert(false), 5000);
+  // };
 
   const clearAlert = () => {
     clearTimeout(alertTimerRef.current);
@@ -129,8 +130,33 @@ export function useSignupForm(roles) {
         token,
       } = response.data;
 
-      if (token) localStorage.setItem("token", token);
-      showAlert(status === "success" ? "success" : "info", message);
+      //   if (token) localStorage.setItem("token", token);
+      //   showAlert(status === "success" ? "success" : "info", message);
+
+      //   if (status === "success") {
+      //     const role = mapRole(response.data.user.role);
+
+      //     const userObj = {
+      //       ...response.data.user,
+      //       role,
+      //       token: token || null,
+      //     };
+
+      //     setAuthCookies(token, role);
+      //     setFormData(INITIAL_FORM);
+
+      //     setTimeout(() => {
+      //       dispatch(loginUser(userObj));
+
+      //           registerBrowserForNotifications().catch((error) => {
+      //   console.error("Notification registration failed:", error);
+      // });
+      //       router.replace("/");
+      //     }, 500);
+      //   }
+      if (token) {
+        localStorage.setItem("token", token);
+      }
 
       if (status === "success") {
         const role = mapRole(response.data.user.role);
@@ -144,17 +170,15 @@ export function useSignupForm(roles) {
         setAuthCookies(token, role);
         setFormData(INITIAL_FORM);
 
-        setTimeout(() => {
-          dispatch(loginUser(userObj));
-          // NOTE: once the driver profile-completion page/API exists,
-          // send drivers there instead of home so they can add docs
-          // and wait for verification before publishing rides:
-          // router.replace(role === "driver" ? "/complete-profile" : "/");
-              registerBrowserForNotifications().catch((error) => {
-      console.error("Notification registration failed:", error);
-    });
-          router.replace("/");
-        }, 500);
+        dispatch(loginUser(userObj));
+
+        registerBrowserForNotifications().catch((error) => {
+          console.error("Notification registration failed:", error);
+        });
+
+        router.replace("/");
+      } else {
+        showAlert("info", message);
       }
     } catch (err) {
       showAlert(

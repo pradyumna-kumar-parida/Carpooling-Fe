@@ -52,15 +52,7 @@
   flex-wrap: wrap;
 }
 
-.ride-publish-header-eyebrow {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #93c5fd;
-  margin-bottom: 6px;
-}
+
 
 .ride-publish-header-title {
   font-family: var(--ride-publish-heading-font);
@@ -778,7 +770,7 @@
 }
 
 .ride-publish-empty-title {
-  font-family: var(--ride-publish-heading-font);
+
   font-size: 1.3rem;
   font-weight: 700;
   color: #0f172a;
@@ -990,7 +982,7 @@
 
 .ride-details-things-expanded {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 10px;
   padding: 10px 12px 12px;
   border-top: 1px solid #e8edf4;
@@ -1106,7 +1098,7 @@
   align-items: center;
   justify-content: center;
   padding: 4px 12px;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: #fff;
   background: #22c55e; /* Green */
@@ -1139,7 +1131,26 @@
   align-items: center;
   gap: 6px;
 }
+.booking-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 6px;
+}
 
+.booking-status-cancelled {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.booking-status-confirmed {
+  color: #1e40af;
+  background: #dbeafe;
+}
 .ride-publish-pax-paid-yes {
   background: #dcfce7;
   color: #15803d;
@@ -1437,11 +1448,14 @@
   .ride-publish-empty{
     padding: 30px 18px;
   }
+   .ride-details-things-value,
   .ride-details-things-label {
     font-size: 0.5rem !important;
   }
+
+  .booking-status,
   .ride-publish-modal-pax-seat,
-  .ride-details-things-value,
+ 
   .ride-publish-modal-btn-cancel,
   .ride-publish-modal-btn-start,
   .ride-publish-pax-paid,
@@ -1451,8 +1465,7 @@
   .ride-publish-card-seats-count,
   .ride-publish-card-addr,
   .ride-publish-status-badge,
-  .ride-publish-summary-label,
-  .ride-publish-header-eyebrow {
+  .ride-publish-summary-label {
     font-size: 0.6rem !important;
   }
   .ride-details-things-pax-header {
@@ -1478,7 +1491,7 @@
     height: 10px;
     width: 10px;
   }
-  .ride-publish-header-eyebrow,
+
   .ride-publish-modal-time-tag,
   .ride-publish-card-city-block-right > svg,
   .ride-publish-card-city-block > svg {
@@ -1498,7 +1511,7 @@
   .ride-publish-header-inner {
     padding: 30px 24px;
   }
-
+.ride-publish-empty-sub,
   .ride-publish-confirm-btn-yes,
   .ride-publish-confirm-btn-no,
   .ride-publish-confirm-text,
@@ -1548,11 +1561,21 @@
     height: 20px;
     width: 20px;
   }
-
+.ride-publish-empty-title{
+  font-size: 1.2rem;
+}
   .ride-publish-modal-title {
-    font-size: 1rem;
+    font-size: 1rem !important;
   }
   .ride-publish-confirm-dialog {
     padding: 20px;
   }
+}
+.ride-publish-modal-pax-seat.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: auto;
+
+
+  border: none;
 }

@@ -478,7 +478,7 @@ export default function BookingRequests() {
       <div className="booking-req-header">
         <div className="booking-req-header-inner">
           <div className="booking-req-header-left">
-            <span className="booking-req-header-eyebrow">Driver Dashboard</span>
+        
             <h1 className="booking-req-header-title">Booking Requests</h1>
             <p className="booking-req-header-sub">
               Review and manage all passenger booking requests for your

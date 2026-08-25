@@ -349,7 +349,7 @@ export default function ChatPage({ chatList }) {
         <div className="chat-sidebar__header">
           <h2 className="chat-sidebar__title">
             Passenger Chats
-            <span className="chat-badge">{safeChats.length}</span>
+            {/* <span className="chat-badge">{safeChats.length}</span> */}
           </h2>
         </div>
 
@@ -369,53 +369,66 @@ export default function ChatPage({ chatList }) {
           />
         </div>
 
-        <ul className="chat-list">
-          {safeChats.map((chat, index) => (
-            <li key={chat?.id ?? chat?.booking_id ?? index}>
-              <button
-                type="button"
-                className={`chat-list__item ${
-                  chat.id === activeId ? "chat-list__item--active" : ""
-                }`}
-                onClick={() => openChat(chat)}
-              >
-                <span className="chat-avatar">
-                  {chat?.profile_picture ? (
-                    <img src={chat.profile_picture} alt={chat?.user_name} />
-                  ) : (
-                    <div className="profile-placeholder-list">
-                      {chat?.user_name?.split(" ")[0]?.charAt(0)?.toUpperCase()}
-                    </div>
-                  )}
-                  {/* online status per passenger isn't provided by the chat-list API yet */}
-                  {/* <span className={`chat-status-dot ${chat.online ? "chat-status-dot--online" : ""}`} /> */}
-                </span>
+     <ul className="chat-list">
+  {safeChats.length > 0 ? (
+    safeChats.map((chat, index) => (
+      <li key={chat?.id ?? chat?.booking_id ?? index}>
+        <button
+          type="button"
+          className={`chat-list__item ${
+            chat.id === activeId ? "chat-list__item--active" : ""
+          }`}
+          onClick={() => openChat(chat)}
+        >
+          <span className="chat-avatar">
+            {chat?.profile_picture ? (
+              <img src={chat.profile_picture} alt={chat?.user_name} />
+            ) : (
+              <div className="profile-placeholder-list">
+                {chat?.user_name
+                  ?.split(" ")[0]
+                  ?.charAt(0)
+                  ?.toUpperCase()}
+              </div>
+            )}
+          </span>
 
-                <span className="chat-list__body">
-                  <span className="chat-list__row">
-                    <span className="chat-list__name">{chat?.user_name}</span>
-                    <span className="chat-list__time">
-                      {formatChatListTime(chat?.last_message_at)}
-                    </span>
-                  </span>
-                  {/* pickup point / seats aren't part of the chat-list API response */}
-                  {/* <span className="chat-list__meta">
-                    <span className="chat-list__dot" />
-                    Pickup: {chat.pickup}
-                  </span>
-                  <span className="chat-list__seats">{chat.seats}</span> */}
-                  <span className="chat-list__preview">
-                    {chat?.last_message}
-                  </span>
-                </span>
+          <span className="chat-list__body">
+            <span className="chat-list__row">
+              <span className="chat-list__name">{chat?.user_name}</span>
 
-                {chat?.unread > 0 && (
-                  <span className="chat-unread">{chat?.unread}</span>
-                )}
-              </button>
-            </li>
-          ))}
-        </ul>
+              <span className="chat-list__time">
+                {formatChatListTime(chat?.last_message_at)}
+              </span>
+            </span>
+
+            <span className="chat-list__preview">
+              {chat?.last_message}
+            </span>
+          </span>
+
+          {chat?.unread > 0 && (
+            <span className="chat-unread">{chat?.unread}</span>
+          )}
+        </button>
+      </li>
+    ))
+  ) : (
+    <li className="chat-empty-state">
+      <div className="chat-empty-icon">
+        {/* use your existing chat/inbox icon here */}
+        💬
+      </div>
+
+      <h3>No passenger chats yet</h3>
+
+      <p>
+        When a passenger books a ride or starts a conversation,
+        their chat will appear here.
+      </p>
+    </li>
+  )}
+</ul>
       </aside>
 
       {/* ---------- Main chat window ---------- */}

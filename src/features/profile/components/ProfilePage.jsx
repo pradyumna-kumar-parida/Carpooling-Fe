@@ -48,7 +48,7 @@ export default function ProfilePage({ profileData }) {
 
   return (
     <div className="profile-page">
-      <Snackbar
+      {/* <Snackbar
         open={toast.open}
         autoHideDuration={4000}
         onClose={closeToast}
@@ -63,7 +63,7 @@ export default function ProfilePage({ profileData }) {
         >
           {toast.message}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       <div className="container">
         <ProfileHeader

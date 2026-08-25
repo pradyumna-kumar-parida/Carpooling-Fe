@@ -4,7 +4,8 @@ import { vehicleRegistrationApi } from "../../../../services/client/vehicleServi
 import { INITIAL_VEHICLE_DATA } from "../constants/vehicleConstants";
 import { validateStep, buildVehiclePayload } from "../utils/vehicleHelpers";
 import { useSelector } from "react-redux";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { showAlert } from "@/lib/toast";
 export function useVehicleForm() {
   // const { fetchVehicleList } = useVehicleList();
   // ── Stepper ───────────────────────────────────────────────────────────
@@ -25,17 +26,18 @@ export function useVehicleForm() {
     severity: "error",
   });
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const router = useRouter();
-  const redirectTo = searchParams.get("from") || window.location.href;
+  const redirectTo = searchParams.get("from") || pathname;
 
   const redirectAfterRegister = () => router.replace(redirectTo);
   // ── Toast helpers ─────────────────────────────────────────────────────
-  const showToast = (message, severity = "error") =>
-    setToast({ open: true, message, severity });
-  const closeToast = (_, reason) => {
-    if (reason === "clickaway") return;
-    setToast((p) => ({ ...p, open: false }));
-  };
+  // const showToast = (message, severity = "error") =>
+  //   setToast({ open: true, message, severity });
+  // const closeToast = (_, reason) => {
+  //   if (reason === "clickaway") return;
+  //   setToast((p) => ({ ...p, open: false }));
+  // };
 
   // ── Input change ──────────────────────────────────────────────────────
   const handleInputChange = (e) => {
@@ -118,13 +120,13 @@ export function useVehicleForm() {
         window.scrollTo({ top: 0, behavior: "smooth" });
         setTimeout(redirectAfterRegister, 500);
       } else {
-        showToast(
+        showAlert(
           response.data?.message || "Submission failed. Please try again.",
         );
       }
     } catch (err) {
       console.log("422 details →", err?.response?.data);
-      showToast(
+      showAlert(
         err?.response?.data?.message ||
           err?.response?.data?.error ||
           err?.message ||
@@ -154,6 +156,6 @@ export function useVehicleForm() {
     loading,
     isSuccess,
     toast,
-    closeToast,
+    // closeToast,
   };
 }

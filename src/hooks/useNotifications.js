@@ -7,13 +7,21 @@ import {
   markNotificationReadApi,
   markAllNotificationsReadApi,
 } from "@/services/client/notificationService";
+import { getToken } from "@/lib/cookie";
 
 export const useNotifications = () => {
   const queryClient = useQueryClient();
 
+  const token = getToken()
+   
+
   const notificationsQuery = useQuery({
     queryKey: ["notifications"],
     queryFn: getNotificationsApi,
+
+    // ⭐ API will NOT be called if token doesn't exist
+    enabled: !!token,
+
     staleTime: 30 * 1000,
     refetchOnWindowFocus: true,
   });

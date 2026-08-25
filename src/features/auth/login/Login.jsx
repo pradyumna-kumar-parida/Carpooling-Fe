@@ -3,7 +3,7 @@ import { FaCarAlt, FaUserAlt } from "react-icons/fa";
 import { FaArrowLeft } from "react-icons/fa6";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import ArcLoader from "../../../components/Loader";
+import ArcLoader from "@/components/Loader";
 
 import { useLoginForm } from "./hooks/useLoginForm";
 import LoginTabToggle from "./components/LoginTabToggle";
@@ -57,7 +57,7 @@ export default function Login() {
   return (
     <>
       {/* ── Global alert ── */}
-      <Snackbar
+      {/* <Snackbar
         open={alert.open}
         autoHideDuration={5000}
         onClose={() => setAlert((a) => ({ ...a, open: false }))}
@@ -72,7 +72,7 @@ export default function Login() {
         >
           {alert.message}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       {loading && <PageLoader />}
 

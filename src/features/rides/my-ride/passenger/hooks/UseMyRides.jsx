@@ -1,5 +1,6 @@
 "use client";
 
+import { showAlert } from "@/lib/toast";
 import { cancelBookingApi } from "@/services/client/rideService";
 import { useEffect, useMemo, useState } from "react";
 
@@ -127,11 +128,11 @@ function groupRidesIntoTabs(rides) {
 
     if (bookingStatus === "cancelled" || rideStatus === "cancelled") {
       groups.cancelled.push(ride);
-    } else if (rideStatus === "completed") {
+    } else if (bookingStatus === "completed") {
       groups.completed.push(ride);
-    } else if (rideStatus === "expired") {
+    } else if (bookingStatus === "expired") {
       groups.expired.push(ride);
-    } else if (rideStatus === "ongoing") {
+    } else if (bookingStatus === "ongoing") {
       groups.ongoing.push(ride);
     } else {
       // scheduled / confirmed / anything else pending departure
@@ -147,10 +148,10 @@ export function getStatusColor(status) {
     case "pending":
     case "waiting for approval":
       return "#ff9d00";
-    case "scheduled":
+    case "confirmed":
       return "#16a34a";
     case "ongoing":
-      return "#9500ff";
+      return "rgb(194, 65, 12);";
     case "expired":
       return "#57534e";
     case "completed":
@@ -207,40 +208,58 @@ export function useMyRides(userRides = []) {
     setCancelError("");
   };
 
-  const handleConfirmCancel = async (reason) => {
-    if (!rideToCancel) return;
-    setIsCancelling(true);
-    setCancelError("");
-    try {
-      await cancelBookingApi({
-        bookingId: rideToCancel.id,
-        cancelReason: reason,
-      });
+const handleConfirmCancel = async (reason) => {
+  if (!rideToCancel) return;
 
-      // optimistically flip the ride to cancelled so it moves tabs right away
-      setRides((prev) =>
-        prev.map((r) =>
-          r.id === rideToCancel.id
-            ? {
-                ...r,
-                status: "cancelled",
-                bookingStatus: "cancelled",
-                cancelReason: reason,
-              }
-            : r,
-        ),
-      );
+  setIsCancelling(true);
+  setCancelError("");
 
-      setRideToCancel(null);
-    } catch (err) {
-      setCancelError(
-        err?.response?.data?.message ||
-          "Something went wrong while cancelling this ride. Please try again.",
-      );
-    } finally {
-      setIsCancelling(false);
-    }
-  };
+  try {
+    await cancelBookingApi({
+      bookingId: rideToCancel.id,
+      cancelReason: reason,
+    });
+
+    console.log("CANCEL API SUCCESS");
+
+    setRides((prev) =>
+      prev.map((r) =>
+        r.id === rideToCancel.id
+          ? {
+              ...r,
+              status: "cancelled",
+              bookingStatus: "cancelled",
+              cancelReason: reason,
+            }
+          : r,
+      ),
+    );
+
+    setRideToCancel(null);
+
+    // IMPORTANT: call toast after closing the modal
+    setTimeout(() => {
+      console.log("SHOWING CANCEL TOAST");
+      showAlert("success", "Ride cancelled successfully.");
+    }, 100);
+
+  } catch (err) {
+    console.error("CANCEL API ERROR:", err);
+
+    const message =
+      err?.response?.data?.message ||
+      err?.response?.data?.error ||
+      "Something went wrong while cancelling this ride. Please try again.";
+
+    setCancelError(message);
+
+    setTimeout(() => {
+      showAlert("error", message);
+    }, 100);
+  } finally {
+    setIsCancelling(false);
+  }
+};
 
   return {
     activeTab,

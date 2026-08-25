@@ -1670,12 +1670,12 @@ footer {
    =========================== */
 .profile-page {
   min-height: 100vh;
-  background: var(--fr-bg-light);
+  background: rgb(240, 244, 248);
   padding: 2rem 1rem;
 }
 
 .profile-header {
-  background: var(--fr-bg-white);
+  background:#fff;
   border-radius: var(--fr-radius-lg);
   padding: 2rem;
   border-left: 4px solid var(--custom-one);
@@ -1721,26 +1721,40 @@ footer {
 }
 
 .avatar-upload-btn {
+  width: 32px;
+  height: 32px;
+
   position: absolute;
-  bottom: 0;
   right: 0;
-  width: 36px;
-  height: 36px;
-  background: var(--fr-text-dark);
-  border-radius: 50%;
+  bottom: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+
+  background: #ffffff;
+  color: #1557b0;
+
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
   cursor: pointer;
-  box-shadow: var(--fr-shadow);
-  transition: transform 0.2s ease;
+
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .avatar-upload-btn:hover {
-  transform: scale(1.1);
-}
+  transform: scale(1.08);
 
+  background: #f5f9ff;
+
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.22);
+}
 .profile-info {
   flex: 1;
   align-self: center;
@@ -1829,7 +1843,7 @@ footer {
 }
 
 .profile-tabs {
-  background: var(--fr-bg-white);
+  background: #fff;
   border-radius: var(--fr-radius-lg);
   padding: 0.5rem;
   margin-bottom: 2rem;
@@ -1909,7 +1923,57 @@ footer {
 .form-group.full-width {
   grid-column: 1 / -1;
 }
+.chat-empty-state {
+  list-style: none;
 
+  min-height: 320px;
+  padding: 40px 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.chat-empty-icon {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 16px;
+
+  border-radius: 50%;
+
+  background: #f1f5f9;
+  color: #64748b;
+
+  font-size: 23px;
+}
+
+.chat-empty-state h3 {
+  margin: 0 0 7px;
+
+  color: #172033;
+
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.chat-empty-state p {
+  max-width: 270px;
+
+  margin: 0;
+
+  color: #7b8494;
+
+  font-size: 13px;
+  line-height: 20px;
+}
 .form-label {
   font-size: 0.875rem;
   font-weight: 600;
@@ -1958,7 +2022,7 @@ footer {
   /* border: 1.5px solid var(--desc); */
   border-radius: var(--fr-radius);
   margin: 0;
-  background-color: #f7f4f4;
+    background-color: rgba(255, 255, 255, 0.596);
 }
 
 .documents-grid {
@@ -1972,6 +2036,7 @@ footer {
   border-radius: var(--fr-radius-lg);
   padding: 1.5rem;
   display: flex;
+  background-color: rgba(255, 255, 255, 0.596);
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -1987,12 +2052,17 @@ footer {
 .document-icon {
   width: 64px;
   height: 64px;
-  background: var(--fr-text-dark);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ntfy-border);
+  background: #ffffff;
+  color: #1557b0;
+
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
 }
 
 .document-title {
@@ -2886,6 +2956,7 @@ footer {
   .avl-rides-viewall {
     font-size: 0.7rem !important;
   }
+  .ntfy-empty h3,
   .card-title,
   .avl-rides-title {
     font-size: 1.2rem !important;
@@ -2897,6 +2968,8 @@ footer {
   .chat-window__name {
     font-size: 0.9rem !important;
   }
+  
+  .chat-empty-state p,
   .testimonial-card p,
   .app-download-desc {
     font-size: 0.8rem !important;
@@ -3264,6 +3337,7 @@ footer {
   .login-redirect,
   .field-input,
   .field-select,
+    .document-title,
   .verify-driver,
   .signup-desc,
   .field-label,
@@ -3273,7 +3347,7 @@ footer {
   .fr-field-icon,
   .features-list li,
   .card-subtitle,
-  .status-pending,
+.ntfy-empty p,
   .form-group label {
     font-size: 0.8rem !important;
   }
@@ -3283,18 +3357,22 @@ footer {
   }
   .user-ride-complete-booking-row,
   .ride-com-driver-car,
-  .document-title,
+
   .ride-com-nudge,
   .ride-com-view-all,
   .driver-track-btn,
   .sos-alert-text,
   .ntfy-card-desc,
+    .status-pending,
   .chat-bubble__text,
   .ride-card__route strong {
     font-size: 0.7rem !important;
   }
   .document-card {
     gap: 10px !important;
+  }
+  .user-ride-complete-help-link{
+    font-size: 0.68rem !important;
   }
   .ride-com-role-tag,
   .cp-pending-note,
@@ -5026,7 +5104,7 @@ footer {
 
 .ntfy-empty h3 {
   font-family: var(--heading);
-  font-size: 20px;
+  font-size: 1.3rem;
   font-weight: 600;
   color: var(--black);
   margin: 0 0 6px;
@@ -5034,7 +5112,7 @@ footer {
 
 .ntfy-empty p {
   margin: 0;
-  font-size: 14px;
+  font-size: 1rem;
 }
 
 /* ---------- responsive ---------- */
@@ -7714,8 +7792,8 @@ footer {
   top: 10px;
   right: 10px;
 
-  width: 34px;
-  height: 34px;
+  width: 24px;
+  height: 24px;
 
   display: flex;
   align-items: center;
@@ -7727,8 +7805,8 @@ footer {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
 
-  background: #fff;
-  color: #4b5563;
+  background:#ffffffc4;
+  color: #000000;
 
   cursor: pointer;
 
@@ -8316,7 +8394,7 @@ footer {
 .user-ride-complete-help-links {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   color: var(--custom-one);
   font-weight: 600;
 }
@@ -8327,16 +8405,19 @@ footer {
   gap: 6px;
   background: none;
   border: none;
+  border-radius: var(--fr-radius);
+  padding: 7px 15px;
   color: var(--custom-one);
+  text-decoration: none;
+  background-color: #ffffff91;
   font-weight: 600;
   font-size: 12px;
+  box-shadow: var(--fr-shadow);
   cursor: pointer;
-  padding: 0;
+
 }
 
-.user-ride-complete-help-link:hover {
-  text-decoration: underline;
-}
+
 
 .user-ride-complete-help-divider {
   color: var(--ntfy-border);

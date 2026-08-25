@@ -34,10 +34,10 @@ export default function RideCard({ ride, onViewDetails, onOpenChat, onCancelClic
 
   if (!ride) return null;
 
-  const status = (ride.status || "").toLowerCase();
+  const status = (ride.bookingStatus || "").toLowerCase();
   const isCancelled = status === "cancelled";
   const isCompleted = status === "completed";
-  const isScheduled = status === "scheduled";
+  const isScheduled = status === "confirmed";
   const isExpired = status === "expired";
 
   // Chat: only for scheduled rides, fully off for cancelled/completed (and anything else)
@@ -65,12 +65,12 @@ export default function RideCard({ ride, onViewDetails, onOpenChat, onCancelClic
         <span
           className="myride-status-chip"
           style={{
-            color: getStatusColor(ride.status),
-            border: `1px dotted ${getStatusColor(ride.status)}`,
-            backgroundColor: `${getStatusColor(ride.status)}25`,
+            color: getStatusColor(ride.bookingStatus),
+            border: `1px dotted ${getStatusColor(ride.bookingStatus)}`,
+            backgroundColor: `${getStatusColor(ride.bookingStatus)}25`,
           }}
         >
-          {capitalize(ride.status)}
+          {capitalize(ride.bookingStatus)}
         </span>
         <span className="info-value-card-date">
           {ride.date} <GoDotFill className="separtor-dot" />

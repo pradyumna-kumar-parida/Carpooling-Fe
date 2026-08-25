@@ -1644,6 +1644,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
+  /* background-color: var(--fr-bg-white)  ; */
 }
 
 .myride-empty {
@@ -1653,21 +1654,31 @@
 }
 
 .empty-icon {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
+      background: var(--fr-bg-white);
+    width: 80px;
+    height: 80px;
+    color: var(--fr-text-light);
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 20px;
+    display: flex;
 }
 
+
 .myride-empty h3 {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: var(--fr-text-dark);
   margin: 0 0 0.5rem 0;
 }
 
 .myride-empty p {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: var(--fr-text-gray);
-  margin: 0;
+      margin: 0 0 24px;
 }
 
 .myride-card {
@@ -3737,6 +3748,7 @@
     padding-top: 1rem !important;
   }
   .sucess-subheading,
+  
   .basicDetails-registration,
   .vehicledetails-stepper-wrapper,
   .vehicledetails-section-title {
@@ -3781,6 +3793,7 @@
   .my-rides-driver-meta {
     margin-bottom: 0px !important;
   }
+  
   .bookconf-step-city,
   .section-title {
     font-size: 0.9rem !important;
@@ -3895,6 +3908,7 @@
   .bkf-status-label,
   .bkf-status-badge,
   .bkf-subtitle,
+  .vehicle-detl-empty-desc,
   .bookconf-info-value,
   .bookconf-step-address,
   .ridepay-payment-alert h4,
@@ -3906,6 +3920,7 @@
     font-size: 0.8rem !important;
   }
   .bkf-ref-chip,
+  
   .bookconf-step-time,
   .info-value-card-date,
   .rating-modal-feedback,
@@ -3982,6 +3997,7 @@
     font-size: 1.9rem !important;
   }
   .bkf-title,
+  
   .bookconf-step-icon,
   .ridepay-payment-icon,
   .vehicle-detl-title,
@@ -3992,6 +4008,7 @@
     gap: 8px !important;
   }
   .myride-empty h3,
+  .vehicle-detl-empty-title,
   .sucess-heading,
   .step-icon,
   .bookconf-card-title,
@@ -4001,6 +4018,7 @@
   }
   /* .sucessBedge  */
   .ridepay-driver-avatar,
+  
   .dm-avatar,
   .passenger-avatar,
   .driver-avatar {
@@ -4149,6 +4167,8 @@
     width: 16px;
     height: 16px;
   }
+  .empty-icon,
+  .vehicle-detl-empty-icon,
   .bkf-icon-wrap {
     height: 50px !important;
     width: 50px !important;
@@ -4344,11 +4364,16 @@
   .vehicledetails-photo-box {
     padding: 2rem 1rem;
   }
+  .vehicle-detl-empty-icon{
+        margin: 0 auto 10px !important;
+  }
   .vehicledetails-preview-image {
     max-width: 144px !important;
   }
+  .empty-icon,
+  .vehicle-details-car-icon,
   .vehicledetails-upload-icon {
-    font-size: 2rem;
+    font-size: 2rem !important;
   }
   .css-eglki6-MuiLinearProgress-root {
     display: none !important;
@@ -4516,9 +4541,12 @@
 }
 
 /* ── Page ─────────────────────────────────────────────────────────────────── */
+.vehicle-details-screen{
+  background: var(--fr-bg-light);
+
+}
 .vehicle-detl-page {
   min-height: 100vh;
-  background: var(--fr-bg-light);
   padding: 32px 24px;
   max-width: 1200px;
   margin: 0 auto;
@@ -4808,7 +4836,7 @@
   align-items: center;
   gap: 12px;
 }
-
+/* 
 .vehicle-detl-edit-btn {
   display: flex;
   align-items: center;
@@ -4828,7 +4856,7 @@
 .vehicle-detl-edit-btn:hover {
   opacity: 0.9;
   transform: translateY(-1px);
-}
+} */
 
 /* ── Sections ─────────────────────────────────────────────────────────────── */
 .vehicle-detl-section {
@@ -5081,7 +5109,9 @@
 .vehicle-detl-save-btn:disabled {
   cursor: not-allowed;
 }
-
+.vehicle-details-car-icon{
+  font-size: 2.5rem;
+}
 /* ── Empty state ──────────────────────────────────────────────────────────── */
 .vehicle-detl-empty {
   text-align: center;
@@ -5104,13 +5134,14 @@
   color: var(--fr-text-light);
 }
 .vehicle-detl-empty-title {
-  font-size: 25px;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--fr-text-dark);
   margin: 0 0 8px;
+
 }
 .vehicle-detl-empty-desc {
-  font-size: 18px;
+  font-size: 1rem;
   color: var(--fr-text-gray);
   margin: 0 0 24px;
 }
@@ -5206,12 +5237,11 @@
     min-width: 180px;
     flex: 0 0 auto;
 }
+ .vehicle-detl-section,
   .vehicle-detl-panel-header {
-    padding: 18px 20px;
+    padding: 18px 15px;
   }
-  .vehicle-detl-section {
-    padding: 18px 20px;
-  }
+
   .vehicle-detl-info-grid {
     grid-template-columns: 1fr;
   }

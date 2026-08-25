@@ -36,14 +36,14 @@ export default function VehicleDetails({ vehiclesFetch }) {
     handleEditChange,
     handleEditSubmit,
     toast,
-    closeToast,
+    // closeToast,
   } = useVehicleDetails(vehiclesFetch);
 
   // const { vehicleList } = useVehicleList();
   return (
     <>
       {/* ── Toast ── */}
-      <Snackbar
+      {/* <Snackbar
         open={toast.open}
         autoHideDuration={4000}
         onClose={closeToast}
@@ -58,7 +58,7 @@ export default function VehicleDetails({ vehiclesFetch }) {
         >
           {toast.message}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       {/* ── Edit modal ── */}
       <VehicleEditModal
@@ -69,6 +69,7 @@ export default function VehicleDetails({ vehiclesFetch }) {
         onSubmit={handleEditSubmit}
         loading={editLoading}
       />
+<div className="vehicle-details-screen">
 
       <div className="vehicle-detl-page">
         {/* ── Page header ── */}
@@ -150,6 +151,7 @@ export default function VehicleDetails({ vehiclesFetch }) {
           </div>
         )}
       </div>
+</div>
     </>
   );
 }

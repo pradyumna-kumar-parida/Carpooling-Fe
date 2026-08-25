@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { bookRideApi } from "@/services/client/bookingService";
+import { showAlert } from "@/lib/toast";
 
 export function useBooking() {
   const router = useRouter();
@@ -19,11 +20,11 @@ export function useBooking() {
   const [alertMessage, setAlertMessage] = useState("");
   const [alertType, setAlertType] = useState("success");
 
-  const showAlert = (type, message) => {
-    setAlertType(type);
-    setAlertMessage(message);
-    setOpenAlert(true);
-  };
+  // const showAlert = (type, message) => {
+  //   setAlertType(type);
+  //   setAlertMessage(message);
+  //   setOpenAlert(true);
+  // };
 
   const handleBookRide = async ({ ride, noOfSIt }) => {
     setBookingLoading(true);
@@ -81,6 +82,6 @@ export function useBooking() {
     alertMessage,
     alertType,
 
-    showAlert,
+
   };
 }

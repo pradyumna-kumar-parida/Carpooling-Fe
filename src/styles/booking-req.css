@@ -45,16 +45,6 @@
   flex-wrap: wrap;
 }
 
-.booking-req-header-eyebrow {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #93c5fd;
-  margin-bottom: 6px;
-}
-
 .booking-req-header-title {
   font-family: var(--booking-req-heading-font);
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
@@ -887,52 +877,48 @@
 }
 
 @media (max-width: 480px) {
-   .booking-req-pending-alert,
+  .booking-req-pending-alert,
   .booking-req-rating-val,
   .booking-req-route-place,
   .booking-req-expanded-label,
   .booking-req-expanded-val,
-  .booking-req-approved-footer, .booking-req-rejected-footer{
+  .booking-req-approved-footer,
+  .booking-req-rejected-footer {
     font-size: 0.7rem;
   }
-  
+
   .booking-req-message-text,
   .booking-req-stat-pill,
   .booking-req-ride-tag-text,
   .booking-req-rides-count,
-  .booking-req-status-badge,
- 
-  .booking-req-header-eyebrow {
+  .booking-req-status-badge {
     font-size: 0.6rem;
   }
   .booking-req-header-title {
     font-size: 1.3rem;
   }
-  .booking-req-message-box{
+  .booking-req-message-box {
     padding: 7px 10px;
   }
-  .booking-req-message-box>svg{
+  .booking-req-message-box > svg {
     height: 12px;
     width: 12px;
   }
-  
+
   .booking-req-btn-approve,
   .booking-req-btn-reject,
-  
-    .booking-req-passenger-name,
-  .booking-req-passenger-name
-  .booking-req-header-sub {
+  .booking-req-passenger-name,
+  .booking-req-passenger-name .booking-req-header-sub {
     font-size: 0.8rem;
   }
   .booking-req-header-inner {
     padding: 30px 24px;
   }
-.booking-req-passenger-info{
-  gap: 1px;
-}
-.booking-req-ride-tag,
-  .booking-req-summary-bar,
-  .booking-req-header-eyebrow {
+  .booking-req-passenger-info {
+    gap: 1px;
+  }
+  .booking-req-ride-tag,
+  .booking-req-summary-bar {
     display: none;
   }
   .booking-req-filter-tab {
@@ -946,15 +932,15 @@
     font-size: 0.6rem;
     min-width: auto;
   }
-  .booking-req-avatar{
+  .booking-req-avatar {
     height: 35px;
     width: 35px;
   }
-.booking-req-stat-pill>svg{
-  height: 10px;
-  width: 10px;
-}
-.booking-req-stat-pill{
-  padding: 3px 7px;
-}
+  .booking-req-stat-pill > svg {
+    height: 10px;
+    width: 10px;
+  }
+  .booking-req-stat-pill {
+    padding: 3px 7px;
+  }
 }

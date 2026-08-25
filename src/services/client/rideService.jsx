@@ -26,3 +26,7 @@ export const cancelRideApi = (rideId, data) =>
 
 export const cancelBookingApi = (data) =>
   getClientAxios.post(`/passenger/cancel-booking`, data);
+export const ratingApi = (data) => getClientAxios.post("/ratings", data);
+
+export const SOSApi = (rideId, data) =>
+  getClientAxios.post(`/rides/${rideId}/sos`, data);

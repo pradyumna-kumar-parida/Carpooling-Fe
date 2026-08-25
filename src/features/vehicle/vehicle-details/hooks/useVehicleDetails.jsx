@@ -1,4 +1,5 @@
 "use client";
+import { showAlert } from "@/lib/toast";
 import { vehicleDetailUpdateApi } from "@/services/client/vehicleService";
 // src/pages/Vehicle/vehicle-details/hooks/useVehicleDetails.js
 
@@ -31,9 +32,9 @@ export function useVehicleDetails(vehiclesFetch) {
   });
 
   // ── Toast ─────────────────────────────────────────────────────────────
-  const showToast = (message, type = "success") =>
-    setToast({ open: true, message, type });
-  const closeToast = () => setToast((p) => ({ ...p, open: false }));
+  // const showToast = (message, type = "success") =>
+  //   setToast({ open: true, message, type });
+  // const closeToast = () => setToast((p) => ({ ...p, open: false }));
 
   // ── Edit handlers ─────────────────────────────────────────────────────
   const handleEditOpen = () => {
@@ -76,13 +77,13 @@ export function useVehicleDetails(vehiclesFetch) {
       ) {
         // ── Update selected in local context list ──────────────────────
         setSelected((prev) => ({ ...prev, ...editData }));
-        showToast("Vehicle updated successfully!");
+        showAlert("Vehicle updated successfully!");
         handleEditClose();
       } else {
-        showToast(response.data?.message || "Update failed.", "error");
+        showAlert(response.data?.message || "Update failed.", "error");
       }
     } catch (err) {
-      showToast(
+      showAlert(
         err?.response?.data?.message || "Something went wrong.",
         "error",
       );
@@ -106,6 +107,6 @@ export function useVehicleDetails(vehiclesFetch) {
     handleEditChange,
     handleEditSubmit,
     toast,
-    closeToast,
+    // closeToast,
   };
 }

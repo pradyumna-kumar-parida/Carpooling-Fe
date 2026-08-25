@@ -327,6 +327,8 @@ export default function EarningsPage({
   };
 
   return (
+    <div className="earning-screen">
+
     <div className="earning-page">
       {/* Header */}
       <div className="earning-header">
@@ -702,6 +704,7 @@ export default function EarningsPage({
           <div className="earning-empty-state">No trips yet.</div>
         )}
       </div>
+    </div>
     </div>
   );
 }

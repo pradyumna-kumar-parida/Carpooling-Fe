@@ -54,9 +54,9 @@ console.log("ride canxcelled",ride);
           <div className="myride-modal-badges">
             <span
               className="myride-status-chip"
-              style={{ backgroundColor: getStatusColor(ride.status) }}
+              style={{ backgroundColor: getStatusColor(ride.bookingStatus   ) }}
             >
-              {ride.status}
+              {ride.bookingStatus   }
             </span>
           </div>
 

@@ -11,13 +11,14 @@ import { GiCometSpark } from "react-icons/gi";
 import { RxCross2 } from "react-icons/rx";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import ArcLoader from "../../../../components/Loader";
+import ArcLoader from "@/components/Loader";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { getToken } from "@/lib/cookie";
 import { publishRideApi } from "@/services/client/rideService";
 import { FaIndianRupeeSign } from "react-icons/fa6";
 import OfferRideStatus from "./OfferRideStatus";
+import { showAlert } from "@/lib/toast";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 let _scriptLoading = false;
@@ -453,14 +454,14 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
   const maxSeats = selectedVehicleData?.seats || 1;
   const seatControlDisabled = !selectedVehicle;
 
-  const showAlert = (type, message) => {
-    clearTimeout(alertTimerRef.current);
-    setAlert({ open: true, message, type });
-    alertTimerRef.current = setTimeout(
-      () => setAlert((a) => ({ ...a, open: false })),
-      5000,
-    );
-  };
+  // const showAlert = (type, message) => {
+  //   clearTimeout(alertTimerRef.current);
+  //   setAlert({ open: true, message, type });
+  //   alertTimerRef.current = setTimeout(
+  //     () => setAlert((a) => ({ ...a, open: false })),
+  //     5000,
+  //   );
+  // };
 
   const getFormSnapshot = () => ({
     from,
@@ -624,7 +625,7 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
 
   return (
     <>
-      <Snackbar
+      {/* <Snackbar
         open={alert.open}
         autoHideDuration={5000}
         onClose={() => setAlert((a) => ({ ...a, open: false }))}
@@ -639,7 +640,7 @@ const PRHero = ({ vehiclesFetch, profileData }) => {
         >
           {alert.message}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       {loading && (
         <div className="loader-back-wrapper">

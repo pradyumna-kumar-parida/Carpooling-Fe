@@ -18,6 +18,7 @@ import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import ArcLoader from "@/components/Loader";
 import { UpdateProfilepApi } from "@/services/client/authService";
+import { showAlert } from "@/lib/toast";
 
 // ── Static config ───────────────────────────────────────────────────────
 const ICONS = {
@@ -387,11 +388,11 @@ useEffect(() => {
   const totalSteps = steps.length;
   const isFinalStep = step === totalSteps - 1;
 
-  const showAlert = (severity, message) => {
-    setAlertType(severity);
-    setAlertMessage(message);
-    setOpenAlert(true);
-  };
+  // const showAlert = (severity, message) => {
+  //   setAlertType(severity);
+  //   setAlertMessage(message);
+  //   setOpenAlert(true);
+  // };
 
   const handleChange = (e) => {
     const { id, value, type, files } = e.target;
@@ -456,7 +457,7 @@ useEffect(() => {
 
   return (
     <>
-      <Snackbar
+      {/* <Snackbar
         open={openAlert}
         autoHideDuration={5000}
         onClose={() => setOpenAlert(false)}
@@ -471,7 +472,7 @@ useEffect(() => {
         >
           {alertMessage}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       {loading && <PageLoader />}
 

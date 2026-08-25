@@ -17,6 +17,7 @@ import { FaAngleRight } from "react-icons/fa6";
 import Link from "next/link";
 import { cancelRideApi, startRideApi } from "@/services/client/rideService";
 import { TbRouteAltLeft } from "react-icons/tb";
+import { showAlert } from "@/lib/toast";
 
 const STATUS_FILTERS = [
   "All",
@@ -129,6 +130,7 @@ function mapApiPassengers(bookingDetails) {
       phone: b.passenger_phone,
       amount: b.total_price,
       paid: b.payment_status === "paid",
+      bookingStatus: b.status, // "confirmed" | "cancelled" — NEW
       avatar: getInitials(b.passenger_name),
     };
   });
@@ -334,17 +336,6 @@ function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
                           </span>
                         </div>
 
-                        {!["completed", "cancelled", "expired"].includes(
-                          ride.status,
-                        ) && (
-                          <Link
-                            className="ride-publish-modal-pax-seat"
-                            href="/driver/chats"
-                          >
-                            Chat
-                          </Link>
-                        )}
-
                         <span
                           className={`ride-publish-pax-paid ${
                             p.paid
@@ -364,7 +355,17 @@ function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
                             </>
                           )}
                         </span>
-
+                        <span
+                          className={`booking-status ${
+                            p.bookingStatus === "cancelled"
+                              ? "booking-status-cancelled"
+                              : "booking-status-confirmed"
+                          }`}
+                        >
+                          {p.bookingStatus === "cancelled"
+                            ? "Cancelled"
+                            : "Confirmed"}
+                        </span>
                         <FaAngleRight
                           className={`ride-details-things-arrow ${
                             expanded ? "ride-details-things-arrow-expanded" : ""
@@ -387,7 +388,7 @@ function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
 
                           <div className="ride-details-things-info">
                             <span className="ride-details-things-label">
-                              Seats Booked
+                              Seats
                             </span>
 
                             <span className="ride-details-things-value">
@@ -397,13 +398,45 @@ function RideDetailModal({ ride, onClose, onRequestCancel, onRequestStart }) {
 
                           <div className="ride-details-things-info">
                             <span className="ride-details-things-label">
-                              Amount Received
+                              Amount
                             </span>
 
                             <span className="ride-details-things-value">
                               {p.amount}
                             </span>
                           </div>
+                          <Link
+                            className={`ride-publish-modal-pax-seat ${
+                              ["completed", "cancelled", "expired"].includes(
+                                p.bookingStatus,
+                              )
+                                ? "disabled"
+                                : ""
+                            }`}
+                            href={
+                              ["completed", "cancelled", "expired"].includes(
+                                p.bookingStatus,
+                              )
+                                ? "#"
+                                : "/driver/chats"
+                            }
+                            aria-disabled={[
+                              "completed",
+                              "cancelled",
+                              "expired",
+                            ].includes(p.bookingStatus)}
+                            onClick={(e) => {
+                              if (
+                                ["completed", "cancelled", "expired"].includes(
+                                  p.bookingStatus,
+                                )
+                              ) {
+                                e.preventDefault();
+                              }
+                            }}
+                          >
+                            Chat
+                          </Link>
                         </div>
                       )}
                     </div>
@@ -525,54 +558,62 @@ export default function PublishedRides({ publishedRide }) {
   const closeToast = () => setToast((p) => ({ ...p, open: false }));
 
   // Show toast helper
-  const showToast = (message, type = "success") => {
-    clearTimeout(toastTimerRef.current);
-    setToast({ open: true, message, type });
-  };
+  // const showToast = (message, type = "success") => {
+  //   clearTimeout(toastTimerRef.current);
+  //   setToast({ open: true, message, type });
+  // };
 
   // Actual API call — only fires after the cancel confirm dialog says "Yes"
   // Now shows toast first, then executes after 2 seconds
   const handleCancel = (id) => {
     // Show toast immediately
-    showToast("Ride cancelled", "error");
+    showAlert("success", "Ride cancelled");
 
-    // Close the confirm dialog immediately
     setConfirmCancel(null);
 
-    // Execute the API call after 2 seconds
     toastTimerRef.current = setTimeout(async () => {
       try {
         await cancelRideApi(id, { reason: cancelReason });
+
         setRides((prev) =>
           prev.map((r) => (r.id === id ? { ...r, status: "cancelled" } : r)),
         );
       } catch (err) {
         console.error("Failed to cancel ride:", err);
-        showToast("Failed to cancel ride", "error");
+
+        showAlert(
+          "error",
+          err?.response?.data?.message ||
+            err?.response?.data?.error ||
+            "Failed to cancel ride",
+        );
       } finally {
         setSelectedRide(null);
         setCancelReason("");
       }
     }, 2000);
   };
-
   // Actual API call — only fires after the start confirm dialog says "Yes"
   // Now shows toast first, then executes after 2 seconds
   const handleStart = (id) => {
-    // Show toast immediately
-    showToast("Ride started", "success");
+    // showAlert("success", "Ride started");
 
-    // Close the confirm dialog immediately
     setConfirmStart(null);
 
-    // Execute the API call after 2 seconds
     toastTimerRef.current = setTimeout(async () => {
       try {
         await startRideApi(id);
-        router.push(`/driver/tracking?rideId=${id}`); // ← changed
+
+        router.push(`/driver/tracking?rideId=${id}`);
       } catch (err) {
         console.error("Failed to start ride:", err);
-        showToast("Failed to start ride", "error");
+
+        showAlert(
+          "error",
+          err?.response?.data?.message ||
+            err?.response?.data?.error ||
+            "Failed to start ride",
+        );
       }
     }, 2000);
   };
@@ -592,7 +633,7 @@ export default function PublishedRides({ publishedRide }) {
   return (
     <div className="ride-publish-root">
       {/* ── Toast Alert ── */}
-      <Snackbar
+      {/* <Snackbar
         open={toast.open}
         autoHideDuration={3000}
         onClose={closeToast}
@@ -607,15 +648,15 @@ export default function PublishedRides({ publishedRide }) {
         >
           {toast.message}
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
 
       {/* ── Page Header ── */}
       <div className="ride-publish-header">
         <div className="ride-publish-header-inner">
           <div className="ride-publish-header-left">
-            <span className="ride-publish-header-eyebrow">
+            {/* <span className="ride-publish-header-eyebrow">
               Driver Dashboard
-            </span>
+            </span> */}
             <h1 className="ride-publish-header-title">My Rides</h1>
             <p className="ride-publish-header-sub">
               Manage all your posted rides, track seat bookings and earnings in

@@ -72,7 +72,7 @@ export default function DocumentCard({
               aria-label={`Preview ${title}`}
               title={`Preview ${title}`}
             >
-              <FiEye size={18} />
+              <FiEye size={13} />
             </button>
           )}
         </div>
@@ -116,8 +116,10 @@ export default function DocumentCard({
         ) : (
           <p className="document-status">
             {uploadedValue ? (
-              <span className="status-uploaded"><IoMdCheckmarkCircleOutline />
- Uploaded</span>
+              <span className="status-uploaded">
+                <IoMdCheckmarkCircleOutline />
+                Uploaded
+              </span>
             ) : (
               <span className="status-pending">Not uploaded</span>
             )}

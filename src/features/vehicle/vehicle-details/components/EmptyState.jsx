@@ -10,7 +10,7 @@ export default function EmptyState() {
   return (
     <div className="vehicle-detl-empty">
       <div className="vehicle-detl-empty-icon">
-        <FaCar size={40} />
+        <FaCar   className="vehicle-details-car-icon"/>
       </div>
 
       <h3 className="vehicle-detl-empty-title">No Vehicles Registered</h3>

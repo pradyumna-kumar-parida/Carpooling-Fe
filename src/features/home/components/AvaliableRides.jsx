@@ -129,6 +129,7 @@ function RideCard({ ride }) {
   return (
     <article className="avl-rides-card">
       <div className="avl-rides-card-top">
+        
         <span className="avl-rides-when">
           {ride.date} · {ride.time}
           {/* {ride.instantBooking && (

@@ -85,13 +85,13 @@ export default function VehicleRegistration() {
     loading,
     isSuccess,
     toast,
-    closeToast,
+    // closeToast,
   } = useVehicleForm();
 
   return (
     <>
       {/* ── Toast ── */}
-      <Snackbar
+      {/* <Snackbar
         open={toast.open}
         autoHideDuration={5000}
         onClose={closeToast}
@@ -106,7 +106,7 @@ export default function VehicleRegistration() {
         >
           {toast.message}
         </MuiAlert>
-      </Snackbar>
+      </Snackbar> */}
 
       {loading && <PageLoader />}
 

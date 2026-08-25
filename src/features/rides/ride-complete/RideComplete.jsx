@@ -363,7 +363,7 @@ export default function RideCompleted({
               >
                 Report an issue
               </button>
-              <FaChevronRight />
+             
             </span>
           </div>
         </section>
