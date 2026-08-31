@@ -28,3 +28,9 @@ export const getPopularRoutes = async () => {
 
   return response.data;
 };
+
+export const trackRide = async (rideId) => {
+  const axios = await getServerAxios();
+  const response = await axios.get(`/track-ride/${rideId}`);
+  return response.data;
+};

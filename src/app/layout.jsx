@@ -8,6 +8,7 @@ import ReactQueryProvider from "@/components/QueryProvider";
 import NotificationProvider from "@/components/notifications/NotificationProvider";
 import { Toaster } from "sonner";
 import "@/styles/notification-toast.css";
+import SocketProvider from "@/components/SocketProvider";
 
 const vollkorn = Vollkorn({
   subsets: ["latin"],
@@ -43,16 +44,17 @@ export default async function RootLayout({ children }) {
       <body className={`${vollkorn.variable} ${goblinOne.variable}`}>
         <ReactQueryProvider>
           <Providers userData={userData}>
+            <SocketProvider />
             <LocationPermissionModal />
             <PageTransition>
               <NotificationProvider />
               {children}
               <Toaster
-                    position="top-right"
-                    richColors
-                    closeButton
-                    duration={5000}
-                />
+                position="top-right"
+                richColors
+                closeButton
+                duration={5000}
+              />
             </PageTransition>
           </Providers>
         </ReactQueryProvider>

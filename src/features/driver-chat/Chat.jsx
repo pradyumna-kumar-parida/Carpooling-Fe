@@ -55,6 +55,67 @@ const sameId = (a, b) =>
   b !== null &&
   String(a) === String(b);
 
+// ---- BUGFIX: single source of truth for merging an optimistic bubble with
+// the "real" message, whichever channel (socket vs REST response) resolves
+// first.
+//
+// Why this needs to check BOTH keys at once: if the socket payload doesn't
+// echo back `clientTempId` (or names it differently), the socket handler
+// can't find the optimistic bubble by temp id, so it appends a fresh row
+// under the real id. When the REST response comes back afterwards, it DOES
+// still know the local clientTempId, finds the original optimistic bubble,
+// and replaces *that* one too -- leaving two permanent rows for the same
+// message instead of one. Deduping by clientTempId OR real id separately
+// isn't enough; both channels have to collapse into a single slot however
+// they arrived.
+const reconcileMessage = (prevMessages, incoming, clientTempId) => {
+  const list = Array.isArray(prevMessages) ? prevMessages : [];
+  if (!incoming) return list;
+
+  const normalized = clientTempId
+    ? { ...incoming, _clientTempId: clientTempId }
+    : incoming;
+
+  const tempIndex = clientTempId
+    ? list.findIndex((m) => m._clientTempId === clientTempId)
+    : -1;
+
+  const idIndex = normalized?.id
+    ? list.findIndex((m) => sameId(m.id, normalized.id))
+    : -1;
+
+  // Genuinely new message -> nothing to merge with, just append.
+  if (tempIndex === -1 && idIndex === -1) {
+    return [...list, normalized];
+  }
+
+  // Merge into a single slot (prefer the temp slot if both exist), and
+  // drop any OTHER row that refers to the same clientTempId or same real
+  // id -- this is what collapses a stray duplicate back down to one.
+  const targetIndex = tempIndex !== -1 ? tempIndex : idIndex;
+
+  return list
+    .map((m, i) => (i === targetIndex ? normalized : m))
+    .filter((m, i) => {
+      if (i === targetIndex) return true;
+      const sameTemp = clientTempId && m._clientTempId === clientTempId;
+      const sameReal = normalized?.id && sameId(m.id, normalized.id);
+      return !(sameTemp || sameReal);
+    });
+};
+
+// ---- Optional feature: quick-reply suggestions shown above the composer
+// before the driver has sent their first message in a conversation, similar
+// to the "ready to pickup" prompts on Ola/Rapido. Purely client-side; taps
+// send the text through the normal sendMessage pipeline.
+const QUICK_REPLIES = [
+  "I'm on my way",
+  "Ready to pickup",
+  "Where are you?",
+  "I've arrived at the pickup point",
+  "Please be on time",
+];
+
 export default function ChatPage({ chatList }) {
   useSocket();
   const user = useSelector((state) => state.auth.user); // logged-in driver
@@ -71,8 +132,27 @@ export default function ChatPage({ chatList }) {
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState(null);
 
+  // ---- CHANGE 1: live sidebar search (debounced client-side filter) ----
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setDebouncedSearch(searchTerm.trim().toLowerCase());
+    }, 150);
+    return () => clearTimeout(t);
+  }, [searchTerm]);
+
   const messagesContainerRef = useRef(null);
   const tempIdRef = useRef(0);
+  // Tracks the clientTempId of whatever message is currently being sent.
+  // The socket payload doesn't reliably echo `clientTempId` back, so
+  // whichever channel (socket vs REST) resolves FIRST needs another way to
+  // find the right optimistic bubble immediately -- otherwise it appends a
+  // stray row and only the second channel cleans it up a moment later,
+  // which is the visible flicker. Since sending is disabled while a send is
+  // in flight, there's only ever one pending id to track at a time.
+  const pendingSendRef = useRef(null);
 
   // keep local chats list in sync if the parent re-fetches chatList later
   useEffect(() => {
@@ -153,27 +233,28 @@ export default function ChatPage({ chatList }) {
     const handleMessageReceived = (message) => {
       if (!message || !sameId(message.conversation_id, conversation.id)) return;
 
-      setMessages((prev) => {
-        const safePrev = Array.isArray(prev) ? prev : [];
+      const isOwnMessage =
+        message.sender === "driver" || sameId(message.sender_id, user?.id);
 
-        // reconcile against optimistic temp entry if server echoed it back
-        if (message.clientTempId) {
-          const tempIndex = safePrev.findIndex(
-            (m) => m._clientTempId === message.clientTempId,
-          );
-          if (tempIndex !== -1) {
-            const next = [...safePrev];
-            next[tempIndex] = message;
-            return next;
-          }
-        }
+      // Prefer clientTempId if the payload actually has it; otherwise, if
+      // this is our own message and we have a send in flight, fall back to
+      // the id we're tracking locally. This is what lets the socket event
+      // match the optimistic bubble on the very first try instead of
+      // appending a stray row that only gets cleaned up once the REST
+      // response comes back (the flicker).
+      const effectiveTempId =
+        message.clientTempId ||
+        (isOwnMessage ? pendingSendRef.current : undefined);
 
-        // already have this message (e.g. the sendMessageApi response
-        // already inserted it before the socket event arrived) -> skip
-        if (safePrev.some((m) => sameId(m.id, message.id))) return safePrev;
+      setMessages((prev) => reconcileMessage(prev, message, effectiveTempId));
 
-        return [...safePrev, message];
-      });
+      if (
+        isOwnMessage &&
+        effectiveTempId &&
+        pendingSendRef.current === effectiveTempId
+      ) {
+        pendingSendRef.current = null;
+      }
 
       // keep sidebar preview in sync for this conversation's chat entry
       setChats((prev) =>
@@ -218,13 +299,16 @@ export default function ChatPage({ chatList }) {
   }
 
   // ---- Send message: optimistic update + API + socket ----
-  const sendMessage = async () => {
-    const text = draft.trim();
+  // `overrideText` lets quick-reply chips (CHANGE 2) send a fixed string
+  // without touching whatever the driver has typed in the input box.
+  const sendMessage = async (overrideText) => {
+    const text = (overrideText ?? draft).trim();
     if (!text || !conversation?.id || sending) return;
 
     setSendError(null);
     tempIdRef.current += 1;
     const clientTempId = `temp-${Date.now()}-${tempIdRef.current}`;
+    pendingSendRef.current = clientTempId;
 
     const optimisticMessage = {
       id: clientTempId,
@@ -247,7 +331,8 @@ export default function ChatPage({ chatList }) {
       ...(Array.isArray(prev) ? prev : []),
       optimisticMessage,
     ]);
-    setDraft("");
+    // only clear the typed draft if this send came from the input box
+    if (overrideText === undefined) setDraft("");
     setSending(true);
 
     try {
@@ -260,41 +345,14 @@ export default function ChatPage({ chatList }) {
       const { data } = await sendMessageApi(payload);
       const newMessage = data?.data;
 
-      setMessages((prev) => {
-        const safePrev = Array.isArray(prev) ? prev : [];
-
-        const tempIndex = safePrev.findIndex(
-          (m) => m._clientTempId === clientTempId,
-        );
-
-        // Case 1: optimistic temp bubble still present -> replace it in place
-        if (tempIndex !== -1) {
-          // but guard against the socket having ALSO already inserted the
-          // real message elsewhere in the array (rare, but possible)
-          const alreadyElsewhere =
-            newMessage &&
-            safePrev.some(
-              (m, i) => i !== tempIndex && sameId(m.id, newMessage.id),
-            );
-          if (alreadyElsewhere) {
-            return safePrev.filter((m) => m._clientTempId !== clientTempId);
-          }
-          const next = [...safePrev];
-          next[tempIndex] = newMessage || safePrev[tempIndex];
-          return next;
-        }
-
-        // Case 2: temp bubble already got replaced by the socket event
-        // (message_received arrived before this promise resolved) ->
-        // the real message is already in state, don't append again
-        if (newMessage && safePrev.some((m) => sameId(m.id, newMessage.id))) {
-          return safePrev;
-        }
-
-        // Case 3: neither temp nor real message present for some reason
-        // -> append the real message so it isn't lost
-        return newMessage ? [...safePrev, newMessage] : safePrev;
-      });
+      // BUGFIX: same shared reconcile helper as the socket handler above.
+      setMessages((prev) =>
+        reconcileMessage(
+          prev,
+          newMessage || { ...optimisticMessage, pending: false },
+          clientTempId,
+        ),
+      );
 
       setChats((prev) =>
         (prev || []).map((c) =>
@@ -318,6 +376,9 @@ export default function ChatPage({ chatList }) {
       setDraft(text); // give the text back so the user doesn't lose it
     } finally {
       setSending(false);
+      if (pendingSendRef.current === clientTempId) {
+        pendingSendRef.current = null;
+      }
     }
   };
 
@@ -335,6 +396,23 @@ export default function ChatPage({ chatList }) {
 
   const safeMessages = Array.isArray(messages) ? messages : [];
   const safeChats = Array.isArray(chats) ? chats : [];
+
+  // CHANGE 1: filtered view of the sidebar list, driven by the debounced
+  // search term. Matches passenger name, last message preview, or booking id.
+  const filteredChats = !debouncedSearch
+    ? safeChats
+    : safeChats.filter((c) => {
+        const haystack = `${c?.user_name ?? ""} ${c?.last_message ?? ""} ${
+          c?.booking_id ?? ""
+        }`.toLowerCase();
+        return haystack.includes(debouncedSearch);
+      });
+
+  // CHANGE 2: only show quick-reply suggestions until the driver has sent
+  // their first message in this conversation.
+  const driverHasSentMessage = safeMessages.some(
+    (m) => m?.sender === "driver" || sameId(m?.sender_id, user?.id),
+  );
 
   // true only while we have nothing to show yet for the selected chat
   const showFullPanelLoading = conversationLoading && !conversation;
@@ -366,69 +444,78 @@ export default function ChatPage({ chatList }) {
             type="text"
             placeholder="Search passenger..."
             className="chat-search__input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
 
-     <ul className="chat-list">
-  {safeChats.length > 0 ? (
-    safeChats.map((chat, index) => (
-      <li key={chat?.id ?? chat?.booking_id ?? index}>
-        <button
-          type="button"
-          className={`chat-list__item ${
-            chat.id === activeId ? "chat-list__item--active" : ""
-          }`}
-          onClick={() => openChat(chat)}
-        >
-          <span className="chat-avatar">
-            {chat?.profile_picture ? (
-              <img src={chat.profile_picture} alt={chat?.user_name} />
-            ) : (
-              <div className="profile-placeholder-list">
-                {chat?.user_name
-                  ?.split(" ")[0]
-                  ?.charAt(0)
-                  ?.toUpperCase()}
+        <ul className="chat-list">
+          {filteredChats.length > 0 ? (
+            filteredChats.map((chat, index) => (
+              <li key={chat?.id ?? chat?.booking_id ?? index}>
+                <button
+                  type="button"
+                  className={`chat-list__item ${
+                    chat.id === activeId ? "chat-list__item--active" : ""
+                  }`}
+                  onClick={() => openChat(chat)}
+                >
+                  <span className="chat-avatar">
+                    {chat?.profile_picture ? (
+                      <img src={chat.profile_picture} alt={chat?.user_name} />
+                    ) : (
+                      <div className="profile-placeholder-list">
+                        {chat?.user_name
+                          ?.split(" ")[0]
+                          ?.charAt(0)
+                          ?.toUpperCase()}
+                      </div>
+                    )}
+                  </span>
+
+                  <span className="chat-list__body">
+                    <span className="chat-list__row">
+                      <span className="chat-list__name">{chat?.user_name}</span>
+
+                      <span className="chat-list__time">
+                        {formatChatListTime(chat?.last_message_at)}
+                      </span>
+                    </span>
+
+                    <span className="chat-list__preview">
+                      {chat?.last_message}
+                    </span>
+                  </span>
+
+                  {chat?.unread > 0 && (
+                    <span className="chat-unread">{chat?.unread}</span>
+                  )}
+                </button>
+              </li>
+            ))
+          ) : safeChats.length > 0 ? (
+            // there ARE chats, just none match the search term
+            <li className="chat-empty-state">
+              <div className="chat-empty-icon">🔍</div>
+              <h3>No matches found</h3>
+              <p>Try a different name or keyword.</p>
+            </li>
+          ) : (
+            <li className="chat-empty-state">
+              <div className="chat-empty-icon">
+                {/* use your existing chat/inbox icon here */}
+                💬
               </div>
-            )}
-          </span>
 
-          <span className="chat-list__body">
-            <span className="chat-list__row">
-              <span className="chat-list__name">{chat?.user_name}</span>
+              <h3>No passenger chats yet</h3>
 
-              <span className="chat-list__time">
-                {formatChatListTime(chat?.last_message_at)}
-              </span>
-            </span>
-
-            <span className="chat-list__preview">
-              {chat?.last_message}
-            </span>
-          </span>
-
-          {chat?.unread > 0 && (
-            <span className="chat-unread">{chat?.unread}</span>
+              <p>
+                When a passenger books a ride or starts a conversation, their
+                chat will appear here.
+              </p>
+            </li>
           )}
-        </button>
-      </li>
-    ))
-  ) : (
-    <li className="chat-empty-state">
-      <div className="chat-empty-icon">
-        {/* use your existing chat/inbox icon here */}
-        💬
-      </div>
-
-      <h3>No passenger chats yet</h3>
-
-      <p>
-        When a passenger books a ride or starts a conversation,
-        their chat will appear here.
-      </p>
-    </li>
-  )}
-</ul>
+        </ul>
       </aside>
 
       {/* ---------- Main chat window ---------- */}
@@ -603,6 +690,24 @@ export default function ChatPage({ chatList }) {
 
             {sendError && <p className="chat-error">{sendError}</p>}
 
+            {/* ---- CHANGE 2: quick-reply suggestions (optional, dismissed
+                 automatically once the driver has sent their first message) ---- */}
+            {!driverHasSentMessage && (
+              <div className="chat-suggestions">
+                {QUICK_REPLIES.map((reply) => (
+                  <button
+                    key={reply}
+                    type="button"
+                    className="chat-suggestion-chip"
+                    onClick={() => sendMessage(reply)}
+                    disabled={sending}
+                  >
+                    {reply}
+                  </button>
+                ))}
+              </div>
+            )}
+
             <div className="chat-composer">
               {/* emoji picker not wired up yet
               <button type="button" className="chat-icon-btn chat-icon-btn--ghost" aria-label="Emoji">
@@ -620,7 +725,7 @@ export default function ChatPage({ chatList }) {
               <button
                 type="button"
                 className="chat-send-btn"
-                onClick={sendMessage}
+                onClick={() => sendMessage()}
                 aria-label="Send message"
                 disabled={sending}
               >

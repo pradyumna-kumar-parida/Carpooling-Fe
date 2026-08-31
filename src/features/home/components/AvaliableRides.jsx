@@ -237,13 +237,12 @@ export default function AvailableRides() {
   const { data: rawRides = [], isLoading, error, refetch } = useNearRides();
   const rides = useMemo(() => (rawRides || []).map(normalizeRide), [rawRides]);
 
-  // Keep a stable ref so the socket effect doesn't need refetch in deps
   const refetchRef = useRef(refetch);
   useEffect(() => {
     refetchRef.current = refetch;
   }, [refetch]);
 
-  // Debug: log EVERY event the socket receives, no matter the name
+
   useEffect(() => {
     const logAny = (event, ...args) =>
       console.log("📡 socket event:", event, args);
@@ -251,7 +250,6 @@ export default function AvailableRides() {
     return () => socket.offAny(logAny);
   }, []);
 
-  // Join rooms on connect AND reconnect (fixes rejoining after a drop)
   useEffect(() => {
     const joinAll = () => {
       rides.forEach((ride) => {

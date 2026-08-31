@@ -1,15 +1,16 @@
 "use client";
+
 import { useEffect } from "react";
 import { socket } from "@/lib/socket";
 
 export const useSocket = () => {
   useEffect(() => {
     const handleConnect = () => {
-      console.log("✅ Socket Connected", socket.id);
+      console.log("✅ Socket Connected:", socket.id);
     };
 
     const handleDisconnect = (reason) => {
-      console.log("❌ Socket Disconnected. Reason:", reason);
+      console.log("❌ Socket Disconnected:", reason);
     };
 
     const handleConnectError = (error) => {

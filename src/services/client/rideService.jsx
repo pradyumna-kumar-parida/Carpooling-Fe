@@ -30,3 +30,4 @@ export const ratingApi = (data) => getClientAxios.post("/ratings", data);
 
 export const SOSApi = (rideId, data) =>
   getClientAxios.post(`/rides/${rideId}/sos`, data);
+
